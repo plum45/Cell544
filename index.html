@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>ระบบควบคุมชีวิตของเซลล์ | 3D Interactive Learning</title>
+  <meta name="description" content="เรียนรู้ระบบควบคุมชีวิตของเซลล์ผ่านโลก 3D แฟนตาซี — Gene Expression, Cell Signaling, Apoptosis">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== Loading Screen ===== -->
+  <div id="loading">
+    <div class="loading-slime"></div>
+    <div class="loading-text">กำลังสร้างโลก...</div>
+  </div>
+
+  <!-- ===== Landing Page ===== -->
+  <div id="landing">
+    <div class="landing-particles" id="landing-particles"></div>
+    <div class="landing-content">
+      <div class="landing-icon">🧬</div>
+      <h1 class="landing-title">ระบบควบคุมชีวิตของเซลล์</h1>
+      <p class="landing-subtitle">Genes, Signals &amp; Responses</p>
+      <p class="landing-desc">
+        สำรวจโลก 3D แฟนตาซี เรียนรู้เรื่องยีน สัญญาณ และการตอบสนองของเซลล์<br>
+        ผ่าน 6 แลนด์มาร์กที่ซ่อนอยู่ในป่ามหัศจรรย์
+      </p>
+      <button class="landing-btn" id="btn-enter">
+        🌿 เข้าสู่โลกแห่งการเรียนรู้
+      </button>
+      <p class="landing-credits">กลุ่มที่ 3 — ชีววิทยา | 3D Interactive Learning Experience</p>
+    </div>
+  </div>
+
+  <!-- ===== 3D Canvas ===== -->
+  <canvas id="canvas3d"></canvas>
+
+  <!-- ===== Landmark Labels Overlay ===== -->
+  <div id="labels-overlay"></div>
+
+  <!-- ===== Character Selector ===== -->
+  <div id="character-selector">
+    <div class="selector-title">🎭 เลือกตัวละคร</div>
+    <div class="selector-buttons">
+      <button class="char-btn" id="btn-char-slime" data-char="slime">🐌 สไลม์</button>
+      <button class="char-btn active" id="btn-char-fox" data-char="fox">🦊 จิ้งจอก</button>
+      <button class="char-btn" id="btn-char-sprite" data-char="sprite">✨ ภูติน้อย</button>
+    </div>
+  </div>
+
+  <!-- ===== Interaction Prompt Badge ===== -->
+  <div id="interact-prompt" class="interact-prompt">
+    <span class="prompt-key">E</span>
+    <span id="prompt-text">สำรวจ</span>
+  </div>
+
+  <!-- ===== Cute Pastel Toast Notification ===== -->
+  <div id="pastel-toast" class="pastel-toast">
+    <span id="toast-text">ข้อความ</span>
+  </div>
+
+  <!-- ===== HUD Controls Hint ===== -->
+  <div class="hud-hint" id="hud-hint">
+    🎮 <strong>W A S D</strong> เดิน &nbsp;|&nbsp; <strong>Shift</strong> วิ่ง &nbsp;|&nbsp; <strong>Space</strong> กระโดด &nbsp;|&nbsp; <strong>E</strong> มีปฏิสัมพันธ์/คุย
+  </div>
+
+  <!-- ===== Mobile & iPad Touch Controls Overlay ===== -->
+  <div id="touch-controls" class="touch-controls">
+    <!-- Virtual Analog Joystick (Lower Left) -->
+    <div id="joystick-zone" class="joystick-zone">
+      <div id="joystick-base" class="joystick-base">
+        <div id="joystick-knob" class="joystick-knob"></div>
+      </div>
+    </div>
+
+    <!-- Action Buttons (Lower Right) -->
+    <div id="touch-actions" class="touch-actions">
+      <button id="btn-touch-aerial" class="touch-btn touch-btn-aerial" aria-label="ดูแมพมุมสูง">
+        <span class="touch-btn-icon">🦅</span>
+        <span class="touch-btn-label">มุมสูง</span>
+      </button>
+      <button id="btn-touch-interact" class="touch-btn touch-btn-interact" aria-label="สำรวจ/คุย">
+        <span class="touch-btn-icon">💬</span>
+        <span class="touch-btn-label">สำรวจ</span>
+      </button>
+      <button id="btn-touch-sprint" class="touch-btn touch-btn-sprint" aria-label="วิ่งเร็ว">
+        <span class="touch-btn-icon">⚡</span>
+        <span class="touch-btn-label">วิ่ง</span>
+      </button>
+      <button id="btn-touch-jump" class="touch-btn touch-btn-jump" aria-label="กระโดด">
+        <span class="touch-btn-icon">🦘</span>
+        <span class="touch-btn-label">กระโดด</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== Aerial Top-Down View Banner ===== -->
+  <div id="aerial-banner" class="aerial-banner hidden">
+    <div class="aerial-banner-content">
+      <span class="aerial-banner-icon">🦅</span>
+      <span class="aerial-banner-text">มุมมองแผนที่จากด้านบน (คลิกแลนด์มาร์คเพื่อสำรวจ หรือหมุนจอเพื่อดูรอบเกาะ)</span>
+      <button id="btn-exit-aerial" class="btn-exit-aerial">✕ กลับสู่ตัวละคร</button>
+    </div>
+  </div>
+
+  <!-- ===== Minimap & Aerial View ===== -->
+  <div id="minimap-wrapper" class="minimap-wrapper">
+    <button id="btn-toggle-aerial" class="btn-aerial-view" title="ดูแมพจากด้านบน (Bird's-Eye View) [กด M]">
+      <span class="aerial-icon">🦅</span>
+      <span class="aerial-text">ดูแมพมุมบน</span>
+    </button>
+    <div id="minimap">
+      <div class="minimap-title">🗺️ SKY MAP</div>
+      <canvas class="minimap-canvas" id="minimap-canvas" width="160" height="140"></canvas>
+    </div>
+  </div>
+
+  <!-- ===== Content Modal ===== -->
+  <div id="content-modal">
+    <div class="modal-backdrop" id="modal-backdrop"></div>
+    <div class="modal-panel">
+      <div class="modal-header">
+        <span class="modal-icon" id="modal-icon">🧬</span>
+        <div class="modal-titles">
+          <div class="modal-title-en" id="modal-title-en">Gene Expression</div>
+          <div class="modal-title-th" id="modal-title-th">การแสดงออกของยีน</div>
+        </div>
+        <button class="modal-close" id="modal-close">✕</button>
+      </div>
+      <div class="modal-summary">
+        <div class="modal-summary-bar" id="modal-summary-bar"></div>
+        <span id="modal-summary-text">Summary text here</span>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- Content sections injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Guide NPC Dialogue Modal ===== -->
+  <div id="npc-modal" class="npc-modal">
+    <div class="modal-backdrop" id="npc-modal-backdrop"></div>
+    <div class="npc-dialogue-panel">
+      <div class="npc-header">
+        <div class="npc-avatar-wrap">
+          <span class="npc-avatar-emoji">🐰</span>
+          <span class="npc-badge">ไกด์นำทาง</span>
+        </div>
+        <div class="npc-speaker">
+          <div class="npc-name">ศาสตราจารย์บันนี่ (Cell Island Guide)</div>
+          <div class="npc-subtitle">ผู้พิทักษ์และผู้นำทางประจำเกาะเซลล์ลอยฟ้า</div>
+        </div>
+        <button class="modal-close" id="npc-modal-close">✕</button>
+      </div>
+
+      <div class="npc-speech-box">
+        <p class="npc-speech-text">
+          "สวัสดีนักสำรวจตัวน้อย! ยินดีต้อนรับสู่ <strong>เกาะลอยฟ้าแห่งชีวิตเซลล์</strong> 🌿
+          เดินตามถนนสีน้ำตาลเพื่อสำรวจ <strong>6 ฐานความรู้สำคัญ</strong> หรือจะเลือกฐานที่อยากไปให้ฉันนำทาง/วาร์ปไปส่งได้เลยนะ!"
+        </p>
+      </div>
+
+      <div class="npc-guide-grid">
+        <div class="guide-card" data-id="gene-expression" style="--accent: #a855f7">
+          <div class="guide-card-icon">🧬</div>
+          <div class="guide-card-info">
+            <div class="guide-card-title">1. การแสดงออกของยีน</div>
+            <div class="guide-card-desc">บ้านสวนพฤกษศาสตร์ • DNA สู่ โปรตีน</div>
+          </div>
+          <div class="guide-card-actions">
+            <button class="btn-guide-nav" data-target="gene-expression">🧭 นำทาง</button>
+            <button class="btn-guide-warp" data-target="gene-expression">🚀 วาร์ปไป</button>
+            <a class="btn-guide-read" href="topics/gene-expression.html">📖 อ่าน</a>
+          </div>
+        </div>
+
+        <div class="guide-card" data-id="gene-regulation" style="--accent: #10b981">
+          <div class="guide-card-icon">⚙️</div>
+          <div class="guide-card-info">
+            <div class="guide-card-title">2. การควบคุมการแสดงออกของยีน</div>
+            <div class="guide-card-desc">กังหันลมเวทมนตร์ • สวิตช์เปิด-ปิดยีน</div>
+          </div>
+          <div class="guide-card-actions">
+            <button class="btn-guide-nav" data-target="gene-regulation">🧭 นำทาง</button>
+            <button class="btn-guide-warp" data-target="gene-regulation">🚀 วาร์ปไป</button>
+            <a class="btn-guide-read" href="topics/gene-regulation.html">📖 อ่าน</a>
+          </div>
+        </div>
+
+        <div class="guide-card" data-id="cell-signaling" style="--accent: #f97316">
+          <div class="guide-card-icon">📡</div>
+          <div class="guide-card-info">
+            <div class="guide-card-title">3. การสื่อสารระหว่างเซลล์</div>
+            <div class="guide-card-desc">ประภาคารสัญญาณ • ส่งและรับสารสื่อ</div>
+          </div>
+          <div class="guide-card-actions">
+            <button class="btn-guide-nav" data-target="cell-signaling">🧭 นำทาง</button>
+            <button class="btn-guide-warp" data-target="cell-signaling">🚀 วาร์ปไป</button>
+            <a class="btn-guide-read" href="topics/cell-signaling.html">📖 อ่าน</a>
+          </div>
+        </div>
+
+        <div class="guide-card" data-id="cell-response" style="--accent: #0284c7">
+          <div class="guide-card-icon">⚡</div>
+          <div class="guide-card-info">
+            <div class="guide-card-title">4. การตอบสนองของเซลล์</div>
+            <div class="guide-card-desc">วิหารพลังงาน • การปรับตัวและการส่งต่อสัญญาณ</div>
+          </div>
+          <div class="guide-card-actions">
+            <button class="btn-guide-nav" data-target="cell-response">🧭 นำทาง</button>
+            <button class="btn-guide-warp" data-target="cell-response">🚀 วาร์ปไป</button>
+            <a class="btn-guide-read" href="topics/cell-response.html">📖 อ่าน</a>
+          </div>
+        </div>
+
+        <div class="guide-card" data-id="cell-cycle" style="--accent: #f43f5e">
+          <div class="guide-card-icon">🔬</div>
+          <div class="guide-card-info">
+            <div class="guide-card-title">5. วัฏจักรของเซลล์</div>
+            <div class="guide-card-desc">หอดูดาวจักรกล • การแบ่งเซลล์และจุดตรวจ</div>
+          </div>
+          <div class="guide-card-actions">
+            <button class="btn-guide-nav" data-target="cell-cycle">🧭 นำทาง</button>
+            <button class="btn-guide-warp" data-target="cell-cycle">🚀 วาร์ปไป</button>
+            <a class="btn-guide-read" href="topics/cell-cycle.html">📖 อ่าน</a>
+          </div>
+        </div>
+
+        <div class="guide-card" data-id="apoptosis" style="--accent: #8b5cf6">
+          <div class="guide-card-icon">🕯️</div>
+          <div class="guide-card-info">
+            <div class="guide-card-title">6. การตายของเซลล์ (Apoptosis)</div>
+            <div class="guide-card-desc">แท่นบูชาโบราณ • การทำลายเซลล์ที่ผิดปกติ</div>
+          </div>
+          <div class="guide-card-actions">
+            <button class="btn-guide-nav" data-target="apoptosis">🧭 นำทาง</button>
+            <button class="btn-guide-warp" data-target="apoptosis">🚀 วาร์ปไป</button>
+            <a class="btn-guide-read" href="topics/apoptosis.html">📖 อ่าน</a>
+          </div>
+        </div>
+
+        <div class="guide-card" data-id="quiz-hub" style="--accent: #f59e0b">
+          <div class="guide-card-icon">🏛️</div>
+          <div class="guide-card-info">
+            <div class="guide-card-title">7. คลังข้อสอบ (Exam Hub)</div>
+            <div class="guide-card-desc">บ้านแฟนตาซีโบราณ • คลังข้อสอบวัดระดับ 15 ข้อ</div>
+          </div>
+          <div class="guide-card-actions">
+            <button class="btn-guide-nav" data-target="quiz-hub">🧭 นำทาง</button>
+            <button class="btn-guide-warp" data-target="quiz-hub">🚀 วาร์ปไป</button>
+            <a class="btn-guide-read" href="topics/quiz-hub.html">📝 สอบ</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="npc-footer">
+        <button class="btn-close-dialog" id="btn-close-npc">เดินชมเองตามถนนสีน้ำตาล 🚶‍♂️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Three.js Import Map ===== -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="js/main.js"></script>
+
+</body>
+</html>

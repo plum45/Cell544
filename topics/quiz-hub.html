@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+  <title>คลังข้อสอบชีววิทยาของเซลล์ (Cell Biology Exam Hub) | ระบบควบคุมชีวิตของเซลล์</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="topic-style.css">
+  <style>
+    :root {
+      --topic-primary: #F59E0B;
+      --topic-gradient-end: #FCD34D;
+      --topic-border: #FDE68A;
+      --topic-pill-bg: #FFFBEB;
+      --topic-pill-text: #B45309;
+      --topic-pill-border: #FCD34D;
+      --pastel-orb-1: #FEF3C7;
+      --pastel-orb-2: #FDE68A;
+      --pastel-orb-3: #EDE9FE;
+    }
+
+    .quiz-hub-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: center;
+      margin: 1.5rem 0 2rem;
+    }
+
+    .filter-btn {
+      padding: 0.55rem 1.1rem;
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: 'Prompt', sans-serif;
+      border: 1.5px solid var(--topic-border);
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+      cursor: pointer;
+      color: #78350F;
+      transition: all 0.22s ease;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
+    }
+
+    .filter-btn:hover {
+      transform: translateY(-2px);
+      background: #FEF3C7;
+      border-color: #F59E0B;
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      color: #FFFFFF;
+      border-color: transparent;
+      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
+    }
+
+    .stats-card {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(253, 230, 138, 0.8);
+      border-radius: 1.25rem;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px rgba(245, 158, 11, 0.08);
+      text-align: center;
+    }
+
+    .stat-item .stat-val {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #D97706;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .stat-item .stat-lbl {
+      font-size: 0.82rem;
+      color: #92400E;
+      font-weight: 500;
+    }
+
+    .q-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(20px);
+      border: 1.5px solid rgba(253, 230, 138, 0.75);
+      border-radius: 1.4rem;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .q-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(245, 158, 11, 0.12);
+    }
+
+    .q-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+    }
+
+    .q-tag {
+      font-size: 0.78rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      background: #FEF3C7;
+      color: #B45309;
+      border: 1px solid #FDE68A;
+    }
+
+    .q-points {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #D97706;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .q-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #1F2937;
+      line-height: 1.6;
+      margin-bottom: 1.1rem;
+    }
+
+    .options-grid {
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    .opt-btn {
+      display: flex;
+      align-items: center;
+      text-align: left;
+      width: 100%;
+      padding: 0.85rem 1.1rem;
+      border-radius: 0.9rem;
+      border: 1.5px solid #E5E7EB;
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 0.95rem;
+      font-family: 'Prompt', sans-serif;
+      color: #374151;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .opt-btn:hover:not(:disabled) {
+      background: #FFFBEB;
+      border-color: #FBBF24;
+      transform: translateX(4px);
+    }
+
+    .opt-btn.correct {
+      background: #DCFCE7 !important;
+      border-color: #22C55E !important;
+      color: #15803D !important;
+      font-weight: 600;
+    }
+
+    .opt-btn.wrong {
+      background: #FEE2E2 !important;
+      border-color: #EF4444 !important;
+      color: #B91C1C !important;
+    }
+
+    .q-explain {
+      display: none;
+      margin-top: 1rem;
+      padding: 1rem 1.25rem;
+      border-radius: 0.9rem;
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      color: #166534;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .q-explain.visible {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .badge-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .badge-modal.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .badge-content {
+      background: rgba(255, 255, 255, 0.95);
+      border: 2px solid #FBBF24;
+      border-radius: 1.75rem;
+      padding: 2.25rem 2.5rem;
+      max-width: 440px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 25px 60px rgba(245, 158, 11, 0.25);
+      transform: scale(0.92);
+      transition: transform 0.3s ease;
+    }
+
+    .badge-modal.visible .badge-content {
+      transform: scale(1);
+    }
+
+    .badge-icon {
+      font-size: 4rem;
+      margin-bottom: 0.75rem;
+      animation: bounce 1s infinite alternate ease-in-out;
+    }
+
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-8px); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Pastel Aurora Backdrop -->
+  <div class="pastel-aurora">
+    <div class="aurora-orb orb-1"></div>
+    <div class="aurora-orb orb-2"></div>
+    <div class="aurora-orb orb-3"></div>
+  </div>
+
+  <!-- Sticky Top Nav -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <a href="../index.html" class="back-btn">
+        <span style="font-size: 18px;">←</span> กลับสู่เกาะลอยฟ้า 3D
+      </a>
+      <div class="nav-brand">
+        🏛️ <strong>คลังข้อสอบชีววิทยาของเซลล์ (Exam Hub)</strong>
+      </div>
+    </div>
+    <select class="topic-selector" onchange="if(this.value) window.location.href=this.value;">
+      <option value="quiz-hub.html" selected>📝 คลังข้อสอบประมวลความรู้</option>
+      <option value="gene-expression.html">🧬 1. Gene Expression (การแสดงออกของยีน)</option>
+      <option value="gene-regulation.html">🎛️ 2. Gene Regulation (การควบคุมยีน)</option>
+      <option value="cell-signaling.html">📡 3. Cell Signaling (การสื่อสารระหว่างเซลล์)</option>
+      <option value="cell-response.html">⚡ 4. Cell Response (การตอบสนองของเซลล์)</option>
+      <option value="cell-cycle.html">🔄 5. Cell Cycle (วัฏจักรเซลล์)</option>
+      <option value="apoptosis.html">💀 6. Apoptosis (การตายแบบมีแบบแผน)</option>
+    </select>
+  </nav>
+
+  <!-- Container -->
+  <div class="container" style="max-width: 860px; margin-top: 1.5rem; padding-bottom: 4rem;">
+
+    <header class="quiz-hub-header">
+      <div style="font-size: 3.5rem; margin-bottom: 0.5rem;">🏛️📝</div>
+      <h1 style="font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 800; color: #78350F; margin-bottom: 0.3rem;">
+        Cell Biology Question Bank
+      </h1>
+      <h2 style="font-size: 1.3rem; font-weight: 600; color: #B45309; margin-bottom: 0.8rem;">
+        คลังข้อสอบประมวลความรู้ชีววิทยาของเซลล์ (6 บทใหญ่)
+      </h2>
+      <p style="color: #6B7280; font-size: 0.95rem; max-width: 620px; margin: 0 auto; line-height: 1.6;">
+        ทดสอบและประเมินทักษะความรู้ทางชีววิทยาระดับเซลล์ กลไกโมเลกุล และการควบคุมสัญญาณ พร้อมเฉลยละเอียดทันทีที่ตอบ
+      </p>
+    </header>
+
+    <!-- Stats Card -->
+    <div class="stats-card">
+      <div class="stat-item">
+        <div class="stat-val" id="stat-answered">0 / 15</div>
+        <div class="stat-lbl">ข้อที่ทำแล้ว</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val" id="stat-score">0</div>
+        <div class="stat-lbl">คะแนนที่ได้</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val" id="stat-accuracy">0%</div>
+        <div class="stat-lbl">ความแม่นยำ</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val" id="stat-rank">🌱 ผู้เริ่มต้น</div>
+        <div class="stat-lbl">ระดับเกียรติยศ</div>
+      </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterQuestions('all', this)">✨ ทั้งหมด (15 ข้อ)</button>
+      <button class="filter-btn" onclick="filterQuestions('gene-expr', this)">🧬 การแสดงออกของยีน</button>
+      <button class="filter-btn" onclick="filterQuestions('gene-reg', this)">🎛️ การควบคุมยีน</button>
+      <button class="filter-btn" onclick="filterQuestions('signaling', this)">📡 การสื่อสารของเซลล์</button>
+      <button class="filter-btn" onclick="filterQuestions('response', this)">⚡ การตอบสนอง</button>
+      <button class="filter-btn" onclick="filterQuestions('cycle', this)">🔄 วัฏจักรเซลล์</button>
+      <button class="filter-btn" onclick="filterQuestions('apoptosis', this)">💀 Apoptosis</button>
+    </div>
+
+    <!-- Questions Container -->
+    <div id="questions-list"></div>
+
+  </div>
+
+  <!-- Badge Celebration Modal -->
+  <div id="badge-modal" class="badge-modal">
+    <div class="badge-content">
+      <div class="badge-icon" id="modal-badge-icon">🏆</div>
+      <h2 id="modal-badge-title" style="font-family: 'Prompt', sans-serif; font-size: 1.5rem; color: #92400E; margin-bottom: 0.5rem;">
+        ยินดีด้วย! คุณทำครบทุกข้อแล้ว
+      </h2>
+      <p id="modal-badge-desc" style="color: #4B5563; font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.6;"></p>
+      <button onclick="document.getElementById('badge-modal').classList.remove('visible');" class="filter-btn active" style="width: 100%; padding: 0.8rem;">
+        ตรวจสอบคำตอบและทบทวนความรู้ ✨
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const QUESTIONS = [
+      {
+        id: 1,
+        cat: 'gene-expr',
+        tag: '🧬 Gene Expression',
+        q: 'ในกระบวนการ Transcription ของยูคาริโอต ข้อใดคือลำดับเบสของ Start Codon บน mRNA ที่ส่งสัญญาณเริ่มสังเคราะห์โปรตีน?',
+        opts: ['UAA', 'AUG', 'UAG', 'UGA'],
+        ans: 1,
+        exp: 'AUG คือ Start Codon รหัสเดียวที่กำหนดกรดอะมิโน Methionine (Met) ทำหน้าที่ส่งสัญญาณเริ่ม Translation ส่วน UAA, UAG, UGA คือ Stop Codons'
+      },
+      {
+        id: 2,
+        cat: 'gene-expr',
+        tag: '🧬 Gene Expression',
+        q: 'กระบวนการดัดแปลง Pre-mRNA ในยูคาริโอตที่ช่วยป้องกันการย่อยสลายโดย Exonuclease ที่ปลาย 5\' คือข้อใด?',
+        opts: ['3\' Polyadenylation (Poly-A Tail)', 'RNA Splicing', '5\' 7-methylguanosine Capping', 'Alternative Splicing'],
+        ans: 2,
+        exp: '5\' Cap (7-methylguanosine) ทำหน้าที่ปกป้อง mRNA จากการย่อยของ exonuclease และช่วยให้ไรโบโซมจดจำปลาย 5\' ในการเริ่ม Translation'
+      },
+      {
+        id: 3,
+        cat: 'gene-reg',
+        tag: '🎛️ Gene Regulation',
+        q: 'ในแบคทีเรีย E. coli โมเดล Lac Operon จะทำงานถอดรหัสยีนย่อยแลคโตสได้ดีที่สุดภายใต้สภาวะใด?',
+        opts: ['มีกลูโคสสูง และมีแลคโตสสูง', 'ไม่มีกลูโคส (cAMP สูง) และมีแลคโตส', 'มีกลูโคสสูง และไม่มีแลคโตส', 'ไม่มีทั้งกลูโคสและแลคโตส'],
+        ans: 1,
+        exp: 'เมื่อไม่มีกลูโคส ระดับ cAMP จะสูงขึ้นไปจับ CAP ให้เกาะกับ Promoter และการมีแลคโตสจะเปลี่ยนเป็น Allolactose ไปปลดปล่อย Repressor ยีนจึงถอดรหัสเต็มกำลัง'
+      },
+      {
+        id: 4,
+        cat: 'gene-reg',
+        tag: '🎛️ Gene Regulation',
+        q: 'กระบวนการเติมหมู่แอซิติลให้กับหางของฮิสโตน (Histone Acetylation) ส่งผลต่อโครงสร้างโครมาตินอย่างไร?',
+        opts: ['ทำให้โครมาตินพันกันแน่นขึ้น (Heterochromatin) ยับยั้งยีน', 'ลดประจุบวกของฮิสโตน คลายโครงสร้างโครมาติน (Euchromatin) ส่งเสริมการถอดรหัส', 'ทำลายสายดีเอ็นเออย่างถาวร', 'ไม่มีผลต่อการแสดงออกของยีน'],
+        ans: 1,
+        exp: 'Histone Acetylation โดยเอนไซม์ HAT จะกำจัดประจุบวกบน lysine ทำให้แรงดึงดูดกับ DNA ที่เป็นประจุลบลดลง โครมาตินจึงคลายตัว เปิดโอกาสให้ RNA Polymerase เข้าจับ'
+      },
+      {
+        id: 5,
+        cat: 'signaling',
+        tag: '📡 Cell Signaling',
+        q: 'ตัวรับสัญญาณบนผิวเซลล์ชนิด GPCR (G Protein-Coupled Receptor) จะทำงานเมื่อโปรตีน G จับกับสารพลังงานสูงชนิดใด?',
+        opts: ['ATP', 'GTP', 'cAMP', 'GDP'],
+        ans: 1,
+        exp: 'เมื่อ Ligand จับกับ GPCR จะกระตุ้นให้ G protein ปล่อย GDP แล้วสลับจับกับ GTP ที่มีพลังงานสูง ทำให้ G-alpha subunit แยกตัวไปส่งสัญญาณต่อ'
+      },
+      {
+        id: 6,
+        cat: 'signaling',
+        tag: '📡 Cell Signaling',
+        q: 'สารส่งสัญญาณทุติยภูมิ (Second Messenger) ชนิดใดที่ถูกสังเคราะห์ขึ้นโดยเอนไซม์ Adenylyl Cyclase?',
+        opts: ['IP3 (Inositol Trisphosphate)', 'DAG (Diacylglycerol)', 'cAMP (Cyclic AMP)', 'Calcium ions (Ca2+)'],
+        ans: 2,
+        exp: 'Adenylyl Cyclase จะเร่งปฏิกิริยาเปลี่ยน ATP ไปเป็น Cyclic AMP (cAMP) ซึ่งทำหน้าที่กระตุ้นเอนไซม์ Protein Kinase A (PKA)'
+      },
+      {
+        id: 7,
+        cat: 'response',
+        tag: '⚡ Cell Response',
+        q: 'ปรากฏการณ์ที่สัญญาณจากตัวรับเพียงโมเลกุลเดียว ก่อให้เกิดการตอบสนองของเอนไซม์หลายล้านโมเลกุลในเซลล์ เรียกว่าอะไร?',
+        opts: ['Signal Specificity', 'Signal Amplification (การขยายสัญญาณ)', 'Signal Termination', 'Receptor Desensitization'],
+        ans: 1,
+        exp: 'Signal Amplification (Cascades) ผ่านเอนไซม์ Kinase ทำให้แต่ละขั้นตอนผลิตตัวส่งสัญญาณเพิ่มขึ้นเป็นทวีคูณ ส่งผลให้เกิดการตอบสนองรวดเร็วและทรงพลัง'
+      },
+      {
+        id: 8,
+        cat: 'response',
+        tag: '⚡ Cell Response',
+        q: 'เมื่อฮอร์โมนเอพิเนฟรีน (Epinephrine) จับกับเซลล์ตับ การตอบสนองระดับไซโทพลาสซึมที่เกิดขึ้นอย่างรวดเร็วคืออะไร?',
+        opts: ['การสังเคราะห์โปรตีนใหม่จากนิวเคลียส', 'การสลายไกลโคเจนเป็นกลูโคส (Glycogenolysis)', 'การแบ่งเซลล์แบบไมโทซิส', 'การเข้าสู่ภาวะ Apoptosis'],
+        ans: 1,
+        exp: 'เอพิเนฟรีนกระตุ้นผ่าน cAMP-PKA cascade เพื่อกระตุ้น Glycogen Phosphorylase ให้สลายไกลโคเจนเป็นกลูโคสทันทีโดยไม่ต้องรอสร้างเอนไซม์ใหม่'
+      },
+      {
+        id: 9,
+        cat: 'cycle',
+        tag: '🔄 Cell Cycle',
+        q: 'จุดตรวจที่สำคัญที่สุดของวัฏจักรเซลล์ (Restriction Point) ซึ่งตัดสินว่าเซลล์จะแบ่งตัวหรือเข้าสู่ระยะพัก G0 อยู่ที่จุดใด?',
+        opts: ['G1 Checkpoint', 'G2/M Checkpoint', 'Spindle Assembly Checkpoint (M Checkpoint)', 'S Checkpoint'],
+        ans: 0,
+        exp: 'G1 Checkpoint (Restriction Point) ตรวจสอบความสมบูรณ์ของ DNA สารอาหาร และสัญญาณการเติบโต หากผ่านจุดนี้เซลล์จะมุ่งหน้าสู่การจำลอง DNA ในระยะ S ทันที'
+      },
+      {
+        id: 10,
+        cat: 'cycle',
+        tag: '🔄 Cell Cycle',
+        q: 'โปรตีนที่ทำหน้าที่เป็น "ผู้พิทักษ์จีโนม" (Guardian of the Genome) โดยจะสั่งหยุดวัฏจักรเซลล์เมื่อตรวจพบ DNA เสียหายคือโปรตีนใด?',
+        opts: ['Cyclin B', 'p53', 'CDK1', 'Ras'],
+        ans: 1,
+        exp: 'p53 เป็น Transcription Factor ตัวสำคัญที่สั่งสร้าง p21 เพื่อยับยั้ง Cyclin-CDK หากซ่อมแซม DNA ไม่สำเร็จ p53 จะสั่งให้เซลล์ทำลายตัวเอง (Apoptosis)'
+      },
+      {
+        id: 11,
+        cat: 'apoptosis',
+        tag: '💀 Apoptosis',
+        q: 'ในวิถีการตายจากภายใน (Intrinsic Apoptotic Pathway) สารใดหลุดรอดออกมาจากไมโทคอนเดรียเพื่อสร้าง Apoptosome?',
+        opts: ['ATP Synthase', 'Cytochrome c', 'Caspase-3', 'Fas Ligand'],
+        ans: 1,
+        exp: 'เมื่อเยื่อหุ้มไมโทคอนเดรียรั่วจาก Bax/Bak, Cytochrome c จะหลุดออกมาจับกับ Apaf-1 ในไซโทพลาสซึม ประกอบร่างเป็น Apoptosome เพื่อกระตุ้น Caspase-9'
+      },
+      {
+        id: 12,
+        cat: 'apoptosis',
+        tag: '💀 Apoptosis',
+        q: 'ข้อใดเป็นความแตกต่างที่สำคัญที่สุดระหว่าง Apoptosis กับ Necrosis?',
+        opts: [
+          'Apoptosis ทำให้เซลล์บวมแตกและเกิดการอักเสบรุนแรง',
+          'Apoptosis เป็นการตายที่มีแบบแผน เซลล์หดตัว สร้าง apoptotic bodies และไม่เกิดการอักเสบ',
+          'Necrosis มีการกระตุ้น Caspase cascade อย่างเป็นระบบ',
+          'Apoptosis เกิดขึ้นได้เฉพาะในแบคทีเรียเท่านั้น'
+        ],
+        ans: 1,
+        exp: 'Apoptosis คือโปรแกรมทำลายเซลล์ที่เป็นระเบียบ เยื่อหุ้มเซลล์ไม่แตกกระจายจึงไม่ปล่อยสารเคมีก่อการอักเสบ ต่างจาก Necrosis ที่เซลล์บวมแตกและเนื้อเยื่อเสียหาย'
+      },
+      {
+        id: 13,
+        cat: 'gene-reg',
+        tag: '🎛️ Gene Regulation',
+        q: 'MicroRNA (miRNA) และ siRNA มีบทบาทสำคัญในการควบคุมการแสดงออกของยีนในระดับใด?',
+        opts: ['Epigenetic Chromatin Remodeling', 'Post-transcriptional Level (RNA Interference)', 'DNA Replication Level', 'Post-translational Modification'],
+        ans: 1,
+        exp: 'miRNA/siRNA เข้าจับกับโปรตีน RISC แล้วนำทางไปจับคู่เบสกับ mRNA เป้าหมาย ทำให้เกิดการย่อยสลาย mRNA หรือยับยั้ง Translation (RNA interference)'
+      },
+      {
+        id: 14,
+        cat: 'signaling',
+        tag: '📡 Cell Signaling',
+        q: 'การส่งสัญญาณที่สารเคมีถูกหลั่งออกมาส่งผลต่อเซลล์เป้าหมายที่อยู่ข้างเคียงในระยะใกล้ๆ เรียกว่าอะไร?',
+        opts: ['Endocrine Signaling', 'Paracrine Signaling', 'Autocrine Signaling', 'Juxtacrine Signaling'],
+        ans: 1,
+        exp: 'Paracrine signaling คือการหลั่งสารสื่อสาร (เช่น Growth factors หรือสารสื่อประสาทข้าม Synapse) ไปออกฤทธิ์ต่อเซลล์ที่อยู่ใกล้เคียงในเนื้อเยื่อเดียวกัน'
+      },
+      {
+        id: 15,
+        cat: 'cycle',
+        tag: '🔄 Cell Cycle',
+        q: 'Spindle Assembly Checkpoint (SAC) ในระยะ Metaphase ตรวจสอบสิ่งใดก่อนอนุญาตให้เซลล์เข้าสู่ระยะ Anaphase?',
+        opts: [
+          'ปริมาณไมโทคอนเดรียว่ามีเพียงพอหรือไม่',
+          'โครโมโซมทุกแท่งต้องจับกับ Spindle Fiber ที่ Kinetochore อย่างสมดุลทั้งสองขั้ว',
+          'การจำลอง DNA ครบทั้งสองชุดแล้ว',
+          'การสลายตัวของเยื่อหุ้มนิวเคลียสอย่างสมบูรณ์'
+        ],
+        ans: 1,
+        exp: 'SAC ป้องกันความผิดปกติของจำนวนโครโมโซม (Aneuploidy) โดยตรวจจับความตึง (tension) ของ spindle fibers ที่ kinetochore ทุกแท่งก่อนปล่อยให้แยกตัว'
+      }
+    ];
+
+    let userAnswers = {};
+    let totalScore = 0;
+
+    function renderQuestions(filter = 'all') {
+      const list = document.getElementById('questions-list');
+      list.innerHTML = '';
+
+      const filtered = filter === 'all' ? QUESTIONS : QUESTIONS.filter(q => q.cat === filter);
+
+      filtered.forEach((q, idx) => {
+        const card = document.createElement('div');
+        card.className = 'q-card';
+        card.id = `card-${q.id}`;
+
+        const isAnswered = userAnswers[q.id] !== undefined;
+
+        let optionsHtml = '';
+        q.opts.forEach((opt, optIdx) => {
+          let btnClass = 'opt-btn';
+          let disabled = isAnswered ? 'disabled' : '';
+          if (isAnswered) {
+            if (optIdx === q.ans) btnClass += ' correct';
+            else if (optIdx === userAnswers[q.id]) btnClass += ' wrong';
+          }
+          optionsHtml += `
+            <button class="${btnClass}" ${disabled} onclick="chooseAnswer(${q.id}, ${optIdx})">
+              <span style="display:inline-block; width:26px; font-weight:700; color:#9CA3AF;">${String.fromCharCode(65 + optIdx)}.</span>
+              <span>${opt}</span>
+            </button>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="q-header">
+            <span class="q-tag">${q.tag}</span>
+            <span class="q-points">1 คะแนน</span>
+          </div>
+          <div class="q-title">${q.id}. ${q.q}</div>
+          <div class="options-grid">${optionsHtml}</div>
+          <div class="q-explain ${isAnswered ? 'visible' : ''}" id="exp-${q.id}">
+            <strong>💡 คำอธิบายเฉลย:</strong> ${q.exp}
+          </div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    function chooseAnswer(qid, optIdx) {
+      if (userAnswers[qid] !== undefined) return;
+      userAnswers[qid] = optIdx;
+
+      const q = QUESTIONS.find(item => item.id === qid);
+      if (optIdx === q.ans) {
+        totalScore++;
+      }
+
+      updateStats();
+      renderQuestions(window.currentFilter || 'all');
+
+      // Check if all answered
+      if (Object.keys(userAnswers).length === QUESTIONS.length) {
+        showCompletionBadge();
+      }
+    }
+
+    function updateStats() {
+      const count = Object.keys(userAnswers).length;
+      document.getElementById('stat-answered').innerText = `${count} / ${QUESTIONS.length}`;
+      document.getElementById('stat-score').innerText = totalScore;
+      const acc = count > 0 ? Math.round((totalScore / count) * 100) : 0;
+      document.getElementById('stat-accuracy').innerText = `${acc}%`;
+
+      let rank = '🌱 ผู้เริ่มต้น';
+      if (totalScore >= 14) rank = '🏆 ปรมาจารย์ชีววิทยา';
+      else if (totalScore >= 11) rank = '🌟 นักชีววิทยาดีเด่น';
+      else if (totalScore >= 8) rank = '🧪 นักวิจัยรุ่นเยาว์';
+      document.getElementById('stat-rank').innerText = rank;
+    }
+
+    function filterQuestions(filter, btn) {
+      window.currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderQuestions(filter);
+    }
+
+    function showCompletionBadge() {
+      const modal = document.getElementById('badge-modal');
+      const icon = document.getElementById('modal-badge-icon');
+      const title = document.getElementById('modal-badge-title');
+      const desc = document.getElementById('modal-badge-desc');
+
+      if (totalScore >= 14) {
+        icon.innerText = '🏆';
+        title.innerText = 'ระดับเกียรติยศ: Master Biologist!';
+        desc.innerText = `สุดยอดมาก! คุณได้คะแนน ${totalScore} / ${QUESTIONS.length} คะแนน มีความเข้าใจเชิงลึกในกลไกชีวิตของเซลล์อย่างแท้จริง`;
+      } else if (totalScore >= 11) {
+        icon.innerText = '🌟';
+        title.innerText = 'ระดับเกียรติยศ: Advanced Scholar!';
+        desc.innerText = `ยอดเยี่ยม! คุณได้ ${totalScore} / ${QUESTIONS.length} คะแนน เชี่ยวชาญระบบเซลล์และสัญญาณโมเลกุลในระดับสูง`;
+      } else {
+        icon.innerText = '🧪';
+        title.innerText = 'ระดับเกียรติยศ: Junior Researcher!';
+        desc.innerText = `ทำได้ดีมาก! คุณได้ ${totalScore} / ${QUESTIONS.length} คะแนน สามารถอ่านทบทวนเฉลยในแต่ละข้อเพื่อเสริมความแม่นยำได้เลยครับ`;
+      }
+      modal.classList.add('visible');
+    }
+
+    // Initial render
+    renderQuestions('all');
+  </script>
+</body>
+</html>

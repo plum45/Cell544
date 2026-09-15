@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gene Regulation — การควบคุมการแสดงออกของยีน | ระบบควบคุมชีวิตของเซลล์</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="topic-style.css">
+  <style>
+    :root {
+      --topic-primary: #10B981;
+      --topic-gradient-end: #6EE7B7;
+      --topic-border: #A7F3D0;
+      --topic-pill-bg: #ECFDF5;
+      --topic-pill-text: #065F46;
+      --topic-pill-border: #A7F3D0;
+      --pastel-orb-1: #D1FAE5;
+      --pastel-orb-2: #E0E7FF;
+      --pastel-orb-3: #FEF3C7;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Pastel Aurora Blobs -->
+  <div class="pastel-aurora">
+    <div class="aurora-orb orb-1"></div>
+    <div class="aurora-orb orb-2"></div>
+    <div class="aurora-orb orb-3"></div>
+  </div>
+
+  <!-- Sticky Top Navigation -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <a href="../index.html" class="back-btn">
+        <span style="font-size: 16px;">←</span> กลับสู่เกาะลอยฟ้า 3D
+      </a>
+      <div class="nav-brand">
+        กลุ่มที่ 3 · <strong>ระบบควบคุมชีวิตของเซลล์</strong>
+      </div>
+    </div>
+    <select class="topic-selector" onchange="if(this.value) window.location.href=this.value;">
+      <option value="gene-expression.html">🧬 1. Gene Expression (การแสดงออกของยีน)</option>
+      <option value="gene-regulation.html" selected>🎛️ 2. Gene Regulation (การควบคุมยีน)</option>
+      <option value="cell-signaling.html">📡 3. Cell Signaling (การสื่อสารระหว่างเซลล์)</option>
+      <option value="cell-response.html">⚡ 4. Cell Response (การตอบสนองของเซลล์)</option>
+      <option value="cell-cycle.html">🔄 5. Cell Cycle (วัฏจักรเซลล์)</option>
+      <option value="apoptosis.html">💀 6. Apoptosis (การตายแบบมีแบบแผน)</option>
+      <option value="quiz-hub.html">🏛️ คลังข้อสอบประมวลความรู้ (Exam Hub)</option>
+    </select>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="container">
+
+    <!-- Hero Header -->
+    <header class="hero-header">
+      <div class="hero-meta">
+        <span class="badge-topic">🎛️ หัวข้อที่ 2 / 6</span>
+        <span class="hero-landmark">🌪️ Magic Windmill Landmark</span>
+      </div>
+      <h1 class="hero-title-en">Gene Regulation</h1>
+      <h2 class="hero-title-th">การควบคุมการแสดงออกของยีน</h2>
+      <div class="hero-summary">
+        กลไกสวิตช์เปิด-ปิดทางชีววิทยาที่เซลล์ใช้ในการกำหนดว่า "ยีนใดควรทำงาน เมื่อไหร่ ในเนื้อเยื่อใด และในปริมาณเท่าใด" ช่วยให้เซลล์ที่มี DNA เหมือนกันทุกประการสามารถพัฒนาเป็นเซลล์ประสาท เซลล์กล้ามเนื้อ หรือเซลล์ตับได้อย่างจำเพาะ
+      </div>
+    </header>
+
+    <!-- Section 1: Levels of Regulation -->
+    <section class="section-card">
+      <h2>🎯 1. ระดับการควบคุมการแสดงออกของยีนในยูแคริโอต</h2>
+      <p>
+        เซลล์ควบคุมการแสดงออกของยีนได้อย่างละเอียดอ่อนใน 5 ขั้นตอนหลัก:
+      </p>
+
+      <div class="process-flow">
+        <div class="process-step">
+          <span class="step-badge">ระดับที่ 1</span>
+          <div class="step-title">Chromatin Structure</div>
+          <p class="step-desc">การม้วนและคลายตัวของโครมาตินเพื่อเปิดให้เอนไซม์เข้าถึงยีนได้</p>
+        </div>
+        <div class="process-step">
+          <span class="step-badge">ระดับที่ 2</span>
+          <div class="step-title">Transcriptional Control</div>
+          <p class="step-desc">การใช้ Transcription Factors และ Enhancers/Silencers ควบคุมการถอดรหัส</p>
+        </div>
+        <div class="process-step">
+          <span class="step-badge">ระดับที่ 3</span>
+          <div class="step-title">Post-Transcriptional</div>
+          <p class="step-desc">Alternative Splicing การเลือกต่อ Exon เพื่อสร้างโปรตีนได้หลายรูปแบบจากยีนเดียว</p>
+        </div>
+        <div class="process-step">
+          <span class="step-badge">ระดับที่ 4 &amp; 5</span>
+          <div class="step-title">Translation &amp; Protein</div>
+          <p class="step-desc">ควบคุมอายุการใช้งานของ mRNA และการเติมแต่งโปรตีน (Phosphorylation, Cleavage)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Epigenetics -->
+    <section class="section-card">
+      <h2>🧬 2. อีพีเจเนติกส์ (Epigenetics) — การเปลี่ยนแปลงเหนือรหัสพันธุกรรม</h2>
+      <p>
+        <strong>Epigenetics</strong> คือการเปลี่ยนแปลงการแสดงออกของยีนที่ถ่ายทอดได้ <em>โดยที่ลำดับเบสบน DNA ไม่เปลี่ยนแปลงเลย</em>:
+      </p>
+      <ul>
+        <li>
+          <strong>DNA Methylation (การเติมหมู่เมทิล):</strong> การเติมหมู่ <code>-CH₃</code> ที่เบส Cytosine ในบริเวณ CpG island ส่งผลให้ยีนบริเวณนั้นถูก <em>"ปิดการทำงาน (Gene Silenced)"</em> ไม่สามารถถอดรหัสได้
+        </li>
+        <li>
+          <strong>Histone Acetylation (การเติมหมู่อะซีทิลที่ฮิสโตน):</strong> เอนไซม์ <em>HAT (Histone Acetyltransferase)</em> เติมหมู่อะซีทิล ทำให้ประจุบวกของฮิสโตนลดลง โครมาตินคลายตัว (Euchromatin) ส่งผลให้ <em>"เปิดยีน (Gene Activated)"</em>
+        </li>
+        <li>
+          <strong>Histone Deacetylation:</strong> เอนไซม์ <em>HDAC</em> ดึงหมู่อะซีทิลออก โครมาตินอัดแน่น (Heterochromatin) ส่งผลให้ยีนถูกปิด
+        </li>
+      </ul>
+
+      <div class="insight-box">
+        <div class="insight-title">💡 สิ่งแวดล้อมและพฤติกรรมส่งผลต่อ Epigenetics</div>
+        <p class="insight-desc">
+          อาหาร ความเครียด การออกกำลังกาย และมลพิษ สามารถกระตุ้นให้เกิด DNA Methylation หรือ Histone Modification ที่เปลี่ยนการทำงานของยีนในร่างกายเราได้ตลอดช่วงชีวิต!
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 3: RNAi and Gene Silencing -->
+    <section class="section-card">
+      <h2>🔇 3. การรบกวนของอาร์เอ็นเอ (RNA Interference: RNAi)</h2>
+      <p>
+        กลไกป้องกันตัวและการปรับแต่งยีนที่ค้นพบโดย <em>Andrew Fire และ Craig Mello (รางวัลโนเบลปี 2006)</em>:
+      </p>
+      <ul>
+        <li>
+          <strong>miRNA (MicroRNA):</strong> RNA สายเดี่ยวสั้นๆ (21-25 นิวคลีโอไทด์) เข้าจับกับบริเวณ 3' UTR ของ mRNA เป้าหมาย ส่งผลให้ยับยั้งการแปลรหัส (Translational repression)
+        </li>
+        <li>
+          <strong>siRNA (Small Interfering RNA):</strong> จับคู่สมกับ mRNA เป้าหมายอย่างสมบูรณ์แบบ และกระตุ้นกลุ่มโปรตีน <strong>RISC</strong> ให้เข้าตัดทำลายสาย mRNA นั้นทิ้ง
+        </li>
+      </ul>
+
+      <div class="insight-box">
+        <div class="insight-title">💊 การประยุกต์ใช้ในการรักษาโรคระดับพันธุศาสตร์</div>
+        <p class="insight-desc">
+          ปัจจุบันยานวัตกรรมกลุ่ม <strong>RNAi Therapeutics</strong> (เช่น Patisiran, Givosiran) ได้รับการอนุมัติให้ใช้รักษาโรคทางพันธุกรรมที่หาได้ยาก โดยเข้าไปปิดการทำงานของยีนที่สร้างโปรตีนผิดปกติได้อย่างจำเพาะเจาะจง
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 4: Quiz -->
+    <section class="quiz-card">
+      <div class="quiz-header">
+        <h3>🧠 ทดสอบความเข้าใจ (Quick Quiz)</h3>
+        <span style="font-size: 13.5px; color: var(--text-muted);">คลิกเพื่อตรวจสอบความเข้าใจ</span>
+      </div>
+
+      <div class="quiz-question">
+        <div class="q-text">1. การเกิดกระบวนการ Histone Acetylation ส่งผลต่อโครงสร้างโครมาตินและการแสดงออกของยีนอย่างไร?</div>
+        <div class="q-options">
+          <button class="q-option" onclick="checkAnswer(this, true, 'ถูกต้อง! การเติม Acetyl group ช่วยลดประจุบวก ทำให้โครมาตินคลายตัว (Euchromatin) และเปิดให้เกิดการถอดรหัสได้')">A. โครมาตินคลายตัว และกระตุ้นการถอดรหัส (เปิดยีน)</button>
+          <button class="q-option" onclick="checkAnswer(this, false, 'ผิด การทำให้โครมาตินอัดแน่นเกิดจาก Histone Deacetylation หรือ Methylation บางตำแหน่ง')">B. โครมาตินอัดแน่น และยับยั้งการถอดรหัส (ปิดยีน)</button>
+          <button class="q-option" onclick="checkAnswer(this, false, 'ผิด ไม่ได้ทำให้ DNA ขาดออกจากกัน')">C. สลายสายเกลียวคู่ของ DNA ทันที</button>
+        </div>
+        <div class="q-feedback"></div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <footer class="bottom-nav">
+      <a href="gene-expression.html" class="nav-link-btn">
+        <span>←</span> ก่อนหน้า: 1. Gene Expression
+      </a>
+      <a href="../index.html" class="nav-link-btn">
+        🌐 เกาะลอยฟ้า 3D
+      </a>
+      <a href="cell-signaling.html" class="nav-link-btn" style="background: rgba(255, 255, 255, 0.9); border-color: #FDE68A; color: #B45309;">
+        ถัดไป: 3. Cell Signaling <span>→</span>
+      </a>
+    </footer>
+
+  </div>
+
+  <script>
+    function checkAnswer(btn, isCorrect, explanation) {
+      const container = btn.closest('.quiz-question');
+      const feedback = container.querySelector('.q-feedback');
+      container.querySelectorAll('.q-option').forEach(b => b.disabled = true);
+      if (isCorrect) {
+        btn.classList.add('correct');
+        feedback.style.display = 'block';
+        feedback.style.background = '#ECFDF5';
+        feedback.style.border = '1px solid #34D399';
+        feedback.style.color = '#065F46';
+        feedback.innerHTML = '🎉 ' + explanation;
+      } else {
+        btn.classList.add('incorrect');
+        feedback.style.display = 'block';
+        feedback.style.background = '#FEF2F2';
+        feedback.style.border = '1px solid #F87171';
+        feedback.style.color = '#991B1B';
+        feedback.innerHTML = '❌ ' + explanation;
+      }
+    }
+  </script>
+</body>
+</html>

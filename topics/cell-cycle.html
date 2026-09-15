@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cell Cycle — การควบคุมวัฏจักรเซลล์ | ระบบควบคุมชีวิตของเซลล์</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="topic-style.css">
+  <style>
+    :root {
+      --topic-primary: #F43F5E;
+      --topic-gradient-end: #FDA4AF;
+      --topic-border: #FECDD3;
+      --topic-pill-bg: #FFF1F2;
+      --topic-pill-text: #9F1239;
+      --topic-pill-border: #FECDD3;
+      --pastel-orb-1: #FFE4E6;
+      --pastel-orb-2: #FEF3C7;
+      --pastel-orb-3: #E0E7FF;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Pastel Aurora Blobs -->
+  <div class="pastel-aurora">
+    <div class="aurora-orb orb-1"></div>
+    <div class="aurora-orb orb-2"></div>
+    <div class="aurora-orb orb-3"></div>
+  </div>
+
+  <!-- Sticky Top Navigation -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <a href="../index.html" class="back-btn">
+        <span style="font-size: 16px;">←</span> กลับสู่เกาะลอยฟ้า 3D
+      </a>
+      <div class="nav-brand">
+        กลุ่มที่ 3 · <strong>ระบบควบคุมชีวิตของเซลล์</strong>
+      </div>
+    </div>
+    <select class="topic-selector" onchange="if(this.value) window.location.href=this.value;">
+      <option value="gene-expression.html">🧬 1. Gene Expression (การแสดงออกของยีน)</option>
+      <option value="gene-regulation.html">🎛️ 2. Gene Regulation (การควบคุมยีน)</option>
+      <option value="cell-signaling.html">📡 3. Cell Signaling (การสื่อสารระหว่างเซลล์)</option>
+      <option value="cell-response.html">⚡ 4. Cell Response (การตอบสนองของเซลล์)</option>
+      <option value="cell-cycle.html" selected>🔄 5. Cell Cycle (วัฏจักรเซลล์)</option>
+      <option value="apoptosis.html">💀 6. Apoptosis (การตายแบบมีแบบแผน)</option>
+      <option value="quiz-hub.html">🏛️ คลังข้อสอบประมวลความรู้ (Exam Hub)</option>
+    </select>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="container">
+
+    <!-- Hero Header -->
+    <header class="hero-header">
+      <div class="hero-meta">
+        <span class="badge-topic">🔄 หัวข้อที่ 5 / 6</span>
+        <span class="hero-landmark">🔭 Clockwork Observatory Landmark</span>
+      </div>
+      <h1 class="hero-title-en">Cell Cycle</h1>
+      <h2 class="hero-title-th">การควบคุมวัฏจักรเซลล์</h2>
+      <div class="hero-summary">
+        นาฬิกาชีวภาพที่ควบคุมการเจริญเติบโต การจำลองดีเอ็นเอ และการแบ่งตัวของเซลล์อย่างเป็นลำดับขั้นตอน พร้อมระบบด่านตรวจความปลอดภัย (Checkpoints) ที่เข้มงวดที่สุดในธรรมชาติ เพื่อป้องกันการกลายพันธุ์และการเกิดโรคมะเร็ง
+      </div>
+    </header>
+
+    <!-- Section 1: Phases of Cell Cycle -->
+    <section class="section-card">
+      <h2>🔄 1. ลำดับระยะของวัฏจักรเซลล์ (Phases of Cell Cycle)</h2>
+      <p>
+        วัฏจักรเซลล์ของยูแคริโอตแบ่งออกเป็น 2 ช่วงหลักอย่างเป็นระบบ:
+      </p>
+
+      <div class="process-flow">
+        <div class="process-step">
+          <span class="step-badge">Interphase</span>
+          <div class="step-title">G1 Phase (Gap 1)</div>
+          <p class="step-desc">เซลล์เติบโต สังเคราะห์เอนไซม์และโปรตีน สะสมพลังงานเตรียมพร้อมสำหรับการจำลองดีเอ็นเอ</p>
+        </div>
+        <div class="process-step">
+          <span class="step-badge">Interphase</span>
+          <div class="step-title">S Phase (Synthesis)</div>
+          <p class="step-desc"><strong>DNA Replication</strong> — ปริมาณ DNA เพิ่มขึ้นเป็น 2 เท่า (จาก 2C เป็น 4C) และจำลอง Centrosome</p>
+        </div>
+        <div class="process-step">
+          <span class="step-badge">Interphase</span>
+          <div class="step-title">G2 Phase (Gap 2)</div>
+          <p class="step-desc">ตรวจสอบความถูกต้องของ DNA สังเคราะห์โปรตีน Tubulin สำหรับสร้าง Spindle fibers</p>
+        </div>
+        <div class="process-step">
+          <span class="step-badge">Division</span>
+          <div class="step-title">M Phase (Mitosis)</div>
+          <p class="step-desc">แบ่งนิวเคลียส (Prophase → Metaphase → Anaphase → Telophase) ตามด้วย Cytokinesis ได้เซลล์ลูก 2 เซลล์</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Checkpoints & Regulators -->
+    <section class="section-card">
+      <h2>🚦 2. ด่านตรวจความปลอดภัย (Cell Cycle Checkpoints)</h2>
+      <p>
+        จุดตรวจสำคัญ 3 จุดที่คอยสั่ง "หยุด" หรือ "ไปต่อ" (ค้นพบโดย <em>Leland Hartwell, Tim Hunt, Paul Nurse — รางวัลโนเบลปี 2001</em>):
+      </p>
+      <ul>
+        <li>
+          <strong>1. G1 Checkpoint (Restriction Point):</strong> ด่านตรวจที่สำคัญที่สุดในสัตว์เลี้ยงลูกด้วยนม ตรวจขนาดเซลล์ แหล่งพลังงาน และสัญญาณ Growth factors หากไม่ผ่านจะเข้าสู่ระยะพักตัว <strong>G0 Phase</strong>
+        </li>
+        <li>
+          <strong>2. G2/M Checkpoint:</strong> ตรวจสอบว่า DNA ถูกจำลองครบถ้วนและสมบูรณ์หรือไม่ หากพบความเสียหาย เซลล์จะหยุดเพื่อซ่อมแซม DNA
+        </li>
+        <li>
+          <strong>3. M Checkpoint (Spindle Assembly Checkpoint: SAC):</strong> เกิดในระยะ Metaphase ตรวจว่า Kinetochore ของทุกโครโมโซมจับกับ Spindle fiber อย่างถูกต้องหรือไม่ ก่อนเริ่มดึงแยกใน Anaphase
+        </li>
+      </ul>
+
+      <h3 style="color: var(--topic-primary); margin: 24px 0 12px 0; font-size: 18px; font-weight: 700;">⚙️ เครื่องยนต์ชีวภาพ: Cyclins &amp; CDKs</h3>
+      <ul>
+        <li><strong>CDKs (Cyclin-Dependent Kinases):</strong> เอนไซม์ Kinase ที่มีระดับคงที่ในเซลล์ แต่จะทำงานได้เมื่อจับกับ Cyclin เท่านั้น</li>
+        <li><strong>Cyclins:</strong> โปรตีนที่ระดับความเข้มข้นขึ้น-ลงเป็นคาบตามเฟส เช่น Cyclin D, E (ควบคุม G1/S) และ Cyclin B (ควบคุม G2/M หรือ MPF)</li>
+        <li><strong>p53 — ผู้พิทักษ์จีโนม (Guardian of the Genome):</strong> Transcription Factor ที่ถูกกระตุ้นเมื่อ DNA เสียหาย โดยสั่งสร้างโปรตีน <strong>p21</strong> เพื่อยับยั้ง Cyclin-CDK และหากซ่อมแซมไม่ได้ p53 จะสั่งให้เกิด <em>Apoptosis</em> ทันที!</li>
+      </ul>
+
+      <div class="insight-box">
+        <div class="insight-title">⚠️ ความผิดปกติของวัฏจักรเซลล์และโรคมะเร็ง (Cancer)</div>
+        <p class="insight-desc">
+          เซลล์มะเร็งส่วนใหญ่มีการกลายพันธุ์ของยีน <em>TP53</em> (ยีนสร้าง p53) หรือยีน <em>Rb</em> ทำให้เซลล์ก้าวข้ามด่าน G1 Checkpoint ได้โดยไม่ต้องมี Growth Factor และแบ่งตัวอย่างไม่มีที่สิ้นสุด!
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 3: Quiz -->
+    <section class="quiz-card">
+      <div class="quiz-header">
+        <h3>🧠 ทดสอบความเข้าใจ (Quick Quiz)</h3>
+        <span style="font-size: 13.5px; color: var(--text-muted);">ทดสอบความรู้วัฏจักรเซลล์</span>
+      </div>
+
+      <div class="quiz-question">
+        <div class="q-text">1. การจำลองตัวเองของสารพันธุกรรม (DNA Replication) เกิดขึ้นในระยะใดของวัฏจักรเซลล์?</div>
+        <div class="q-options">
+          <button class="q-option" onclick="checkAnswer(this, true, 'ถูกต้อง! S Phase (Synthesis phase) คือระยะที่เกิดการสังเคราะห์และจำลอง DNA')">A. S Phase</button>
+          <button class="q-option" onclick="checkAnswer(this, false, 'ผิด G1 เป็นระยะสะสมสารอาหารและโปรตีน')">B. G1 Phase</button>
+          <button class="q-option" onclick="checkAnswer(this, false, 'ผิด M Phase คือระยะแบ่งนิวเคลียสและไซโทพลาสซึม')">C. M Phase</button>
+          <button class="q-option" onclick="checkAnswer(this, false, 'ผิด G0 คือระยะพักตัวนอกวัฏจักร')">D. G0 Phase</button>
+        </div>
+        <div class="q-feedback"></div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <footer class="bottom-nav">
+      <a href="cell-response.html" class="nav-link-btn">
+        <span>←</span> ก่อนหน้า: 4. Cell Response
+      </a>
+      <a href="../index.html" class="nav-link-btn">
+        🌐 เกาะลอยฟ้า 3D
+      </a>
+      <a href="apoptosis.html" class="nav-link-btn" style="background: rgba(255, 255, 255, 0.9); border-color: #C7D2FE; color: #3730A3;">
+        ถัดไป: 6. Apoptosis <span>→</span>
+      </a>
+    </footer>
+
+  </div>
+
+  <script>
+    function checkAnswer(btn, isCorrect, explanation) {
+      const container = btn.closest('.quiz-question');
+      const feedback = container.querySelector('.q-feedback');
+      container.querySelectorAll('.q-option').forEach(b => b.disabled = true);
+      if (isCorrect) {
+        btn.classList.add('correct');
+        feedback.style.display = 'block';
+        feedback.style.background = '#ECFDF5';
+        feedback.style.border = '1px solid #34D399';
+        feedback.style.color = '#065F46';
+        feedback.innerHTML = '🎉 ' + explanation;
+      } else {
+        btn.classList.add('incorrect');
+        feedback.style.display = 'block';
+        feedback.style.background = '#FEF2F2';
+        feedback.style.border = '1px solid #F87171';
+        feedback.style.color = '#991B1B';
+        feedback.innerHTML = '❌ ' + explanation;
+      }
+    }
+  </script>
+</body>
+</html>

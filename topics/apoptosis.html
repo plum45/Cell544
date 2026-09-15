@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apoptosis — การตายของเซลล์แบบมีแบบแผน | ระบบควบคุมชีวิตของเซลล์</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="topic-style.css">
+  <style>
+    :root {
+      --topic-primary: #6366F1;
+      --topic-gradient-end: #A5B4FC;
+      --topic-border: #C7D2FE;
+      --topic-pill-bg: #EEF2FF;
+      --topic-pill-text: #3730A3;
+      --topic-pill-border: #C7D2FE;
+      --pastel-orb-1: #E0E7FF;
+      --pastel-orb-2: #F1F5F9;
+      --pastel-orb-3: #FCE7F3;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Pastel Aurora Blobs -->
+  <div class="pastel-aurora">
+    <div class="aurora-orb orb-1"></div>
+    <div class="aurora-orb orb-2"></div>
+    <div class="aurora-orb orb-3"></div>
+  </div>
+
+  <!-- Sticky Top Navigation -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <a href="../index.html" class="back-btn">
+        <span style="font-size: 16px;">←</span> กลับสู่เกาะลอยฟ้า 3D
+      </a>
+      <div class="nav-brand">
+        กลุ่มที่ 3 · <strong>ระบบควบคุมชีวิตของเซลล์</strong>
+      </div>
+    </div>
+    <select class="topic-selector" onchange="if(this.value) window.location.href=this.value;">
+      <option value="gene-expression.html">🧬 1. Gene Expression (การแสดงออกของยีน)</option>
+      <option value="gene-regulation.html">🎛️ 2. Gene Regulation (การควบคุมยีน)</option>
+      <option value="cell-signaling.html">📡 3. Cell Signaling (การสื่อสารระหว่างเซลล์)</option>
+      <option value="cell-response.html">⚡ 4. Cell Response (การตอบสนองของเซลล์)</option>
+      <option value="cell-cycle.html">🔄 5. Cell Cycle (วัฏจักรเซลล์)</option>
+      <option value="apoptosis.html" selected>💀 6. Apoptosis (การตายแบบมีแบบแผน)</option>
+      <option value="quiz-hub.html">🏛️ คลังข้อสอบประมวลความรู้ (Exam Hub)</option>
+    </select>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="container">
+
+    <!-- Hero Header -->
+    <header class="hero-header">
+      <div class="hero-meta">
+        <span class="badge-topic">💀 หัวข้อที่ 6 / 6</span>
+        <span class="hero-landmark">⛩️ Ancient Sanctuary Landmark</span>
+      </div>
+      <h1 class="hero-title-en">Apoptosis</h1>
+      <h2 class="hero-title-th">การตายของเซลล์แบบมีแบบแผน (Programmed Cell Death)</h2>
+      <div class="hero-summary">
+        กระบวนการสละชีพของเซลล์ที่ถูกโปรแกรมไว้ในพันธุกรรม เป็นการตายอย่างสงบ เป็นระเบียบ ไม่ก่อให้เกิดการอักเสบต่อเนื้อเยื่อรอบข้าง มีบทบาทสำคัญอย่างยิ่งต่อการเจริญเติบโตของตัวอ่อน การสร้างระบบภูมิคุ้มกัน และการกำจัดเซลล์ที่มีความเสี่ยงจะเป็นมะเร็ง
+      </div>
+    </header>
+
+    <!-- Section 1: Apoptosis vs Necrosis -->
+    <section class="section-card">
+      <h2>💀 1. Apoptosis ปะทะ Necrosis — ความตาย 2 รูปแบบ</h2>
+      <p>
+        ในทางชีววิทยา เซลล์สามารถตายได้ 2 รูปแบบหลักที่มีกลไกตรงกันข้ามโดยสิ้นเชิง:
+      </p>
+
+      <div class="process-flow">
+        <div class="process-step" style="background: rgba(245, 243, 255, 0.85); border-color: #DDD6FE;">
+          <span class="step-badge" style="background: #EDE9FE; color: #6D28D9; border-color: #DDD6FE;">มีแบบแผน</span>
+          <div class="step-title" style="color: #4C1D95;">Apoptosis</div>
+          <p class="step-desc">เซลล์หดตัว โครมาตินอัดแน่น เกิดถุง Apoptotic bodies เม็ดเลือดขาวกลืนกินอย่างเงียบสงบ <strong>ไม่เกิดการอักเสบ</strong></p>
+        </div>
+        <div class="process-step" style="background: rgba(254, 242, 242, 0.85); border-color: #FECDD3;">
+          <span class="step-badge" style="background: #FFE4E6; color: #BE123C; border-color: #FECDD3;">อุบัติเหตุ</span>
+          <div class="step-title" style="color: #9F1239;">Necrosis</div>
+          <p class="step-desc">เซลล์บวม แตกทะลัก ปล่อยสารภายในกระตุ้นระบบภูมิคุ้มกัน <strong>เกิดการอักเสบรุนแรง (Inflammation)</strong></p>
+        </div>
+      </div>
+
+      <h3 style="color: var(--topic-primary); margin: 24px 0 12px 0; font-size: 18px; font-weight: 700;">🌱 ประโยชน์ของ Apoptosis ต่อสิ่งมีชีวิต:</h3>
+      <ul>
+        <li><strong>การพัฒนาอวัยวะตัวอ่อน:</strong> การสลายแผ่นเนื้อเยื่อระหว่างนิ้วมือ-นิ้วเท้าของทารกในครรภ์ ทำให้แยกออกเป็น 5 นิ้วสมบูรณ์</li>
+        <li><strong>การคัดเลือกเซลล์ภูมิคุ้มกัน:</strong> กำจัด T Cells ที่จดจำโปรตีนของร่างกายตนเองเป็นสิ่งแปลกปลอม (ป้องกันโรคแพ้ภูมิตัวเอง: Autoimmune)</li>
+        <li><strong>การป้องกันมะเร็ง:</strong> เมื่อ DNA เสียหายหนักเกินกว่าจะซ่อมแซมได้ เซลล์จะถูกสั่งให้ตายเพื่อความปลอดภัยของร่างกาย</li>
+      </ul>
+    </section>
+
+    <!-- Section 2: Molecular Pathways -->
+    <section class="section-card">
+      <h2>🔬 2. วิถีการกระตุ้น Apoptosis (Intrinsic &amp; Extrinsic Pathways)</h2>
+      <p>
+        การจุดระเบิดของกระบวนการสละชีพอาศัยเอนไซม์กลุ่ม <strong>Caspases (Cysteine-Aspartic Proteases)</strong> ผ่าน 2 เส้นทาง:
+      </p>
+
+      <div class="process-flow">
+        <div class="process-step">
+          <span class="step-badge">วิถีภายใน (Mitochondrial)</span>
+          <div class="step-title">Intrinsic Pathway</div>
+          <p class="step-desc">เกิดจากความเสียหายของ DNA ภายใน → โปรตีน <strong>Bax/Bak</strong> เจาะรูไมโทคอนเดรีย → ปล่อย <strong>Cytochrome c</strong> รวมตัวกับ Apaf-1 สร้าง <strong>Apoptosome</strong> → กระตุ้น <strong>Caspase-9</strong></p>
+        </div>
+        <div class="process-step">
+          <span class="step-badge">วิถีภายนอก (Death Receptor)</span>
+          <div class="step-title">Extrinsic Pathway</div>
+          <p class="step-desc">สัญญาณสั่งตายจากเซลล์อื่น (เช่น FasL หรือ TNF) จับกับ Death Receptor บนผิวเซลล์ → รวมกลุ่มกับ FADD สร้าง <strong>DISC</strong> → กระตุ้น <strong>Caspase-8</strong></p>
+        </div>
+      </div>
+
+      <div class="insight-box">
+        <div class="insight-title">⚡ จุดร่วมของทั้งสองวิถี: Executioner Caspases</div>
+        <p class="insight-desc">
+          ไม่ว่าจะเริ่มจาก Caspase-9 หรือ Caspase-8 ทั้งคู่จะเข้าตัดกระตุ้น <strong>Caspase-3, Caspase-6, Caspase-7 (Executioner Caspases)</strong> ซึ่งจะเข้าตัดทำลายโปรตีนโครงร่างเซลล์และกระตุ้นเอนไซม์ CAD เข้าย่อยสลายสาย DNA อย่างสมบูรณ์!
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 3: Quiz -->
+    <section class="quiz-card">
+      <div class="quiz-header">
+        <h3>🧠 ทดสอบความเข้าใจ (Quick Quiz)</h3>
+        <span style="font-size: 13.5px; color: var(--text-muted);">ทดสอบความรู้เรื่อง Apoptosis</span>
+      </div>
+
+      <div class="quiz-question">
+        <div class="q-text">1. ใน Intrinsic pathway ของ Apoptosis โมเลกุลใดที่ถูกปลดปล่อยออกจากไมโทคอนเดรียเพื่อไปกระตุ้นการสร้าง Apoptosome?</div>
+        <div class="q-options">
+          <button class="q-option" onclick="checkAnswer(this, true, 'ถูกต้อง! Cytochrome c จะหลุดออกจากช่องว่างระหว่างเยื่อหุ้มไมโทคอนเดรียเข้าสู่ไซโทพลาสซึมเพื่อสร้าง Apoptosome')">A. Cytochrome c</button>
+          <button class="q-option" onclick="checkAnswer(this, false, 'ผิด Bcl-2 เป็นโปรตีนต้านการตาย (Anti-apoptotic)')">B. Bcl-2</button>
+          <button class="q-option" onclick="checkAnswer(this, false, 'ผิด FADD เป็น Adaptor protein ใน Extrinsic pathway')">C. FADD</button>
+        </div>
+        <div class="q-feedback"></div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <footer class="bottom-nav">
+      <a href="cell-cycle.html" class="nav-link-btn">
+        <span>←</span> ก่อนหน้า: 5. Cell Cycle
+      </a>
+      <a href="../index.html" class="nav-link-btn" style="background: rgba(255, 255, 255, 0.9); border-color: #C7D2FE; color: #4338CA;">
+        🌐 กลับสู่เกาะลอยฟ้า 3D (Home) <span>→</span>
+      </a>
+    </footer>
+
+  </div>
+
+  <script>
+    function checkAnswer(btn, isCorrect, explanation) {
+      const container = btn.closest('.quiz-question');
+      const feedback = container.querySelector('.q-feedback');
+      container.querySelectorAll('.q-option').forEach(b => b.disabled = true);
+      if (isCorrect) {
+        btn.classList.add('correct');
+        feedback.style.display = 'block';
+        feedback.style.background = '#ECFDF5';
+        feedback.style.border = '1px solid #34D399';
+        feedback.style.color = '#065F46';
+        feedback.innerHTML = '🎉 ' + explanation;
+      } else {
+        btn.classList.add('incorrect');
+        feedback.style.display = 'block';
+        feedback.style.background = '#FEF2F2';
+        feedback.style.border = '1px solid #F87171';
+        feedback.style.color = '#991B1B';
+        feedback.innerHTML = '❌ ' + explanation;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cell Signaling — การสื่อสารระหว่างเซลล์ | ระบบควบคุมชีวิตของเซลล์</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="topic-style.css">
+  <style>
+    :root {
+      --topic-primary: #F59E0B;
+      --topic-gradient-end: #FCD34D;
+      --topic-border: #FDE68A;
+      --topic-pill-bg: #FFFBEB;
+      --topic-pill-text: #B45309;
+      --topic-pill-border: #FDE68A;
+      --pastel-orb-1: #FEF3C7;
+      --pastel-orb-2: #FCE7F3;
+      --pastel-orb-3: #E0F2FE;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Pastel Aurora Blobs -->
+  <div class="pastel-aurora">
+    <div class="aurora-orb orb-1"></div>
+    <div class="aurora-orb orb-2"></div>
+    <div class="aurora-orb orb-3"></div>
+  </div>
+
+  <!-- Sticky Top Navigation -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <a href="../index.html" class="back-btn">
+        <span style="font-size: 16px;">←</span> กลับสู่เกาะลอยฟ้า 3D
+      </a>
+      <div class="nav-brand">
+        กลุ่มที่ 3 · <strong>ระบบควบคุมชีวิตของเซลล์</strong>
+      </div>
+    </div>
+    <select class="topic-selector" onchange="if(this.value) window.location.href=this.value;">
+      <option value="gene-expression.html">🧬 1. Gene Expression (การแสดงออกของยีน)</option>
+      <option value="gene-regulation.html">🎛️ 2. Gene Regulation (การควบคุมยีน)</option>
+      <option value="cell-signaling.html" selected>📡 3. Cell Signaling (การสื่อสารระหว่างเซลล์)</option>
+      <option value="cell-response.html">⚡ 4. Cell Response (การตอบสนองของเซลล์)</option>
+      <option value="cell-cycle.html">🔄 5. Cell Cycle (วัฏจักรเซลล์)</option>
+      <option value="apoptosis.html">💀 6. Apoptosis (การตายแบบมีแบบแผน)</option>
+      <option value="quiz-hub.html">🏛️ คลังข้อสอบประมวลความรู้ (Exam Hub)</option>
+    </select>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="container">
+
+    <!-- Hero Header -->
+    <header class="hero-header">
+      <div class="hero-meta">
+        <span class="badge-topic">📡 หัวข้อที่ 3 / 6</span>
+        <span class="hero-landmark">🗼 Signal Lighthouse Landmark</span>
+      </div>
+      <h1 class="hero-title-en">Cell Signaling</h1>
+      <h2 class="hero-title-th">การสื่อสารระหว่างเซลล์</h2>
+      <div class="hero-summary">
+        เครือข่ายโทรคมนาคมทางเคมีของสิ่งมีชีวิตหลายเซลล์ เซลล์ส่งผ่านข้อมูลด้วยสารสื่อสารชีวโมเลกุล (Ligands) เข้าจับกับตัวรับ (Receptors) เพื่อควบคุมการเจริญเติบโต การสร้างภูมิคุ้มกัน และการรักษาสมดุลสภาวะภายใน (Homeostasis)
+      </div>
+    </header>
+
+    <!-- Section 1: Types of Signaling -->
+    <section class="section-card">
+      <h2>📡 1. รูปแบบและระยะทางการสื่อสารของเซลล์</h2>
+      <p>
+        เซลล์ในร่างกายสามารถส่งสัญญาณตามระยะทางและช่องทางที่แตกต่างกัน 4 รูปแบบ:
+      </p>
+
+      <div class="process-flow">
+        <div class="process-step">
+          <span class="step-badge">ระยะที่ 1</span>
+          <div class="step-title">Autocrine</div>
+          <p class="step-desc">เซลล์หลั่งสารสัญญาณมาจับกับตัวรับของ<strong>ตัวเอง</strong> เช่น เซลล์มะเร็งหลั่ง growth factors กระตุ้นตัวเอง</p>
+        </div>
+        <div class="process-step">
+          <span class="step-badge">ระยะที่ 2</span>
+          <div class="step-title">Paracrine</div>
+          <p class="step-desc">ส่งสัญญาณถึง<strong>เซลล์ข้างเคียง</strong>ในระยะใกล้ เช่น สารสื่อประสาท (Neurotransmitters) ข้ามไซแนปส์</p>
+        </div>
+        <div class="process-step">
+          <span class="step-badge">ระยะที่ 3</span>
+          <div class="step-title">Endocrine</div>
+          <p class="step-desc">การหลั่ง<strong>ฮอร์โมน</strong>เข้าสู่กระแสเลือดเพื่อส่งไปควบคุมอวัยวะเป้าหมายที่อยู่<strong>ห่างไกล</strong></p>
+        </div>
+        <div class="process-step">
+          <span class="step-badge">ระยะที่ 4</span>
+          <div class="step-title">Juxtacrine</div>
+          <p class="step-desc">สื่อสารผ่าน<strong>การสัมผัสโดยตรง</strong> (Contact-dependent) หรือผ่านช่อง Gap Junction</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: 3 Stages of Signaling -->
+    <section class="section-card">
+      <h2>🔄 2. ขั้นตอนหลัก 3 ประการ (Signal Transduction Pathway)</h2>
+      <p>
+        โมเดลมาตรฐานที่เสนอโดย <em>Earl Sutherland (รางวัลโนเบลปี 1971)</em>:
+      </p>
+      <ul>
+        <li>
+          <strong>1. Reception (การรับสัญญาณ):</strong> สารสัญญาณ (<em>Ligand</em>) เข้าจับกับบริเวณจับที่จำเพาะบนตัวรับ (<em>Receptor</em>) ส่งผลให้ตัวรับเปลี่ยนรูปร่างทาง 3 มิติ (Conformational change)
+        </li>
+        <li>
+          <strong>2. Transduction (การถ่ายทอดสัญญาณ):</strong> สัญญาณถูกส่งผ่านลูกโซ่ของปฏิกิริยาเคมีภายในเซลล์ (Phosphorylation Cascade) ผ่านเอนไซม์กลุ่ม <em>Protein Kinases</em> และ <em>Phosphatases</em>
+        </li>
+        <li>
+          <strong>3. Response (การตอบสนอง):</strong> สัญญาณปลายทางกระตุ้นให้เกิดกิจกรรมเฉพาะ เช่น กระตุ้นการถอดรหัสยีน, การเปิด-ปิดช่องไอออน, หรือการจัดเรียงโครงร่างเซลล์ใหม่
+        </li>
+      </ul>
+
+      <h3 style="color: var(--topic-primary); margin: 24px 0 12px 0; font-size: 18px; font-weight: 700;">🔑 ตัวรับสัญญาณสำคัญบนเยื่อหุ้มเซลล์ (Cell-Surface Receptors):</h3>
+      <ul>
+        <li><strong>GPCR (G Protein-Coupled Receptor):</strong> ตัวรับ 7 transmembrane domains ที่จับกับ G-protein (เป้าหมายของยารักษาโรคกว่า 40% ในปัจจุบัน!)</li>
+        <li><strong>RTK (Receptor Tyrosine Kinase):</strong> ตัวรับเอนไซม์ที่เกิด Dimerization และ Auto-phosphorylation เมื่อจับกับ Ligand เช่น ตัวรับอินซูลินและ Growth Factors</li>
+        <li><strong>Ion Channel Receptors:</strong> ช่องไอออนที่เปิดเมื่อมีสารสื่อประสาทเข้าจับ เช่น ตัวรับ Acetylcholine ที่รอยต่อกล้ามเนื้อ</li>
+      </ul>
+    </section>
+
+    <!-- Section 3: Second Messengers -->
+    <section class="section-card">
+      <h2>⚡ 3. ผู้ส่งสารลำดับที่สอง (Second Messengers)</h2>
+      <p>
+        โมเลกุลขนาดเล็กที่ไม่มีโปรตีนเป็นองค์ประกอบ กระจายตัวในไซโทพลาสซึมได้อย่างรวดเร็วเพื่อขยายสัญญาณ (Signal Amplification):
+      </p>
+      <ul>
+        <li><strong>cAMP (Cyclic AMP):</strong> สร้างจาก ATP โดยเอนไซม์ <em>Adenylyl Cyclase</em> มีหน้าที่กระตุ้นเอนไซม์ <em>Protein Kinase A (PKA)</em></li>
+        <li><strong>Ca²⁺ (Calcium Ions):</strong> สะสมอยู่ใน Smooth ER และ Mitochondria เมื่อถูกปลดปล่อยจะเข้าจับกับ <em>Calmodulin</em> เพื่อควบคุมการหดตัวของกล้ามเนื้อและการหลั่งสาร</li>
+        <li><strong>IP₃ &amp; DAG:</strong> เกิดจากการสลาย PIP₂ บนเยื่อหุ้มเซลล์โดยเอนไซม์ Phospholipase C (PLC)</li>
+      </ul>
+    </section>
+
+    <!-- Section 4: Quiz -->
+    <section class="quiz-card">
+      <div class="quiz-header">
+        <h3>🧠 ทดสอบความเข้าใจ (Quick Quiz)</h3>
+        <span style="font-size: 13.5px; color: var(--text-muted);">ทดสอบความรู้ Cell Signaling</span>
+      </div>
+
+      <div class="quiz-question">
+        <div class="q-text">1. การส่งฮอร์โมนอินซูลินจากตับอ่อนผ่านกระแสเลือดไปกระตุ้นเซลล์กล้ามเนื้อและเซลล์ไขมัน จัดเป็นการสื่อสารรูปแบบใด?</div>
+        <div class="q-options">
+          <button class="q-option" onclick="checkAnswer(this, true, 'ถูกต้อง! Endocrine signaling คือการส่งสารสัญญาณผ่านกระแสเลือดไปยังเซลล์เป้าหมายระยะไกล')">A. Endocrine Signaling (การสื่อสารระยะไกลผ่านระบบหมุนเวียนเลือด)</button>
+          <button class="q-option" onclick="checkAnswer(this, false, 'ผิด Paracrine เป็นการส่งสารในเนื้อเยื่อข้างเคียงระยะใกล้')">B. Paracrine Signaling</button>
+          <button class="q-option" onclick="checkAnswer(this, false, 'ผิด Autocrine เป็นการส่งสัญญาณกลับมากระตุ้นตัวเอง')">C. Autocrine Signaling</button>
+        </div>
+        <div class="q-feedback"></div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <footer class="bottom-nav">
+      <a href="gene-regulation.html" class="nav-link-btn">
+        <span>←</span> ก่อนหน้า: 2. Gene Regulation
+      </a>
+      <a href="../index.html" class="nav-link-btn">
+        🌐 เกาะลอยฟ้า 3D
+      </a>
+      <a href="cell-response.html" class="nav-link-btn" style="background: rgba(255, 255, 255, 0.9); border-color: #BFDBFE; color: #1E40AF;">
+        ถัดไป: 4. Cell Response <span>→</span>
+      </a>
+    </footer>
+
+  </div>
+
+  <script>
+    function checkAnswer(btn, isCorrect, explanation) {
+      const container = btn.closest('.quiz-question');
+      const feedback = container.querySelector('.q-feedback');
+      container.querySelectorAll('.q-option').forEach(b => b.disabled = true);
+      if (isCorrect) {
+        btn.classList.add('correct');
+        feedback.style.display = 'block';
+        feedback.style.background = '#ECFDF5';
+        feedback.style.border = '1px solid #34D399';
+        feedback.style.color = '#065F46';
+        feedback.innerHTML = '🎉 ' + explanation;
+      } else {
+        btn.classList.add('incorrect');
+        feedback.style.display = 'block';
+        feedback.style.background = '#FEF2F2';
+        feedback.style.border = '1px solid #F87171';
+        feedback.style.color = '#991B1B';
+        feedback.innerHTML = '❌ ' + explanation;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gene Expression — การแสดงออกของยีน | ระบบควบคุมชีวิตของเซลล์</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="topic-style.css">
+  <style>
+    :root {
+      --topic-primary: #8B5CF6;
+      --topic-gradient-end: #C4B5FD;
+      --topic-border: #DDD6FE;
+      --topic-pill-bg: #F5F3FF;
+      --topic-pill-text: #6D28D9;
+      --topic-pill-border: #E9D5FF;
+      --pastel-orb-1: #DDD6FE;
+      --pastel-orb-2: #FCE7F3;
+      --pastel-orb-3: #E0F2FE;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Pastel Aurora Blobs -->
+  <div class="pastel-aurora">
+    <div class="aurora-orb orb-1"></div>
+    <div class="aurora-orb orb-2"></div>
+    <div class="aurora-orb orb-3"></div>
+  </div>
+
+  <!-- Sticky Top Navigation -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <a href="../index.html" class="back-btn">
+        <span style="font-size: 16px;">←</span> กลับสู่เกาะลอยฟ้า 3D
+      </a>
+      <div class="nav-brand">
+        กลุ่มที่ 3 · <strong>ระบบควบคุมชีวิตของเซลล์</strong>
+      </div>
+    </div>
+    <select class="topic-selector" onchange="if(this.value) window.location.href=this.value;">
+      <option value="gene-expression.html" selected>🧬 1. Gene Expression (การแสดงออกของยีน)</option>
+      <option value="gene-regulation.html">🎛️ 2. Gene Regulation (การควบคุมยีน)</option>
+      <option value="cell-signaling.html">📡 3. Cell Signaling (การสื่อสารระหว่างเซลล์)</option>
+      <option value="cell-response.html">⚡ 4. Cell Response (การตอบสนองของเซลล์)</option>
+      <option value="cell-cycle.html">🔄 5. Cell Cycle (วัฏจักรเซลล์)</option>
+      <option value="apoptosis.html">💀 6. Apoptosis (การตายแบบมีแบบแผน)</option>
+      <option value="quiz-hub.html">🏛️ คลังข้อสอบประมวลความรู้ (Exam Hub)</option>
+    </select>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="container">
+
+    <!-- Hero Header -->
+    <header class="hero-header">
+      <div class="hero-meta">
+        <span class="badge-topic">🧬 หัวข้อที่ 1 / 6</span>
+        <span class="hero-landmark">🏡 Botanical Library Cottage</span>
+      </div>
+      <h1 class="hero-title-en">Gene Expression</h1>
+      <h2 class="hero-title-th">การแสดงออกของยีน</h2>
+      <div class="hero-summary">
+        กระบวนการพื้นฐานที่สำคัญที่สุดของสิ่งมีชีวิต ซึ่งข้อมูลพันธุกรรมที่ถูกเก็บไว้ในสายรหัส DNA จะถูกแปลงสภาพเป็นผลผลิตเชิงหน้าที่ (Functional Gene Products) เช่น mRNA, tRNA, rRNA และโปรตีนโครงสร้างหรือเอนไซม์ชนิดต่างๆ ที่ขับเคลื่อนชีวิต
+      </div>
+    </header>
+
+    <!-- Section 1: Central Dogma -->
+    <section class="section-card">
+      <h2>🔬 1. Central Dogma of Molecular Biology</h2>
+      <p>
+        <strong>Central Dogma</strong> เสนอโดย <em>Francis Crick (1958)</em> เป็นหลักการแกนกลางที่อธิบายทิศทางการถ่ายทอดข้อมูลทางพันธุกรรมภายในสิ่งมีชีวิตทุกชนิด:
+      </p>
+
+      <div class="process-flow">
+        <div class="process-step">
+          <span class="step-badge">ขั้นที่ 1</span>
+          <div class="step-title">DNA Replication</div>
+          <p class="step-desc">การจำลองตัวเองของ DNA ในนิวเคลียส เพื่อส่งต่อข้อมูลไปยังเซลล์รุ่นลูกได้อย่างแม่นยำ 100%</p>
+        </div>
+        <div class="process-step">
+          <span class="step-badge">ขั้นที่ 2</span>
+          <div class="step-title">Transcription (ถอดรหัส)</div>
+          <p class="step-desc">เอนไซม์ RNA Polymerase ใช้สาย template strand ของ DNA สังเคราะห์เป็นสาย mRNA</p>
+        </div>
+        <div class="process-step">
+          <span class="step-badge">ขั้นที่ 3</span>
+          <div class="step-title">Translation (แปลรหัส)</div>
+          <p class="step-desc">ไรโบโซมในไซโทพลาสซึมอ่านรหัสโคดอนบน mRNA และต่อกรดอะมิโนเป็นสายพอลิเพปไทด์</p>
+        </div>
+      </div>
+
+      <div class="insight-box">
+        <div class="insight-title">💡 ข้อยกเว้นของ Central Dogma: Reverse Transcription</div>
+        <p class="insight-desc">
+          ไวรัสกลุ่ม Retrovirus เช่น HIV มีเอนไซม์ <em>Reverse Transcriptase</em> ที่สามารถสังเคราะห์ DNA ย้อนกลับจาก RNA ได้!
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 2: Transcription Detailed -->
+    <section class="section-card">
+      <h2>📝 2. กลไกการถอดรหัส (Transcription)</h2>
+      <p>
+        เกิดขึ้นภายในนิวเคลียสของยูแคริโอต แบ่งออกเป็น 3 ขั้นตอนหลักโดยเอนไซม์ <strong>RNA Polymerase II</strong>:
+      </p>
+      <ul>
+        <li>
+          <strong>1. Initiation (เริ่มต้น):</strong> RNA Polymerase เข้าจับกับบริเวณ <em>Promoter</em> บน DNA ซึ่งมักมีลำดับเบสที่จำเพาะ เช่น <em>TATA Box</em> ร่วมกับ Transcription Factors
+        </li>
+        <li>
+          <strong>2. Elongation (ต่อสาย):</strong> RNA Polymerase คลายเกลียวคู่ DNA และสังเคราะห์สาย mRNA ในทิศทาง <strong>5' → 3'</strong> โดยใช้สาย template (3' → 5') เป็นแม่แบบ
+        </li>
+        <li>
+          <strong>3. Termination (สิ้นสุด):</strong> เมื่อเคลื่อนที่มาถึง Terminator sequence เอนไซม์จะหลุดออก และปล่อยสาย pre-mRNA ออกมา
+        </li>
+      </ul>
+
+      <h3 style="color: var(--topic-primary); margin: 24px 0 12px 0; font-size: 18px; font-weight: 700;">✨ การปรับแต่งสาย mRNA หลังการถอดรหัส (Post-transcriptional Modification):</h3>
+      <ul>
+        <li><strong>5' Capping (เติมหมวก 7-methylguanosine):</strong> ป้องกันการย่อยสลายจาก exonuclease และช่วยให้ไรโบโซมจดจำ mRNA ได้</li>
+        <li><strong>3' Polyadenylation (เติมหาง Poly-A tail):</strong> เติมเบส Adenine 100-250 ตัว เพื่อเพิ่มความเสถียรและการส่งออกสู่นิวเคลียส</li>
+        <li><strong>RNA Splicing:</strong> ตัดส่วนที่ไม่เข้ารหัส (<em>Introns</em>) ออก และเชื่อมส่วนที่เข้ารหัสโปรตีน (<em>Exons</em>) เข้าด้วยกันโดย Spliceosome</li>
+      </ul>
+    </section>
+
+    <!-- Section 3: Translation Detailed -->
+    <section class="section-card">
+      <h2>🧪 3. กลไกการแปลรหัส (Translation)</h2>
+      <p>
+        เกิดขึ้นที่ <strong>Ribosome (ไรโบโซม)</strong> ในไซโทพลาสซึมหรือบน Rough Endoplasmic Reticulum (RER):
+      </p>
+      <ul>
+        <li>
+          <strong>Genetic Code (รหัสพันธุกรรม):</strong> เบส 3 ตัวบน mRNA เรียกว่า <em>Codon (โคดอน)</em> กำหนดกรดอะมิโน 1 ตัว เช่น <strong>AUG</strong> เป็นทั้ง Start Codon และรหัสของ Methionine
+        </li>
+        <li>
+          <strong>tRNA (Transfer RNA):</strong> มี <em>Anticodon</em> ที่เข้าคู่สมกับ Codon ทำหน้าที่ขนส่งกรดอะมิโนที่ถูกต้องมายังไรโบโซม
+        </li>
+        <li>
+          <strong>Stop Codons:</strong> ได้แก่ <strong>UAA, UAG, UGA</strong> ไม่มี tRNA ใดเข้าจับ จะมี Release Factor มาตัดสายโปรตีนออก
+        </li>
+      </ul>
+
+      <div class="insight-box">
+        <div class="insight-title">🔬 การประยุกต์ใช้ทางการแพทย์ระดับโลก</div>
+        <p class="insight-desc">
+          <strong>วัคซีน mRNA (เช่น Pfizer-BioNTech, Moderna):</strong> ใช้หลักการ Gene Expression โดยส่งโมเลกุล mRNA ที่เข้ารหัสโปรตีนหนาม (Spike protein) ของไวรัสเข้าสู่เซลล์มนุษย์ เพื่อให้ไรโบโซมของเราสังเคราะห์โปรตีนจำลองและกระตุ้นภูมิคุ้มกันอย่างปลอดภัย!
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 4: Interactive Quiz -->
+    <section class="quiz-card">
+      <div class="quiz-header">
+        <h3>🧠 ทดสอบความเข้าใจ (Quick Quiz)</h3>
+        <span style="font-size: 13.5px; color: var(--text-muted);">คลิกเลือกคำตอบเพื่อดูเฉลยทันที</span>
+      </div>
+
+      <div class="quiz-question">
+        <div class="q-text">1. Start Codon ของกระบวนการ Translation ในสาย mRNA คือรหัสใด และเข้ารหัสกรดอะมิโนชนิดใด?</div>
+        <div class="q-options">
+          <button class="q-option" onclick="checkAnswer(this, true, 'ถูกต้อง! AUG เป็น Start codon สากลที่เข้ารหัสกรดอะมิโน Methionine (Met)')">A. AUG — Methionine</button>
+          <button class="q-option" onclick="checkAnswer(this, false, 'ยังไม่ถูกต้อง UAA เป็น Stop codon ไม่เข้ารหัสกรดอะมิโน')">B. UAA — Stop codon</button>
+          <button class="q-option" onclick="checkAnswer(this, false, 'ยังไม่ถูกต้อง UGA เป็น Stop codon')">C. UGA — Tryptophan</button>
+          <button class="q-option" onclick="checkAnswer(this, false, 'ยังไม่ถูกต้อง TAC เป็นรหัสบนสาย DNA แม่แบบ')">D. TAC — Methionine</button>
+        </div>
+        <div class="q-feedback"></div>
+      </div>
+
+      <div class="quiz-question">
+        <div class="q-text">2. ในการปรับแต่งสาย pre-mRNA ส่วนใดที่จะถูกตัดทิ้งออกไปก่อนส่งออกจากนิวเคลียส?</div>
+        <div class="q-options">
+          <button class="q-option" onclick="checkAnswer(this, false, 'Exon คือส่วนที่เข้ารหัสโปรตีน จะต้องถูกเชื่อมต่อเข้าด้วยกัน')">A. Exon</button>
+          <button class="q-option" onclick="checkAnswer(this, true, 'ถูกต้อง! Intron คือส่วนแทรกที่ไม่เข้ารหัสโปรตีน จะถูกตัดทิ้งโดย Spliceosome')">B. Intron</button>
+          <button class="q-option" onclick="checkAnswer(this, false, '5-cap เป็นส่วนที่เติมเพิ่มเข้าไปที่หัวสายเพื่อป้องกันการย่อยสลาย')">C. 5-cap</button>
+          <button class="q-option" onclick="checkAnswer(this, false, 'Poly-A tail เป็นส่วนที่เติมเพิ่มที่ปลาย 3')">D. Poly-A tail</button>
+        </div>
+        <div class="q-feedback"></div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <footer class="bottom-nav">
+      <a href="../index.html" class="nav-link-btn">
+        <span>←</span> กลับสู่เกาะลอยฟ้า 3D
+      </a>
+      <a href="gene-regulation.html" class="nav-link-btn" style="background: rgba(255, 255, 255, 0.9); border-color: #A7F3D0; color: #047857;">
+        ถัดไป: 2. Gene Regulation <span>→</span>
+      </a>
+    </footer>
+
+  </div>
+
+  <script>
+    function checkAnswer(btn, isCorrect, explanation) {
+      const container = btn.closest('.quiz-question');
+      const feedback = container.querySelector('.q-feedback');
+      container.querySelectorAll('.q-option').forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+        feedback.style.display = 'block';
+        feedback.style.background = '#ECFDF5';
+        feedback.style.border = '1px solid #34D399';
+        feedback.style.color = '#065F46';
+        feedback.innerHTML = '🎉 ' + explanation;
+      } else {
+        btn.classList.add('incorrect');
+        feedback.style.display = 'block';
+        feedback.style.background = '#FEF2F2';
+        feedback.style.border = '1px solid #F87171';
+        feedback.style.color = '#991B1B';
+        feedback.innerHTML = '❌ ' + explanation;
+      }
+    }
+  </script>
+</body>
+</html>

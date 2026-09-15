@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cell Response — การตอบสนองของเซลล์ต่อสิ่งเร้า | ระบบควบคุมชีวิตของเซลล์</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="topic-style.css">
+  <style>
+    :root {
+      --topic-primary: #3B82F6;
+      --topic-gradient-end: #93C5FD;
+      --topic-border: #BFDBFE;
+      --topic-pill-bg: #EFF6FF;
+      --topic-pill-text: #1E40AF;
+      --topic-pill-border: #BFDBFE;
+      --pastel-orb-1: #DBEAFE;
+      --pastel-orb-2: #EDE9FE;
+      --pastel-orb-3: #D1FAE5;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Pastel Aurora Blobs -->
+  <div class="pastel-aurora">
+    <div class="aurora-orb orb-1"></div>
+    <div class="aurora-orb orb-2"></div>
+    <div class="aurora-orb orb-3"></div>
+  </div>
+
+  <!-- Sticky Top Navigation -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <a href="../index.html" class="back-btn">
+        <span style="font-size: 16px;">←</span> กลับสู่เกาะลอยฟ้า 3D
+      </a>
+      <div class="nav-brand">
+        กลุ่มที่ 3 · <strong>ระบบควบคุมชีวิตของเซลล์</strong>
+      </div>
+    </div>
+    <select class="topic-selector" onchange="if(this.value) window.location.href=this.value;">
+      <option value="gene-expression.html">🧬 1. Gene Expression (การแสดงออกของยีน)</option>
+      <option value="gene-regulation.html">🎛️ 2. Gene Regulation (การควบคุมยีน)</option>
+      <option value="cell-signaling.html">📡 3. Cell Signaling (การสื่อสารระหว่างเซลล์)</option>
+      <option value="cell-response.html" selected>⚡ 4. Cell Response (การตอบสนองของเซลล์)</option>
+      <option value="cell-cycle.html">🔄 5. Cell Cycle (วัฏจักรเซลล์)</option>
+      <option value="apoptosis.html">💀 6. Apoptosis (การตายแบบมีแบบแผน)</option>
+      <option value="quiz-hub.html">🏛️ คลังข้อสอบประมวลความรู้ (Exam Hub)</option>
+    </select>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="container">
+
+    <!-- Hero Header -->
+    <header class="hero-header">
+      <div class="hero-meta">
+        <span class="badge-topic">⚡ หัวข้อที่ 4 / 6</span>
+        <span class="hero-landmark">🏛️ Energy Pavilion Landmark</span>
+      </div>
+      <h1 class="hero-title-en">Cell Response</h1>
+      <h2 class="hero-title-th">การตอบสนองของเซลล์ต่อสิ่งเร้า</h2>
+      <div class="hero-summary">
+        ผลลัพธ์ปลายทางของการถ่ายทอดสัญญาณ เมื่อเซลล์ประมวลผลข้อมูลจากภายนอกและสั่งการให้เกิดการเปลี่ยนแปลงทางชีวเคมี โครงสร้าง และสรีรวิทยา เพื่อปรับตัวให้อยู่รอดและทำหน้าที่ในร่างกายได้อย่างสมบูรณ์แบบ
+      </div>
+    </header>
+
+    <!-- Section 1: Types of Responses -->
+    <section class="section-card">
+      <h2>⚡ 1. ขอบเขตและรูปแบบการตอบสนองของเซลล์</h2>
+      <p>
+        การตอบสนองของเซลล์สามารถแบ่งออกเป็น 2 ระดับหลักตามตำแหน่งที่เกิดผล:
+      </p>
+
+      <div class="process-flow">
+        <div class="process-step">
+          <span class="step-badge">ระดับที่ 1</span>
+          <div class="step-title">Nuclear Response (ในนิวเคลียส)</div>
+          <p class="step-desc">การกระตุ้นหรือยับยั้ง Transcription Factors เพื่อเปิด-ปิดการสร้าง mRNA และสังเคราะห์โปรตีนชุดใหม่ (ใช้เวลาหลายนาทีถึงชั่วโมง)</p>
+        </div>
+        <div class="process-step">
+          <span class="step-badge">ระดับที่ 2</span>
+          <div class="step-title">Cytoplasmic Response (ในไซโทพลาสซึม)</div>
+          <p class="step-desc">การปรับเปลี่ยนกิจกรรมของเอนไซม์ที่มีอยู่แล้วอย่างรวดเร็ว เช่น การสลายไกลโคเจนเป็นกลูโคสด้วย Epinephrine (ใช้เวลาเสี้ยววินาที)</p>
+        </div>
+      </div>
+
+      <h3 style="color: var(--topic-primary); margin: 24px 0 12px 0; font-size: 18px; font-weight: 700;">🌟 ตัวอย่างพฤติกรรมการตอบสนองเชิงประจักษ์:</h3>
+      <ul>
+        <li><strong>การจัดเรียง Cytoskeleton ใหม่:</strong> การยืด-หดของไมโครฟิลาเมนต์ทำให้เซลล์เม็ดเลือดขาวเคลื่อนที่ไปยังจุดที่มีการติดเชื้อ (<em>Chemotaxis</em>)</li>
+        <li><strong>Exocytosis (การหลั่งสารออกนอกเซลล์):</strong> เช่น การหลั่งสารสื่อประสาทที่ปลายประสาท หรือการหลั่งอินซูลินจากบีตาเซลล์ในตับอ่อน</li>
+        <li><strong>การเปิด-ปิดช่องไอออน (Ion Permeability):</strong> ทำให้เกิดการเปลี่ยนแปลงความต่างศักย์ไฟฟ้าข้ามเยื่อหุ้มเซลล์เพื่อส่งกระแสประสาท</li>
+      </ul>
+    </section>
+
+    <!-- Section 2: Feedback & Amplification -->
+    <section class="section-card">
+      <h2>🔁 2. ระบบควบคุมสมดุล: Negative Feedback &amp; Signal Amplification</h2>
+      <p>
+        เพื่อให้การตอบสนองมีความแม่นยำ ไม่มากหรือน้อยเกินไป เซลล์มีกลไกควบคุมอย่างเข้มงวด:
+      </p>
+      <ul>
+        <li>
+          <strong>Negative Feedback (การย้อนกลับเชิงลบ):</strong> ผลผลิตขั้นสุดท้ายจะย้อนกลับไปยับยั้งตัวรับหรือเอนไซม์ในขั้นตอนแรก เพื่อรักษาระดับให้คงที่ (Homeostasis) เช่น การควบคุมระดับฮอร์โมนในต่อมไร้ท่อ
+        </li>
+        <li>
+          <strong>Positive Feedback (การย้อนกลับเชิงบวก):</strong> ผลผลิตช่วยเร่งปฏิกิริยาให้เกิดเร็วและรุนแรงขึ้น เช่น การกระตุ้นให้เกล็ดเลือดมารวมกลุ่มกันเมื่อเกิดบาดแผล
+        </li>
+        <li>
+          <strong>Signal Amplification (การขยายสัญญาณ):</strong> ในแต่ละขั้นของลูกโซ่ Enzyme Cascade โมเลกุล 1 ตัวสามารถเร่งปฏิกิริยาโมเลกุลในขั้นถัดไปได้นับร้อยนับพันเท่า ทำให้สารสัญญาณปริมาณเพียงเล็กน้อย สามารถกระตุ้นการตอบสนองได้มหาศาล!
+        </li>
+      </ul>
+
+      <div class="insight-box">
+        <div class="insight-title">💡 ความแม่นยำและความจำเพาะของการตอบสนอง (Specificity)</div>
+        <p class="insight-desc">
+          สารสัญญาณชนิดเดียวกัน (เช่น <strong>Epinephrine/อะดรีนาลีน</strong>) สามารถกระตุ้นเซลล์ตับให้สลายไกลโคเจน แต่เมื่อจับกับเซลล์กล้ามเนื้อหัวใจจะกระตุ้นให้หัวใจเต้นเร็วและแรงขึ้น เพราะเซลล์แต่ละชนิดมีชุดโปรตีนถ่ายทอดสัญญาณภายในที่แตกต่างกัน!
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 3: Quiz -->
+    <section class="quiz-card">
+      <div class="quiz-header">
+        <h3>🧠 ทดสอบความเข้าใจ (Quick Quiz)</h3>
+        <span style="font-size: 13.5px; color: var(--text-muted);">ทดสอบความรู้ Cell Response</span>
+      </div>
+
+      <div class="quiz-question">
+        <div class="q-text">1. เมื่อร่างกายเกิดภาวะตื่นตกใจ ฮอร์โมน Epinephrine กระตุ้นให้เกิดการสลายไกลโคเจนในตับอย่างรวดเร็ว จัดเป็นการตอบสนองระดับใด?</div>
+        <div class="q-options">
+          <button class="q-option" onclick="checkAnswer(this, true, 'ถูกต้อง! การสลายไกลโคเจนเป็นการกระตุ้นเอนไซม์ Glycogen phosphorylase ในไซโทพลาสซึมโดยตรง เกิดขึ้นรวดเร็วในระดับวินาที')">A. Cytoplasmic Response (การตอบสนองในไซโทพลาสซึม)</button>
+          <button class="q-option" onclick="checkAnswer(this, false, 'ผิด Nuclear Response ต้องผ่านการถอดรหัสยีนใหม่ ซึ่งใช้เวลานานกว่า')">B. Nuclear Response (การตอบสนองในนิวเคลียส)</button>
+        </div>
+        <div class="q-feedback"></div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <footer class="bottom-nav">
+      <a href="cell-signaling.html" class="nav-link-btn">
+        <span>←</span> ก่อนหน้า: 3. Cell Signaling
+      </a>
+      <a href="../index.html" class="nav-link-btn">
+        🌐 เกาะลอยฟ้า 3D
+      </a>
+      <a href="cell-cycle.html" class="nav-link-btn" style="background: rgba(255, 255, 255, 0.9); border-color: #FECDD3; color: #9F1239;">
+        ถัดไป: 5. Cell Cycle <span>→</span>
+      </a>
+    </footer>
+
+  </div>
+
+  <script>
+    function checkAnswer(btn, isCorrect, explanation) {
+      const container = btn.closest('.quiz-question');
+      const feedback = container.querySelector('.q-feedback');
+      container.querySelectorAll('.q-option').forEach(b => b.disabled = true);
+      if (isCorrect) {
+        btn.classList.add('correct');
+        feedback.style.display = 'block';
+        feedback.style.background = '#ECFDF5';
+        feedback.style.border = '1px solid #34D399';
+        feedback.style.color = '#065F46';
+        feedback.innerHTML = '🎉 ' + explanation;
+      } else {
+        btn.classList.add('incorrect');
+        feedback.style.display = 'block';
+        feedback.style.background = '#FEF2F2';
+        feedback.style.border = '1px solid #F87171';
+        feedback.style.color = '#991B1B';
+        feedback.innerHTML = '❌ ' + explanation;
+      }
+    }
+  </script>
+</body>
+</html>
