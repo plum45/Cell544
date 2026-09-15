@@ -74,6 +74,12 @@ export function initControls() {
       case 'KeyV':
         window.dispatchEvent(new CustomEvent('toggle-aerial-view'));
         break;
+      case 'KeyT':
+        window.dispatchEvent(new CustomEvent('toggle-treasure-map'));
+        break;
+      case 'KeyH':
+        window.dispatchEvent(new CustomEvent('toggle-tutorial'));
+        break;
       case 'Digit1':
         switchAvatar('slime');
         break;

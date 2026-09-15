@@ -7,7 +7,7 @@
   <meta name="description" content="เรียนรู้ระบบควบคุมชีวิตของเซลล์ผ่านโลก 3D แฟนตาซี — Gene Expression, Cell Signaling, Apoptosis">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Pixelify+Sans:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -65,7 +65,97 @@
 
   <!-- ===== HUD Controls Hint ===== -->
   <div class="hud-hint" id="hud-hint">
-    🎮 <strong>W A S D</strong> เดิน &nbsp;|&nbsp; <strong>Shift</strong> วิ่ง &nbsp;|&nbsp; <strong>Space</strong> กระโดด &nbsp;|&nbsp; <strong>E</strong> มีปฏิสัมพันธ์/คุย
+    🎮 <strong>W A S D</strong> เดิน &nbsp;|&nbsp; <strong>Shift</strong> วิ่ง &nbsp;|&nbsp; <strong>Space</strong> กระโดด &nbsp;|&nbsp; <strong>E</strong> สำรวจ &nbsp;|&nbsp; <strong>T</strong> แผนที่สมบัติ
+  </div>
+
+  <!-- ===== Floating Help Button ===== -->
+  <button id="btn-help" class="btn-help" title="คู่มือการเล่น [กด H]">
+    <span class="btn-help-icon">📖</span>
+    <span class="btn-help-text">คู่มือการเล่น [H]</span>
+  </button>
+
+  <!-- ===== Tutorial / Guide Modal ===== -->
+  <div id="tutorial-modal" class="tutorial-modal">
+    <div class="tutorial-panel">
+      <div class="tutorial-header">
+        <span class="tutorial-header-icon">📖</span>
+        <div>
+          <div class="tutorial-title">คู่มือการเล่น</div>
+          <div class="tutorial-subtitle">เกาะลอยฟ้าแห่งชีวิตเซลล์ — How to Play</div>
+        </div>
+      </div>
+
+      <div class="tutorial-body">
+        <!-- Controls -->
+        <div class="tutorial-section">
+          <div class="tutorial-section-title">🎮 การควบคุม</div>
+          <div class="tutorial-keys-grid">
+            <div class="tutorial-key-item">
+              <div class="tutorial-key-cap">W A S D</div>
+              <div class="tutorial-key-desc">เดิน</div>
+            </div>
+            <div class="tutorial-key-item">
+              <div class="tutorial-key-cap">Shift</div>
+              <div class="tutorial-key-desc">วิ่งเร็ว</div>
+            </div>
+            <div class="tutorial-key-item">
+              <div class="tutorial-key-cap">Space</div>
+              <div class="tutorial-key-desc">กระโดด</div>
+            </div>
+            <div class="tutorial-key-item">
+              <div class="tutorial-key-cap">E</div>
+              <div class="tutorial-key-desc">สำรวจ/คุย</div>
+            </div>
+            <div class="tutorial-key-item">
+              <div class="tutorial-key-cap">M</div>
+              <div class="tutorial-key-desc">มุมมองมุมสูง</div>
+            </div>
+            <div class="tutorial-key-item">
+              <div class="tutorial-key-cap">T</div>
+              <div class="tutorial-key-desc">แผนที่สมบัติ</div>
+            </div>
+            <div class="tutorial-key-item">
+              <div class="tutorial-key-cap">1 2 3</div>
+              <div class="tutorial-key-desc">เปลี่ยนตัวละคร</div>
+            </div>
+            <div class="tutorial-key-item">
+              <div class="tutorial-key-cap">H</div>
+              <div class="tutorial-key-desc">เปิดคู่มือ</div>
+            </div>
+          </div>
+          <div class="tutorial-touch-note">📱 มือถือ/iPad: ใช้จอยสติ๊กเสมือนทางซ้าย + ปุ่มทางขวา</div>
+        </div>
+
+        <!-- Objectives -->
+        <div class="tutorial-section">
+          <div class="tutorial-section-title">🎯 เป้าหมาย</div>
+          <div class="tutorial-objectives">
+            <div class="tutorial-obj">
+              <span class="tutorial-obj-icon">🏛️</span>
+              <span>สำรวจ <strong>6 แลนด์มาร์ค</strong> เพื่อเรียนรู้ชีววิทยาของเซลล์</span>
+            </div>
+            <div class="tutorial-obj">
+              <span class="tutorial-obj-icon">💎</span>
+              <span>สะสม <strong>สมบัติ 7 ชิ้น</strong> จากการอ่านบทเรียน + ทำข้อสอบ</span>
+            </div>
+            <div class="tutorial-obj">
+              <span class="tutorial-obj-icon">🐰</span>
+              <span>คุยกับ <strong>ศาสตราจารย์บันนี่</strong> เพื่อนำทาง/วาร์ปไปแลนด์มาร์ค</span>
+            </div>
+            <div class="tutorial-obj">
+              <span class="tutorial-obj-icon">📝</span>
+              <span>ทำ <strong>ข้อสอบ 15 ข้อ</strong> ที่คลังข้อสอบเพื่อรับสมบัติพิเศษ</span>
+            </div>
+            <div class="tutorial-obj">
+              <span class="tutorial-obj-icon">🐾</span>
+              <span>ทักทาย <strong>สัตว์น้อย</strong> ที่กระจายอยู่ทั่วเกาะ</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="tutorial-close-btn" id="btn-close-tutorial">เข้าใจแล้ว เริ่มสำรวจ! 🚀</button>
+    </div>
   </div>
 
   <!-- ===== Mobile & iPad Touch Controls Overlay ===== -->
@@ -262,8 +352,57 @@
       </div>
     </div>
   </div>
+  <!-- ===== Treasure Collection HUD ===== -->
+  <div id="treasure-hud" class="treasure-hud">
+    <div class="treasure-counter" id="treasure-counter-btn" title="เปิดแผนที่สมบัติ [กด T]">
+      <span class="treasure-counter-icon">💎</span>
+      <div class="treasure-counter-info">
+        <span class="treasure-counter-label">สมบัติที่สะสม</span>
+        <span class="treasure-counter-value" id="treasure-count">0 / 7</span>
+        <div class="treasure-progress-bar">
+          <div class="treasure-progress-fill" id="treasure-progress" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <!-- ===== Three.js Import Map ===== -->
+  <!-- ===== Treasure Map / Checklist Panel ===== -->
+  <div id="treasure-map-panel" class="treasure-map-panel">
+    <div class="treasure-map-title">🗺️ แผนที่สมบัติ — Treasure Map</div>
+    <div id="treasure-checklist"></div>
+  </div>
+
+  <!-- ===== Treasure Found Modal ===== -->
+  <div id="treasure-found-modal" class="treasure-found-modal">
+    <div class="treasure-found-panel">
+      <div class="tf-emoji" id="tf-emoji">💎</div>
+      <div class="tf-badge">✨ สมบัติใหม่!</div>
+      <div class="tf-name" id="tf-name">คริสตัล DNA</div>
+      <div class="tf-desc" id="tf-desc">ผลึกเรืองแสงที่เก็บรหัสพันธุกรรมไว้ภายใน</div>
+      <div class="tf-funfact-box">
+        <div class="tf-funfact-label">🧠 Fun Fact</div>
+        <div class="tf-funfact" id="tf-funfact">...</div>
+      </div>
+      <div class="tf-counter">สะสมแล้ว <strong id="tf-count">1 / 7</strong></div>
+      <button class="tf-close-btn" id="tf-close-btn">เก็บสมบัติ ✨</button>
+    </div>
+  </div>
+
+  <!-- ===== Treasure Complete Celebration Modal ===== -->
+  <div id="treasure-complete-modal" class="treasure-complete-modal">
+    <div class="treasure-complete-panel">
+      <div class="tc-crown">👑</div>
+      <div class="tc-title">🎉 สะสมสมบัติครบทั้ง 7 ชิ้น!</div>
+      <div class="tc-subtitle">
+        ยินดีด้วย! คุณคือ <strong>ผู้พิชิตเกาะเซลล์ลอยฟ้า</strong> ตัวจริง<br>
+        คุณได้เรียนรู้ทุกหัวข้อชีววิทยาของเซลล์และพิชิตข้อสอบแล้ว!
+      </div>
+      <div class="tc-treasures-grid" id="tc-treasures-grid"></div>
+      <button class="tc-close-btn" id="tc-close-btn">ปิด 🏆</button>
+    </div>
+  </div>
+
+
   <script type="importmap">
   {
     "imports": {

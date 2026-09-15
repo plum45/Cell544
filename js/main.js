@@ -8,6 +8,12 @@ import { createGrass, animateGrass } from './grass.js';
 import { createAnimals, animateAnimals, getNearbyAnimal, spawnHeartBurst } from './animals.js';
 import { CONTENT_DATA } from './content.js';
 import { initTouchControls } from './touch.js';
+import {
+  createTreasureChests, animateTreasureChests, getNearestChest,
+  openTreasureChest, updateTreasureHUD, showTreasureFoundModal,
+  closeTreasureFoundModal, closeTreasureCompleteModal, toggleTreasureMap,
+  getAllTreasures,
+} from './treasure.js';
 
 // ===== State =====
 let state = 'loading'; // 'loading' | 'landing' | 'world' | 'content'
@@ -19,6 +25,7 @@ let fireflies, pollen;
 let hoveredLandmark = null;
 let nearestLandmark = null;
 let nearestAnimal = null;
+let nearestTreasureChest = null;
 let isNearNPC = false;
 let currentContent = null;
 let toastTimer = null;
@@ -95,6 +102,9 @@ function init() {
   // Create wildlife animals & creatures
   animalsGroup = createAnimals(scene);
 
+  // Create treasure chests (Treasure Hunt mini-game)
+  createTreasureChests(scene);
+
   // Create particles
   createFireflies();
   createPollen();
@@ -156,11 +166,56 @@ function init() {
   document.getElementById('btn-touch-aerial')?.addEventListener('click', toggleTopView);
   window.addEventListener('toggle-aerial-view', toggleTopView);
 
-  // Unified Interaction handler (Guide NPC, Animals, and Landmark Buildings)
+  // Treasure System Events
+  document.getElementById('treasure-counter-btn')?.addEventListener('click', toggleTreasureMap);
+  document.getElementById('tf-close-btn')?.addEventListener('click', closeTreasureFoundModal);
+  document.getElementById('tc-close-btn')?.addEventListener('click', closeTreasureCompleteModal);
+  window.addEventListener('toggle-treasure-map', toggleTreasureMap);
+
+  // Tutorial / Guide Modal Events
+  const tutorialModal = document.getElementById('tutorial-modal');
+  const btnHelp = document.getElementById('btn-help');
+  const btnCloseTutorial = document.getElementById('btn-close-tutorial');
+
+  function openTutorialModal() {
+    if (tutorialModal) tutorialModal.classList.add('visible');
+  }
+  window.openTutorialModal = openTutorialModal;
+
+  function closeTutorialModal() {
+    if (tutorialModal) tutorialModal.classList.remove('visible');
+    try {
+      localStorage.setItem('cell_tutorial_seen', '1');
+    } catch (e) {}
+  }
+
+  function toggleTutorialModal() {
+    if (tutorialModal && tutorialModal.classList.contains('visible')) {
+      closeTutorialModal();
+    } else {
+      openTutorialModal();
+    }
+  }
+
+  btnHelp?.addEventListener('click', toggleTutorialModal);
+  btnCloseTutorial?.addEventListener('click', closeTutorialModal);
+  tutorialModal?.addEventListener('click', (e) => {
+    if (e.target === tutorialModal) closeTutorialModal();
+  });
+  window.addEventListener('toggle-tutorial', toggleTutorialModal);
+
+  // Unified Interaction handler (Guide NPC, Animals, Treasure Chests, and Landmark Buildings)
   function handleInteraction() {
     if (state !== 'world') return;
     if (isNearNPC) {
       openNPCDialog();
+    } else if (nearestTreasureChest) {
+      const treasure = openTreasureChest(nearestTreasureChest, scene);
+      if (treasure) {
+        showTreasureFoundModal(treasure);
+        updateTreasureHUD();
+        showPastelToast(`💎 สมบัติ "${treasure.name}" ถูกค้นพบ!`);
+      }
     } else if (nearestAnimal) {
       spawnHeartBurst(nearestAnimal.position.x, nearestAnimal.position.y, nearestAnimal.position.z);
       showPastelToast(nearestAnimal.userData.toast || '💖 สัตว์น้อยแสนรู้ส่งเสียงทักทายคุณอย่างเป็นมิตร!');
@@ -364,8 +419,21 @@ function enterWorld() {
     setTimeout(() => {
       minimapEl.classList.add('visible');
       hudHint.classList.add('visible');
+      // Show Treasure HUD
+      const treasureHud = document.getElementById('treasure-hud');
+      if (treasureHud) treasureHud.classList.add('visible');
+      updateTreasureHUD();
       // Hide hint after some time
       setTimeout(() => hudHint.classList.remove('visible'), 8000);
+
+      // Auto-popup tutorial modal on first visit
+      try {
+        if (!localStorage.getItem('cell_tutorial_seen')) {
+          setTimeout(() => {
+            if (window.openTutorialModal) window.openTutorialModal();
+          }, 1200);
+        }
+      } catch (e) {}
     }, 1000);
   }, 600);
 }
@@ -698,7 +766,18 @@ function checkProximity() {
 
   isNearNPC = false;
 
-  // 2. Check if near any friendly wildlife animal
+  // 2. Check if near any treasure chest
+  nearestTreasureChest = getNearestChest(player.position, 5.0);
+  if (nearestTreasureChest) {
+    nearestLandmark = null;
+    nearestAnimal = null;
+    const t = getAllTreasures().find(t => t.id === nearestTreasureChest.treasureId);
+    promptText.innerHTML = `เปิดหีบสมบัติ <strong>${t ? t.emoji + ' ' + t.name : '💎'}</strong>`;
+    promptEl.classList.add('visible');
+    return;
+  }
+
+  // 3. Check if near any friendly wildlife animal
   nearestAnimal = getNearbyAnimal(player.position, 5.2);
   if (nearestAnimal) {
     nearestLandmark = null;
@@ -707,7 +786,7 @@ function checkProximity() {
     return;
   }
 
-  // 3. Check closest landmark
+  // 4. Check closest landmark
   let closest = null;
   let minDist = 8.5;
 
@@ -777,6 +856,9 @@ function animate() {
 
   // Animate Guide NPC
   animateGuideNPC(time);
+
+  // Animate treasure chests
+  animateTreasureChests(time);
 
   // Animate player character with camera perspective
   if (slime) animateSlime(slime, time, delta, camera);

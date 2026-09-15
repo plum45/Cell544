@@ -339,6 +339,23 @@
   </div>
 
   <script>
+    // ===== Treasure System (Shared localStorage) =====
+    const TREASURE_KEY = 'cell-life-treasures';
+    function getCollectedTreasures() {
+      try { return JSON.parse(localStorage.getItem(TREASURE_KEY)) || []; }
+      catch { return []; }
+    }
+    function collectTreasure(id) {
+      const c = getCollectedTreasures();
+      if (!c.includes(id)) { c.push(id); localStorage.setItem(TREASURE_KEY, JSON.stringify(c)); }
+      return c;
+    }
+    function updateTreasureStatus() {
+      const collected = getCollectedTreasures();
+      const el = document.getElementById('stat-treasures');
+      if (el) el.innerText = `💎 ${collected.length} / 7`;
+    }
+
     const QUESTIONS = [
       {
         id: 1,
@@ -548,7 +565,9 @@
 
       // Check if all answered
       if (Object.keys(userAnswers).length === QUESTIONS.length) {
-        showCompletionBadge();
+        // Award quiz treasure!
+        const collected = collectTreasure('quiz-hub');
+        showCompletionBadge(collected);
       }
     }
 
@@ -564,6 +583,8 @@
       else if (totalScore >= 11) rank = '🌟 นักชีววิทยาดีเด่น';
       else if (totalScore >= 8) rank = '🧪 นักวิจัยรุ่นเยาว์';
       document.getElementById('stat-rank').innerText = rank;
+
+      updateTreasureStatus();
     }
 
     function filterQuestions(filter, btn) {
@@ -573,30 +594,33 @@
       renderQuestions(filter);
     }
 
-    function showCompletionBadge() {
+    function showCompletionBadge(collectedTreasures) {
       const modal = document.getElementById('badge-modal');
       const icon = document.getElementById('modal-badge-icon');
       const title = document.getElementById('modal-badge-title');
       const desc = document.getElementById('modal-badge-desc');
 
+      let treasureMsg = `\n\n🏆 คุณได้รับสมบัติ "ถ้วยรางวัลมาสเตอร์"!\nสมบัติที่สะสมแล้ว: ${collectedTreasures.length} / 7 ชิ้น`;
+
       if (totalScore >= 14) {
         icon.innerText = '🏆';
         title.innerText = 'ระดับเกียรติยศ: Master Biologist!';
-        desc.innerText = `สุดยอดมาก! คุณได้คะแนน ${totalScore} / ${QUESTIONS.length} คะแนน มีความเข้าใจเชิงลึกในกลไกชีวิตของเซลล์อย่างแท้จริง`;
+        desc.innerText = `สุดยอดมาก! คุณได้คะแนน ${totalScore} / ${QUESTIONS.length} คะแนน มีความเข้าใจเชิงลึกในกลไกชีวิตของเซลล์อย่างแท้จริง` + treasureMsg;
       } else if (totalScore >= 11) {
         icon.innerText = '🌟';
         title.innerText = 'ระดับเกียรติยศ: Advanced Scholar!';
-        desc.innerText = `ยอดเยี่ยม! คุณได้ ${totalScore} / ${QUESTIONS.length} คะแนน เชี่ยวชาญระบบเซลล์และสัญญาณโมเลกุลในระดับสูง`;
+        desc.innerText = `ยอดเยี่ยม! คุณได้ ${totalScore} / ${QUESTIONS.length} คะแนน เชี่ยวชาญระบบเซลล์และสัญญาณโมเลกุลในระดับสูง` + treasureMsg;
       } else {
         icon.innerText = '🧪';
         title.innerText = 'ระดับเกียรติยศ: Junior Researcher!';
-        desc.innerText = `ทำได้ดีมาก! คุณได้ ${totalScore} / ${QUESTIONS.length} คะแนน สามารถอ่านทบทวนเฉลยในแต่ละข้อเพื่อเสริมความแม่นยำได้เลยครับ`;
+        desc.innerText = `ทำได้ดีมาก! คุณได้ ${totalScore} / ${QUESTIONS.length} คะแนน สามารถอ่านทบทวนเฉลยในแต่ละข้อเพื่อเสริมความแม่นยำได้เลยครับ` + treasureMsg;
       }
       modal.classList.add('visible');
     }
 
     // Initial render
     renderQuestions('all');
+    updateTreasureStatus();
   </script>
 </body>
 </html>
