@@ -1269,16 +1269,18 @@ body {
   gap: 4px;
 }
 .treasure-counter-label {
-  font-family: var(--pixel-font);
-  font-size: 11px;
+  font-family: var(--game-font);
+  font-size: 12px;
+  font-weight: 700;
   color: #FBBF24;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 .treasure-counter-value {
-  font-family: var(--pixel-font);
+  font-family: var(--game-font);
   font-size: 18px;
+  font-weight: 800;
   color: #FFD700;
+  letter-spacing: 2px;
   text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
 }
 .treasure-progress-bar {

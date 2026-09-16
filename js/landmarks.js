@@ -5,13 +5,13 @@ import { CONTENT_DATA } from './content.js';
 
 // Landmark positions directly along the authentic brown road (Expanded 350-unit Sky Island)
 const LANDMARK_CONFIGS = [
-  { contentId: 'gene-expression', x: 3.0, z: -45.2, rotY: 0, builder: buildBotanicalCottage },
-  { contentId: 'gene-regulation', x: 68.6, z: -45.2, rotY: -Math.PI / 4, builder: buildMagicWindmill },
-  { contentId: 'cell-signaling', x: 96.3, z: 3.0, rotY: -Math.PI / 2, builder: buildSignalLighthouse },
-  { contentId: 'cell-response', x: 77.4, z: 51.1, rotY: -Math.PI * 0.6, builder: buildEnergyPavilion },
-  { contentId: 'cell-cycle', x: 18.9, z: 80.2, rotY: Math.PI * 0.8, builder: buildClockworkObservatory },
-  { contentId: 'apoptosis', x: -55.5, z: 32.0, rotY: Math.PI / 2, builder: buildAncientSanctuary },
-  { contentId: 'quiz-hub', x: 0.0, z: 0.0, rotY: Math.PI * 0.25, builder: buildQuizHouse },
+  { contentId: 'gene-expression', x: 5.0, z: -30.0, rotY: 0, builder: buildBotanicalCottage },
+  { contentId: 'gene-regulation', x: 66.0, z: -22.0, rotY: -Math.PI / 4, builder: buildMagicWindmill },
+  { contentId: 'cell-signaling', x: 76.0, z: 2.0, rotY: -Math.PI / 2, builder: buildSignalLighthouse },
+  { contentId: 'cell-response', x: 58.0, z: 42.0, rotY: -Math.PI * 0.6, builder: buildEnergyPavilion },
+  { contentId: 'cell-cycle', x: 20.0, z: 66.0, rotY: Math.PI * 0.8, builder: buildClockworkObservatory },
+  { contentId: 'apoptosis', x: -28.0, z: 25.0, rotY: Math.PI / 2, builder: buildAncientSanctuary },
+  { contentId: 'quiz-hub', x: 4.5, z: 30.0, rotY: Math.PI, builder: buildQuizHouse },
 ];
 
 // ===== Common Material Palettes =====

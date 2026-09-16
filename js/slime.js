@@ -38,83 +38,103 @@ const DUST_COUNT = 30;
 
 // Setup keyboard listeners
 export function initControls() {
+  function matchKey(e, type) {
+    const code = e.code || '';
+    const key = (e.key || '').toLowerCase();
+    const keyCode = e.keyCode || e.which || 0;
+
+    switch (type) {
+      case 'forward':
+        return code === 'KeyW' || code === 'ArrowUp' || code === 'Numpad8' ||
+               key === 'w' || key === 'ไ' || key === 'arrowup' || keyCode === 87 || keyCode === 38;
+      case 'backward':
+        return code === 'KeyS' || code === 'ArrowDown' || code === 'Numpad2' ||
+               key === 's' || key === 'ห' || key === 'arrowdown' || keyCode === 83 || keyCode === 40;
+      case 'left':
+        return code === 'KeyA' || code === 'ArrowLeft' || code === 'Numpad4' ||
+               key === 'a' || key === 'ฟ' || key === 'arrowleft' || keyCode === 65 || keyCode === 37;
+      case 'right':
+        return code === 'KeyD' || code === 'ArrowRight' || code === 'Numpad6' ||
+               key === 'd' || key === 'ก' || key === 'arrowright' || keyCode === 68 || keyCode === 39;
+      case 'shift':
+        return code === 'ShiftLeft' || code === 'ShiftRight' || key === 'shift' || keyCode === 16;
+      case 'jump':
+        return code === 'Space' || key === ' ' || key === 'spacebar' || keyCode === 32;
+      case 'interact':
+        return code === 'KeyE' || key === 'e' || key === 'ำ' || keyCode === 69;
+      case 'aerial':
+        return code === 'KeyM' || code === 'KeyV' || key === 'm' || key === 'v' || key === 'ม' || key === 'อ' || keyCode === 77 || keyCode === 86;
+      case 'treasure':
+        return code === 'KeyT' || key === 't' || key === 'ะ' || keyCode === 84;
+      case 'tutorial':
+        return code === 'KeyH' || key === 'h' || key === '้' || keyCode === 72;
+      case 'avatar1':
+        return code === 'Digit1' || code === 'Numpad1' || key === '1';
+      case 'avatar2':
+        return code === 'Digit2' || code === 'Numpad2' || key === '2';
+      case 'avatar3':
+        return code === 'Digit3' || code === 'Numpad3' || key === '3';
+      default:
+        return false;
+    }
+  }
+
   window.addEventListener('keydown', (e) => {
-    switch (e.code) {
-      case 'KeyW':
-      case 'ArrowUp':
-        keys.forward = true;
-        break;
-      case 'KeyS':
-      case 'ArrowDown':
-        keys.backward = true;
-        break;
-      case 'KeyA':
-      case 'ArrowLeft':
-        keys.left = true;
-        break;
-      case 'KeyD':
-      case 'ArrowRight':
-        keys.right = true;
-        break;
-      case 'ShiftLeft':
-      case 'ShiftRight':
-        keys.shift = true;
-        break;
-      case 'Space':
-        if (player.isGrounded) {
-          player.velocity.y = 10.0;
-          player.isGrounded = false;
-        }
-        e.preventDefault();
-        break;
-      case 'KeyE':
-        window.dispatchEvent(new CustomEvent('player-interact'));
-        break;
-      case 'KeyM':
-      case 'KeyV':
-        window.dispatchEvent(new CustomEvent('toggle-aerial-view'));
-        break;
-      case 'KeyT':
-        window.dispatchEvent(new CustomEvent('toggle-treasure-map'));
-        break;
-      case 'KeyH':
-        window.dispatchEvent(new CustomEvent('toggle-tutorial'));
-        break;
-      case 'Digit1':
-        switchAvatar('slime');
-        break;
-      case 'Digit2':
-        switchAvatar('fox');
-        break;
-      case 'Digit3':
-        switchAvatar('sprite');
-        break;
+    // Ignore if typing inside an input or textarea
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+
+    if (matchKey(e, 'forward')) {
+      keys.forward = true;
+      e.preventDefault();
+    } else if (matchKey(e, 'backward')) {
+      keys.backward = true;
+      e.preventDefault();
+    } else if (matchKey(e, 'left')) {
+      keys.left = true;
+      e.preventDefault();
+    } else if (matchKey(e, 'right')) {
+      keys.right = true;
+      e.preventDefault();
+    } else if (matchKey(e, 'shift')) {
+      keys.shift = true;
+    } else if (matchKey(e, 'jump')) {
+      if (player.isGrounded) {
+        player.velocity.y = 10.0;
+        player.isGrounded = false;
+      }
+      e.preventDefault();
+    } else if (matchKey(e, 'interact')) {
+      window.dispatchEvent(new CustomEvent('player-interact'));
+    } else if (matchKey(e, 'aerial')) {
+      window.dispatchEvent(new CustomEvent('toggle-aerial-view'));
+    } else if (matchKey(e, 'treasure')) {
+      window.dispatchEvent(new CustomEvent('toggle-treasure-map'));
+    } else if (matchKey(e, 'tutorial')) {
+      window.dispatchEvent(new CustomEvent('toggle-tutorial'));
+    } else if (matchKey(e, 'avatar1')) {
+      switchAvatar('slime');
+    } else if (matchKey(e, 'avatar2')) {
+      switchAvatar('fox');
+    } else if (matchKey(e, 'avatar3')) {
+      switchAvatar('sprite');
     }
   });
 
   window.addEventListener('keyup', (e) => {
-    switch (e.code) {
-      case 'KeyW':
-      case 'ArrowUp':
-        keys.forward = false;
-        break;
-      case 'KeyS':
-      case 'ArrowDown':
-        keys.backward = false;
-        break;
-      case 'KeyA':
-      case 'ArrowLeft':
-        keys.left = false;
-        break;
-      case 'KeyD':
-      case 'ArrowRight':
-        keys.right = false;
-        break;
-      case 'ShiftLeft':
-      case 'ShiftRight':
-        keys.shift = false;
-        break;
-    }
+    if (matchKey(e, 'forward')) keys.forward = false;
+    if (matchKey(e, 'backward')) keys.backward = false;
+    if (matchKey(e, 'left')) keys.left = false;
+    if (matchKey(e, 'right')) keys.right = false;
+    if (matchKey(e, 'shift')) keys.shift = false;
+  });
+
+  // Reset keys if window loses focus so player doesn't get stuck walking
+  window.addEventListener('blur', () => {
+    keys.forward = false;
+    keys.backward = false;
+    keys.left = false;
+    keys.right = false;
+    keys.shift = false;
   });
 }
 

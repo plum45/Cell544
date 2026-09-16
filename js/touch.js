@@ -21,11 +21,39 @@ export function initTouchControls() {
     touchContainer.classList.add('active');
   }
 
-  // ===== Virtual Joystick Touch Events =====
+  // ===== Virtual Joystick Touch & Mouse Events =====
+  let isMouseDown = false;
+
   joystickZone.addEventListener('touchstart', onJoystickStart, { passive: false });
   window.addEventListener('touchmove', onJoystickMove, { passive: false });
   window.addEventListener('touchend', onJoystickEnd, { passive: false });
   window.addEventListener('touchcancel', onJoystickEnd, { passive: false });
+
+  // Mouse fallback for PC users who want on-screen controls
+  joystickZone.addEventListener('mousedown', (e) => {
+    isMouseDown = true;
+    const rect = joystickBase.getBoundingClientRect();
+    baseCenter = {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+    };
+    updateJoystick(e.clientX, e.clientY);
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isMouseDown) return;
+    updateJoystick(e.clientX, e.clientY);
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (!isMouseDown) return;
+    isMouseDown = false;
+    joystickKnob.style.transform = 'translate(0px, 0px)';
+    if (player.joystickInput) {
+      player.joystickInput.x = 0;
+      player.joystickInput.y = 0;
+    }
+  });
 
   function onJoystickStart(e) {
     e.preventDefault();
@@ -95,41 +123,51 @@ export function initTouchControls() {
     }
   }
 
-  // ===== Touch Action Buttons =====
+  // ===== Action Buttons (Support both Touch & Click) =====
   const btnJump = document.getElementById('btn-touch-jump');
   const btnSprint = document.getElementById('btn-touch-sprint');
   const btnInteract = document.getElementById('btn-touch-interact');
 
-  // 1. Jump Button
-  if (btnJump) {
-    btnJump.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      if (player.isGrounded) {
-        player.velocity.y = 10.0;
-        player.isGrounded = false;
+  function triggerJump() {
+    if (player.isGrounded) {
+      player.velocity.y = 10.0;
+      player.isGrounded = false;
+      if (btnJump) {
         btnJump.classList.add('pressed');
         setTimeout(() => btnJump.classList.remove('pressed'), 200);
       }
-    }, { passive: false });
+    }
+  }
+
+  function toggleSprint() {
+    keys.shift = !keys.shift;
+    if (btnSprint) btnSprint.classList.toggle('active', keys.shift);
+  }
+
+  function triggerInteract() {
+    if (btnInteract) {
+      btnInteract.classList.add('pressed');
+      setTimeout(() => btnInteract.classList.remove('pressed'), 200);
+    }
+    window.dispatchEvent(new CustomEvent('player-interact'));
+  }
+
+  // 1. Jump Button
+  if (btnJump) {
+    btnJump.addEventListener('touchstart', (e) => { e.preventDefault(); triggerJump(); }, { passive: false });
+    btnJump.addEventListener('click', triggerJump);
   }
 
   // 2. Sprint Button (Toggle Sprint)
   if (btnSprint) {
-    btnSprint.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      keys.shift = !keys.shift;
-      btnSprint.classList.toggle('active', keys.shift);
-    }, { passive: false });
+    btnSprint.addEventListener('touchstart', (e) => { e.preventDefault(); toggleSprint(); }, { passive: false });
+    btnSprint.addEventListener('click', toggleSprint);
   }
 
   // 3. Interact Button
   if (btnInteract) {
-    btnInteract.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      btnInteract.classList.add('pressed');
-      setTimeout(() => btnInteract.classList.remove('pressed'), 200);
-      window.dispatchEvent(new CustomEvent('player-interact'));
-    }, { passive: false });
+    btnInteract.addEventListener('touchstart', (e) => { e.preventDefault(); triggerInteract(); }, { passive: false });
+    btnInteract.addEventListener('click', triggerInteract);
   }
 
   // Highlight interact button when near landmark/NPC/animal

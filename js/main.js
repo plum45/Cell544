@@ -410,10 +410,11 @@ function enterWorld() {
     state = 'world';
     controls.enabled = true;
 
-    // Position camera right behind the player in third-person view
-    camera.position.set(player.position.x, player.position.y + 3.8, player.position.z + 8.5);
-    controls.target.set(player.position.x, player.position.y + 1.2, player.position.z);
+    // Position camera behind player facing forward towards the clearing and Library
+    camera.position.set(player.position.x, player.position.y + 3.2, player.position.z - 7.5);
+    controls.target.set(player.position.x, player.position.y + 1.2, player.position.z + 5.0);
     controls.update();
+    try { window.focus(); canvas.focus(); } catch (e) {}
 
     // Show UI
     setTimeout(() => {
