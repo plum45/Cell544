@@ -5,7 +5,7 @@ let joystickBase = null;
 let joystickKnob = null;
 let activeTouchId = null;
 let baseCenter = { x: 0, y: 0 };
-const MAX_RADIUS = 36; // compact joystick radius in px
+const MAX_RADIUS = 42; // slightly larger radius for easier control
 
 export function initTouchControls() {
   joystickZone = document.getElementById('joystick-zone');
@@ -51,8 +51,15 @@ export function initTouchControls() {
     }
   });
 
-  // ===== Virtual Joystick Touch & Mouse Events =====
+  // ===== Floating Virtual Joystick =====
+  // The joystick zone covers the entire left half of the screen.
+  // When touching anywhere in the zone, the joystick base teleports to that position.
+  // The base is hidden by default and only appears on touch.
   let isMouseDown = false;
+
+  // Start hidden — only show on touch
+  joystickBase.style.opacity = '0';
+  joystickBase.style.transition = 'opacity 0.15s ease';
 
   joystickZone.addEventListener('touchstart', onJoystickStart, { passive: false });
   window.addEventListener('touchmove', onJoystickMove, { passive: false });
@@ -62,11 +69,9 @@ export function initTouchControls() {
   // Mouse fallback for PC users who want on-screen controls
   joystickZone.addEventListener('mousedown', (e) => {
     isMouseDown = true;
-    const rect = joystickBase.getBoundingClientRect();
-    baseCenter = {
-      x: rect.left + rect.width / 2,
-      y: rect.top + rect.height / 2,
-    };
+    // Move the base to where the user clicked
+    moveBaseTo(e.clientX, e.clientY);
+    joystickBase.style.opacity = '1';
     updateJoystick(e.clientX, e.clientY);
   });
 
@@ -78,12 +83,33 @@ export function initTouchControls() {
   window.addEventListener('mouseup', () => {
     if (!isMouseDown) return;
     isMouseDown = false;
-    joystickKnob.style.transform = 'translate(0px, 0px)';
-    if (player.joystickInput) {
-      player.joystickInput.x = 0;
-      player.joystickInput.y = 0;
-    }
+    resetJoystick();
   });
+
+  function moveBaseTo(clientX, clientY) {
+    // Position the joystick base centered on the touch point
+    const zoneRect = joystickZone.getBoundingClientRect();
+    const baseW = joystickBase.offsetWidth;
+    const baseH = joystickBase.offsetHeight;
+
+    // Clamp so it doesn't go outside the zone
+    let left = clientX - zoneRect.left - baseW / 2;
+    let top = clientY - zoneRect.top - baseH / 2;
+
+    // Clamp within zone bounds with some padding
+    const pad = 8;
+    left = Math.max(pad, Math.min(left, zoneRect.width - baseW - pad));
+    top = Math.max(pad, Math.min(top, zoneRect.height - baseH - pad));
+
+    joystickBase.style.left = left + 'px';
+    joystickBase.style.top = top + 'px';
+
+    // Update base center for knob calculations
+    baseCenter = {
+      x: zoneRect.left + left + baseW / 2,
+      y: zoneRect.top + top + baseH / 2,
+    };
+  }
 
   function onJoystickStart(e) {
     e.preventDefault();
@@ -92,11 +118,9 @@ export function initTouchControls() {
     const touch = e.changedTouches[0];
     activeTouchId = touch.identifier;
 
-    const rect = joystickBase.getBoundingClientRect();
-    baseCenter = {
-      x: rect.left + rect.width / 2,
-      y: rect.top + rect.height / 2,
-    };
+    // Teleport base to where the finger is
+    moveBaseTo(touch.clientX, touch.clientY);
+    joystickBase.style.opacity = '1';
 
     updateJoystick(touch.clientX, touch.clientY);
   }
@@ -120,13 +144,18 @@ export function initTouchControls() {
     for (let i = 0; i < e.changedTouches.length; i++) {
       if (e.changedTouches[i].identifier === activeTouchId) {
         activeTouchId = null;
-        joystickKnob.style.transform = 'translate(0px, 0px)';
-        if (player.joystickInput) {
-          player.joystickInput.x = 0;
-          player.joystickInput.y = 0;
-        }
+        resetJoystick();
         break;
       }
+    }
+  }
+
+  function resetJoystick() {
+    joystickKnob.style.transform = 'translate(0px, 0px)';
+    joystickBase.style.opacity = '0';
+    if (player.joystickInput) {
+      player.joystickInput.x = 0;
+      player.joystickInput.y = 0;
     }
   }
 
@@ -210,5 +239,5 @@ export function initTouchControls() {
     observer.observe(promptEl, { attributes: true, attributeFilter: ['class'] });
   }
 
-  console.log('📱 Mobile & iPad Touch Controls initialized successfully!');
+  console.log('📱 Mobile & iPad Touch Controls initialized (Floating Joystick)!');
 }

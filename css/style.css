@@ -1162,67 +1162,64 @@ body {
   display: block;
 }
 
-/* Virtual Analog Joystick (Compact, Translucent, Lower-Left Corner) */
+/* Virtual Analog Joystick — Floating (appears at touch point on left half) */
 .joystick-zone {
   position: absolute;
-  left: 16px;
-  bottom: 16px;
-  width: 116px;
-  height: 116px;
+  left: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
   pointer-events: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   touch-action: none;
   -webkit-user-select: none;
   user-select: none;
-  opacity: 0.55;
-  transition: opacity 0.25s ease;
-}
-.joystick-zone:hover,
-.joystick-zone:active {
-  opacity: 0.95;
+  /* No visible styling — it's an invisible hit zone */
 }
 
 .joystick-base {
-  position: relative;
-  width: 90px;
-  height: 90px;
+  position: absolute;
+  left: 20px;
+  bottom: 24px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.15) 70%, rgba(200, 220, 255, 0.05) 100%);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1.5px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.15), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.06) 70%, rgba(200, 220, 255, 0.02) 100%);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
 }
 
 .joystick-base::after {
   content: '';
   position: absolute;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  border: 1.5px dashed rgba(255, 255, 255, 0.5);
+  border: 1.5px dashed rgba(255, 255, 255, 0.2);
   pointer-events: none;
 }
 
 .joystick-knob {
   position: absolute;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6ee7b7, #34d399);
-  border: 2px solid #ffffff;
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.45), inset 0 1px 3px rgba(255, 255, 255, 0.8);
+  background: linear-gradient(135deg, rgba(110, 231, 183, 0.5), rgba(52, 211, 153, 0.5));
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
   transform: translate(0, 0);
   pointer-events: none;
   transition: transform 0.04s ease-out;
 }
 
-/* Touch Action Buttons (Compact, Lower-Right Corner) */
+/* Touch Action Buttons — Ghost-like, transparent */
 .touch-actions {
   position: absolute;
   right: 16px;
@@ -1242,20 +1239,20 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: 1.5px solid rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   cursor: pointer;
   transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.2s ease;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.15), inset 0 1px 3px rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
   font-family: var(--game-font);
-  opacity: 0.65;
+  opacity: 0.35;
 }
 
 .touch-btn:hover,
 .touch-btn:active,
 .touch-btn.pressed {
-  opacity: 1.0;
+  opacity: 0.75;
 }
 .touch-btn:active,
 .touch-btn.pressed {
@@ -1265,38 +1262,38 @@ body {
 .touch-btn-jump {
   width: 52px;
   height: 52px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(224, 242, 254, 0.85));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.35), rgba(224, 242, 254, 0.35));
   color: #0369a1;
 }
 
 .touch-btn-sprint {
   width: 44px;
   height: 44px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(254, 243, 199, 0.85));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.35), rgba(254, 243, 199, 0.35));
   color: #b45309;
 }
 
 .touch-btn-sprint.active {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.6), rgba(217, 119, 6, 0.6));
   color: #ffffff;
-  border-color: #fef3c7;
-  box-shadow: 0 0 16px rgba(245, 158, 11, 0.6);
-  opacity: 1.0;
+  border-color: rgba(254, 243, 199, 0.5);
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);
+  opacity: 0.6;
 }
 
 .touch-btn-interact {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(243, 232, 255, 0.85));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.35), rgba(243, 232, 255, 0.35));
   color: #6b21a8;
 }
 
 .touch-btn-interact.highlight {
-  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.55), rgba(124, 58, 237, 0.55));
   color: #ffffff;
-  border-color: #f3e8ff;
-  box-shadow: 0 0 18px rgba(168, 85, 247, 0.65);
-  opacity: 1.0;
+  border-color: rgba(243, 232, 255, 0.5);
+  box-shadow: 0 0 14px rgba(168, 85, 247, 0.4);
+  opacity: 0.7;
   animation: pulseTouch 1.2s infinite alternate ease-in-out;
 }
 
@@ -1344,19 +1341,13 @@ body {
 }
 
 @media (max-width: 640px) {
-  .joystick-zone {
-    left: 12px;
-    bottom: 18px;
-    width: 130px;
-    height: 130px;
-  }
   .joystick-base {
-    width: 98px;
-    height: 98px;
+    width: 100px;
+    height: 100px;
   }
   .joystick-knob {
-    width: 44px;
-    height: 44px;
+    width: 46px;
+    height: 46px;
   }
   .touch-actions {
     right: 12px;

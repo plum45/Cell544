@@ -34,6 +34,11 @@ let currentContent = null;
 let toastTimer = null;
 let isTopView = false;
 
+// ===== Mobile Performance Detection =====
+const isMobileDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+const isLowEndDevice = isMobileDevice && (navigator.hardwareConcurrency ? navigator.hardwareConcurrency <= 4 : true);
+let frameCount = 0;
+
 // ===== DOM Elements =====
 const canvas = document.getElementById('canvas3d');
 const loadingEl = document.getElementById('loading');
@@ -54,17 +59,21 @@ function init() {
   // Scene (Magical Fantasy Night Atmosphere)
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x0a1128);
-  scene.fog = new THREE.FogExp2(0x0c152e, 0.0028);
+  // Thicker fog on mobile = distant objects blur out naturally (LOD illusion)
+  scene.fog = new THREE.FogExp2(0x0c152e, isMobileDevice ? 0.0055 : 0.0028);
 
-  // Camera
-  camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 600);
+  // Camera — shorter draw distance on mobile
+  const farClip = isMobileDevice ? 320 : 600;
+  camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, farClip);
   camera.position.set(65, 48, 65);
   camera.lookAt(0, 0, 0);
 
-  // Renderer
-  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+  // Renderer — lower pixel ratio & disable antialias on mobile for smooth FPS
+  const useAntialias = !isMobileDevice;
+  const maxPixelRatio = isMobileDevice ? (isLowEndDevice ? 0.85 : 1.0) : 1.25;
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: useAntialias, powerPreference: 'high-performance' });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, maxPixelRatio));
   renderer.outputColorSpace = THREE.SRGBColorSpace; // Match Sketchfab sRGB color fidelity!
   renderer.shadowMap.enabled = false; // Disable heavy dynamic shadow maps to guarantee 60 FPS
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -507,7 +516,7 @@ function createStars() {
 
 // ===== Bioluminescent Magic Particles =====
 function createFireflies() {
-  const count = 180;
+  const count = isMobileDevice ? 60 : 180;
   const positions = new Float32Array(count * 3);
   const sizes = new Float32Array(count);
 
@@ -537,7 +546,7 @@ function createFireflies() {
 }
 
 function createPollen() {
-  const count = 80;
+  const count = isMobileDevice ? 25 : 80;
   const positions = new Float32Array(count * 3);
 
   for (let i = 0; i < count; i++) {
@@ -564,9 +573,14 @@ function createPollen() {
 }
 
 function animateParticles(time) {
-  if (fireflies) {
+  // On mobile: only animate particles every 3rd frame for performance
+  const skipParticles = isMobileDevice && (frameCount % 3 !== 0);
+
+  if (fireflies && !skipParticles) {
     const pos = fireflies.geometry.attributes.position;
-    for (let i = 0; i < pos.count; i++) {
+    // On mobile, animate only half the particles for perf
+    const step = isMobileDevice ? 2 : 1;
+    for (let i = 0; i < pos.count; i += step) {
       pos.setY(i, pos.getY(i) + Math.sin(time * 2 + i) * 0.005);
       pos.setX(i, pos.getX(i) + Math.cos(time * 1.5 + i * 0.7) * 0.003);
     }
@@ -574,9 +588,10 @@ function animateParticles(time) {
     fireflies.material.opacity = 0.4 + Math.sin(time * 3) * 0.3;
   }
 
-  if (pollen) {
+  if (pollen && !skipParticles) {
     const pos = pollen.geometry.attributes.position;
-    for (let i = 0; i < pos.count; i++) {
+    const step = isMobileDevice ? 2 : 1;
+    for (let i = 0; i < pos.count; i += step) {
       let y = pos.getY(i) + 0.008;
       if (y > 18) y = 1;
       pos.setY(i, y);
@@ -1023,6 +1038,7 @@ function animate() {
 
   const delta = clock.getDelta();
   const time = clock.getElapsedTime();
+  frameCount++;
 
   // Third-person smooth follow (when not in top-down aerial map mode)
   if (state === 'world' && player.mesh && !cameraAnimation && !isTopView) {
@@ -1048,30 +1064,37 @@ function animate() {
   // Camera animation
   updateCameraAnimation(time);
 
-  // Animate world (clouds)
+  // ===== LOD: Distance-based animation throttling on mobile =====
+  // On mobile, skip heavy animations every other frame
+  const isEvenFrame = frameCount % 2 === 0;
+  const skipHeavy = isMobileDevice && !isEvenFrame;
+
+  // Animate world (clouds) — always (lightweight)
   if (worldAnimatables) animateWorld(worldAnimatables, time);
 
-  // Animate lush grass & wildflowers
-  animateGrass(time);
+  // Animate lush grass & wildflowers — skip on odd frames on mobile
+  if (!skipHeavy) animateGrass(time);
 
-  // Animate wildlife animals
-  animateAnimals(time, delta);
+  // Animate wildlife animals — skip on odd frames on mobile
+  if (!skipHeavy) animateAnimals(time, delta);
 
-  // Animate Guide NPC
+  // Animate Guide NPC — always (single mesh)
   animateGuideNPC(time);
 
-  // Animate treasure chests
-  animateTreasureChests(time);
+  // Animate treasure chests — skip on odd frames on mobile
+  if (!skipHeavy) animateTreasureChests(time);
 
-  // Animate player character with camera perspective
+  // Animate player character — always (essential)
   if (slime) animateSlime(slime, time, delta, camera);
 
-  // Animate landmarks
-  if (landmarks) animateLandmarks(landmarks, time);
+  // Animate landmarks — skip on odd frames on mobile
+  if (!skipHeavy) {
+    if (landmarks) animateLandmarks(landmarks, time);
+  }
 
   // Animate particles & celestial night sky
   animateParticles(time);
-  if (starsMesh) starsMesh.rotation.y = time * 0.005;
+  if (starsMesh && !skipHeavy) starsMesh.rotation.y = time * 0.005;
   if (moonMesh && moonMesh.children[1]) {
     const pulse = 1.0 + Math.sin(time * 1.6) * 0.04;
     moonMesh.children[1].scale.set(pulse, pulse, 1);
@@ -1089,14 +1112,16 @@ function animate() {
     mouseMoved = false;
   }
 
-  // Check proximity to buildings every 6 frames
-  if (Math.floor(time * 30) % 6 === 0) checkProximity();
+  // Check proximity — less often on mobile (every 10 frames vs 6)
+  const proxInterval = isMobileDevice ? 10 : 6;
+  if (Math.floor(time * 30) % proxInterval === 0) checkProximity();
 
-  // Update labels
-  updateLabels();
+  // Update labels — skip on odd frames on mobile
+  if (!skipHeavy) updateLabels();
 
-  // Update minimap at 10 FPS
-  if (Math.floor(time * 10) % 3 === 0) updateMinimap();
+  // Update minimap at lower frequency on mobile
+  const minimapDiv = isMobileDevice ? 5 : 3;
+  if (Math.floor(time * 10) % minimapDiv === 0) updateMinimap();
 
   // Render
   renderer.render(scene, camera);
