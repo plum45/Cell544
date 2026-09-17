@@ -22,6 +22,9 @@ let raycaster, mouse;
 let slime, landmarks, worldAnimatables, guideNPC;
 let grassGroup, animalsGroup;
 let fireflies, pollen;
+let moonMesh = null, starsMesh = null;
+let videoBlackHole = null, textureBlackHole = null, meshBlackHole = null;
+let videoJupiter = null, textureJupiter = null, meshJupiter = null;
 let hoveredLandmark = null;
 let nearestLandmark = null;
 let nearestAnimal = null;
@@ -48,10 +51,10 @@ function init() {
   raycaster = new THREE.Raycaster();
   mouse = new THREE.Vector2(-999, -999);
 
-  // Scene
+  // Scene (Magical Fantasy Night Atmosphere)
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x87CEEB);
-  scene.fog = new THREE.FogExp2(0xB0D4E8, 0.0035);
+  scene.background = new THREE.Color(0x0a1128);
+  scene.fog = new THREE.FogExp2(0x0c152e, 0.0028);
 
   // Camera
   camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 600);
@@ -204,6 +207,19 @@ function init() {
   });
   window.addEventListener('toggle-tutorial', toggleTutorialModal);
 
+  // Ensure both cosmic videos play on first user interaction if autoplay was deferred
+  function playCosmicVideos() {
+    if (videoBlackHole && videoBlackHole.paused) {
+      videoBlackHole.play().catch(() => {});
+    }
+    if (videoJupiter && videoJupiter.paused) {
+      videoJupiter.play().catch(() => {});
+    }
+  }
+  window.addEventListener('pointerdown', playCosmicVideos, { passive: true });
+  window.addEventListener('keydown', playCosmicVideos, { passive: true });
+  window.addEventListener('touchstart', playCosmicVideos, { passive: true });
+
   // Unified Interaction handler (Guide NPC, Animals, Treasure Chests, and Landmark Buildings)
   function handleInteraction() {
     if (state !== 'world') return;
@@ -248,41 +264,113 @@ function init() {
   animate();
 }
 
-// ===== Lighting =====
+// ===== Lighting (Fantasy Night with Radiant Moonlight) =====
 function setupLighting() {
-  // Hemisphere light — sky/ground
-  const hemiLight = new THREE.HemisphereLight(0x88BBFF, 0x446633, 0.6);
+  // Hemisphere light — sky: ethereal cyan lunar glow / ground: lush bioluminescent forest moss
+  const hemiLight = new THREE.HemisphereLight(0xa5f3fc, 0x142e20, 0.85);
   scene.add(hemiLight);
 
-  // Directional light — sun
-  const sunLight = new THREE.DirectionalLight(0xFFEECC, 1.2);
-  sunLight.position.set(30, 40, 20);
-  sunLight.castShadow = true;
-  sunLight.shadow.mapSize.width = 2048;
-  sunLight.shadow.mapSize.height = 2048;
-  sunLight.shadow.camera.near = 1;
-  sunLight.shadow.camera.far = 100;
-  sunLight.shadow.camera.left = -50;
-  sunLight.shadow.camera.right = 50;
-  sunLight.shadow.camera.top = 50;
-  sunLight.shadow.camera.bottom = -50;
-  sunLight.shadow.bias = -0.001;
-  scene.add(sunLight);
+  // Directional light — radiant celestial moonlight illuminating the entire island
+  const moonLight = new THREE.DirectionalLight(0xdbeafe, 1.45);
+  moonLight.position.set(65, 95, -65);
+  scene.add(moonLight);
 
-  // Ambient
-  const ambientLight = new THREE.AmbientLight(0x404050, 0.4);
+  // Secondary soft fill light from opposite angle to ensure clear visibility across all areas
+  const fillLight = new THREE.DirectionalLight(0x38bdf8, 0.45);
+  fillLight.position.set(-45, 60, 45);
+  scene.add(fillLight);
+
+  // Ambient light — bright enough to make all paths, trees, and landmarks clearly visible
+  const ambientLight = new THREE.AmbientLight(0x384c68, 0.75);
   scene.add(ambientLight);
 }
 
-// ===== Sky Gradient =====
+// ===== Helper to initialize WebGL VideoTexture =====
+function initVideoTexture(videoElId) {
+  const el = document.getElementById(videoElId);
+  if (!el) return { el: null, texture: null };
+  el.crossOrigin = 'anonymous';
+  el.loop = true;
+  el.muted = true;
+  el.defaultMuted = true;
+  el.playsInline = true;
+  el.setAttribute('playsinline', '');
+  el.setAttribute('webkit-playsinline', '');
+
+  const texture = new THREE.VideoTexture(el);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.minFilter = THREE.LinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  texture.generateMipmaps = false;
+
+  const playPromise = el.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(() => {});
+  }
+  return { el, texture };
+}
+
+// ===== Helper to create curved panoramic celestial vista mesh =====
+function createVistaMesh(videoTexture, thetaCenter, height = 145, radius = 220, thetaLength = 1.18) {
+  const thetaStart = thetaCenter - thetaLength / 2;
+  const vistaGeo = new THREE.CylinderGeometry(radius, radius, height, 48, 1, true, thetaStart, thetaLength);
+
+  const vistaMat = new THREE.ShaderMaterial({
+    uniforms: {
+      map: { value: videoTexture },
+      opacity: { value: 1.0 },
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform sampler2D map;
+      uniform float opacity;
+      varying vec2 vUv;
+      void main() {
+        vec4 col = texture2D(map, vUv);
+        // Soft edge blending on all 4 boundaries so video blends seamlessly into cosmic starry night
+        float fadeX = smoothstep(0.0, 0.12, vUv.x) * smoothstep(1.0, 0.88, vUv.x);
+        float fadeY = smoothstep(0.0, 0.14, vUv.y) * smoothstep(1.0, 0.86, vUv.y);
+        float alpha = fadeX * fadeY * opacity;
+        gl_FragColor = vec4(col.rgb, alpha);
+      }
+    `,
+    side: THREE.BackSide,
+    transparent: true,
+    depthWrite: false,
+    fog: false,
+  });
+
+  const mesh = new THREE.Mesh(vistaGeo, vistaMat);
+  mesh.position.y = 48;
+  return mesh;
+}
+
+// ===== Fantasy Night Sky Dome, Celestial Moon, Stars & Dual Cosmic Vistas =====
 function createSkyGradient() {
-  const skyGeo = new THREE.SphereGeometry(450, 16, 12);
+  // Set up both cosmic video textures (Black Hole in Nebula & Jupiter Cosmos)
+  const bh = initVideoTexture('sky-video-blackhole');
+  videoBlackHole = bh.el;
+  textureBlackHole = bh.texture;
+
+  const jp = initVideoTexture('sky-video-jupiter');
+  videoJupiter = jp.el;
+  textureJupiter = jp.texture;
+
+  // 1. Sky Dome with Fantasy Aurora / Nebula Horizon Gradient
+  const skyGeo = new THREE.SphereGeometry(450, 24, 16);
   const skyMat = new THREE.ShaderMaterial({
     uniforms: {
-      topColor: { value: new THREE.Color(0x4DA6FF) },
-      bottomColor: { value: new THREE.Color(0xBFE8FF) },
-      offset: { value: 10 },
-      exponent: { value: 0.5 },
+      topColor: { value: new THREE.Color(0x060a1a) },     // Deep cosmic midnight
+      auroraColor: { value: new THREE.Color(0x0a2d3c) },  // Deep midnight teal
+      bottomColor: { value: new THREE.Color(0x131e33) },  // Soft night horizon glow
+      offset: { value: 25 },
+      exponent: { value: 0.65 },
     },
     vertexShader: `
       varying vec3 vWorldPosition;
@@ -294,32 +382,140 @@ function createSkyGradient() {
     `,
     fragmentShader: `
       uniform vec3 topColor;
+      uniform vec3 auroraColor;
       uniform vec3 bottomColor;
       uniform float offset;
       uniform float exponent;
       varying vec3 vWorldPosition;
       void main() {
         float h = normalize(vWorldPosition + offset).y;
-        gl_FragColor = vec4(mix(bottomColor, topColor, max(pow(max(h, 0.0), exponent), 0.0)), 1.0);
+        float t = max(pow(max(h, 0.0), exponent), 0.0);
+        vec3 col;
+        if (t < 0.45) {
+          col = mix(bottomColor, auroraColor, t / 0.45);
+        } else {
+          col = mix(auroraColor, topColor, (t - 0.45) / 0.55);
+        }
+        gl_FragColor = vec4(col, 1.0);
       }
     `,
     side: THREE.BackSide,
+    depthWrite: false,
+    fog: false,
   });
   const sky = new THREE.Mesh(skyGeo, skyMat);
   scene.add(sky);
+
+  // 2. Dual Celestial Vistas in the same world (Space/Black Hole opposite the Planet Jupiter)
+  // Vista 1: Deep Cosmic Space / Black Hole in Nebula — Southwest Vista Opening (x ≈ -70, z ≈ 192)
+  if (textureBlackHole) {
+    meshBlackHole = createVistaMesh(textureBlackHole, 2.793, 145, 220, 1.18);
+    scene.add(meshBlackHole);
+  }
+
+  // Vista 2: Giant Planet / Jupiter — Directly Opposite Horizon (180° opposite at theta = -0.348 rad, x ≈ +70, z ≈ -192)
+  if (textureJupiter) {
+    meshJupiter = createVistaMesh(textureJupiter, -0.348, 145, 220, 1.18);
+    scene.add(meshJupiter);
+  }
+
+  // 3. Majestic Celestial Moon in the Fantasy Sky
+  const moonGroup = new THREE.Group();
+  moonGroup.position.set(85, 115, -95);
+
+  // Luminous Moon Core
+  const moonGeo = new THREE.SphereGeometry(14, 32, 32);
+  const moonMat = new THREE.MeshBasicMaterial({ color: 0xf0fdf4 });
+  const moonCore = new THREE.Mesh(moonGeo, moonMat);
+  moonGroup.add(moonCore);
+
+  // Ethereal Inner Lunar Halo
+  const haloGeo = new THREE.RingGeometry(14.2, 32, 32);
+  const haloMat = new THREE.MeshBasicMaterial({
+    color: 0x93c5fd,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.4,
+    blending: THREE.AdditiveBlending,
+  });
+  const halo = new THREE.Mesh(haloGeo, haloMat);
+  halo.lookAt(0, 0, 0);
+  moonGroup.add(halo);
+
+  // Ethereal Outer Lunar Halo
+  const outerHaloGeo = new THREE.RingGeometry(30, 58, 32);
+  const outerHaloMat = new THREE.MeshBasicMaterial({
+    color: 0x38bdf8,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.16,
+    blending: THREE.AdditiveBlending,
+  });
+  const outerHalo = new THREE.Mesh(outerHaloGeo, outerHaloMat);
+  outerHalo.lookAt(0, 0, 0);
+  moonGroup.add(outerHalo);
+
+  scene.add(moonGroup);
+  moonMesh = moonGroup;
+
+  // 4. Twinkling Fantasy Stars in the Sky
+  createStars();
 }
 
-// ===== Particles =====
+function createStars() {
+  const count = 650;
+  const positions = new Float32Array(count * 3);
+  const colors = new Float32Array(count * 3);
+  const starColors = [
+    new THREE.Color(0xffffff),
+    new THREE.Color(0xa5f3fc),
+    new THREE.Color(0xfde047),
+    new THREE.Color(0xc084fc),
+  ];
+
+  for (let i = 0; i < count; i++) {
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(0.04 + Math.random() * 0.96);
+    const radius = 380 + Math.random() * 30;
+
+    positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+    positions[i * 3 + 1] = radius * Math.cos(phi);
+    positions[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
+
+    const c = starColors[Math.floor(Math.random() * starColors.length)];
+    colors[i * 3] = c.r;
+    colors[i * 3 + 1] = c.g;
+    colors[i * 3 + 2] = c.b;
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+  const mat = new THREE.PointsMaterial({
+    size: 1.5,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.85,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  });
+
+  starsMesh = new THREE.Points(geo, mat);
+  scene.add(starsMesh);
+}
+
+// ===== Bioluminescent Magic Particles =====
 function createFireflies() {
-  const count = 150;
+  const count = 180;
   const positions = new Float32Array(count * 3);
   const sizes = new Float32Array(count);
 
   for (let i = 0; i < count; i++) {
-    positions[i * 3] = (Math.random() - 0.5) * 100;
-    positions[i * 3 + 1] = 2 + Math.random() * 12;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
-    sizes[i] = 0.1 + Math.random() * 0.15;
+    positions[i * 3] = (Math.random() - 0.5) * 120;
+    positions[i * 3 + 1] = 1.5 + Math.random() * 14;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 120;
+    sizes[i] = 0.15 + Math.random() * 0.25;
   }
 
   const geo = new THREE.BufferGeometry();
@@ -327,10 +523,10 @@ function createFireflies() {
   geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
 
   const mat = new THREE.PointsMaterial({
-    color: 0xFFFF88,
-    size: 0.3,
+    color: 0x67e8f9,
+    size: 0.45,
     transparent: true,
-    opacity: 0.7,
+    opacity: 0.8,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
     sizeAttenuation: true,
@@ -407,8 +603,14 @@ function enterWorld() {
   landingEl.classList.add('exit');
   setTimeout(() => {
     landingEl.style.display = 'none';
+    const landingVideo = document.getElementById('landing-video');
+    if (landingVideo) {
+      try { landingVideo.pause(); } catch (e) {}
+    }
     state = 'world';
     controls.enabled = true;
+
+    playCosmicVideos();
 
     // Position camera behind player facing forward towards the clearing and Library
     camera.position.set(player.position.x, player.position.y + 2.8, player.position.z - 6.0);
@@ -867,8 +1069,19 @@ function animate() {
   // Animate landmarks
   if (landmarks) animateLandmarks(landmarks, time);
 
-  // Animate particles
+  // Animate particles & celestial night sky
   animateParticles(time);
+  if (starsMesh) starsMesh.rotation.y = time * 0.005;
+  if (moonMesh && moonMesh.children[1]) {
+    const pulse = 1.0 + Math.sin(time * 1.6) * 0.04;
+    moonMesh.children[1].scale.set(pulse, pulse, 1);
+  }
+  if (meshBlackHole) {
+    meshBlackHole.position.y = 48 + Math.sin(time * 0.4) * 1.5;
+  }
+  if (meshJupiter) {
+    meshJupiter.position.y = 48 + Math.sin(time * 0.4 + Math.PI) * 1.5;
+  }
 
   // Hover check only on mouse movement
   if (mouseMoved) {

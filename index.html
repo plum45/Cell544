@@ -20,21 +20,84 @@
 
   <!-- ===== Landing Page ===== -->
   <div id="landing">
+    <!-- Cinematic Zelda Forest Temple Video Background -->
+    <div class="landing-video-container">
+      <video id="landing-video" class="landing-video" autoplay loop muted playsinline preload="auto">
+        <source src="https://res.cloudinary.com/dd6uh0fb2/video/upload/zelda-forest-temple.1920x1080_s09zvh.mp4" type="video/mp4">
+      </video>
+      <div class="landing-video-overlay"></div>
+    </div>
+
+    <!-- Ambient Fireflies / Pollen -->
     <div class="landing-particles" id="landing-particles"></div>
+
+    <!-- Premium Hero Content Container -->
     <div class="landing-content">
-      <div class="landing-icon">🧬</div>
+      <!-- Top Tag Badge -->
+      <div class="landing-badge">
+        <span class="badge-dot"></span>
+        <span class="badge-icon">🌿</span>
+        <span>3D Interactive Biology World</span>
+      </div>
+
+      <!-- Main Titles -->
       <h1 class="landing-title">ระบบควบคุมชีวิตของเซลล์</h1>
-      <p class="landing-subtitle">Genes, Signals &amp; Responses</p>
-      <p class="landing-desc">
-        สำรวจโลก 3D แฟนตาซี เรียนรู้เรื่องยีน สัญญาณ และการตอบสนองของเซลล์<br>
-        ผ่าน 6 แลนด์มาร์กที่ซ่อนอยู่ในป่ามหัศจรรย์
-      </p>
-      <button class="landing-btn" id="btn-enter">
-        🌿 เข้าสู่โลกแห่งการเรียนรู้
-      </button>
-      <p class="landing-credits">กลุ่มที่ 3 — ชีววิทยา | 3D Interactive Learning Experience</p>
+      <div class="landing-subtitle">GENE EXPRESSION &bull; CELL SIGNALING &bull; APOPTOSIS</div>
+
+      <!-- Hero Description Card -->
+      <div class="landing-card">
+        <p class="landing-desc">
+          ผจญภัยในเกาะลอยฟ้าแฟนตาซีสไตล์ Zelda Forest Temple 🍃<br>
+          สำรวจ <strong>6 อาคารความรู้ชีววิทยาโมเลกุล</strong>, ตะลุย <strong>ห้องสมุดคลังข้อสอบ</strong> และตามล่า <strong>7 ขุมทรัพย์เซลล์</strong>
+        </p>
+
+        <!-- Feature Highlights -->
+        <div class="landing-features">
+          <div class="feature-pill">
+            <span class="pill-icon">🏛️</span>
+            <span>6 ฐานความรู้</span>
+          </div>
+          <div class="feature-pill">
+            <span class="pill-icon">📚</span>
+            <span>คลังข้อสอบ</span>
+          </div>
+          <div class="feature-pill">
+            <span class="pill-icon">💎</span>
+            <span>7 ขุมทรัพย์เซลล์</span>
+          </div>
+          <div class="feature-pill">
+            <span class="pill-icon">🦊</span>
+            <span>3 อวตารตัวละคร</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Primary CTA Button -->
+      <div class="landing-action-group">
+        <button class="landing-btn" id="btn-enter">
+          <span class="btn-sparkle">✨</span>
+          <span class="btn-text">เข้าสู่เกาะแห่งชีวิตเซลล์</span>
+          <span class="btn-arrow">➔</span>
+        </button>
+      </div>
+
+      <!-- Controls Hint & Credits -->
+      <div class="landing-footer">
+        <div class="landing-controls-preview">
+          <span>🎮 รองรับทั้ง <strong>W A S D / ปุ่มลูกศร (แป้นไทย: ไ ฟ ห ก)</strong> และ <strong>จอยบนมือถือ</strong></span>
+        </div>
+        <p class="landing-credits">กลุ่มที่ 3 — ชีววิทยา | 3D Open World Interactive Learning</p>
+      </div>
     </div>
   </div>
+
+  <!-- ===== Dual Cosmic Videos for 3D Celestial Skies (Black Hole Nebula & Jupiter Planet) ===== -->
+  <video id="sky-video-blackhole" crossorigin="anonymous" playsinline loop muted autoplay preload="auto" style="position: fixed; top: -9999px; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none;">
+    <source src="https://res.cloudinary.com/dd6uh0fb2/video/upload/v1789643985/black-hole-in-nebula.1920x1080_b1nlup.mp4" type="video/mp4">
+  </video>
+  <video id="sky-video-jupiter" crossorigin="anonymous" playsinline loop muted autoplay preload="auto" style="position: fixed; top: -9999px; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none;">
+    <source src="https://res.cloudinary.com/dd6uh0fb2/video/upload/v1789643261/jupiter.1920x1080_saho5g.mp4" type="video/mp4">
+  </video>
 
   <!-- ===== 3D Canvas ===== -->
   <canvas id="canvas3d"></canvas>
@@ -68,7 +131,7 @@
     🎮 <strong>W A S D</strong> เดิน &nbsp;|&nbsp; <strong>Shift</strong> วิ่ง &nbsp;|&nbsp; <strong>Space</strong> กระโดด &nbsp;|&nbsp; <strong>E</strong> สำรวจ &nbsp;|&nbsp; <strong>T</strong> แผนที่สมบัติ
   </div>
 
-  <!-- ===== Floating Help & Controls Toggle Buttons ===== -->
+  <!-- ===== Floating Help & Controls Buttons ===== -->
   <div class="floating-hud-tools">
     <button id="btn-help" class="btn-help" title="คู่มือการเล่น [กด H]">
       <span class="btn-help-icon">📖</span>
