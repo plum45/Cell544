@@ -406,17 +406,17 @@ function createSkyGradient() {
   const sky = new THREE.Mesh(skyGeo, skyMat);
   scene.add(sky);
 
-  // 2. Dual Celestial Vistas in the same world (Space/Black Hole opposite the Planet Jupiter)
-  // Vista 1: Deep Cosmic Space / Black Hole in Nebula — Southwest Vista Opening (x ≈ -70, z ≈ 192)
-  if (textureBlackHole) {
-    meshBlackHole = createVistaMesh(textureBlackHole, 2.793, 145, 220, 1.18);
-    scene.add(meshBlackHole);
+  // 2. Dual Celestial Vistas in the same world (Planet Jupiter opposite Deep Space/Black Hole)
+  // Vista 1: Giant Planet / Jupiter — Southwest Vista Opening (x ≈ -70, z ≈ 192)
+  if (textureJupiter) {
+    meshJupiter = createVistaMesh(textureJupiter, 2.793, 145, 220, 1.18);
+    scene.add(meshJupiter);
   }
 
-  // Vista 2: Giant Planet / Jupiter — Directly Opposite Horizon (180° opposite at theta = -0.348 rad, x ≈ +70, z ≈ -192)
-  if (textureJupiter) {
-    meshJupiter = createVistaMesh(textureJupiter, -0.348, 145, 220, 1.18);
-    scene.add(meshJupiter);
+  // Vista 2: Deep Cosmic Space / Black Hole in Nebula — Northeast Horizon centered behind the island (shifted left +0.22 rad)
+  if (textureBlackHole) {
+    meshBlackHole = createVistaMesh(textureBlackHole, -0.128, 145, 220, 1.18);
+    scene.add(meshBlackHole);
   }
 
   // 3. Majestic Celestial Moon in the Fantasy Sky
