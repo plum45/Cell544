@@ -5,21 +5,51 @@ let joystickBase = null;
 let joystickKnob = null;
 let activeTouchId = null;
 let baseCenter = { x: 0, y: 0 };
-const MAX_RADIUS = 46; // maximum joystick radius in px
+const MAX_RADIUS = 36; // compact joystick radius in px
 
 export function initTouchControls() {
   joystickZone = document.getElementById('joystick-zone');
   joystickBase = document.getElementById('joystick-base');
   joystickKnob = document.getElementById('joystick-knob');
   const touchContainer = document.getElementById('touch-controls');
+  const btnToggleTouch = document.getElementById('btn-toggle-touch');
 
   if (!touchContainer || !joystickZone || !joystickBase || !joystickKnob) return;
 
-  // Auto-detect touch capability or tablet screen size
-  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || window.innerWidth <= 1024;
-  if (isTouchDevice) {
+  // Real mobile touch detection (only phones/tablets with coarse pointer, not PC laptops)
+  const isMobileTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  if (isMobileTouch) {
     touchContainer.classList.add('active');
+    if (btnToggleTouch) btnToggleTouch.classList.add('active');
   }
+
+  // Toggle button in HUD allows toggling touch controls on/off anytime
+  if (btnToggleTouch) {
+    btnToggleTouch.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isActive = touchContainer.classList.toggle('active');
+      btnToggleTouch.classList.toggle('active', isActive);
+    });
+  }
+
+  // Auto-show when real touch occurs
+  window.addEventListener('touchstart', () => {
+    if (!touchContainer.classList.contains('active')) {
+      touchContainer.classList.add('active');
+      if (btnToggleTouch) btnToggleTouch.classList.add('active');
+    }
+  }, { passive: true, once: true });
+
+  // Auto-hide touch controls when user starts walking with keyboard on PC
+  window.addEventListener('keydown', (e) => {
+    const key = e.key.toLowerCase();
+    if (['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' '].includes(key)) {
+      if (touchContainer.classList.contains('active') && !isMobileTouch) {
+        touchContainer.classList.remove('active');
+        if (btnToggleTouch) btnToggleTouch.classList.remove('active');
+      }
+    }
+  });
 
   // ===== Virtual Joystick Touch & Mouse Events =====
   let isMouseDown = false;

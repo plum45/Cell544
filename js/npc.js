@@ -210,10 +210,10 @@ export function animateGuideNPC(time) {
   }
 }
 
-// Check if player is near Guide NPC
+// Check if player is near Guide NPC (only when standing close)
 export function isPlayerNearNPC() {
   if (!npcGroup || !player) return false;
-  return player.position.distanceTo(npcGroup.position) < 7.0;
+  return player.position.distanceTo(npcGroup.position) < 3.2;
 }
 
 // Set active navigation destination along the brown road

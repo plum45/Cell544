@@ -61,7 +61,7 @@ function init() {
   // Renderer
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25));
   renderer.outputColorSpace = THREE.SRGBColorSpace; // Match Sketchfab sRGB color fidelity!
   renderer.shadowMap.enabled = false; // Disable heavy dynamic shadow maps to guarantee 60 FPS
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -411,8 +411,8 @@ function enterWorld() {
     controls.enabled = true;
 
     // Position camera behind player facing forward towards the clearing and Library
-    camera.position.set(player.position.x, player.position.y + 3.2, player.position.z - 7.5);
-    controls.target.set(player.position.x, player.position.y + 1.2, player.position.z + 5.0);
+    camera.position.set(player.position.x, player.position.y + 2.8, player.position.z - 6.0);
+    controls.target.set(player.position.x, player.position.y + 1.2, player.position.z);
     controls.update();
     try { window.focus(); canvas.focus(); } catch (e) {}
 
@@ -424,8 +424,8 @@ function enterWorld() {
       const treasureHud = document.getElementById('treasure-hud');
       if (treasureHud) treasureHud.classList.add('visible');
       updateTreasureHUD();
-      // Hide hint after some time
-      setTimeout(() => hudHint.classList.remove('visible'), 8000);
+      // Hide hint after 3.5s
+      setTimeout(() => hudHint.classList.remove('visible'), 3500);
 
       // Auto-popup tutorial modal on first visit
       try {
@@ -767,8 +767,8 @@ function checkProximity() {
 
   isNearNPC = false;
 
-  // 2. Check if near any treasure chest
-  nearestTreasureChest = getNearestChest(player.position, 5.0);
+  // 2. Check if near any treasure chest (only when right next to it)
+  nearestTreasureChest = getNearestChest(player.position, 2.6);
   if (nearestTreasureChest) {
     nearestLandmark = null;
     nearestAnimal = null;
@@ -778,8 +778,8 @@ function checkProximity() {
     return;
   }
 
-  // 3. Check if near any friendly wildlife animal
-  nearestAnimal = getNearbyAnimal(player.position, 5.2);
+  // 3. Check if near any friendly wildlife animal (only when right next to it)
+  nearestAnimal = getNearbyAnimal(player.position, 2.2);
   if (nearestAnimal) {
     nearestLandmark = null;
     promptText.innerHTML = nearestAnimal.userData.prompt || 'ทักทายสัตว์น้อย 🐾';
@@ -787,9 +787,9 @@ function checkProximity() {
     return;
   }
 
-  // 4. Check closest landmark
+  // 4. Check closest landmark (only when standing close to the building)
   let closest = null;
-  let minDist = 8.5;
+  let minDist = 4.2;
 
   landmarks.forEach((lm) => {
     const d = player.position.distanceTo(lm.worldPosition);

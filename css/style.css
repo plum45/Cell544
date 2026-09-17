@@ -661,28 +661,32 @@ body {
 }
 
 /* ===== Interaction Prompt Badge ===== */
+/* ===== Interaction Prompt Badge (Sleek Compact Pill at Top-Center Sky Area) ===== */
 .interact-prompt {
   position: absolute;
-  bottom: 85px;
+  top: 76px;
+  bottom: auto;
   left: 50%;
-  transform: translate3d(-50%, 20px, 0);
-  background: rgba(15, 23, 42, 0.92);
-  backdrop-filter: blur(12px);
-  border: 2px solid #F59E0B;
+  transform: translate3d(-50%, -12px, 0);
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(245, 158, 11, 0.85);
   color: #FFFFFF;
-  padding: 10px 22px;
-  border-radius: 30px;
-  font-family: var(--thai-font);
-  font-size: 15px;
-  font-weight: 500;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-family: var(--game-font);
+  font-size: 13.5px;
+  font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 12px;
-  box-shadow: 0 0 24px rgba(245, 158, 11, 0.4), 0 8px 20px rgba(0,0,0,0.5);
+  gap: 8px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35), 0 0 14px rgba(245, 158, 11, 0.25);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 60;
+  white-space: nowrap;
 }
 .interact-prompt.visible {
   opacity: 1;
@@ -694,15 +698,15 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   background: #F59E0B;
   color: #1E293B;
-  font-family: var(--pixel-font);
-  font-weight: 700;
-  font-size: 15px;
+  font-family: var(--game-font);
+  font-weight: 800;
+  font-size: 12px;
   border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
 }
 
 /* ===== Responsive ===== */
@@ -993,6 +997,7 @@ body {
 }
 
 /* ===== Mobile & iPad Touch Controls Overlay ===== */
+/* ===== Mobile & iPad Touch Controls Overlay ===== */
 .touch-controls {
   position: fixed;
   inset: 0;
@@ -1001,30 +1006,18 @@ body {
   display: none;
 }
 
-/* Display automatically on touch screens or when active */
+/* Display automatically only when active */
 .touch-controls.active {
   display: block;
 }
 
-@media (hover: none) and (pointer: coarse) {
-  .touch-controls {
-    display: block;
-  }
-}
-
-@media (max-width: 1024px) {
-  .touch-controls {
-    display: block;
-  }
-}
-
-/* Virtual Analog Joystick (Lower-Left) */
+/* Virtual Analog Joystick (Compact, Translucent, Lower-Left Corner) */
 .joystick-zone {
   position: absolute;
-  left: 24px;
-  bottom: 28px;
-  width: 150px;
-  height: 150px;
+  left: 16px;
+  bottom: 16px;
+  width: 116px;
+  height: 116px;
   pointer-events: auto;
   display: flex;
   align-items: center;
@@ -1032,18 +1025,24 @@ body {
   touch-action: none;
   -webkit-user-select: none;
   user-select: none;
+  opacity: 0.55;
+  transition: opacity 0.25s ease;
+}
+.joystick-zone:hover,
+.joystick-zone:active {
+  opacity: 0.95;
 }
 
 .joystick-base {
   position: relative;
-  width: 114px;
-  height: 114px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.22) 70%, rgba(200, 220, 255, 0.1) 100%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 2px solid rgba(255, 255, 255, 0.75);
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18), inset 0 2px 6px rgba(255, 255, 255, 0.9);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.15) 70%, rgba(200, 220, 255, 0.05) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.15), inset 0 2px 4px rgba(255, 255, 255, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1052,33 +1051,33 @@ body {
 .joystick-base::after {
   content: '';
   position: absolute;
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  border: 1.5px dashed rgba(255, 255, 255, 0.6);
+  border: 1.5px dashed rgba(255, 255, 255, 0.5);
   pointer-events: none;
 }
 
 .joystick-knob {
   position: absolute;
-  width: 50px;
-  height: 50px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: linear-gradient(135deg, #6ee7b7, #34d399);
-  border: 2.5px solid #ffffff;
-  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.45), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.45), inset 0 1px 3px rgba(255, 255, 255, 0.8);
   transform: translate(0, 0);
   pointer-events: none;
-  transition: transform 0.05s ease-out;
+  transition: transform 0.04s ease-out;
 }
 
-/* Touch Action Buttons (Lower-Right) */
+/* Touch Action Buttons (Compact, Lower-Right Corner) */
 .touch-actions {
   position: absolute;
-  right: 24px;
-  bottom: 30px;
+  right: 16px;
+  bottom: 16px;
   display: flex;
-  gap: 14px;
+  gap: 10px;
   align-items: flex-end;
   pointer-events: auto;
   touch-action: manipulation;
@@ -1092,30 +1091,36 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   cursor: pointer;
-  transition: transform 0.14s ease, box-shadow 0.14s ease, background 0.18s ease;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15), inset 0 1px 4px rgba(255, 255, 255, 0.8);
-  font-family: 'Prompt', sans-serif;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.2s ease;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.15), inset 0 1px 3px rgba(255, 255, 255, 0.8);
+  font-family: var(--game-font);
+  opacity: 0.65;
 }
 
+.touch-btn:hover,
+.touch-btn:active,
+.touch-btn.pressed {
+  opacity: 1.0;
+}
 .touch-btn:active,
 .touch-btn.pressed {
   transform: scale(0.9) !important;
 }
 
 .touch-btn-jump {
-  width: 66px;
-  height: 66px;
+  width: 52px;
+  height: 52px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(224, 242, 254, 0.85));
   color: #0369a1;
 }
 
 .touch-btn-sprint {
-  width: 58px;
-  height: 58px;
+  width: 44px;
+  height: 44px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(254, 243, 199, 0.85));
   color: #b45309;
 }
@@ -1124,12 +1129,13 @@ body {
   background: linear-gradient(135deg, #f59e0b, #d97706);
   color: #ffffff;
   border-color: #fef3c7;
-  box-shadow: 0 0 20px rgba(245, 158, 11, 0.6);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.6);
+  opacity: 1.0;
 }
 
 .touch-btn-interact {
-  width: 62px;
-  height: 62px;
+  width: 48px;
+  height: 48px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(243, 232, 255, 0.85));
   color: #6b21a8;
 }
@@ -1138,24 +1144,25 @@ body {
   background: linear-gradient(135deg, #a855f7, #7c3aed);
   color: #ffffff;
   border-color: #f3e8ff;
-  box-shadow: 0 0 22px rgba(168, 85, 247, 0.65);
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.65);
+  opacity: 1.0;
   animation: pulseTouch 1.2s infinite alternate ease-in-out;
 }
 
 @keyframes pulseTouch {
   from { transform: scale(1); }
-  to { transform: scale(1.08); }
+  to { transform: scale(1.06); }
 }
 
 .touch-btn-icon {
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1;
 }
 
 .touch-btn-label {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 /* Responsive Overrides for iPad & Mobile */
@@ -1164,26 +1171,24 @@ body {
     display: none;
   }
   #minimap {
-    width: 120px;
-    height: 120px;
+    width: 110px;
+    height: 110px;
     bottom: auto;
-    top: 20px;
-    left: 20px;
+    top: 16px;
+    left: 16px;
   }
   .minimap-canvas {
-    width: 120px;
-    height: 100px;
+    width: 110px;
+    height: 90px;
   }
   #character-selector {
-    top: 20px;
-    right: 20px;
+    top: 16px;
+    right: 16px;
+    padding: 6px 10px;
   }
   .char-btn {
-    padding: 6px 12px;
-    font-size: 13px;
-  }
-  .interact-prompt {
-    bottom: 190px;
+    padding: 5px 10px;
+    font-size: 12px;
   }
 }
 
@@ -1682,41 +1687,70 @@ body {
   }
 }
 
-/* ===== Floating Tutorial / Help Button ===== */
-.btn-help {
+/* ===== Floating Tutorial & Controls Tools ===== */
+.floating-hud-tools {
   position: fixed;
   top: 16px;
   left: 172px;
   z-index: 80;
   display: inline-flex;
   align-items: center;
+  gap: 8px;
+}
+.btn-help,
+.btn-toggle-touch {
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 8px 14px;
+  padding: 7px 13px;
   background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
   border: 1.5px solid #7dd3fc;
   border-bottom: 3.5px solid #0369a1;
-  border-radius: 14px;
+  border-radius: 12px;
   color: #ffffff;
   font-family: var(--game-font);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
   transition: all 0.12s ease;
   user-select: none;
 }
 .btn-help:hover {
   background: linear-gradient(180deg, #7dd3fc 0%, #0284c7 100%);
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(2, 132, 199, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  box-shadow: 0 6px 18px rgba(2, 132, 199, 0.45);
 }
 .btn-help:active {
   transform: translateY(2px);
   border-bottom: 1.5px solid #0369a1;
 }
-.btn-help-icon {
-  font-size: 16px;
+
+.btn-toggle-touch {
+  background: linear-gradient(180deg, #475569 0%, #1e293b 100%);
+  border: 1.5px solid #64748b;
+  border-bottom: 3.5px solid #0f172a;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.btn-toggle-touch:hover {
+  background: linear-gradient(180deg, #64748b 0%, #334155 100%);
+  transform: translateY(-1px);
+}
+.btn-toggle-touch:active {
+  transform: translateY(2px);
+  border-bottom: 1.5px solid #0f172a;
+}
+.btn-toggle-touch.active {
+  background: linear-gradient(180deg, #34d399 0%, #059669 100%);
+  border-color: #6ee7b7;
+  border-bottom-color: #064e3b;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.btn-help-icon,
+.touch-toggle-icon {
+  font-size: 15px;
 }
 
 /* ===== Tutorial / How to Play Modal ===== */
@@ -1908,11 +1942,15 @@ body {
 }
 
 @media (max-width: 640px) {
-  .btn-help {
+  .floating-hud-tools {
     top: 12px;
-    left: 135px;
-    padding: 6px 10px;
-    font-size: 11px;
+    left: 125px;
+    gap: 4px;
+  }
+  .btn-help,
+  .btn-toggle-touch {
+    padding: 5px 8px;
+    font-size: 10.5px;
   }
   .tutorial-panel {
     padding: 20px 18px;

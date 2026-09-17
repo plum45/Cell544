@@ -89,8 +89,8 @@ function createFlowerGeometry() {
 
 // Build Grass & Wildflower Fields
 export function createGrass(scene) {
-  const GRASS_COUNT = 3800;
-  const FLOWER_COUNT = 700;
+  const GRASS_COUNT = 180;
+  const FLOWER_COUNT = 60;
 
   // Material with wind sway vertex shader
   const grassMat = new THREE.MeshLambertMaterial({
@@ -169,47 +169,34 @@ export function createGrass(scene) {
     new THREE.Color(0xfb7185), // Coral Blossom
   ];
 
-  // Populate grass instances across expanded 350-unit island
+  // Populate grass instances efficiently without main thread freeze
   function populateGrass() {
     if (isGrassGenerated) return;
-    const roadPoints = window.__roadPositions || [];
 
     const dummy = new THREE.Object3D();
     let grassIdx = 0;
     let flowerIdx = 0;
 
     let attempts = 0;
-    while (grassIdx < GRASS_COUNT && attempts < 40000) {
+    while (grassIdx < GRASS_COUNT && attempts < 400) {
       attempts++;
 
-      // Distribute across expanded island radius 8 to 130
-      const angle = Math.random() * Math.PI * 2;
-      const dist = 8.0 + Math.sqrt(Math.random()) * 122.0;
+      // Distribute naturally around the clearing & meadow
+      const angle = (attempts / 50) * Math.PI * 2 + Math.random() * 0.5;
+      const dist = 6.0 + Math.random() * 45.0;
       const x = Math.cos(angle) * dist;
       const z = Math.sin(angle) * dist;
 
-      // Check distance from dirt road points
-      let minDistToRoad = 999;
-      for (let i = 0; i < roadPoints.length; i++) {
-        const d = Math.hypot(x - roadPoints[i].x, z - roadPoints[i].z);
-        if (d < minDistToRoad) minDistToRoad = d;
-      }
-
-      // Avoid walking paths / road centers (must be at least 3.0 units away from center)
-      if (minDistToRoad < 3.0) continue;
-
-      // Avoid Lake water surface (approx x: -35 to 8, z: 20 to 60)
-      if (x > -35 && x < 8 && z > 20 && z < 60) {
-        continue;
-      }
+      // Avoid lake water surface
+      if (x > -35 && x < 8 && z > 20 && z < 60) continue;
 
       const y = getTerrainHeight(x, z);
-      if (y < 1.2 || y > 7.5) continue;
+      if (y < 1.0 || y > 6.0) continue;
 
       dummy.position.set(x, y, z);
       dummy.rotation.y = Math.random() * Math.PI * 2;
-      const scale = 0.75 + Math.random() * 0.65;
-      dummy.scale.set(scale, scale * (0.85 + Math.random() * 0.4), scale);
+      const scale = 0.7 + Math.random() * 0.4;
+      dummy.scale.set(scale, scale, scale);
       dummy.updateMatrix();
 
       grassMesh.setMatrixAt(grassIdx, dummy.matrix);
@@ -218,10 +205,10 @@ export function createGrass(scene) {
       const col = grassColors[Math.floor(Math.random() * grassColors.length)];
       grassMesh.setColorAt(grassIdx, col);
 
-      // Sprinkle a flower on ~20% of the tufts
-      if (flowerIdx < FLOWER_COUNT && Math.random() < 0.25) {
-        dummy.position.set(x + (Math.random() - 0.5) * 0.4, y + scale * 0.9, z + (Math.random() - 0.5) * 0.4);
-        dummy.scale.set(scale * 1.2, scale * 1.2, scale * 1.2);
+      // Sprinkle a flower on some tufts
+      if (flowerIdx < FLOWER_COUNT && Math.random() < 0.35) {
+        dummy.position.set(x + (Math.random() - 0.5) * 0.3, y + scale * 0.85, z + (Math.random() - 0.5) * 0.3);
+        dummy.scale.set(scale * 1.1, scale * 1.1, scale * 1.1);
         dummy.updateMatrix();
 
         flowersMesh.setMatrixAt(flowerIdx, dummy.matrix);
@@ -242,7 +229,6 @@ export function createGrass(scene) {
     if (flowersMesh.instanceColor) flowersMesh.instanceColor.needsUpdate = true;
 
     isGrassGenerated = true;
-    console.log(`✅ Generated ${grassIdx} lush 3D grass tufts & ${flowerIdx} pasture wildflowers!`);
   }
 
   // Populate as soon as forest ready or immediately if already loaded

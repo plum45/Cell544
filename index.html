@@ -68,11 +68,17 @@
     🎮 <strong>W A S D</strong> เดิน &nbsp;|&nbsp; <strong>Shift</strong> วิ่ง &nbsp;|&nbsp; <strong>Space</strong> กระโดด &nbsp;|&nbsp; <strong>E</strong> สำรวจ &nbsp;|&nbsp; <strong>T</strong> แผนที่สมบัติ
   </div>
 
-  <!-- ===== Floating Help Button ===== -->
-  <button id="btn-help" class="btn-help" title="คู่มือการเล่น [กด H]">
-    <span class="btn-help-icon">📖</span>
-    <span class="btn-help-text">คู่มือการเล่น [H]</span>
-  </button>
+  <!-- ===== Floating Help & Controls Toggle Buttons ===== -->
+  <div class="floating-hud-tools">
+    <button id="btn-help" class="btn-help" title="คู่มือการเล่น [กด H]">
+      <span class="btn-help-icon">📖</span>
+      <span class="btn-help-text">คู่มือ [H]</span>
+    </button>
+    <button id="btn-toggle-touch" class="btn-toggle-touch" title="เปิด/ปิด ปุ่มเดินบนจอ">
+      <span class="touch-toggle-icon">🕹️</span>
+      <span class="touch-toggle-text">ปุ่มเดิน</span>
+    </button>
+  </div>
 
   <!-- ===== Tutorial / Guide Modal ===== -->
   <div id="tutorial-modal" class="tutorial-modal">
@@ -169,10 +175,6 @@
 
     <!-- Action Buttons (Lower Right) -->
     <div id="touch-actions" class="touch-actions">
-      <button id="btn-touch-aerial" class="touch-btn touch-btn-aerial" aria-label="ดูแมพมุมสูง">
-        <span class="touch-btn-icon">🦅</span>
-        <span class="touch-btn-label">มุมสูง</span>
-      </button>
       <button id="btn-touch-interact" class="touch-btn touch-btn-interact" aria-label="สำรวจ/คุย">
         <span class="touch-btn-icon">💬</span>
         <span class="touch-btn-label">สำรวจ</span>

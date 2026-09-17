@@ -7,18 +7,31 @@ const groundRaycaster = new THREE.Raycaster();
 const downVector = new THREE.Vector3(0, -1, 0);
 const rayOrigin = new THREE.Vector3();
 
+let lastX = null;
+let lastZ = null;
+let lastHeight = 2.0;
+
 // Height function for landmark & player placement physically on the actual 3D ground
 export function getTerrainHeight(x, z) {
+  if (lastX !== null && Math.abs(x - lastX) < 0.06 && Math.abs(z - lastZ) < 0.06) {
+    return lastHeight;
+  }
   if (walkableGroundMeshes.length > 0) {
     rayOrigin.set(x, 50, z);
     groundRaycaster.set(rayOrigin, downVector);
     const hits = groundRaycaster.intersectObjects(walkableGroundMeshes, false);
     if (hits.length > 0) {
-      return hits[0].point.y;
+      lastX = x;
+      lastZ = z;
+      lastHeight = hits[0].point.y;
+      return lastHeight;
     }
   }
   const dist = Math.sqrt(x * x + z * z);
-  return 1.8 + Math.min(2.0, (dist / 35) ** 2 * 0.5);
+  lastX = x;
+  lastZ = z;
+  lastHeight = 1.8 + Math.min(2.0, (dist / 35) ** 2 * 0.5);
+  return lastHeight;
 }
 
 // Low-poly floating rock stalactites hanging underneath the sky island
