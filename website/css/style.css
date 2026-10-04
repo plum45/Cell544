@@ -1,59 +1,49 @@
 /* ==========================================================================
-   CYTOLIFE // APPLE DESIGN SYSTEM & STYLESHEET (Cupertino Pro Edition)
-   Designed in authentic Apple.com Aesthetic: Pitch Black OLED, Frosted Glass,
-   SF Pro / Inter Typography, Titanium Gradients, Dynamic Island & 3D Cylinder Ring
+   CYTOLIFE PRO // APPLE CUPERTINO SYSTEM + 3D SPHERE HERO
+   Complete integrated stylesheet for 3D Sphere Hero & Apple Ecosystem Layout
    ========================================================================== */
 
 :root {
-  /* Apple Signature Color Palette */
+  /* Apple Signature Colors */
+  --bg: #000000;
   --apple-black: #000000;
-  --apple-bg-dark: #000000;
   --apple-bg-secondary: #0c0c0d;
   --apple-bg-card: #161617;
   --apple-bg-card-hover: #1c1c1e;
   --apple-card-border: rgba(255, 255, 255, 0.1);
   --apple-card-border-glow: rgba(255, 255, 255, 0.22);
+
+  --ink: #f4f2ef;
+  --dim: #8c8783;
+  --line: rgba(244, 242, 239, .28);
+  --pad: clamp(14px, 2.6vw, 34px);
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --ease-spring: cubic-bezier(.16, 1, 0.3, 1);
+  --hw: min(56vw, 640px);
+  --persp: 1150px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
   
   --apple-blue: #2997ff;
   --apple-blue-hover: #0077ed;
   --apple-purple: #bf5af2;
-  --apple-indigo: #5e5ce6;
   --apple-green: #30d158;
   --apple-orange: #ff9f0a;
-  --apple-pink: #ff375f;
-  --apple-teal: #64d2ff;
-  
-  /* Apple Titanium Tones */
-  --titanium-natural: #9a999e;
-  --titanium-silver: #f5f5f7;
-  --titanium-gold: #e3d0bf;
-  --titanium-black: #1d1d1f;
-
-  /* Typography Colors */
   --text-white: #f5f5f7;
   --text-silver: #d2d2d7;
   --text-gray: #86868b;
-  --text-dim: #6e6e73;
 
-  /* Glassmorphic Navbar */
-  --nav-bg: rgba(0, 0, 0, 0.8);
-  --nav-sub-bg: rgba(22, 22, 23, 0.85);
-
-  /* Fonts */
-  --font-apple: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Prompt", "Sarabun", sans-serif;
-  --font-mono: "SF Mono", "JetBrains Mono", Menlo, monospace;
-
-  /* Radii */
   --r-pill: 980px;
   --r-card: 28px;
   --r-inner: 18px;
-  --r-btn: 980px;
-
-  --ease-apple: cubic-bezier(0.25, 0.1, 0.25, 1);
-  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --serif: "Playfair Display", "Times New Roman", serif;
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Prompt", sans-serif;
+  --font-apple: var(--sans);
+  --font-mono: "SF Mono", "JetBrains Mono", Menlo, monospace;
 }
 
-/* Reset */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -61,32 +51,48 @@
 }
 
 html {
-  font-family: var(--font-apple);
-  background-color: var(--apple-black);
-  color: var(--text-white);
+  background: #000;
+  scrollbar-gutter: stable;
+  font-family: var(--sans);
+  color: var(--ink);
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background-color: var(--apple-black);
-  color: var(--text-white);
+  background: #000;
+  color: var(--ink);
   overflow-x: hidden;
+  min-height: 100vh;
   line-height: 1.45;
+  font-weight: 300;
 }
 
-/* Container */
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+a {
+  -webkit-tap-highlight-color: transparent;
+  color: inherit;
+  text-decoration: none;
+}
+
 .apple-container {
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-.apple-container-wide {
-  width: 100%;
-  max-width: 1380px;
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -98,7 +104,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 9999;
-  background: var(--nav-bg);
+  background: rgba(0, 0, 0, 0.82);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -118,12 +124,10 @@ body {
 .apple-logo-link {
   color: #fff;
   font-size: 18px;
-  text-decoration: none;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 8px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
 }
 
 .nav-links-desktop {
@@ -136,11 +140,9 @@ body {
 .nav-links-desktop a {
   color: var(--text-silver);
   font-size: 12px;
-  text-decoration: none;
   font-weight: 400;
-  letter-spacing: -0.01em;
   opacity: 0.8;
-  transition: opacity 0.2s var(--ease-apple), color 0.2s var(--ease-apple);
+  transition: opacity 0.2s, color 0.2s;
 }
 
 .nav-links-desktop a:hover {
@@ -151,12 +153,11 @@ body {
 .nav-cta-btn {
   background: var(--apple-blue);
   color: #fff;
-  padding: 4px 14px;
+  padding: 5px 15px;
   border-radius: var(--r-pill);
   font-size: 12px;
   font-weight: 500;
-  text-decoration: none;
-  transition: background 0.2s var(--ease-apple), transform 0.15s ease;
+  transition: background 0.2s, transform 0.15s;
 }
 
 .nav-cta-btn:hover {
@@ -165,13 +166,13 @@ body {
 }
 
 /* ==========================================================================
-   2. Apple Local Sub-Header (Product Header Sticky)
+   2. Apple Local Sub-Header (Sticky)
    ========================================================================== */
 .apple-local-nav {
   position: sticky;
   top: 48px;
   z-index: 999;
-  background: var(--nav-sub-bg);
+  background: rgba(22, 22, 23, 0.85);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -189,17 +190,15 @@ body {
 }
 
 .local-title {
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--text-white);
-  letter-spacing: -0.02em;
 }
 
 .local-title span {
   color: var(--text-gray);
-  font-size: 14px;
-  font-weight: 400;
-  margin-left: 8px;
+  font-size: 13px;
+  margin-left: 6px;
 }
 
 .local-actions {
@@ -211,7 +210,6 @@ body {
 .local-link {
   color: var(--text-silver);
   font-size: 12px;
-  text-decoration: none;
   transition: color 0.2s;
 }
 
@@ -226,7 +224,6 @@ body {
   border-radius: var(--r-pill);
   font-size: 12px;
   font-weight: 600;
-  text-decoration: none;
   transition: opacity 0.2s, transform 0.15s;
 }
 
@@ -241,7 +238,7 @@ body {
 .dynamic-island-wrapper {
   display: flex;
   justify-content: center;
-  padding-top: 24px;
+  padding-top: 20px;
   position: relative;
   z-index: 50;
 }
@@ -249,21 +246,20 @@ body {
 .dynamic-island {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   background: #000;
   border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 6px 18px;
   border-radius: var(--r-pill);
   cursor: pointer;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 255, 255, 0.05);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  transition: all 0.3s var(--ease-spring);
   user-select: none;
 }
 
 .dynamic-island:hover {
   border-color: rgba(255, 255, 255, 0.35);
   transform: scale(1.03);
-  box-shadow: 0 10px 40px rgba(41, 151, 255, 0.2);
 }
 
 .island-dot {
@@ -285,7 +281,6 @@ body {
   font-size: 12px;
   font-weight: 500;
   color: var(--text-silver);
-  letter-spacing: -0.01em;
 }
 
 .island-badge {
@@ -298,435 +293,278 @@ body {
 }
 
 /* ==========================================================================
-   4. Apple Cinematic Hero Section
+   4. 3D SPHERE HERO SECTION
    ========================================================================== */
-.apple-hero {
-  padding: 40px 0 60px;
-  text-align: center;
+.sphere-hero-section {
   position: relative;
+  width: 100%;
+  height: 85vh;
+  min-height: 600px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 30px;
 }
 
-.hero-eyebrow {
-  font-size: 21px;
-  font-weight: 600;
-  color: var(--apple-blue);
-  margin-bottom: 12px;
-  letter-spacing: -0.01em;
+.stage-hero-viewport {
+  position: absolute;
+  inset: 0;
+  perspective: var(--persp);
+  perspective-origin: 50% 50%;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
 }
 
-.hero-headline {
-  font-size: clamp(2.8rem, 6.5vw, 5.5rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.06;
-  margin-bottom: 16px;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
+.stage-hero-viewport:active {
+  cursor: grabbing;
 }
 
-.hero-headline-gradient {
-  background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: block;
+#world {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
-.hero-headline-color {
-  background: linear-gradient(90deg, #2997ff 0%, #bf5af2 50%, #ff375f 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+#orb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  opacity: 1;
+  transform: none;
 }
 
-.hero-subheadline {
-  font-size: clamp(1.1rem, 2vw, 1.55rem);
+#headline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--hw);
+  margin-left: calc(var(--hw) / -2);
+  text-align: center;
+  font-family: var(--serif);
   font-weight: 400;
-  color: var(--text-gray);
-  max-width: 720px;
-  margin: 0 auto 36px;
-  line-height: 1.4;
-  letter-spacing: -0.01em;
+  font-size: clamp(26px, 3.8vw, 56px);
+  line-height: 1.06;
+  letter-spacing: -.005em;
+  color: #fff;
+  text-shadow: 0 2px 34px rgba(0,0,0,.65);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  will-change: transform, opacity;
 }
 
-.hero-cta-buttons {
+#headline .inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+}
+
+#headline .inner span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(.42em);
+  filter: blur(7px);
+  transition: opacity 1.05s var(--ease), transform 1.15s var(--ease), filter 1.05s var(--ease);
+  transition-delay: calc(.2s + var(--i) * .085s);
+}
+
+body.revealed #headline .inner span {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+/* 3D Sphere Card Item */
+.card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--cw) * 1px);
+  height: calc(var(--cw) / 1.5 * 1px);
+  margin-left: calc(var(--cw) / -2 * 1px);
+  margin-top: calc(var(--cw) / -3 * 1px);
+  transform-style: preserve-3d;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.card.tall {
+  height: calc(var(--cw) * 1.25 * 1px);
+  margin-top: calc(var(--cw) * -0.625 * 1px);
+}
+
+.card figure {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #0a0a0a;
+  position: relative;
+  transition: transform .5s var(--ease);
+}
+
+.card:hover figure {
+  transform: scale(1.05);
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .8s ease-out;
+}
+
+.card img.in {
+  opacity: 1;
+}
+
+.card figure::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0, var(--d, 0));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08);
+  border-radius: 3px;
+  pointer-events: none;
+  transition: background .2s linear;
+}
+
+/* Hero Controls Overlay */
+.hero-controls-dock {
+  position: relative;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  pointer-events: auto;
+}
+
+.hero-cta-group {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-bottom: 36px;
+  gap: 14px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .apple-btn-primary {
   background: var(--apple-blue);
   color: #fff;
-  padding: 13px 26px;
-  border-radius: var(--r-btn);
-  font-size: 15px;
+  padding: 12px 24px;
+  border-radius: var(--r-pill);
+  font-size: 14px;
   font-weight: 500;
-  text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.25s var(--ease-apple);
+  transition: all 0.25s var(--ease);
 }
 
 .apple-btn-primary:hover {
   background: var(--apple-blue-hover);
   transform: scale(1.02);
-  box-shadow: 0 0 30px rgba(41, 151, 255, 0.4);
+  box-shadow: 0 0 25px rgba(41, 151, 255, 0.4);
 }
 
 .apple-btn-secondary {
   background: rgba(255, 255, 255, 0.08);
   color: var(--text-white);
-  padding: 13px 26px;
-  border-radius: var(--r-btn);
-  font-size: 15px;
+  padding: 12px 24px;
+  border-radius: var(--r-pill);
+  font-size: 14px;
   font-weight: 500;
-  text-decoration: none;
   border: 1px solid rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(12px);
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.25s var(--ease-apple);
+  transition: all 0.25s var(--ease);
 }
 
 .apple-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.16);
   border-color: rgba(255, 255, 255, 0.3);
   transform: scale(1.02);
 }
 
+.hero-hint-pill {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-gray);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 5px 14px;
+  border-radius: var(--r-pill);
+  backdrop-filter: blur(8px);
+}
+
 /* ==========================================================================
-   5. NEW: 3D Rotating Cylinder Content Showcase (ทรงกลม/วงแหวน 3 มิติหมุนรอบ)
+   5. Apple Big Spec Numbers Bar
    ========================================================================== */
-.apple-3d-showcase-section {
-  padding: 70px 0 90px;
+.section-apple {
+  padding: 80px 0;
   position: relative;
-  background: radial-gradient(circle at 50% 30%, rgba(41, 151, 255, 0.07) 0%, transparent 70%);
-  overflow: hidden;
+}
+
+.apple-specs-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding: 44px;
+  background: var(--apple-bg-secondary);
+  border: 1px solid var(--apple-card-border);
+  border-radius: var(--r-card);
+  margin-bottom: 60px;
+}
+
+.spec-item {
   text-align: center;
 }
 
-.showcase-header {
-  margin-bottom: 50px;
-}
-
-.showcase-stage-viewport {
-  perspective: 1300px;
-  width: 100%;
-  height: 480px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  user-select: none;
-}
-
-.showcase-cylinder-ring {
-  width: 320px;
-  height: 400px;
-  position: absolute;
-  transform-style: preserve-3d;
-  transition: transform 0.1s ease-out;
-  cursor: grab;
-}
-
-.showcase-cylinder-ring:active {
-  cursor: grabbing;
-}
-
-/* Rectangular Content Cards on 3D Cylinder */
-.showcase-card {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 300px;
-  height: 390px;
-  border-radius: var(--r-card);
-  background: rgba(22, 22, 23, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 24px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  transition: transform 0.4s var(--ease-spring), border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
-  transform-style: preserve-3d;
-  text-align: left;
-}
-
-.showcase-card:hover {
-  border-color: var(--apple-blue);
-  box-shadow: 0 25px 70px rgba(41, 151, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  background: rgba(28, 28, 30, 0.95);
-}
-
-.card-img-banner {
-  height: 140px;
-  width: 100%;
-  border-radius: var(--r-inner);
-  margin-bottom: 16px;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.card-img-banner-bg {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-size: cover;
-  background-position: center;
-  transition: transform 0.5s ease;
-}
-
-.showcase-card:hover .card-img-banner-bg {
-  transform: scale(1.08);
-}
-
-.card-img-icon-overlay {
-  position: relative;
-  z-index: 2;
-  width: 52px;
-  height: 52px;
-  border-radius: 16px;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-}
-
-.card-content-body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.card-tag-pill {
-  display: inline-block;
-  align-self: flex-start;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 3px 10px;
-  border-radius: var(--r-pill);
+.spec-number {
+  font-size: clamp(2.4rem, 4.2vw, 3.8rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  background: linear-gradient(180deg, #ffffff 30%, #86868b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 8px;
 }
 
-.tag-blue { background: rgba(41, 151, 255, 0.15); color: var(--apple-blue); }
-.tag-green { background: rgba(48, 209, 88, 0.15); color: var(--apple-green); }
-.tag-purple { background: rgba(191, 90, 242, 0.15); color: var(--apple-purple); }
-.tag-orange { background: rgba(255, 159, 10, 0.15); color: var(--apple-orange); }
-
-.card-item-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: -0.01em;
-  margin-bottom: 6px;
-  line-height: 1.25;
-}
-
-.card-item-desc {
-  font-size: 12.5px;
+.spec-label {
+  font-size: 13.5px;
   color: var(--text-gray);
-  line-height: 1.45;
-}
-
-.card-footer-action {
-  margin-top: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.card-btn-action {
-  font-size: 12px;
-  font-weight: 600;
-  color: #fff;
-  background: var(--apple-blue);
-  padding: 6px 14px;
-  border-radius: var(--r-pill);
-  text-decoration: none;
-  transition: transform 0.15s, background 0.2s;
-}
-
-.card-btn-action:hover {
-  transform: scale(1.04);
-  background: var(--apple-blue-hover);
-}
-
-.card-read-time {
-  font-size: 11px;
-  color: var(--text-dim);
-}
-
-/* 3D Showcase Controls */
-.showcase-controls-bar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 36px;
-}
-
-.ctrl-btn {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #fff;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 15px;
-  transition: background 0.2s, transform 0.15s;
-}
-
-.ctrl-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.08);
-}
-
-.ctrl-hint-text {
-  font-size: 12px;
-  color: var(--text-gray);
+  font-weight: 500;
 }
 
 /* ==========================================================================
-   6. Interactive Titanium 3D Stage / Display Device
+   6. Apple Bento Grid ("Explore the Lineup")
    ========================================================================== */
-.hero-stage-device {
-  position: relative;
-  max-width: 1040px;
-  margin: 0 auto;
-  border-radius: 36px;
-  padding: 12px;
-  background: linear-gradient(180deg, #2c2c2e 0%, #1c1c1e 100%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9), 0 0 60px rgba(41, 151, 255, 0.15);
-}
-
-.device-screen-inner {
-  border-radius: 26px;
-  background: #000;
-  overflow: hidden;
-  position: relative;
-  height: 520px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#canvas-dna-3d {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.device-notch {
-  position: absolute;
-  top: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 120px;
-  height: 24px;
-  background: #000;
-  border-radius: var(--r-pill);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  color: var(--text-gray);
-  z-index: 10;
-}
-
-.device-caption-overlay {
-  position: absolute;
-  bottom: 24px;
-  left: 24px;
-  right: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 24px;
-  background: rgba(22, 22, 23, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--r-inner);
-}
-
-.caption-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: #fff;
-}
-
-.caption-sub {
-  font-size: 13px;
-  color: var(--text-gray);
-}
-
-/* Color Switcher Dots */
-.switcher-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin: 32px 0 16px;
-}
-
-.switcher-dot {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  cursor: pointer;
-  position: relative;
-  transition: transform 0.2s, border-color 0.2s;
-}
-
-.switcher-dot.active {
-  border-color: #fff;
-  transform: scale(1.15);
-}
-
-.dot-3d { background: radial-gradient(circle, #2997ff, #004085); }
-.dot-2d { background: radial-gradient(circle, #30d158, #0b5321); }
-.dot-ai { background: radial-gradient(circle, #bf5af2, #561678); }
-
-/* ==========================================================================
-   7. Apple "Explore the Lineup" - 3 Pillars Triad (Interactive Bento)
-   ========================================================================== */
-.section-apple {
-  padding: 90px 0;
-  position: relative;
-}
-
 .apple-section-header {
   margin-bottom: 50px;
   max-width: 800px;
 }
 
 .apple-eyebrow {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-gray);
   text-transform: uppercase;
@@ -746,7 +584,6 @@ body {
   color: var(--text-gray);
 }
 
-/* Apple Cards Grid */
 .apple-cards-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -757,7 +594,7 @@ body {
   background: var(--apple-bg-card);
   border: 1px solid var(--apple-card-border);
   border-radius: var(--r-card);
-  padding: 44px;
+  padding: 40px;
   position: relative;
   overflow: hidden;
   transition: transform 0.4s var(--ease-spring), border-color 0.4s ease, box-shadow 0.4s ease;
@@ -767,15 +604,14 @@ body {
 }
 
 .apple-card:hover {
-  transform: translateY(-6px) scale(1.005);
+  transform: translateY(-5px);
   border-color: var(--apple-card-border-glow);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.8);
 }
 
 .card-span-7 { grid-column: span 7; }
 .card-span-5 { grid-column: span 5; }
 .card-span-6 { grid-column: span 6; }
-.card-span-12 { grid-column: span 12; }
 
 .apple-card-tag {
   font-size: 12px;
@@ -787,7 +623,7 @@ body {
 }
 
 .apple-card-heading {
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.15;
@@ -796,27 +632,26 @@ body {
 }
 
 .apple-card-desc {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--text-gray);
   line-height: 1.5;
-  margin-bottom: 28px;
+  margin-bottom: 26px;
 }
 
 .apple-card-link-group {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
 }
 
 .apple-text-link {
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 500;
   color: var(--apple-blue);
-  text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  transition: gap 0.2s var(--ease-apple);
+  transition: gap 0.2s;
 }
 
 .apple-text-link:hover {
@@ -825,42 +660,7 @@ body {
 }
 
 /* ==========================================================================
-   8. Apple Spec Grid (Big Stat Numbers)
-   ========================================================================== */
-.apple-specs-bar {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  padding: 48px;
-  background: var(--apple-bg-secondary);
-  border: 1px solid var(--apple-card-border);
-  border-radius: var(--r-card);
-  margin-bottom: 80px;
-}
-
-.spec-item {
-  text-align: center;
-}
-
-.spec-number {
-  font-size: clamp(2.5rem, 4.5vw, 4rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  background: linear-gradient(180deg, #ffffff 30%, #86868b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 8px;
-}
-
-.spec-label {
-  font-size: 14px;
-  color: var(--text-gray);
-  font-weight: 500;
-}
-
-/* ==========================================================================
-   9. 6 Core Curriculum Pillars (Apple Cupertino Grid)
+   7. 6-Topic Cupertino Curriculum Grid
    ========================================================================== */
 .curriculum-apple-grid {
   display: grid;
@@ -872,7 +672,7 @@ body {
   background: var(--apple-bg-card);
   border: 1px solid var(--apple-card-border);
   border-radius: var(--r-card);
-  padding: 36px;
+  padding: 34px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -886,58 +686,58 @@ body {
 }
 
 .curr-badge-num {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--apple-blue);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   font-family: var(--font-mono);
 }
 
 .curr-apple-title {
-  font-size: 22px;
+  font-size: 21px;
   font-weight: 700;
   color: #fff;
   letter-spacing: -0.01em;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .curr-apple-desc {
-  font-size: 14px;
+  font-size: 13.5px;
   color: var(--text-gray);
   line-height: 1.5;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
 /* ==========================================================================
-   10. Interactive AI Assistant Cupertino Dialog
+   8. Cupertino AI Dialog Console
    ========================================================================== */
 .apple-ai-box {
   background: #000;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--r-inner);
-  padding: 24px;
-  margin-top: 20px;
+  padding: 22px;
+  margin-top: 18px;
 }
 
 .ai-chat-thread {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  max-height: 220px;
+  gap: 10px;
+  max-height: 200px;
   overflow-y: auto;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .apple-ai-msg {
   display: flex;
-  gap: 10px;
-  font-size: 14px;
+  gap: 8px;
+  font-size: 13.5px;
 }
 
 .apple-ai-bubble {
   background: #1c1c1e;
-  padding: 10px 16px;
-  border-radius: 16px;
+  padding: 10px 15px;
+  border-radius: 14px;
   color: var(--text-white);
   line-height: 1.45;
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -953,12 +753,11 @@ body {
   background: #1c1c1e;
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--r-pill);
-  padding: 10px 20px;
+  padding: 10px 18px;
   color: #fff;
-  font-family: var(--font-apple);
+  font-family: var(--sans);
   font-size: 13px;
   outline: none;
-  transition: border-color 0.2s;
 }
 
 .apple-ai-input:focus {
@@ -970,19 +769,13 @@ body {
   color: #fff;
   border: none;
   border-radius: var(--r-pill);
-  padding: 0 18px;
+  padding: 0 16px;
   font-size: 13px;
   font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.apple-ai-btn:hover {
-  background: var(--apple-blue-hover);
 }
 
 /* ==========================================================================
-   11. Apple Comparison Matrix Table
+   9. Apple Comparison Matrix Table
    ========================================================================== */
 .apple-matrix-wrapper {
   background: var(--apple-bg-card);
@@ -996,36 +789,139 @@ body {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  min-width: 680px;
+  min-width: 660px;
 }
 
 .apple-table th, .apple-table td {
-  padding: 22px 28px;
+  padding: 20px 26px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .apple-table th {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 600;
   color: #fff;
   background: rgba(255, 255, 255, 0.02);
 }
 
 .apple-table td {
-  font-size: 14px;
+  font-size: 13.5px;
   color: var(--text-silver);
 }
 
 .apple-pill-tag {
   display: inline-block;
-  padding: 4px 12px;
+  padding: 4px 10px;
   border-radius: var(--r-pill);
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
 }
 
 /* ==========================================================================
-   12. Apple Cupertino Footer
+   10. LIGHTBOX MODAL (#lit)
+   ========================================================================== */
+#lit {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  padding: clamp(56px, 8vh, 84px) var(--pad);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .42s var(--ease);
+}
+
+body.lit #lit {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#lit .scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+#lit .plate {
+  position: relative;
+  z-index: 2;
+  width: min(72vw, 860px, calc((100vh - 230px) * 1.5));
+  transition: transform .62s var(--ease), opacity .42s var(--ease);
+  transform-origin: center center;
+}
+
+#lit .shot {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3/2;
+  border-radius: 6px;
+  background: #0b0b0b;
+  box-shadow: 0 30px 90px rgba(0,0,0,.85);
+  overflow: hidden;
+}
+
+#lit .shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+#lit .close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-size: 12.5px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid rgba(244, 242, 239, .78);
+  border-radius: 6px;
+  background: rgba(0,0,0,.45);
+  color: #f4f2ef;
+  backdrop-filter: blur(8px);
+  z-index: 10;
+}
+
+#lit .close:hover {
+  background: rgba(0,0,0,.7);
+  border-color: #fff;
+}
+
+#lit .meta {
+  display: grid;
+  grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr);
+  gap: clamp(22px, 3.2vw, 48px);
+  padding-top: 16px;
+}
+
+#litTitle {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(22px, 2.15vw, 32px);
+  line-height: 1.08;
+  letter-spacing: -.01em;
+  margin-bottom: 6px;
+  color: #fff;
+}
+
+#litWhere {
+  font-size: 13px;
+  color: rgba(244, 242, 239, .62);
+}
+
+#litNote {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: rgba(244, 242, 239, .92);
+}
+
+/* ==========================================================================
+   11. Apple Cupertino Footer
    ========================================================================== */
 .apple-footer {
   background: #111112;
@@ -1086,51 +982,29 @@ body {
 }
 
 /* ==========================================================================
-   13. Responsive Breakpoints
+   12. Responsive Breakpoints
    ========================================================================== */
 @media (max-width: 1024px) {
-  .card-span-7, .card-span-5, .card-span-6 {
-    grid-column: span 12;
-  }
-  .curriculum-apple-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .apple-specs-bar {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .card-span-7, .card-span-5, .card-span-6 { grid-column: span 12; }
+  .curriculum-apple-grid { grid-template-columns: repeat(2, 1fr); }
+  .apple-specs-bar { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
-  .nav-links-desktop {
-    display: none;
+  .nav-links-desktop { display: none; }
+  .curriculum-apple-grid { grid-template-columns: 1fr; }
+  .apple-specs-bar { grid-template-columns: 1fr; gap: 28px; }
+  .apple-footer-grid { grid-template-columns: 1fr 1fr; }
+  #headline { font-size: clamp(22px, 6.4vw, 34px); }
+  .sphere-hero-section { height: 75vh; min-height: 520px; }
+}
+
+@media (max-width: 640px) {
+  :root { --hw: min(84vw, 360px); --pad: clamp(12px, 4vw, 18px); }
+  #lit {
+    display: block;
+    overflow-y: auto;
+    padding: calc(52px + var(--safe-top)) calc(var(--pad) + var(--safe-right)) calc(var(--pad) + var(--safe-bottom)) calc(var(--pad) + var(--safe-left));
   }
-  .curriculum-apple-grid {
-    grid-template-columns: 1fr;
-  }
-  .apple-specs-bar {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-  .apple-footer-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  .device-screen-inner {
-    height: 380px;
-  }
-  .hero-stage-device {
-    padding: 8px;
-    border-radius: 24px;
-  }
-  .showcase-stage-viewport {
-    height: 440px;
-  }
-  .showcase-cylinder-ring {
-    width: 260px;
-    height: 360px;
-  }
-  .showcase-card {
-    width: 250px;
-    height: 350px;
-    padding: 18px;
-  }
+  #lit .plate { width: 100%; max-width: 560px; margin: 0 auto; }
 }
