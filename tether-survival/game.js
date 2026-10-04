@@ -577,8 +577,100 @@ class BioCyberArena3D {
       this.decorationsGroup.add(line);
     });
 
-    // 5. Atmospheric Ambient Stardust Particle Field
-    const particleCount = 240;
+    // 5. 3D Voxel Cyber Sakura Trees (ต้นซากุระบล็อก 3 มิติ)
+    const createVoxelSakuraTree = (x, z, scale = 1.0) => {
+      const tree = new THREE.Group();
+      tree.position.set(x, 0.7, z);
+      tree.scale.set(scale, scale, scale);
+
+      // Dark Cyber Trunk
+      const trunkMat = new THREE.MeshStandardMaterial({ color: 0x1f1b24, roughness: 0.8, metalness: 0.2 });
+      
+      const mainTrunkGeo = new THREE.BoxGeometry(0.7, 3.2, 0.7);
+      const mainTrunk = new THREE.Mesh(mainTrunkGeo, trunkMat);
+      mainTrunk.position.y = 1.6;
+      mainTrunk.castShadow = true;
+      tree.add(mainTrunk);
+
+      // Branches
+      const branchGeoA = new THREE.BoxGeometry(1.4, 0.4, 0.5);
+      const branchA = new THREE.Mesh(branchGeoA, trunkMat);
+      branchA.position.set(0.6, 2.8, 0.3);
+      branchA.rotation.z = -0.25;
+      tree.add(branchA);
+
+      const branchGeoB = new THREE.BoxGeometry(1.3, 0.4, 0.5);
+      const branchB = new THREE.Mesh(branchGeoB, trunkMat);
+      branchB.position.set(-0.6, 2.5, -0.3);
+      branchB.rotation.z = 0.3;
+      tree.add(branchB);
+
+      // Voxel Sakura Blossom Foliage Clouds (Layered White-Sakura Voxels)
+      const blossomMatA = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.4, metalness: 0.1 });
+      const blossomMatB = new THREE.MeshStandardMaterial({ color: 0xf5edf0, roughness: 0.3, metalness: 0.2 });
+      const blossomMatC = new THREE.MeshStandardMaterial({ color: 0xe8dce2, roughness: 0.5, metalness: 0.1 });
+
+      const canopyClusters = [
+        { x: 0, y: 4.0, z: 0, w: 2.8, h: 1.6, d: 2.8, mat: blossomMatA },
+        { x: 0.8, y: 3.6, z: 0.6, w: 2.2, h: 1.4, d: 2.2, mat: blossomMatB },
+        { x: -0.8, y: 3.4, z: -0.5, w: 2.0, h: 1.3, d: 2.0, mat: blossomMatC },
+        { x: 0, y: 4.8, z: 0, w: 1.8, h: 1.1, d: 1.8, mat: blossomMatA },
+        { x: -0.4, y: 3.8, z: 0.8, w: 1.6, h: 1.2, d: 1.6, mat: blossomMatB }
+      ];
+
+      canopyClusters.forEach(c => {
+        const leafGeo = new THREE.BoxGeometry(c.w, c.h, c.d);
+        const leafMesh = new THREE.Mesh(leafGeo, c.mat);
+        leafMesh.position.set(c.x, c.y, c.z);
+        leafMesh.castShadow = true;
+        leafMesh.receiveShadow = true;
+        tree.add(leafMesh);
+      });
+
+      return tree;
+    };
+
+    // Place 4 Scenic Sakura Trees at Island Edges
+    const treeCoords = [
+      { x: -11, z: -8, scale: 1.15 },
+      { x: 11, z: -8, scale: 1.1 },
+      { x: -11, z: 8, scale: 1.05 },
+      { x: 11, z: 8, scale: 1.2 }
+    ];
+
+    treeCoords.forEach(pos => {
+      const tree = createVoxelSakuraTree(pos.x, pos.z, pos.scale);
+      this.decorationsGroup.add(tree);
+    });
+
+    // 6. Falling Sakura Blossom Petals (กลีบซากุระปลิวในสายลม 3 มิติ)
+    this.sakuraPetals = [];
+    const petalCount = 140;
+    const petalGeo = new THREE.PlaneGeometry(0.22, 0.16);
+    const petalMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, transparent: true, opacity: 0.85 });
+
+    for (let i = 0; i < petalCount; i++) {
+      const petal = new THREE.Mesh(petalGeo, petalMat);
+      petal.position.set(
+        (Math.random() - 0.5) * 36,
+        Math.random() * 18 + 1,
+        (Math.random() - 0.5) * 36
+      );
+      petal.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+      this.decorationsGroup.add(petal);
+
+      this.sakuraPetals.push({
+        mesh: petal,
+        fallSpeed: 1.2 + Math.random() * 1.5,
+        driftSpeed: 0.8 + Math.random() * 1.2,
+        rotSpeedX: Math.random() * 2 - 1,
+        rotSpeedY: Math.random() * 2 - 1,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+
+    // 7. Atmospheric Ambient Stardust Particle Field
+    const particleCount = 200;
     const particleGeo = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
 
@@ -930,6 +1022,23 @@ class BioCyberArena3D {
 
     if (this.stardustParticles) {
       this.stardustParticles.rotation.y += dt * 0.04;
+    }
+
+    // Animate Drifting 3D Voxel Sakura Petals (กลีบซากุระปลิวพลิ้วไหว)
+    if (this.sakuraPetals) {
+      const time = Date.now() * 0.001;
+      this.sakuraPetals.forEach((p) => {
+        p.mesh.position.y -= p.fallSpeed * dt;
+        p.mesh.position.x += Math.sin(time * p.driftSpeed + p.phase) * dt * 1.4;
+        p.mesh.position.z += Math.cos(time * p.driftSpeed + p.phase) * dt * 1.4;
+        p.mesh.rotation.x += p.rotSpeedX * dt;
+        p.mesh.rotation.y += p.rotSpeedY * dt;
+        if (p.mesh.position.y < -5) {
+          p.mesh.position.y = 18;
+          p.mesh.position.x = (Math.random() - 0.5) * 36;
+          p.mesh.position.z = (Math.random() - 0.5) * 36;
+        }
+      });
     }
 
     // Billboard orientation facing camera
