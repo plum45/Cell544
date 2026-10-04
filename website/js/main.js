@@ -1,18 +1,18 @@
-// Apple Cupertino Interactive Features & Dynamics for CYTOLIFE
+// Apple Cupertino Interactive Features & Dynamics for CYTOLIFE (Academic & Biological Edition)
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Dynamic Island Expansion & Stats
+  // 1. Dynamic Island Expansion & Academic Status
   const dynamicIsland = document.getElementById('dynamic-island');
   const islandText = document.getElementById('island-text');
   const islandBadge = document.getElementById('island-badge');
 
   const islandStates = [
-    { text: 'CELLULAR OS 18 PRO &bull; 60 FPS', badge: 'LIVE' },
-    { text: '6 MODULES READY &bull; NEMOTRON AI', badge: 'ONLINE' },
-    { text: 'ZELDA 3D ENGINE &bull; 7 TREASURES', badge: 'READY' }
+    { text: 'ระบบควบคุมชีวิตของเซลล์ &bull; สื่อการเรียนรู้ชีววิทยาโมเลกุล', badge: 'มาตรฐาน สสวท.' },
+    { text: '6 บทเรียนกลไกระดับเซลล์ &bull; แบบจำลองโครงสร้าง 3 มิติ', badge: 'CAMPBELL BIOLOGY' },
+    { text: 'ระบบวิเคราะห์และประเมินผลการเรียนรู้ &bull; Bio-AI Mentor', badge: 'ACTIVE' }
   ];
   let stateIdx = 0;
 
-  if (dynamicIsland) {
+  if (dynamicIsland && islandText && islandBadge) {
     dynamicIsland.addEventListener('click', () => {
       stateIdx = (stateIdx + 1) % islandStates.length;
       dynamicIsland.style.transform = 'scale(0.95)';
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 2. Interactive Color / Reality Palette Switcher
+  // 2. Interactive Reality Palette Switcher
   const dots = document.querySelectorAll('.switcher-dot');
   const captionTitle = document.getElementById('caption-title');
   const captionSub = document.getElementById('caption-sub');
@@ -33,25 +33,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const realityThemes = {
     '3d': {
-      title: 'เกาะลอยฟ้าแฟนตาซี 3 มิติ (Titanium Spatial)',
-      sub: 'Open-world spatial exploration rendered in full WebGL 60 FPS',
-      btnText: 'เปิดโลก 3D เต็มจอ ➔',
-      btnLink: '../island-3d/index.html',
-      color: '#38bdf8'
+      title: 'เกาะลอยฟ้าจำลองชีวโมเลกุล 3 มิติ',
+      sub: 'สำรวจโครงสร้างและตำแหน่งของออร์แกเนลล์ชีวโมเลกุลสำคัญในรูปแบบ 3 มิติเสมือนจริง',
+      btnText: 'เปิดแบบจำลอง 3D เต็มจอ ➔',
+      btnLink: 'island-3d/index.html'
     },
     '2d': {
-      title: 'สถาบันวิจัยชีววิทยา 2D Lab (Bio-Simulation)',
-      sub: 'Autonomous Stanford Agents sandbox & zombie cellular outbreak',
-      btnText: 'เข้าเล่นเกมแล็บ 2D ➔',
-      btnLink: '../game-2d/index.html',
-      color: '#0284c7'
+      title: 'ห้องปฏิบัติการชีววิทยาเซลล์จำลอง 2D',
+      sub: 'แบบจำลองการทดลองทางชีวเคมี ศึกษาปฏิกิริยาภูมิคุ้มกันและการรักษาสมดุลเซลล์',
+      btnText: 'เข้าสู่ห้องทดลองจำลอง ➔',
+      btnLink: 'game-2d/index.html'
     },
     'ai': {
-      title: 'AI Neural Bio-Assistant (Neural Core)',
-      sub: 'Interactive NVIDIA Nemotron molecular question-answering',
-      btnText: 'สนทนากับ AI Guide ➔',
-      btnLink: '#ai-assistant',
-      color: '#00d2ff'
+      title: 'ผู้ช่วยสอนชีววิทยาอัจฉริยะ (AI Bio-Tutor)',
+      sub: 'วิเคราะห์และไขข้อข้องใจทางชีววิทยาโมเลกุลและพันธุศาสตร์ระดับเซลล์แบบเจาะลึก',
+      btnText: 'สนทนากับผู้ช่วยสอน AI ➔',
+      btnLink: '#ai-assistant'
     }
   };
 
@@ -60,58 +57,48 @@ document.addEventListener('DOMContentLoaded', () => {
       dots.forEach(d => d.classList.remove('active'));
       dot.classList.add('active');
       const mode = dot.getAttribute('data-mode');
-      const info = realityThemes[mode];
-      if (info && captionTitle && captionSub && captionBtn) {
-        captionTitle.innerText = info.title;
-        captionSub.innerText = info.sub;
-        captionBtn.innerText = info.btnText;
-        captionBtn.href = info.btnLink;
-        captionBtn.style.backgroundColor = info.color;
-
-        // Broadcast color event to 3D canvas if available
-        if (window.setDnaColor) {
-          window.setDnaColor(info.color);
+      if (realityThemes[mode]) {
+        if (captionTitle) captionTitle.innerText = realityThemes[mode].title;
+        if (captionSub) captionSub.innerText = realityThemes[mode].sub;
+        if (captionBtn) {
+          captionBtn.innerText = realityThemes[mode].btnText;
+          captionBtn.setAttribute('href', realityThemes[mode].btnLink);
         }
       }
     });
   });
 
-  // 3. Apple Spec Counter Animation
-  const specNumbers = document.querySelectorAll('.spec-number');
-  specNumbers.forEach(numEl => {
-    const text = numEl.innerText;
-    const match = text.match(/\d+/);
-    if (!match) return;
-    const targetNum = parseInt(match[0], 10);
-    const prefix = text.split(match[0])[0];
-    const suffix = text.split(match[0])[1] || '';
-    let current = 0;
-    const step = Math.max(1, Math.ceil(targetNum / 25));
-
-    const timer = setInterval(() => {
-      current += step;
-      if (current >= targetNum) {
-        current = targetNum;
-        clearInterval(timer);
-      }
-      numEl.innerText = prefix + current + suffix;
-    }, 45);
-  });
-
-  // 4. Apple-style Mini AI Chat Console
+  // 3. AI Assistant Chat Simulator
   const aiForm = document.getElementById('ai-apple-form');
   const aiInput = document.getElementById('ai-apple-input');
   const aiThread = document.getElementById('ai-chat-thread');
 
-  const knowledgeBase = {
-    'apoptosis': 'Apoptosis คือกลไกการตายของเซลล์ที่ถูกโปรแกรมไว้ (Programmed Cell Death) เพื่อกำจัดเซลล์ที่ผิดปกติ รักษาดุลยภาพของเนื้อเยื่อ และป้องกันมะเร็ง ผ่าน Caspase Cascade และ Cytochrome C',
-    'ตาย': 'Apoptosis คือกระบวนการตายของเซลล์ตามโปรแกรมเพื่อความอยู่รอดของสิ่งมีชีวิต',
-    'signaling': 'Cell Signaling ทำงาน 3 ขั้นตอน: 1. Reception (จับตัวรับ) 2. Transduction (ส่งต่อสัญญาณ) 3. Response (การตอบสนอง เช่น เปิดยีนสร้างโปรตีน)',
-    'ส่งสัญญาณ': 'Cell Signaling คือการสื่อสารระหว่างเซลล์ผ่าน Ligand และ Receptor เช่น GPCR และ Tyrosine Kinase',
-    'expression': 'Gene Expression คือกระบวนการแสดงออกของยีน: ถอดรหัส DNA เป็น mRNA (Transcription) และแปลรหัสเป็นโปรตีน (Translation)',
-    'ยีน': 'Gene Regulation ถูกควบคุมอย่างประณีตด้วย Transcription Factors และ Epigenetics',
-    'cycle': 'Cell Cycle ควบคุมด้วยจุดตรวจ (Checkpoints: G1, G2/M, Spindle) โดยมีโปรตีน Cyclin, CDK และ p53 คอยตรวจสอบความปลอดภัยของสารพันธุกรรม'
-  };
+  const BIO_KNOWLEDGE = [
+    {
+      keywords: ['transcription', 'ถอดรหัส', 'rna polymerase', 'mrna'],
+      answer: 'การถอดรหัส (Transcription) เกิดขึ้นในนิวเคลียส โดยเอนไซม์ RNA Polymerase II จะใช้สาย DNA แม่แบบ (Template strand) สังเคราะห์สาย mRNA ตามลำดับเบสคู่สม จากนั้น mRNA จะผ่านกระบวนการ Post-transcriptional modification (เติม 5\' cap, poly-A tail และ Splicing) ก่อนส่งออกไปยังไซโทพลาซึมครับ'
+    },
+    {
+      keywords: ['translation', 'แปลรหัส', 'ribosome', 'ไรโบโซม', 'โปรตีน'],
+      answer: 'การแปลรหัส (Translation) เกิดขึ้นที่ไรโบโซม 80S โดยเริ่มจาก tRNA นำกรดแอมิโนตัวแรก (Methionine ที่รหัสเริ่มต้น AUG) เข้ามาจับที่ P-site จากนั้น tRNA ตัวถัดไปจะเข้ามาที่ A-site และเกิดการสร้างพันธะเพปไทด์ (Peptide bond) ต่อสายพอลิเพปไทด์จนถึงรหัสหยุด (Stop codon: UAA, UAG, UGA) ครับ'
+    },
+    {
+      keywords: ['operon', 'lac operon', 'การควบคุมยีน', 'gene regulation'],
+      answer: 'Lac Operon ในแบคทีเรีย E. coli เป็นโมเดลการควบคุมยีนแบบเหนี่ยวนำ (Inducible operon) ในสภาวะที่ไม่มีแลกโทส โปรตีน Repressor จะจับกับ Operator ยับยั้งการทำงานของ RNA Polymerase แต่เมื่อมีแลกโทส Allolactose จะจับกับ Repressor ทำให้หลุดออกจาก Operator และเกิดการถอดรหัสยีนสร้างเอนไซม์ย่อยแลกโทสได้ครับ'
+    },
+    {
+      keywords: ['signaling', 'gpcr', 'cAMP', 'การสื่อสาร', 'ส่งสัญญาณ'],
+      answer: 'การสื่อสารระดับเซลล์ผ่าน GPCR เริ่มจาก Ligand จับกับตัวรับบนเยื่อหุ้มเซลล์ ทำให้ G-protein เกิดการกระตุ้นและปล่อยหน่วยย่อยแอลฟาไปกระตุ้นเอนไซม์ Adenylyl cyclase เปลี่ยน ATP เป็น cAMP ซึ่งทำหน้าที่เป็น Second Messenger ไปกระตุ้น Protein Kinase A (PKA) ส่งต่อสัญญาณเป็นทอดๆ ครับ'
+    },
+    {
+      keywords: ['apoptosis', 'การตาย', 'caspase', 'cytochrome'],
+      answer: 'Apoptosis คือการตายของเซลล์ตามโปรแกรมที่ถูกควบคุมอย่างเข้มงวด โดยในวิถีภายใน (Intrinsic pathway) ความเสียหายของ DNA จะกระตุ้นให้เยื่อหุ้มไมโทคอนเดรียรั่ว ปล่อย Cytochrome c ออกมาจับกับ Apaf-1 เกิดเป็น Apoptosome กระตุ้น Caspase-9 และ Caspase-3 ย่อยสลายโครงสร้างเซลล์อย่างเป็นระเบียบโดยไม่ก่อให้เกิดการอักเสบครับ'
+    },
+    {
+      keywords: ['cycle', 'วัฏจักร', 'mitosis', 'checkpoint', 'p53'],
+      answer: 'วัฏจักรเซลล์ประกอบด้วย Interphase (G1, S, G2) และ M Phase (Mitosis) มีจุดตรวจความปลอดภัยหลัก 3 จุดคือ G1/S, G2/M และ Spindle Checkpoint โดยมี Cyclin-CDK Complex ควบคุม และโปรตีน p53 ทำหน้าที่ตรวจจับความเสียหายของ DNA หากตรวจพบความเสียหายจะหยุดวัฏจักรเซลล์เพื่อซ่อมแซม หรือสั่งเซลล์เข้าสู่กระบวนการ Apoptosis ครับ'
+    }
+  ];
 
   if (aiForm && aiInput && aiThread) {
     aiForm.addEventListener('submit', (e) => {
@@ -119,51 +106,35 @@ document.addEventListener('DOMContentLoaded', () => {
       const q = aiInput.value.trim();
       if (!q) return;
 
-      // Append user msg
+      // Append User message
       const userMsg = document.createElement('div');
-      userMsg.className = 'apple-ai-msg';
-      userMsg.style.justifyContent = 'flex-end';
-      userMsg.innerHTML = `
-        <div class="apple-ai-bubble" style="background: var(--apple-blue); color: #fff;">
-          ${escapeHtml(q)}
-        </div>
-      `;
+      userMsg.className = 'apple-ai-msg user';
+      userMsg.innerHTML = `<div class="apple-ai-bubble">${escapeHtml(q)}</div>`;
       aiThread.appendChild(userMsg);
       aiInput.value = '';
       aiThread.scrollTop = aiThread.scrollHeight;
 
-      // Thinking indicator
-      const botMsg = document.createElement('div');
-      botMsg.className = 'apple-ai-msg';
-      botMsg.innerHTML = `
-        <div class="apple-ai-bubble" style="color: var(--apple-blue); font-style: italic;">
-          AI กำลังวิเคราะห์ข้อมูลชีวโมเลกุล...
-        </div>
-      `;
-      aiThread.appendChild(botMsg);
-      aiThread.scrollTop = aiThread.scrollHeight;
-
+      // Generate Bio response
       setTimeout(() => {
-        let ans = 'คุณสามารถสำรวจโครงสร้าง 3D และเนื้อหาเจาะลึกได้ในหน้าโมดูลหลักด้านบน';
-        const lower = q.toLowerCase();
-        for (const [k, v] of Object.entries(knowledgeBase)) {
-          if (lower.includes(k)) {
-            ans = v;
-            break;
-          }
-        }
-        botMsg.innerHTML = `
-          <div class="apple-ai-bubble">
-            ${ans}
-          </div>
-        `;
+        let matched = BIO_KNOWLEDGE.find(item => 
+          item.keywords.some(k => q.toLowerCase().includes(k))
+        );
+        let respText = matched 
+          ? matched.answer 
+          : `สำหรับคำถาม "${escapeHtml(q)}" ในทางชีววิทยาเซลล์ กระบวนการนี้เกี่ยวข้องกับกลไกการส่งสัญญาณ การควบคุมการแสดงออกของยีน และการรักษาดุลยภาพของเซลล์ครับ คุณสามารถคลิกดูเนื้อหาเจาะลึกได้ที่เมนู "ศูนย์รวมเนื้อหา" ด้านบนครับ`;
+
+        const botMsg = document.createElement('div');
+        botMsg.className = 'apple-ai-msg';
+        botMsg.innerHTML = `<div class="apple-ai-bubble">${respText}</div>`;
+        aiThread.appendChild(botMsg);
         aiThread.scrollTop = aiThread.scrollHeight;
-      }, 500);
+      }, 400);
     });
   }
 
   function escapeHtml(text) {
-    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-    return text.replace(/[&<>"']/g, m => map[m]);
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
   }
 });
