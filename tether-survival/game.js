@@ -395,6 +395,7 @@ class BioCyberArena3D {
 
     this.buildWidePlatformGrid();
     this.build3DAnswerPads();
+    this.build3DDecorations();
     this.build3DPlayers();
     this.loadQuestion(0);
 
@@ -449,6 +450,150 @@ class BioCyberArena3D {
         }
       }
     }
+  }
+
+  // ==========================================
+  // 4.1 3D Cyber Environment Decorations
+  // ==========================================
+  build3DDecorations() {
+    if (this.decorationsGroup) this.scene.remove(this.decorationsGroup);
+    this.decorationsGroup = new THREE.Group();
+
+    // 1. Central Holographic DNA Double Helix Monolith
+    this.dnaHelixGroup = new THREE.Group();
+    this.dnaHelixGroup.position.set(0, 3.5, 0);
+
+    const sphereGeo = new THREE.SphereGeometry(0.24, 8, 8);
+    const sphereMatA = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const sphereMatB = new THREE.MeshBasicMaterial({ color: 0x888888 });
+    const rungGeo = new THREE.CylinderGeometry(0.04, 0.04, 2.2, 6);
+    const rungMat = new THREE.MeshBasicMaterial({ color: 0xaaaaaa, transparent: true, opacity: 0.7 });
+
+    const totalNodes = 20;
+    for (let i = 0; i < totalNodes; i++) {
+      const angle = i * 0.45;
+      const y = (i - totalNodes / 2) * 0.35;
+      const radius = 1.1;
+
+      const pA = new THREE.Mesh(sphereGeo, sphereMatA);
+      pA.position.set(Math.cos(angle) * radius, y, Math.sin(angle) * radius);
+      this.dnaHelixGroup.add(pA);
+
+      const pB = new THREE.Mesh(sphereGeo, sphereMatB);
+      pB.position.set(Math.cos(angle + Math.PI) * radius, y, Math.sin(angle + Math.PI) * radius);
+      this.dnaHelixGroup.add(pB);
+
+      if (i % 2 === 0) {
+        const rung = new THREE.Mesh(rungGeo, rungMat);
+        rung.position.set(0, y, 0);
+        rung.rotation.z = Math.PI / 2;
+        rung.rotation.y = -angle;
+        this.dnaHelixGroup.add(rung);
+      }
+    }
+
+    // Orbiting Central Ring
+    const centerRingGeo = new THREE.TorusGeometry(1.8, 0.05, 8, 32);
+    const centerRingMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    this.centerRing = new THREE.Mesh(centerRingGeo, centerRingMat);
+    this.centerRing.rotation.x = Math.PI / 2;
+    this.dnaHelixGroup.add(this.centerRing);
+
+    this.decorationsGroup.add(this.dnaHelixGroup);
+
+    // 2. 4 Cyber Energy Pylon Beacons at 4 Diagonal Corners
+    const pylonCorners = [
+      { x: -16, z: -16 },
+      { x: 16, z: -16 },
+      { x: -16, z: 16 },
+      { x: 16, z: 16 }
+    ];
+
+    pylonCorners.forEach(pos => {
+      const pylon = new THREE.Group();
+      pylon.position.set(pos.x, 0, pos.z);
+
+      // Multi-tier base
+      const baseGeo = new THREE.BoxGeometry(2.4, 3.2, 2.4);
+      const baseMat = new THREE.MeshStandardMaterial({ color: 0x121216, roughness: 0.2, metalness: 0.9 });
+      const base = new THREE.Mesh(baseGeo, baseMat);
+      base.position.y = 1.6;
+      pylon.add(base);
+
+      // Glowing core crystal
+      const crystalGeo = new THREE.OctahedronGeometry(0.9, 0);
+      const crystalMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      const crystal = new THREE.Mesh(crystalGeo, crystalMat);
+      crystal.position.y = 4.2;
+      pylon.add(crystal);
+
+      // Vertical Laser Beam Shooting into Sky
+      const beamGeo = new THREE.CylinderGeometry(0.12, 0.35, 36, 12);
+      const beamMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.45 });
+      const beam = new THREE.Mesh(beamGeo, beamMat);
+      beam.position.y = 20;
+      pylon.add(beam);
+
+      this.decorationsGroup.add(pylon);
+    });
+
+    // 3. Floating Orbital Satellite Data Cubes
+    this.satelliteCubes = [];
+    const numSats = 6;
+    const satGeo = new THREE.BoxGeometry(0.9, 0.9, 0.9);
+    const satEdgeGeo = new THREE.EdgesGeometry(satGeo);
+
+    for (let i = 0; i < numSats; i++) {
+      const satMat = new THREE.MeshStandardMaterial({ color: 0x222228, roughness: 0.2, metalness: 0.8 });
+      const sat = new THREE.Mesh(satGeo, satMat);
+
+      const edgeMat = new THREE.LineBasicMaterial({ color: 0xffffff });
+      sat.add(new THREE.LineSegments(satEdgeGeo, edgeMat));
+
+      const angle = (i / numSats) * Math.PI * 2;
+      const radius = 22 + Math.random() * 4;
+      sat.position.set(Math.cos(angle) * radius, 4.5 + Math.random() * 3, Math.sin(angle) * radius);
+
+      this.decorationsGroup.add(sat);
+      this.satelliteCubes.push({ mesh: sat, baseAngle: angle, radius, speed: 0.25 + Math.random() * 0.2, yOffset: sat.position.y });
+    }
+
+    // 4. Floor Glowing Laser Conduits connecting Center to 4 Answer Pads
+    const padOffset = this.blockSize * 3.4;
+    const conduitCoords = [
+      [0, 0, 0, -padOffset],
+      [0, 0, padOffset, 0],
+      [0, 0, 0, padOffset],
+      [0, 0, -padOffset, 0]
+    ];
+
+    conduitCoords.forEach(([x1, z1, x2, z2]) => {
+      const p1 = new THREE.Vector3(x1, 0.72, z1);
+      const p2 = new THREE.Vector3(x2, 0.72, z2);
+      const curve = new THREE.LineCurve3(p1, p2);
+      const tubeGeo = new THREE.TubeGeometry(curve, 16, 0.06, 6, false);
+      const tubeMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 });
+      const line = new THREE.Mesh(tubeGeo, tubeMat);
+      this.decorationsGroup.add(line);
+    });
+
+    // 5. Atmospheric Ambient Stardust Particle Field
+    const particleCount = 240;
+    const particleGeo = new THREE.BufferGeometry();
+    const particlePositions = new Float32Array(particleCount * 3);
+
+    for (let i = 0; i < particleCount * 3; i += 3) {
+      particlePositions[i] = (Math.random() - 0.5) * 60;
+      particlePositions[i + 1] = Math.random() * 24 - 4;
+      particlePositions[i + 2] = (Math.random() - 0.5) * 60;
+    }
+
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+    const particleMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.2, transparent: true, opacity: 0.7 });
+    this.stardustParticles = new THREE.Points(particleGeo, particleMat);
+    this.decorationsGroup.add(this.stardustParticles);
+
+    this.scene.add(this.decorationsGroup);
   }
 
   // ==========================================
@@ -765,6 +910,27 @@ class BioCyberArena3D {
 
     this.update3DFallingBlocks(dt);
     this.update3DTetherRopeGeometry();
+
+    // Animate 3D Map Decorations
+    if (this.dnaHelixGroup) {
+      this.dnaHelixGroup.rotation.y += dt * 0.8;
+      if (this.centerRing) this.centerRing.rotation.z += dt * 1.2;
+    }
+
+    if (this.satelliteCubes) {
+      this.satelliteCubes.forEach((sat, i) => {
+        sat.baseAngle += sat.speed * dt;
+        sat.mesh.position.x = Math.cos(sat.baseAngle) * sat.radius;
+        sat.mesh.position.z = Math.sin(sat.baseAngle) * sat.radius;
+        sat.mesh.position.y = sat.yOffset + Math.sin(Date.now() * 0.002 + i * 1.5) * 0.8;
+        sat.mesh.rotation.x += dt * 1.5;
+        sat.mesh.rotation.y += dt * 2.0;
+      });
+    }
+
+    if (this.stardustParticles) {
+      this.stardustParticles.rotation.y += dt * 0.04;
+    }
 
     // Billboard orientation facing camera
     this.answerPads.forEach(pad => {
