@@ -88,7 +88,7 @@ const MASTER_CARD_POOL = [
     tag: "POWERHOUSE",
     color: "#ea580c",
     icon: "⚡",
-    img: "../img/08_mitochondria.jpg",
+    img: "/img/08_mitochondria.jpg",
     category: "ORGANELLE // ENERGY FACTORY",
     desc: "ออร์แกเนลล์เยื่อหุ้ม 2 ชั้น แหล่งสร้าง ATP หลักของเซลล์ผ่าน Krebs Cycle และ Oxidative Phosphorylation มี Circular DNA และ 70S Ribosome เป็นของตัวเอง",
     clues: [
@@ -258,7 +258,7 @@ const MASTER_CARD_POOL = [
     tag: "ROTARY ENGINE",
     color: "#ea580c",
     icon: "⚙️",
-    img: "../img/08_mitochondria.jpg",
+    img: "/img/08_mitochondria.jpg",
     category: "MACROMOLECULE // ROTARY ENZYME",
     desc: "เอนไซม์กังหันโมเลกุลที่เยื่อหุ้มชั้นในไมโทคอนเดรียและไทลาคอยด์ ขับเคลื่อนด้วยแรงเคลื่อนโปรตอน หมุนสังเคราะห์ ATP",
     clues: [
@@ -713,7 +713,7 @@ class WhoAmIGame {
     this.scene.add(this.particles);
   }
 
-  // --- Dynamic Canvas Textures with Real Image & Crisp White Background ---
+  // --- Dynamic Canvas Textures with Real Image & Cyber Black Background ---
   createCardTexture(cardData, isBack = false) {
     const canvas = document.createElement('canvas');
     canvas.width = 512;
@@ -721,16 +721,20 @@ class WhoAmIGame {
     const ctx = canvas.getContext('2d');
 
     if (isBack) {
-      // 3D Card Back: Clean Platinum White Scientific Bio-Seal
-      ctx.fillStyle = '#ffffff';
+      // 3D Card Back: Cyber Obsidian Holographic Bio-Seal
+      const grad = ctx.createLinearGradient(0, 0, 512, 768);
+      grad.addColorStop(0, '#0c101c');
+      grad.addColorStop(0.5, '#161c2d');
+      grad.addColorStop(1, '#07090e');
+      ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 512, 768);
 
-      // Outer & Inner Borders
-      ctx.strokeStyle = '#e2e8f0';
+      // Cyber Neon Frame
+      ctx.strokeStyle = '#00f0ff';
       ctx.lineWidth = 14;
       ctx.strokeRect(16, 16, 480, 736);
 
-      ctx.strokeStyle = 'rgba(168, 85, 247, 0.4)';
+      ctx.strokeStyle = 'rgba(168, 85, 247, 0.5)';
       ctx.lineWidth = 3;
       ctx.strokeRect(32, 32, 448, 704);
 
@@ -746,25 +750,25 @@ class WhoAmIGame {
         else ctx.lineTo(x, y);
       }
       ctx.closePath();
-      ctx.strokeStyle = '#a855f7';
+      ctx.strokeStyle = '#00f0ff';
       ctx.lineWidth = 6;
       ctx.stroke();
 
-      ctx.fillStyle = 'rgba(168, 85, 247, 0.08)';
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.1)';
       ctx.fill();
       ctx.restore();
 
-      ctx.fillStyle = '#7c3aed';
+      ctx.fillStyle = '#00f0ff';
       ctx.font = 'bold 90px "Prompt", sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('?', 256, 365);
 
       // Labels
-      ctx.fillStyle = '#0f172a';
+      ctx.fillStyle = '#f8fafc';
       ctx.font = 'bold 24px "JetBrains Mono", monospace';
       ctx.fillText('CYTO-ARCHIVE // SPECIMEN', 256, 510);
 
-      ctx.fillStyle = '#64748b';
+      ctx.fillStyle = '#f59e0b';
       ctx.font = 'bold 18px "JetBrains Mono", monospace';
       ctx.fillText('24+ UNIFIED MASTER DECK', 256, 545);
 
@@ -773,24 +777,28 @@ class WhoAmIGame {
       ctx.fillText('TOP SECRET BIOLOGICAL DOSSIER', 256, 675);
 
     } else {
-      // 3D Card Front: CRISP PURE WHITE BACKGROUND WITH REAL PHOTOGRAPHY
-      ctx.fillStyle = '#ffffff';
+      // 3D Card Front: SLEEK CYBER OBSIDIAN BLACK BACKGROUND WITH REAL PHOTOGRAPHY
+      const grad = ctx.createLinearGradient(0, 0, 512, 768);
+      grad.addColorStop(0, '#111827');
+      grad.addColorStop(0.4, '#0b0f19');
+      grad.addColorStop(1, '#050811');
+      ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 512, 768);
 
-      // Glowing Accent Border
-      ctx.strokeStyle = cardData.color || '#0284c7';
+      // Glowing Neon Accent Border
+      ctx.strokeStyle = cardData.color || '#00f0ff';
       ctx.lineWidth = 14;
       ctx.strokeRect(16, 16, 480, 736);
 
       // Inner subtle border
-      ctx.strokeStyle = '#e2e8f0';
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
       ctx.lineWidth = 2;
       ctx.strokeRect(28, 28, 456, 712);
 
       // Category Tag Header Bar
-      ctx.fillStyle = cardData.color || '#0284c7';
+      ctx.fillStyle = cardData.color || '#00f0ff';
       ctx.fillRect(36, 36, 440, 46);
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = '#000000';
       ctx.font = 'bold 22px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(cardData.tag || 'BIOMOLECULE', 256, 68);
@@ -812,17 +820,17 @@ class WhoAmIGame {
         ctx.drawImage(cachedImg, imgBoxX, imgBoxY, imgBoxW, imgBoxH);
         ctx.restore();
 
-        // Image Frame Overlay
-        ctx.strokeStyle = '#cbd5e1';
+        // Image Frame Overlay with glowing neon tint
+        ctx.strokeStyle = cardData.color || '#00f0ff';
         ctx.lineWidth = 3;
         ctx.strokeRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
 
         // Small floating biology icon badge
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
         ctx.beginPath();
         ctx.arc(imgBoxX + 40, imgBoxY + 40, 26, 0, Math.PI * 2);
         ctx.fill();
-        ctx.strokeStyle = cardData.color || '#0284c7';
+        ctx.strokeStyle = cardData.color || '#00f0ff';
         ctx.lineWidth = 2;
         ctx.stroke();
 
@@ -832,9 +840,9 @@ class WhoAmIGame {
 
       } else {
         // Fallback placeholder container
-        ctx.fillStyle = '#f8fafc';
+        ctx.fillStyle = '#0f172a';
         ctx.fillRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
-        ctx.strokeStyle = '#cbd5e1';
+        ctx.strokeStyle = cardData.color || '#00f0ff';
         ctx.lineWidth = 3;
         ctx.strokeRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
 
@@ -843,27 +851,27 @@ class WhoAmIGame {
         ctx.fillText(cardData.icon || '🧬', 256, 310);
       }
 
-      // Specimen Thai Name (High Contrast Dark Slate on White)
-      ctx.fillStyle = '#0f172a';
+      // Specimen Thai Name (Bright White on Black)
+      ctx.fillStyle = '#ffffff';
       ctx.font = 'bold 36px "Prompt", sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(cardData.nameTh, 256, 500);
 
-      // Specimen English Name (Accent Color)
-      ctx.fillStyle = cardData.color || '#0284c7';
+      // Specimen English Name (Glowing Neon Color)
+      ctx.fillStyle = cardData.color || '#00f0ff';
       ctx.font = 'bold 24px "JetBrains Mono", monospace';
       ctx.fillText(cardData.nameEn, 256, 545);
 
-      // Subtle Divider
-      ctx.fillStyle = '#e2e8f0';
+      // Subtle Cyber Divider
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
       ctx.fillRect(60, 580, 392, 2);
 
       // Scientific Verification Stamp
-      ctx.fillStyle = '#475569';
+      ctx.fillStyle = '#94a3b8';
       ctx.font = 'bold 18px "Prompt", sans-serif';
       ctx.fillText(`SPECIMEN #${String(cardData.id).padStart(2, '0')} · CAMPBELL BIOLOGY 12TH`, 256, 625);
 
-      ctx.fillStyle = '#16a34a';
+      ctx.fillStyle = '#10b981';
       ctx.font = 'bold 18px "Prompt", sans-serif';
       ctx.fillText('✔ ยืนยันพิกัดโครงสร้างชีววิทยา', 256, 665);
     }
@@ -900,12 +908,12 @@ class WhoAmIGame {
       const cardGeo = new THREE.BoxGeometry(cardWidth, cardHeight, cardDepth);
       const frontTex = this.createCardTexture(cardData, false);
       const backTex = this.createCardTexture(cardData, true);
-      const sideMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, metalness: 0.1, roughness: 0.2 });
+      const sideMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.8, roughness: 0.25 });
 
       const materials = [
         sideMat, sideMat, sideMat, sideMat,
-        new THREE.MeshStandardMaterial({ map: frontTex, roughness: 0.2, metalness: 0.05 }),
-        new THREE.MeshStandardMaterial({ map: backTex, roughness: 0.2, metalness: 0.05 })
+        new THREE.MeshStandardMaterial({ map: frontTex, roughness: 0.25, metalness: 0.1 }),
+        new THREE.MeshStandardMaterial({ map: backTex, roughness: 0.25, metalness: 0.1 })
       ];
 
       const cardMesh = new THREE.Mesh(cardGeo, materials);
@@ -985,7 +993,7 @@ class WhoAmIGame {
       cluesRevealed: this.cluesRevealedCount
     });
 
-    document.getElementById('guide-text').innerText = 'สำรับรวม 24 ใบ: ภาพจริงพื้นหลังสีขาว! คลิกขวาเพื่อคว่ำการ์ดตัดช้อยส์ / คลิกซ้ายเพื่อทายคำตอบสุดท้าย';
+    document.getElementById('guide-text').innerText = 'สำรับรวม 24 ใบ (การ์ดสีดำพร้อมภาพจริง): คลิกขวาเพื่อคว่ำการ์ดตัดช้อยส์ / คลิกซ้ายเพื่อทายคำตอบสุดท้าย';
   }
 
   renderClues() {
