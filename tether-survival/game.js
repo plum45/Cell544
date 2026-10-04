@@ -1,7 +1,11 @@
 /**
- * CYTOLIFE: Bio-Tether Survival Arena
- * Pure Canvas 2D Engine with Elastic Tether Physics, Dynamic Crumbling Floor Grid,
- * Sky Debuff Hazards, Tactical Tether Yanking, Room Co-op & Emergency Rescue QTE
+ * CYTOLIFE: 3D Cyber Tether Arena
+ * Full 3D WebGL (Three.js) Isometric Cyber Voxel Engine
+ * - 3D Crumbling Cyber Blocks that fall into the abyss
+ * - 3D Voxel Cyber Bots with glowing visors
+ * - Dynamic 3D Physics Elastic Tether Cables
+ * - 3D Sky Glitch Debuff Cubes & Impact Waves
+ * - Tactical Tether Yank & 3D Emergency Rescue QTE
  */
 
 // ==========================================
@@ -119,8 +123,8 @@ class SoundFX {
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(220, this.ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(440, this.ctx.currentTime + 0.1);
+    osc.frequency.setValueAtTime(260, this.ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(520, this.ctx.currentTime + 0.1);
     gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
     gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.1);
     osc.connect(gain);
@@ -135,8 +139,8 @@ class SoundFX {
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
     osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(320, now);
-    osc.frequency.exponentialRampToValueAtTime(120, now + 0.18);
+    osc.frequency.setValueAtTime(360, now);
+    osc.frequency.exponentialRampToValueAtTime(140, now + 0.18);
     gain.gain.setValueAtTime(0.2, now);
     gain.gain.linearRampToValueAtTime(0.01, now + 0.18);
     osc.connect(gain);
@@ -151,8 +155,8 @@ class SoundFX {
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
     osc.type = 'triangle';
-    osc.frequency.setValueAtTime(500, now);
-    osc.frequency.linearRampToValueAtTime(100, now + 0.3);
+    osc.frequency.setValueAtTime(550, now);
+    osc.frequency.linearRampToValueAtTime(120, now + 0.3);
     gain.gain.setValueAtTime(0.25, now);
     gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
     osc.connect(gain);
@@ -200,7 +204,7 @@ class SoundFX {
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
     osc.type = 'square';
-    osc.frequency.setValueAtTime(60, now);
+    osc.frequency.setValueAtTime(65, now);
     osc.frequency.exponentialRampToValueAtTime(30, now + 0.3);
     gain.gain.setValueAtTime(0.12, now);
     gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
@@ -228,23 +232,17 @@ class SoundFX {
 }
 
 // ==========================================
-// 3. Main Arena Engine
+// 3. Three.js 3D Cyber Voxel Engine
 // ==========================================
-class BioTetherGame {
+class BioTether3DGame {
   constructor() {
-    this.canvas = document.getElementById('gameCanvas');
-    this.ctx = this.canvas.getContext('2d');
     this.sfx = new SoundFX();
 
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
-    this.resizeCanvas();
-
     // Game state
-    this.state = 'LOBBY'; // LOBBY, PLAYING, RESCUE, GAMEOVER, VICTORY
-    this.playerName = 'Player 1';
-    this.roomCode = 'ROOM-774';
-    this.teamMode = 'ai'; // 'ai' or 'solo'
+    this.state = 'LOBBY';
+    this.playerName = 'CyberBot-01';
+    this.roomCode = 'CYBER-774';
+    this.teamMode = 'ai';
 
     this.score = 0;
     this.round = 1;
@@ -253,19 +251,19 @@ class BioTetherGame {
     this.questionTimeMax = 18;
     this.questionTimer = this.questionTimeMax;
 
-    // Platform & Floor grid (Crumbling platform)
-    this.platformCenter = { x: this.width / 2, y: this.height / 2 + 40 };
-    this.gridSize = 7;
-    this.tileSize = 64;
-    this.tiles = [];
+    // Platform settings
+    this.gridSize = 7; // 7x7 3D Cubes
+    this.blockSize = 3.2;
+    this.blocks = [];
 
-    // Answer Pads (4 Zones: A, B, C, D)
+    // 3D Answer Pads (A, B, C, D)
     this.answerPads = [];
 
-    // Players & Teammates tethered together
+    // 3D Players & Teammates
     this.players = [];
-    this.tetherRestLength = 85;
-    this.tetherStiffness = 0.055;
+    this.tetherRopes = [];
+    this.tetherRestLength = 4.2;
+    this.tetherStiffness = 0.08;
     this.yankCooldown = 0;
 
     // Falling / Rescue Event
@@ -274,10 +272,9 @@ class BioTetherGame {
     this.rescueTarget = 100;
     this.rescueTimer = 8.5;
 
-    // Sky Debuffs System
-    this.debuffs = [];
+    // 3D Sky Debuffs
+    this.skyDebuffs = [];
     this.debuffSpawnTimer = 3.5;
-    this.floatingTexts = [];
 
     // Input keys
     this.keys = {
@@ -288,21 +285,58 @@ class BioTetherGame {
       space: false
     };
 
-    // Particle FX
-    this.particles = [];
-
-    // Bindings
-    window.addEventListener('resize', () => this.resizeCanvas());
+    this.initThreeJS();
     this.initInputs();
     this.initLobbyUI();
   }
 
-  resizeCanvas() {
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
-    this.canvas.width = this.width;
-    this.canvas.height = this.height;
-    this.platformCenter = { x: this.width / 2, y: this.height / 2 + 40 };
+  initThreeJS() {
+    const container = document.getElementById('threeContainer');
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0x050508);
+    this.scene.fog = new THREE.FogExp2(0x050508, 0.018);
+
+    // Isometric Camera setup
+    const aspect = window.innerWidth / window.innerHeight;
+    this.camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1000);
+    this.camera.position.set(0, 24, 28);
+    this.camera.lookAt(0, 0, 0);
+
+    // WebGL Renderer with antialiasing
+    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    container.appendChild(this.renderer.domElement);
+
+    // Ambient & Directional Titanium Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
+    this.scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.85);
+    dirLight.position.set(15, 30, 20);
+    dirLight.castShadow = true;
+    dirLight.shadow.mapSize.width = 1024;
+    dirLight.shadow.mapSize.height = 1024;
+    this.scene.add(dirLight);
+
+    const pointLight = new THREE.PointLight(0xffffff, 0.5, 40);
+    pointLight.position.set(0, 10, 0);
+    this.scene.add(pointLight);
+
+    // Deep Abyss Grid Floor
+    const gridHelper = new THREE.GridHelper(80, 40, 0x333333, 0x111111);
+    gridHelper.position.y = -18;
+    this.scene.add(gridHelper);
+
+    window.addEventListener('resize', () => this.onWindowResize());
+  }
+
+  onWindowResize() {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
   initInputs() {
@@ -317,7 +351,7 @@ class BioTetherGame {
         if (this.state === 'RESCUE') {
           this.performRescuePull();
         } else if (this.state === 'PLAYING') {
-          this.performTetherYank(0); // Player 1 yanks
+          this.performTetherYank(0);
         }
       }
     });
@@ -330,7 +364,6 @@ class BioTetherGame {
       if (e.code === 'Space') this.keys.space = false;
     });
 
-    // Touch button handlers
     const bindTouch = (id, key) => {
       const el = document.getElementById(id);
       if (!el) return;
@@ -378,7 +411,7 @@ class BioTetherGame {
     const roomInput = document.getElementById('roomCodeInput');
 
     if (roomInput && !roomInput.value) {
-      roomInput.value = 'BIO-' + Math.floor(100 + Math.random() * 900);
+      roomInput.value = 'CYBER-' + Math.floor(100 + Math.random() * 900);
     }
 
     const modeCards = document.querySelectorAll('.mode-card');
@@ -393,8 +426,8 @@ class BioTetherGame {
     if (startBtn && lobbyOverlay) {
       startBtn.addEventListener('click', () => {
         this.sfx.init();
-        this.playerName = nameInput.value.trim() || 'Player 1';
-        this.roomCode = roomInput.value.trim() || 'BIO-774';
+        this.playerName = nameInput.value.trim() || 'CyberBot-01';
+        this.roomCode = roomInput.value.trim() || 'CYBER-774';
         
         const roomBadge = document.getElementById('roomBadge');
         if (roomBadge) roomBadge.innerText = this.roomCode;
@@ -411,102 +444,216 @@ class BioTetherGame {
     this.round = 1;
     this.currentQuestionIdx = 0;
     this.questionTimer = this.questionTimeMax;
-    this.debuffs = [];
-    this.floatingTexts = [];
 
-    this.initPlatformTiles();
-    this.initAnswerPads();
-    this.initPlayers();
+    this.build3DPlatformGrid();
+    this.build3DAnswerPads();
+    this.build3DPlayers();
     this.loadQuestion(0);
 
     this.lastTime = performance.now();
     requestAnimationFrame((t) => this.gameLoop(t));
   }
 
-  initPlatformTiles() {
-    this.tiles = [];
+  // ==========================================
+  // 4. Build 3D Voxel Cyber Grid Platform
+  // ==========================================
+  build3DPlatformGrid() {
+    // Clear old blocks if any
+    this.blocks.forEach(b => this.scene.remove(b.mesh));
+    this.blocks = [];
+
     const half = Math.floor(this.gridSize / 2);
+    const boxGeo = new THREE.BoxGeometry(this.blockSize * 0.94, 1.2, this.blockSize * 0.94);
+    const edgeGeo = new THREE.EdgesGeometry(boxGeo);
+
     for (let r = -half; r <= half; r++) {
       for (let c = -half; c <= half; c++) {
-        const distFromCenter = Math.sqrt(r * r + c * c);
-        if (distFromCenter <= half + 0.4) {
-          this.tiles.push({
+        const dist = Math.sqrt(r * r + c * c);
+        if (dist <= half + 0.35) {
+          // Cyber Titanium Material
+          const mat = new THREE.MeshStandardMaterial({
+            color: 0x18181c,
+            roughness: 0.3,
+            metalness: 0.8
+          });
+
+          const mesh = new THREE.Mesh(boxGeo, mat);
+          mesh.position.set(c * this.blockSize, 0, r * this.blockSize);
+          mesh.castShadow = true;
+          mesh.receiveShadow = true;
+
+          // Glowing Wireframe Edges
+          const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.35 });
+          const wireframe = new THREE.LineSegments(edgeGeo, lineMat);
+          mesh.add(wireframe);
+
+          this.scene.add(mesh);
+
+          this.blocks.push({
             r, c,
-            x: this.platformCenter.x + c * this.tileSize,
-            y: this.platformCenter.y + r * this.tileSize,
-            size: this.tileSize - 4,
-            dist: distFromCenter,
+            x: mesh.position.x,
+            z: mesh.position.z,
+            dist,
+            mesh,
+            wireframe,
             alive: true,
-            crumbleTimer: 0,
-            opacity: 1,
-            wobble: 0
+            isFalling: false,
+            fallVelocity: 0,
+            rotSpeed: { x: 0, y: 0, z: 0 },
+            shakeTimer: 0
           });
         }
       }
     }
   }
 
-  initAnswerPads() {
-    const offset = this.tileSize * 2.2;
-    this.answerPads = [
-      { id: 'A', x: this.platformCenter.x, y: this.platformCenter.y - offset, radius: 36, label: 'A' },
-      { id: 'B', x: this.platformCenter.x + offset, y: this.platformCenter.y, radius: 36, label: 'B' },
-      { id: 'C', x: this.platformCenter.x, y: this.platformCenter.y + offset, radius: 36, label: 'C' },
-      { id: 'D', x: this.platformCenter.x - offset, y: this.platformCenter.y, radius: 36, label: 'D' }
+  build3DAnswerPads() {
+    this.answerPads.forEach(pad => this.scene.remove(pad.group));
+    this.answerPads = [];
+
+    const offset = this.blockSize * 2.35;
+    const padPositions = [
+      { id: 'A', x: 0, z: -offset, label: 'A' },
+      { id: 'B', x: offset, z: 0, label: 'B' },
+      { id: 'C', x: 0, z: offset, label: 'C' },
+      { id: 'D', x: -offset, z: 0, label: 'D' }
     ];
+
+    padPositions.forEach(pos => {
+      const group = new THREE.Group();
+      group.position.set(pos.x, 0.7, pos.z);
+
+      // Raised 3D Cyber Pillar
+      const cylinderGeo = new THREE.CylinderGeometry(1.5, 1.7, 0.6, 16);
+      const cylinderMat = new THREE.MeshStandardMaterial({
+        color: 0x0a0a0c,
+        roughness: 0.2,
+        metalness: 0.9
+      });
+      const cylinder = new THREE.Mesh(cylinderGeo, cylinderMat);
+      cylinder.receiveShadow = true;
+      group.add(cylinder);
+
+      // Glowing Hologram Ring
+      const torusGeo = new THREE.TorusGeometry(1.6, 0.06, 8, 24);
+      const torusMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      const torus = new THREE.Mesh(torusGeo, torusMat);
+      torus.rotation.x = Math.PI / 2;
+      torus.position.y = 0.35;
+      group.add(torus);
+
+      // 3D Choice Letter Marker (Floating Cube with Badge)
+      const badgeGeo = new THREE.BoxGeometry(0.9, 0.9, 0.9);
+      const badgeMat = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        roughness: 0.1,
+        metalness: 0.5
+      });
+      const badge = new THREE.Mesh(badgeGeo, badgeMat);
+      badge.position.y = 1.6;
+      group.add(badge);
+
+      this.scene.add(group);
+
+      this.answerPads.push({
+        id: pos.id,
+        x: pos.x,
+        z: pos.z,
+        radius: 1.8,
+        group,
+        badge
+      });
+    });
   }
 
-  initPlayers() {
+  build3DPlayers() {
+    this.players.forEach(p => this.scene.remove(p.group));
     this.players = [];
-    this.players.push({
-      id: 1,
-      name: this.playerName,
-      isHuman: true,
-      x: this.platformCenter.x - 25,
-      y: this.platformCenter.y,
-      vx: 0,
-      vy: 0,
-      radius: 14,
-      status: 'SAFE',
-      color: '#ffffff',
-      slowTimer: 0
-    });
+
+    // Helper to create a 3D Voxel Cyber Bot
+    const createVoxelBot = (name, color, isHuman, startPos) => {
+      const group = new THREE.Group();
+      group.position.copy(startPos);
+
+      // Head Voxel
+      const headGeo = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+      const headMat = new THREE.MeshStandardMaterial({ color: color, roughness: 0.3, metalness: 0.7 });
+      const head = new THREE.Mesh(headGeo, headMat);
+      head.position.y = 1.7;
+      head.castShadow = true;
+      group.add(head);
+
+      // Glowing Cyber Visor
+      const visorGeo = new THREE.BoxGeometry(0.65, 0.25, 0.2);
+      const visorMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      const visor = new THREE.Mesh(visorGeo, visorMat);
+      visor.position.set(0, 1.75, 0.38);
+      group.add(visor);
+
+      // Torso Voxel
+      const bodyGeo = new THREE.BoxGeometry(1.0, 1.1, 0.7);
+      const bodyMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1e, roughness: 0.4, metalness: 0.8 });
+      const body = new THREE.Mesh(bodyGeo, bodyMat);
+      body.position.y = 0.9;
+      body.castShadow = true;
+      group.add(body);
+
+      // Jetpack / Tether Core
+      const coreGeo = new THREE.BoxGeometry(0.4, 0.4, 0.4);
+      const coreMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      const core = new THREE.Mesh(coreGeo, coreMat);
+      core.position.set(0, 1.0, -0.4);
+      group.add(core);
+
+      this.scene.add(group);
+
+      return {
+        name,
+        isHuman,
+        group,
+        vx: 0,
+        vz: 0,
+        radius: 0.9,
+        status: 'SAFE',
+        slowTimer: 0,
+        targetPad: null,
+        yankTimer: Math.random() * 5 + 3
+      };
+    };
+
+    // Player 1 (Main user)
+    this.players.push(createVoxelBot(this.playerName, 0xffffff, true, new THREE.Vector3(-1.5, 0.6, 0)));
 
     if (this.teamMode === 'ai') {
-      this.players.push({
-        id: 2,
-        name: 'Dr. Watson (AI)',
-        isHuman: false,
-        x: this.platformCenter.x + 25,
-        y: this.platformCenter.y - 20,
-        vx: 0,
-        vy: 0,
-        radius: 13,
-        status: 'SAFE',
-        color: '#d4d4d8',
-        targetPad: null,
-        slowTimer: 0,
-        yankTimer: Math.random() * 4 + 2
-      });
-
-      this.players.push({
-        id: 3,
-        name: 'Prof. Rosalind (AI)',
-        isHuman: false,
-        x: this.platformCenter.x,
-        y: this.platformCenter.y + 30,
-        vx: 0,
-        vy: 0,
-        radius: 13,
-        status: 'SAFE',
-        color: '#a1a1aa',
-        targetPad: null,
-        slowTimer: 0,
-        yankTimer: Math.random() * 4 + 3
-      });
+      this.players.push(createVoxelBot('Dr. Watson (AI)', 0xd4d4d8, false, new THREE.Vector3(1.5, 0.6, -1.2)));
+      this.players.push(createVoxelBot('Prof. Rosalind (AI)', 0xa1a1aa, false, new THREE.Vector3(0, 0.6, 1.8)));
     }
 
+    this.init3DTetherRopes();
     this.updateTeamUI();
+  }
+
+  init3DTetherRopes() {
+    this.tetherRopes.forEach(r => this.scene.remove(r.line));
+    this.tetherRopes = [];
+
+    const active = this.players.filter(p => p.status !== 'LOST');
+    if (active.length < 2) return;
+
+    for (let i = 0; i < active.length; i++) {
+      const p1 = active[i];
+      const p2 = active[(i + 1) % active.length];
+
+      // Dynamic 3D Laser Tube / Line
+      const points = [p1.group.position, p2.group.position];
+      const curve = new THREE.CatmullRomCurve3(points);
+      const tubeGeo = new THREE.TubeGeometry(curve, 12, 0.07, 6, false);
+      const tubeMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.85 });
+      const line = new THREE.Mesh(tubeGeo, tubeMat);
+
+      this.scene.add(line);
+      this.tetherRopes.push({ p1, p2, line, tubeMat });
+    }
   }
 
   loadQuestion(idx) {
@@ -522,9 +669,10 @@ class BioTetherGame {
       if (el) el.innerText = ch.text;
     });
 
-    this.tiles.forEach(t => {
-      if (t.alive && t.dist >= Math.max(1.8, 3.5 - this.round * 0.3)) {
-        t.wobble = Math.random() * 5;
+    // Reset crumble shake on outer blocks
+    this.blocks.forEach(b => {
+      if (b.alive && b.dist >= Math.max(1.8, 3.5 - this.round * 0.3)) {
+        b.shakeTimer = 1.0;
       }
     });
 
@@ -560,37 +708,40 @@ class BioTetherGame {
       if (timerPill) timerPill.innerText = Math.ceil(this.questionTimer) + 's';
 
       if (this.questionTimer <= 6) {
-        this.crumbleOuterTiles(dt);
+        this.crumble3DOuterBlocks(dt);
       }
 
       if (this.questionTimer <= 0) {
         this.evaluateAnswer();
       }
 
-      // Update Sky Debuffs
-      this.updateSkyDebuffs(dt);
-
-      // Update Player Movement & Physics
-      this.updatePlayersPhysics(dt);
-
-      // Apply Spring Tether Physics between all alive team members
-      this.applyTetherForces();
-
-      // Check if players stepped on crumbling or void area
-      this.checkPlayerTileSupport();
+      this.updateSkyGlitchDebuffs(dt);
+      this.update3DPlayersPhysics(dt);
+      this.apply3DTetherSpringForces();
+      this.checkPlayerBlockSupport();
 
       if (this.yankCooldown > 0) this.yankCooldown -= dt;
     } else if (this.state === 'RESCUE') {
       this.updateRescueEvent(dt);
     }
 
-    // Update Floating Text & Particles
-    this.updateFloatingTexts(dt);
-    this.updateParticles(dt);
+    // Animate 3D Falling Blocks
+    this.update3DFallingBlocks(dt);
+
+    // Update 3D Tether Rope Curves
+    this.update3DTetherRopeGeometry();
+
+    // Rotate holographic badges
+    this.answerPads.forEach((pad, i) => {
+      if (pad.badge) {
+        pad.badge.rotation.y += 0.03;
+        pad.badge.position.y = 1.6 + Math.sin(Date.now() * 0.003 + i) * 0.15;
+      }
+    });
   }
 
   // ==========================================
-  // Tactical Tether Yank (กระตุกเชือกแย่งตำแหน่ง)
+  // Tactical 3D Tether Yank (กระตุกเชือก 3 มิติ)
   // ==========================================
   performTetherYank(playerIdx) {
     if (this.yankCooldown > 0) return;
@@ -600,95 +751,105 @@ class BioTetherGame {
     const puller = this.players[playerIdx];
     if (!puller || puller.status !== 'SAFE') return;
 
-    this.spawnFloatingText(puller.x, puller.y - 20, '⚡ TETHER YANK!', '#ffffff');
-
-    // Apply strong impulse force dragging other teammates towards puller
     this.players.forEach((other, i) => {
       if (i !== playerIdx && other.status === 'SAFE') {
-        const dx = puller.x - other.x;
-        const dy = puller.y - other.y;
-        const dist = Math.hypot(dx, dy) || 1;
-        const impulse = 320;
+        const dx = puller.group.position.x - other.group.position.x;
+        const dz = puller.group.position.z - other.group.position.z;
+        const dist = Math.hypot(dx, dz) || 1;
+        const impulse = 18;
         other.vx += (dx / dist) * impulse;
-        other.vy += (dy / dist) * impulse;
+        other.vz += (dz / dist) * impulse;
       }
     });
   }
 
   // ==========================================
-  // Sky Debuffs System (ดีบัพตกจากฟ้า)
+  // 3D Sky Glitch Debuffs (ดีบัพลูกบาศก์ 3D ตกจากฟ้า)
   // ==========================================
-  updateSkyDebuffs(dt) {
+  updateSkyGlitchDebuffs(dt) {
     this.debuffSpawnTimer -= dt;
     if (this.debuffSpawnTimer <= 0) {
       this.debuffSpawnTimer = Math.random() * 3.5 + 2.5;
-      this.spawnSkyDebuff();
+      this.spawn3DSkyDebuff();
     }
 
-    for (let i = this.debuffs.length - 1; i >= 0; i--) {
-      const d = this.debuffs[i];
-      d.altitude -= dt * 260; // falls down from sky
+    for (let i = this.skyDebuffs.length - 1; i >= 0; i--) {
+      const d = this.skyDebuffs[i];
+      d.mesh.position.y -= dt * 18; // falls down
+      d.mesh.rotation.x += dt * 3;
+      d.mesh.rotation.y += dt * 4;
 
-      // When reaching ground (altitude <= 0)
-      if (d.altitude <= 0) {
-        this.triggerDebuffImpact(d);
-        this.debuffs.splice(i, 1);
+      if (d.mesh.position.y <= 0.8) {
+        this.trigger3DDebuffImpact(d);
+        this.scene.remove(d.mesh);
+        this.scene.remove(d.shadow);
+        this.skyDebuffs.splice(i, 1);
       }
     }
   }
 
-  spawnSkyDebuff() {
+  spawn3DSkyDebuff() {
     const types = [
-      { name: 'ไซโทพลาสซึมหนืด (Slow)', effect: 'SLOW', color: '#ffffff' },
-      { name: 'เวลาบิดเบี้ยว (-3s)', effect: 'TIME', color: '#d4d4d8' },
-      { name: 'แรงกระแทกแผ่นดิน (Shock)', effect: 'SHOCK', color: '#a1a1aa' }
+      { name: 'SLOW', color: 0xffffff },
+      { name: 'TIME', color: 0xd4d4d8 },
+      { name: 'SHOCK', color: 0xa1a1aa }
     ];
     const picked = types[Math.floor(Math.random() * types.length)];
 
-    // Target random position near center platform
-    const targetX = this.platformCenter.x + (Math.random() - 0.5) * (this.tileSize * 4);
-    const targetY = this.platformCenter.y + (Math.random() - 0.5) * (this.tileSize * 4);
+    const targetX = (Math.random() - 0.5) * (this.blockSize * 3.8);
+    const targetZ = (Math.random() - 0.5) * (this.blockSize * 3.8);
 
-    this.debuffs.push({
+    // 3D Glitch Cube
+    const cubeGeo = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+    const cubeMat = new THREE.MeshStandardMaterial({
+      color: picked.color,
+      roughness: 0.2,
+      metalness: 0.9,
+      emissive: 0x444444
+    });
+    const mesh = new THREE.Mesh(cubeGeo, cubeMat);
+    mesh.position.set(targetX, 22, targetZ);
+    this.scene.add(mesh);
+
+    // 3D Target Shadow on floor
+    const shadowGeo = new THREE.RingGeometry(0.2, 1.2, 16);
+    const shadowMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, transparent: true, opacity: 0.4 });
+    const shadow = new THREE.Mesh(shadowGeo, shadowMat);
+    shadow.rotation.x = Math.PI / 2;
+    shadow.position.set(targetX, 0.62, targetZ);
+    this.scene.add(shadow);
+
+    this.skyDebuffs.push({
+      mesh,
+      shadow,
       x: targetX,
-      y: targetY,
-      altitude: 350,
-      radius: 18,
-      effect: picked.effect,
-      name: picked.name,
-      color: picked.color
+      z: targetZ,
+      effect: picked.name
     });
   }
 
-  triggerDebuffImpact(debuff) {
+  trigger3DDebuffImpact(debuff) {
     this.sfx.playDebuffHit();
-    this.spawnTileCrumbleParticles(debuff.x, debuff.y);
 
-    // Check hit players in radius
     this.players.forEach(p => {
       if (p.status !== 'SAFE') return;
-      const dist = Math.hypot(p.x - debuff.x, p.y - debuff.y);
-      if (dist <= debuff.radius + p.radius + 15) {
-        // Hit by debuff!
+      const dist = Math.hypot(p.group.position.x - debuff.x, p.group.position.z - debuff.z);
+      if (dist <= 2.2) {
         if (debuff.effect === 'SLOW') {
           p.slowTimer = 3.5;
-          this.spawnFloatingText(p.x, p.y - 20, '❄️ ความเร็วลดลง 65%!', '#ffffff');
         } else if (debuff.effect === 'TIME') {
           this.questionTimer = Math.max(1, this.questionTimer - 3);
-          this.spawnFloatingText(p.x, p.y - 20, '⏳ เวลาลดลง -3s!', '#ffffff');
         } else if (debuff.effect === 'SHOCK') {
-          // Push player away
-          const angle = Math.atan2(p.y - debuff.y, p.x - debuff.x);
-          p.vx += Math.cos(angle) * 350;
-          p.vy += Math.sin(angle) * 350;
-          this.spawnFloatingText(p.x, p.y - 20, '💥 คลื่นกระแทกผลักกระเด็น!', '#ffffff');
+          const angle = Math.atan2(p.group.position.z - debuff.z, p.group.position.x - debuff.x);
+          p.vx += Math.cos(angle) * 22;
+          p.vz += Math.sin(angle) * 22;
         }
       }
     });
   }
 
-  updatePlayersPhysics(dt) {
-    const baseSpeed = 260;
+  update3DPlayersPhysics(dt) {
+    const baseSpeed = 14;
     this.players.forEach((p, idx) => {
       if (p.status === 'FALLING' || p.status === 'LOST') return;
 
@@ -697,28 +858,27 @@ class BioTetherGame {
 
       if (p.isHuman) {
         let moveX = 0;
-        let moveY = 0;
-        if (this.keys.up) moveY -= 1;
-        if (this.keys.down) moveY += 1;
+        let moveZ = 0;
+        if (this.keys.up) moveZ -= 1;
+        if (this.keys.down) moveZ += 1;
         if (this.keys.left) moveX -= 1;
         if (this.keys.right) moveX += 1;
 
-        if (moveX !== 0 && moveY !== 0) {
+        if (moveX !== 0 && moveZ !== 0) {
           moveX *= 0.7071;
-          moveY *= 0.7071;
+          moveZ *= 0.7071;
         }
 
         p.vx += moveX * speed * dt * 5;
-        p.vy += moveY * speed * dt * 5;
+        p.vz += moveZ * speed * dt * 5;
       } else {
-        // AI Teammate movement & tactical yanks
         if (p.targetPad) {
-          const dx = p.targetPad.x - p.x;
-          const dy = p.targetPad.y - p.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist > 8) {
+          const dx = p.targetPad.x - p.group.position.x;
+          const dz = p.targetPad.z - p.group.position.z;
+          const dist = Math.sqrt(dx * dx + dz * dz);
+          if (dist > 0.4) {
             p.vx += (dx / dist) * speed * dt * 4;
-            p.vy += (dy / dist) * speed * dt * 4;
+            p.vz += (dz / dist) * speed * dt * 4;
           }
         }
 
@@ -730,66 +890,120 @@ class BioTetherGame {
       }
 
       p.vx *= 0.88;
-      p.vy *= 0.88;
+      p.vz *= 0.88;
 
-      p.x += p.vx * dt;
-      p.y += p.vy * dt;
+      p.group.position.x += p.vx * dt;
+      p.group.position.z += p.vz * dt;
+
+      // Gentle walking bobbing
+      if (Math.hypot(p.vx, p.vz) > 0.5) {
+        p.group.position.y = 0.6 + Math.abs(Math.sin(Date.now() * 0.015)) * 0.2;
+        p.group.rotation.y = Math.atan2(p.vx, p.vz);
+      } else {
+        p.group.position.y = 0.6;
+      }
     });
   }
 
-  applyTetherForces() {
-    const activePlayers = this.players.filter(p => p.status !== 'LOST');
-    if (activePlayers.length < 2) return;
+  apply3DTetherSpringForces() {
+    const active = this.players.filter(p => p.status !== 'LOST');
+    if (active.length < 2) return;
 
-    for (let i = 0; i < activePlayers.length; i++) {
-      const p1 = activePlayers[i];
-      const p2 = activePlayers[(i + 1) % activePlayers.length];
+    for (let i = 0; i < active.length; i++) {
+      const p1 = active[i];
+      const p2 = active[(i + 1) % active.length];
 
-      const dx = p2.x - p1.x;
-      const dy = p2.y - p1.y;
-      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      const dx = p2.group.position.x - p1.group.position.x;
+      const dz = p2.group.position.z - p1.group.position.z;
+      const dist = Math.hypot(dx, dz) || 0.1;
 
       if (dist > this.tetherRestLength) {
         const force = (dist - this.tetherRestLength) * this.tetherStiffness;
         const fx = (dx / dist) * force;
-        const fy = (dy / dist) * force;
+        const fz = (dz / dist) * force;
 
         if (p1.status === 'SAFE') {
           p1.vx += fx;
-          p1.vy += fy;
+          p1.vz += fz;
         }
         if (p2.status === 'SAFE') {
           p2.vx -= fx;
-          p2.vy -= fy;
+          p2.vz -= fz;
         }
       }
     }
   }
 
-  crumbleOuterTiles(dt) {
-    this.tiles.forEach(t => {
-      if (t.alive && t.dist > 2.2) {
-        t.crumbleTimer += dt;
-        t.wobble = Math.sin(t.crumbleTimer * 20) * 4;
-        if (t.crumbleTimer > 3.5) {
-          t.alive = false;
+  update3DTetherRopeGeometry() {
+    this.tetherRopes.forEach(rope => {
+      if (rope.p1.status === 'LOST' || rope.p2.status === 'LOST') {
+        rope.line.visible = false;
+        return;
+      }
+      rope.line.visible = true;
+
+      const p1Pos = rope.p1.group.position.clone().add(new THREE.Vector3(0, 1.0, 0));
+      const p2Pos = rope.p2.group.position.clone().add(new THREE.Vector3(0, 1.0, 0));
+      const midPos = p1Pos.clone().lerp(p2Pos, 0.5).add(new THREE.Vector3(0, -0.4, 0));
+
+      const curve = new THREE.CatmullRomCurve3([p1Pos, midPos, p2Pos]);
+      rope.line.geometry.dispose();
+      rope.line.geometry = new THREE.TubeGeometry(curve, 10, 0.06, 6, false);
+    });
+  }
+
+  crumble3DOuterBlocks(dt) {
+    this.blocks.forEach(b => {
+      if (b.alive && b.dist > 2.1) {
+        b.shakeTimer += dt;
+        b.mesh.position.x = b.x + Math.sin(b.shakeTimer * 25) * 0.12;
+        b.mesh.position.z = b.z + Math.cos(b.shakeTimer * 25) * 0.12;
+
+        if (b.shakeTimer > 3.2) {
+          b.alive = false;
+          b.isFalling = true;
+          b.fallVelocity = 2;
+          b.rotSpeed = {
+            x: (Math.random() - 0.5) * 3,
+            y: (Math.random() - 0.5) * 3,
+            z: (Math.random() - 0.5) * 3
+          };
           this.sfx.playCrumble();
-          this.spawnTileCrumbleParticles(t.x, t.y);
         }
       }
     });
   }
 
-  checkPlayerTileSupport() {
+  update3DFallingBlocks(dt) {
+    this.blocks.forEach(b => {
+      if (b.isFalling) {
+        b.fallVelocity += dt * 30; // 3D gravity
+        b.mesh.position.y -= b.fallVelocity * dt;
+        b.mesh.rotation.x += b.rotSpeed.x * dt;
+        b.mesh.rotation.y += b.rotSpeed.y * dt;
+        b.mesh.rotation.z += b.rotSpeed.z * dt;
+
+        if (b.mesh.position.y < -35) {
+          b.isFalling = false;
+          this.scene.remove(b.mesh);
+        }
+      }
+    });
+  }
+
+  checkPlayerBlockSupport() {
     this.players.forEach(p => {
       if (p.status !== 'SAFE') return;
 
       let onSolidGround = false;
-      for (const t of this.tiles) {
-        if (t.alive) {
-          const half = t.size / 2;
-          if (p.x >= t.x - half && p.x <= t.x + half &&
-              p.y >= t.y - half && p.y <= t.y + half) {
+      const px = p.group.position.x;
+      const pz = p.group.position.z;
+
+      for (const b of this.blocks) {
+        if (b.alive && !b.isFalling) {
+          const half = this.blockSize / 2;
+          if (px >= b.x - half && px <= b.x + half &&
+              pz >= b.z - half && pz <= b.z + half) {
             onSolidGround = true;
             break;
           }
@@ -798,8 +1012,8 @@ class BioTetherGame {
 
       if (!onSolidGround) {
         for (const pad of this.answerPads) {
-          const dist = Math.hypot(p.x - pad.x, p.y - pad.y);
-          if (dist <= pad.radius + 8) {
+          const dist = Math.hypot(px - pad.x, pz - pad.z);
+          if (dist <= pad.radius) {
             onSolidGround = true;
             break;
           }
@@ -807,7 +1021,7 @@ class BioTetherGame {
       }
 
       if (!onSolidGround) {
-        this.triggerTeammateFall(p, 'ก้าวพลาดตกจากแท่นหินที่พังทลาย!');
+        this.triggerTeammateFall(p, 'ก้าวพลาดตกจากบล็อก 3 มิติที่พังทลาย!');
       }
     });
   }
@@ -820,14 +1034,12 @@ class BioTetherGame {
     });
 
     const mainPlayer = this.players.find(p => p.isHuman);
-    const distToCorrect = Math.hypot(mainPlayer.x - correctPad.x, mainPlayer.y - correctPad.y);
-    const isCorrect = distToCorrect <= correctPad.radius + 20;
+    const distToCorrect = Math.hypot(mainPlayer.group.position.x - correctPad.x, mainPlayer.group.position.z - correctPad.z);
+    const isCorrect = distToCorrect <= correctPad.radius + 0.8;
 
     if (isCorrect) {
       this.sfx.playCorrect();
       this.score += 100 * this.round;
-      this.spawnVictoryBurst(correctPad.x, correctPad.y);
-      this.spawnFloatingText(correctPad.x, correctPad.y - 30, '+100 PTS! ถูกต้อง', '#ffffff');
 
       this.round++;
       if (this.round > this.totalRounds) {
@@ -842,9 +1054,9 @@ class BioTetherGame {
       const safePlayers = this.players.filter(p => p.status === 'SAFE');
       if (safePlayers.length > 0) {
         const victim = safePlayers[Math.floor(Math.random() * safePlayers.length)];
-        this.triggerTeammateFall(victim, `ตอบผิด! แรงสั่นสะเทือนทำให้ ${victim.name} ร่วงลงสู่ขอบเหว!`);
+        this.triggerTeammateFall(victim, `ตอบผิด! แรงสั่นสะเทือนทำให้ ${victim.name} ร่วงลงสู่ขอบเหว 3D!`);
       } else {
-        this.showGameOverModal('สมาชิกในทีมทุกคนร่วงหล่นลงสู่อเวจี!');
+        this.showGameOverModal('สมาชิกในทีมทุกคนร่วงหล่นลงสู่อเวจี 3D!');
       }
     }
   }
@@ -852,6 +1064,7 @@ class BioTetherGame {
   triggerTeammateFall(player, reason) {
     if (this.state === 'RESCUE') return;
     player.status = 'FALLING';
+    player.group.position.y = -2.5; // Dangles over 3D cliff
     this.fallenPlayer = player;
     this.state = 'RESCUE';
     this.rescueProgress = 20;
@@ -864,8 +1077,8 @@ class BioTetherGame {
     const titleEl = document.getElementById('rescueTitle');
     const subEl = document.getElementById('rescueSub');
     if (overlay && titleEl && subEl) {
-      titleEl.innerText = `⚠️ ${player.name} กำลังจะร่วงตกเหว!`;
-      subEl.innerText = `${reason} ทุกคนต้องช่วยกันดึงเชือกกู้ชีพขึ้นมาด่วน!`;
+      titleEl.innerText = `⚠️ ${player.name} กำลังจะร่วงตกเหว 3D!`;
+      subEl.innerText = `${reason} ทุกคนต้องช่วยกันดึงเชือก 3D กู้ชีพขึ้นมาด่วน!`;
       overlay.classList.add('active');
     }
   }
@@ -898,11 +1111,9 @@ class BioTetherGame {
     this.sfx.playRescue();
     if (this.fallenPlayer) {
       this.fallenPlayer.status = 'SAFE';
-      this.fallenPlayer.x = this.platformCenter.x;
-      this.fallenPlayer.y = this.platformCenter.y;
+      this.fallenPlayer.group.position.set(0, 0.6, 0);
       this.fallenPlayer.vx = 0;
-      this.fallenPlayer.vy = 0;
-      this.spawnFloatingText(this.platformCenter.x, this.platformCenter.y - 30, '🎉 ช่วยเพื่อนสำเร็จ!', '#ffffff');
+      this.fallenPlayer.vz = 0;
     }
 
     const overlay = document.getElementById('rescueOverlay');
@@ -917,7 +1128,7 @@ class BioTetherGame {
   failRescue() {
     if (this.fallenPlayer) {
       this.fallenPlayer.status = 'LOST';
-      this.spawnTileCrumbleParticles(this.fallenPlayer.x, this.fallenPlayer.y);
+      this.scene.remove(this.fallenPlayer.group);
     }
 
     const overlay = document.getElementById('rescueOverlay');
@@ -947,273 +1158,15 @@ class BioTetherGame {
           <span>${p.name}</span>
         </div>
         <div class="member-status ${p.status === 'FALLING' ? 'falling' : ''}">
-          ${p.status === 'SAFE' ? 'ปลอดภัย' : (p.status === 'FALLING' ? 'กำลังตก!' : 'เสียชีวิต')}
+          ${p.status === 'SAFE' ? 'ปลอดภัย' : (p.status === 'FALLING' ? 'กำลังตก!' : 'สูญหาย')}
         </div>
       `;
       list.appendChild(row);
     });
   }
 
-  spawnFloatingText(x, y, text, color) {
-    this.floatingTexts.push({
-      x, y,
-      text,
-      color,
-      life: 1.2,
-      vy: -35
-    });
-  }
-
-  updateFloatingTexts(dt) {
-    for (let i = this.floatingTexts.length - 1; i >= 0; i--) {
-      const ft = this.floatingTexts[i];
-      ft.y += ft.vy * dt;
-      ft.life -= dt;
-      if (ft.life <= 0) {
-        this.floatingTexts.splice(i, 1);
-      }
-    }
-  }
-
-  // ==========================================
-  // 4. Render Engine
-  // ==========================================
   render() {
-    this.ctx.clearRect(0, 0, this.width, this.height);
-
-    this.drawBackgroundAbyss();
-    this.drawPlatformTiles();
-    this.drawAnswerPads();
-    this.drawSkyDebuffs();
-    this.drawTetherRopes();
-    this.drawPlayers();
-    this.drawFloatingTexts();
-    this.drawParticles();
-  }
-
-  drawBackgroundAbyss() {
-    this.ctx.save();
-    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
-    this.ctx.lineWidth = 1;
-    for (let r = 80; r <= 380; r += 60) {
-      this.ctx.beginPath();
-      this.ctx.arc(this.platformCenter.x, this.platformCenter.y, r, 0, Math.PI * 2);
-      this.ctx.stroke();
-    }
-    this.ctx.restore();
-  }
-
-  drawPlatformTiles() {
-    this.ctx.save();
-    this.tiles.forEach(t => {
-      if (!t.alive) return;
-      this.ctx.save();
-      this.ctx.translate(t.x + (t.wobble || 0), t.y);
-
-      this.ctx.fillStyle = '#141418';
-      this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
-      this.ctx.lineWidth = 1.5;
-
-      const half = t.size / 2;
-      this.ctx.beginPath();
-      this.ctx.roundRect(-half, -half, t.size, t.size, 6);
-      this.ctx.fill();
-      this.ctx.stroke();
-
-      this.ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
-      this.ctx.beginPath();
-      this.ctx.arc(0, 0, half * 0.4, 0, Math.PI * 2);
-      this.ctx.fill();
-
-      this.ctx.restore();
-    });
-    this.ctx.restore();
-  }
-
-  drawAnswerPads() {
-    this.answerPads.forEach(pad => {
-      this.ctx.save();
-      this.ctx.translate(pad.x, pad.y);
-
-      this.ctx.beginPath();
-      this.ctx.arc(0, 0, pad.radius + 6, 0, Math.PI * 2);
-      this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-      this.ctx.lineWidth = 2;
-      this.ctx.stroke();
-
-      this.ctx.beginPath();
-      this.ctx.arc(0, 0, pad.radius, 0, Math.PI * 2);
-      this.ctx.fillStyle = '#000000';
-      this.ctx.fill();
-      this.ctx.strokeStyle = '#ffffff';
-      this.ctx.lineWidth = 2.5;
-      this.ctx.stroke();
-
-      this.ctx.fillStyle = '#ffffff';
-      this.ctx.font = '700 20px Prompt';
-      this.ctx.textAlign = 'center';
-      this.ctx.textBaseline = 'middle';
-      this.ctx.fillText(pad.label, 0, 1);
-
-      this.ctx.restore();
-    });
-  }
-
-  drawSkyDebuffs() {
-    this.debuffs.forEach(d => {
-      this.ctx.save();
-
-      // Shadow on ground
-      const shadowScale = Math.max(0.3, 1 - d.altitude / 350);
-      this.ctx.beginPath();
-      this.ctx.ellipse(d.x, d.y, d.radius * shadowScale, d.radius * 0.5 * shadowScale, 0, 0, Math.PI * 2);
-      this.ctx.fillStyle = `rgba(255, 255, 255, ${shadowScale * 0.35})`;
-      this.ctx.fill();
-
-      // Falling Debuff Spore in Sky
-      const renderY = d.y - d.altitude;
-      this.ctx.beginPath();
-      this.ctx.arc(d.x, renderY, d.radius, 0, Math.PI * 2);
-      this.ctx.fillStyle = d.color;
-      this.ctx.fill();
-      this.ctx.strokeStyle = '#000000';
-      this.ctx.lineWidth = 2;
-      this.ctx.stroke();
-
-      // Warning Symbol
-      this.ctx.fillStyle = '#000000';
-      this.ctx.font = '800 12px Prompt';
-      this.ctx.textAlign = 'center';
-      this.ctx.textBaseline = 'middle';
-      this.ctx.fillText('⚡', d.x, renderY);
-
-      this.ctx.restore();
-    });
-  }
-
-  drawTetherRopes() {
-    const activePlayers = this.players.filter(p => p.status !== 'LOST');
-    if (activePlayers.length < 2) return;
-
-    this.ctx.save();
-    for (let i = 0; i < activePlayers.length; i++) {
-      const p1 = activePlayers[i];
-      const p2 = activePlayers[(i + 1) % activePlayers.length];
-
-      const midX = (p1.x + p2.x) / 2;
-      const midY = (p1.y + p2.y) / 2 + (this.yankCooldown > 0 ? -12 : 8);
-
-      this.ctx.strokeStyle = p1.status === 'FALLING' || p2.status === 'FALLING' ? '#ffffff' : 'rgba(255, 255, 255, 0.7)';
-      this.ctx.lineWidth = this.yankCooldown > 0 ? 3.5 : 2.2;
-      this.ctx.setLineDash(p1.status === 'FALLING' || p2.status === 'FALLING' ? [4, 4] : []);
-
-      this.ctx.beginPath();
-      this.ctx.moveTo(p1.x, p1.y);
-      this.ctx.quadraticCurveTo(midX, midY, p2.x, p2.y);
-      this.ctx.stroke();
-    }
-    this.ctx.restore();
-  }
-
-  drawPlayers() {
-    this.players.forEach(p => {
-      if (p.status === 'LOST') return;
-
-      this.ctx.save();
-      this.ctx.translate(p.x, p.y);
-
-      if (p.status === 'FALLING') {
-        this.ctx.scale(0.8, 0.8);
-        this.ctx.globalAlpha = 0.7;
-      }
-
-      this.ctx.beginPath();
-      this.ctx.arc(0, 4, p.radius, 0, Math.PI * 2);
-      this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-      this.ctx.fill();
-
-      this.ctx.beginPath();
-      this.ctx.arc(0, 0, p.radius, 0, Math.PI * 2);
-      this.ctx.fillStyle = p.slowTimer > 0 ? '#71717a' : p.color;
-      this.ctx.fill();
-      this.ctx.strokeStyle = '#000000';
-      this.ctx.lineWidth = 2;
-      this.ctx.stroke();
-
-      this.ctx.beginPath();
-      this.ctx.arc(0, 0, p.radius * 0.45, 0, Math.PI * 2);
-      this.ctx.fillStyle = '#000000';
-      this.ctx.fill();
-
-      this.ctx.fillStyle = '#ffffff';
-      this.ctx.font = '600 11px Prompt';
-      this.ctx.textAlign = 'center';
-      this.ctx.fillText(p.name, 0, -p.radius - 8);
-
-      this.ctx.restore();
-    });
-  }
-
-  drawFloatingTexts() {
-    this.ctx.save();
-    this.floatingTexts.forEach(ft => {
-      this.ctx.fillStyle = ft.color;
-      this.ctx.font = '700 13px Prompt';
-      this.ctx.textAlign = 'center';
-      this.ctx.globalAlpha = Math.min(1, ft.life);
-      this.ctx.fillText(ft.text, ft.x, ft.y);
-    });
-    this.ctx.restore();
-  }
-
-  spawnTileCrumbleParticles(x, y) {
-    for (let i = 0; i < 16; i++) {
-      this.particles.push({
-        x: x + (Math.random() - 0.5) * 30,
-        y: y + (Math.random() - 0.5) * 30,
-        vx: (Math.random() - 0.5) * 80,
-        vy: Math.random() * 80 + 30,
-        size: Math.random() * 5 + 2,
-        life: 1,
-        decay: Math.random() * 1.5 + 0.8
-      });
-    }
-  }
-
-  spawnVictoryBurst(x, y) {
-    for (let i = 0; i < 28; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const spd = Math.random() * 120 + 40;
-      this.particles.push({
-        x, y,
-        vx: Math.cos(angle) * spd,
-        vy: Math.sin(angle) * spd,
-        size: Math.random() * 4 + 2,
-        life: 1,
-        decay: 1.2
-      });
-    }
-  }
-
-  updateParticles(dt) {
-    for (let i = this.particles.length - 1; i >= 0; i--) {
-      const pt = this.particles[i];
-      pt.x += pt.vx * dt;
-      pt.y += pt.vy * dt;
-      pt.life -= pt.decay * dt;
-      if (pt.life <= 0) {
-        this.particles.splice(i, 1);
-      }
-    }
-  }
-
-  drawParticles() {
-    this.ctx.save();
-    this.particles.forEach(pt => {
-      this.ctx.fillStyle = `rgba(255, 255, 255, ${pt.life})`;
-      this.ctx.fillRect(pt.x, pt.y, pt.size, pt.size);
-    });
-    this.ctx.restore();
+    this.renderer.render(this.scene, this.camera);
   }
 
   showVictoryModal() {
@@ -1237,5 +1190,5 @@ class BioTetherGame {
 
 // Start on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
-  window.bioTether = new BioTetherGame();
+  window.bioTether3D = new BioTether3DGame();
 });

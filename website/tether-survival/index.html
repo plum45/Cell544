@@ -3,19 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-  <title>CYTOLIFE — Bio-Tether Survival Arena | ศึกพิทักษ์เซลล์เชือกผูกพัน</title>
-  <meta name="description" content="เกมเอาชีวิตรอดบนแผ่นดินที่กำลังพังทลาย พร้อมระบบเชือกผูกติดกัน ดีบัพตกจากฟ้า แย่งกันตอบคำถามชีววิทยา และช่วยเพื่อนตกเหว">
+  <title>CYTOLIFE — 3D Cyber Tether Arena | ศึกพิทักษ์เซลล์บล็อก 3 มิติ</title>
+  <meta name="description" content="เกม 3D Cyber Voxel เอาชีวิตรอดบนแผ่นดินบล็อกสี่เหลี่ยม 3 มิติที่กำลังร่วงหล่น พร้อมระบบเชือกฟิสิกส์ 3D ดีบัพตกจากฟ้า และตอบคำถามชีววิทยา">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="style.css?v=20261004v2">
+  <!-- Three.js 3D WebGL Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <link rel="stylesheet" href="style.css?v=20261004v3d">
 </head>
 <body>
 
-  <!-- Atmospheric Background -->
+  <!-- Atmospheric 3D Cyber Grid Overlay -->
   <div class="grid-bg-overlay"></div>
 
   <!-- 1. Top Bar Navigation -->
@@ -28,7 +31,7 @@
         <span>หน้าหลัก CYTOLIFE</span>
       </a>
       <div class="game-brand">
-        CYTOLIFE <span>TETHER ARENA</span>
+        CYTOLIFE <span>3D CYBER TETHER</span>
       </div>
     </div>
 
@@ -38,8 +41,8 @@
     </div>
   </header>
 
-  <!-- 2. Game Canvas Viewport -->
-  <canvas id="gameCanvas"></canvas>
+  <!-- 2. Three.js 3D WebGL Viewport Container -->
+  <div id="threeContainer" style="position: absolute; inset: 0; z-index: 2;"></div>
 
   <!-- 3. Top In-Game HUD (Question & Choices) -->
   <div class="game-hud" id="gameHud">
@@ -83,8 +86,8 @@
   <!-- 4. Team Status HUD (Bottom Left) -->
   <div class="team-status-hud" id="teamStatusHud">
     <div class="team-title">
-      <span>สมาชิกในทีม (TETHERED)</span>
-      <span style="color: #fff;">3/3</span>
+      <span>สมาชิกในทีม (3D TETHER)</span>
+      <span style="color: #fff;" id="teamCountBadge">3/3</span>
     </div>
     <div id="teamMemberList">
       <!-- Populated dynamically by game.js -->
@@ -93,8 +96,8 @@
 
   <!-- 5. Controls & Pull Action HUD (Bottom Right) -->
   <div class="controls-hud-hint">
-    <div><span class="key-badge">W</span><span class="key-badge">A</span><span class="key-badge">S</span><span class="key-badge">D</span> เดิน</div>
-    <div><span class="key-badge">SPACE</span> กระตุกเชือกดึงเพื่อน / แย่งตำแหน่ง</div>
+    <div><span class="key-badge">W</span><span class="key-badge">A</span><span class="key-badge">S</span><span class="key-badge">D</span> เดิน 3 มิติ</div>
+    <div><span class="key-badge">SPACE</span> กระตุกเชือก 3D ดึงเพื่อน / แย่งตำแหน่ง</div>
   </div>
 
   <!-- 6. Mobile On-Screen Controls -->
@@ -114,7 +117,7 @@
 
   <!-- 7. Emergency Rescue QTE Overlay -->
   <div class="rescue-overlay" id="rescueOverlay">
-    <div class="rescue-title" id="rescueTitle">⚠️ สมาชิกในทีมกำลังจะร่วงตกเหว!</div>
+    <div class="rescue-title" id="rescueTitle">⚠️ สมาชิกในทีมกำลังจะร่วงตกเหว 3D!</div>
     <div class="rescue-sub" id="rescueSub">ทุกคนต้องช่วยกันกดปุ่มดึงเชือกกู้ชีพขึ้นมาด่วน ก่อนจะตกลงไปทั้งหมด!</div>
     <div class="rescue-progress-wrap">
       <div class="rescue-progress-fill" id="rescueProgressFill"></div>
@@ -127,38 +130,38 @@
   <div class="screen-overlay" id="lobbyOverlay">
     <div class="lobby-modal">
       <div class="lobby-header">
-        <span class="lobby-kicker">CYTOLIFE MULTIPLAYER ARENA</span>
-        <h2 class="lobby-title">ศึกพิทักษ์เซลล์เชือกผูกพัน</h2>
+        <span class="lobby-kicker">3D CYBER VOXEL ARENA</span>
+        <h2 class="lobby-title">ศึกพิทักษ์เซลล์บล็อก 3 มิติ</h2>
         <p class="lobby-desc">
-          คุณและเพื่อนร่วมทีมจะถูกผูกเชือกติดกันบนแผ่นดินที่กำลังพังทลาย วิ่งไปยังแท่นคำตอบที่ถูกต้อง ระวังดีบัพตกจากฟ้า และกระตุกเชือกดึงเพื่อนเพื่อแย่งตำแหน่งหรือช่วยชีวิต!
+          คุณและเพื่อนร่วมทีมในร่างไซเบอร์บอท 3 มิติจะถูกผูกเชือกพลังงานติดกันบนแผ่นดินบล็อกสี่เหลี่ยมที่กำลังร่วงหล่นทีละนิด! วิ่งไปยังแท่น 3D ที่ถูกต้อง ระวังดีบัพตกจากฟ้า และกระตุกเชือกแย่งตำแหน่ง!
         </p>
       </div>
 
       <div class="lobby-form-group">
         <label class="lobby-label">ชื่อผู้เล่น (Player Name)</label>
-        <input type="text" id="playerNameInput" class="lobby-input" placeholder="ใส่ชื่อของคุณ เช่น BioResearcher" value="Player 1" maxlength="15">
+        <input type="text" id="playerNameInput" class="lobby-input" placeholder="ใส่ชื่อของคุณ เช่น BioCyberBot" value="CyberBot-01" maxlength="15">
       </div>
 
       <div class="lobby-form-group">
         <label class="lobby-label">รหัสห้องเฉพาะกลุ่ม (Room Code)</label>
-        <input type="text" id="roomCodeInput" class="lobby-input" placeholder="ใส่รหัสห้อง เช่น BIO-888" value="BIO-774" maxlength="12">
+        <input type="text" id="roomCodeInput" class="lobby-input" placeholder="ใส่รหัสห้อง เช่น BIO-888" value="CYBER-774" maxlength="12">
       </div>
 
       <div class="lobby-form-group">
         <label class="lobby-label">โหมดการเล่น (Game Mode)</label>
         <div class="team-mode-selector">
           <div class="mode-card selected" data-mode="ai">
-            <div class="mode-name">👥 ทีม AI Bio-Researchers</div>
-            <div class="mode-sub">เล่นคนเดียวร่วมกับเพื่อนร่วมทีม AI อัจฉริยะ 2 คน</div>
+            <div class="mode-name">👥 ทีม 3D AI Bots</div>
+            <div class="mode-sub">เล่นคนเดียวร่วมกับเพื่อนร่วมทีม AI บล็อกไซเบอร์ 2 ตัว</div>
           </div>
           <div class="mode-card" data-mode="solo">
-            <div class="mode-name">🎯 ตะลุยเดี่ยว Solo Survivor</div>
-            <div class="mode-sub">ทดสอบปฏิกิริยาและความแม่นยำทางชีววิทยาแบบคนเดียว</div>
+            <div class="mode-name">🎯 ตะลุยเดี่ยว Solo 3D</div>
+            <div class="mode-sub">ทดสอบปฏิกิริยาบนบล็อก 3 มิติแบบคนเดียว</div>
           </div>
         </div>
       </div>
 
-      <button class="start-btn" id="startArenaBtn">เข้าสู่ห้องประลอง (Enter Arena) ➔</button>
+      <button class="start-btn" id="startArenaBtn">เข้าสู่ห้องประลอง 3D (Enter 3D Arena) ➔</button>
     </div>
   </div>
 
@@ -167,8 +170,8 @@
     <div class="lobby-modal" style="text-align: center;">
       <div class="lobby-header">
         <span class="lobby-kicker">MISSION FAILED</span>
-        <h2 class="lobby-title" style="color: #ffffff;">แผ่นดินพังทลาย!</h2>
-        <p class="lobby-desc" id="gameOverReason">สมาชิกในทีมทุกคนร่วงหล่นลงสู่อเวจี</p>
+        <h2 class="lobby-title" style="color: #ffffff;">บล็อก 3D พังทลายทั้งหมด!</h2>
+        <p class="lobby-desc" id="gameOverReason">สมาชิกในทีมทุกคนร่วงหล่นลงสู่อเวจี 3 มิติ</p>
       </div>
 
       <div style="font-size: 36px; font-weight: 800; color: #ffffff; margin: 12px 0;" id="gameOverScore">
@@ -187,8 +190,8 @@
     <div class="lobby-modal" style="text-align: center;">
       <div class="lobby-header">
         <span class="lobby-kicker" style="color: #fff;">CHAMPION SURVIVOR</span>
-        <h2 class="lobby-title" style="color: #ffffff;">รอดชีวิตสำเร็จทุกบททดสอบ!</h2>
-        <p class="lobby-desc">คุณและทีมตอบคำถามชีววิทยาได้อย่างแม่นยำและเอาชีวิตรอดบนเกาะที่พังทลายได้สำเร็จ</p>
+        <h2 class="lobby-title" style="color: #ffffff;">รอดชีวิตสำเร็จทุกบททดสอบ 3D!</h2>
+        <p class="lobby-desc">คุณและทีมตอบคำถามชีววิทยาได้อย่างแม่นยำและเอาชีวิตรอดบนเกาะบล็อก 3 มิติได้สำเร็จ</p>
       </div>
 
       <div style="font-size: 36px; font-weight: 800; color: #ffffff; margin: 12px 0;" id="victoryScore">
@@ -203,6 +206,6 @@
   </div>
 
   <!-- Scripts -->
-  <script src="game.js?v=20261004v2"></script>
+  <script src="game.js?v=20261004v3d"></script>
 </body>
 </html>
