@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-  <title>CYTOLIFE — 3D Cyber Tether Arena | ศึกพิทักษ์เซลล์บล็อก 3 มิติ</title>
-  <meta name="description" content="เกม 3D Cyber Voxel เอาชีวิตรอดบนแผ่นดินบล็อกสี่เหลี่ยม 3 มิติที่กำลังร่วงหล่น พร้อมระบบเชือกฟิสิกส์ 3D ดีบัพตกจากฟ้า และตอบคำถามชีววิทยา">
+  <title>CYTOLIFE — 3D Cyber Biology Arena & Who Am I</title>
+  <meta name="description" content="เกม 3D Cyber Voxel และ Who Am I บนแผ่นดินบล็อก 3 มิติขนาดใหญ่ พร้อมระบบเชือกฟิสิกส์ 3D ป้ายตัวเลือกโฮโลแกรม และตัวละครไซเบอร์">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,12 +14,9 @@
   <!-- Three.js 3D WebGL Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-  <link rel="stylesheet" href="style.css?v=20261004v3d">
+  <link rel="stylesheet" href="style.css?v=20261004v4">
 </head>
 <body>
-
-  <!-- Atmospheric 3D Cyber Grid Overlay -->
-  <div class="grid-bg-overlay"></div>
 
   <!-- 1. Top Bar Navigation -->
   <header class="game-top-nav">
@@ -31,62 +28,66 @@
         <span>หน้าหลัก CYTOLIFE</span>
       </a>
       <div class="game-brand">
-        CYTOLIFE <span>3D CYBER TETHER</span>
+        CYTOLIFE <span>3D CYBER ARENA</span>
       </div>
     </div>
 
     <div class="nav-right">
-      <span class="room-badge" id="roomBadge">ROOM-774</span>
-      <button class="sound-toggle-btn" id="soundBtn" title="เปิด/ปิดเสียง">🔊</button>
+      <span class="mode-badge-pill" id="roomBadge">CYBER-774</span>
+      <button class="back-btn" id="soundBtn" title="เปิด/ปิดเสียง">🔊</button>
     </div>
   </header>
 
-  <!-- 2. Three.js 3D WebGL Viewport Container -->
-  <div id="threeContainer" style="position: absolute; inset: 0; z-index: 2;"></div>
+  <!-- 2. Mode Selector Dock (Top Right) -->
+  <div class="mode-toggle-dock">
+    <button class="mode-tab-btn active" id="tabSurvival" onclick="switchGameType('survival')">⚔️ 3D Cyber Arena</button>
+    <button class="mode-tab-btn" id="tabWhoAmI" onclick="switchGameType('whoami')">🃏 Who Am I? (คู่ปริศนา)</button>
+  </div>
 
-  <!-- 3. Top In-Game HUD (Question & Choices) -->
-  <div class="game-hud" id="gameHud">
-    <div class="hud-panel">
-      <div class="hud-meta-row">
-        <span class="hud-topic-tag" id="hudTopic">GENE EXPRESSION · ข้อที่ 1/8</span>
-        <div class="hud-timer-wrap">
-          <div class="timer-bar-bg">
-            <div class="timer-bar-fill" id="timerBarFill"></div>
-          </div>
-          <span class="timer-pill" id="timerPill">18s</span>
-        </div>
+  <!-- 3. Minimalist Compact Top Question Ribbon (Doesn't block the 3D map!) -->
+  <div class="compact-question-ribbon" id="questionRibbon">
+    <div class="ribbon-left">
+      <div class="ribbon-kicker">
+        <span id="ribbonTopic">GENE EXPRESSION</span>
+        <span style="color: var(--border-strong);">&bull;</span>
+        <span id="ribbonRound">ข้อที่ 1/8</span>
       </div>
-      
-      <div class="hud-question-text" id="hudQuestion">
+      <div class="ribbon-question" id="ribbonQuestion">
         กำลังโหลดคำถามชีววิทยาโมเลกุล...
       </div>
+    </div>
 
-      <!-- 4 Choices Legend -->
-      <div class="choices-legend-grid">
-        <div class="choice-legend-item">
-          <span class="choice-badge">A</span>
-          <span id="choiceTextA">ตัวเลือก A</span>
-        </div>
-        <div class="choice-legend-item">
-          <span class="choice-badge">B</span>
-          <span id="choiceTextB">ตัวเลือก B</span>
-        </div>
-        <div class="choice-legend-item">
-          <span class="choice-badge">C</span>
-          <span id="choiceTextC">ตัวเลือก C</span>
-        </div>
-        <div class="choice-legend-item">
-          <span class="choice-badge">D</span>
-          <span id="choiceTextD">ตัวเลือก D</span>
-        </div>
+    <div class="ribbon-timer-wrap">
+      <span class="timer-tag" id="timerPill">18s</span>
+      <div class="timer-bar-mini">
+        <div class="timer-bar-fill-mini" id="timerBarFill"></div>
       </div>
     </div>
   </div>
 
-  <!-- 4. Team Status HUD (Bottom Left) -->
+  <!-- 4. Floating 3D Clue Cards for "WHO AM I?" mode -->
+  <div class="clue-cards-bar" id="clueCardsBar" style="display: none;">
+    <div class="clue-pill revealed" id="clue1">
+      <span class="clue-num">คำใบ้ 1</span>
+      <span id="clueText1">กำลังวิเคราะห์...</span>
+    </div>
+    <div class="clue-pill" id="clue2">
+      <span class="clue-num">คำใบ้ 2</span>
+      <span id="clueText2">ปลดล็อกใน 12s</span>
+    </div>
+    <div class="clue-pill" id="clue3">
+      <span class="clue-num">คำใบ้ 3</span>
+      <span id="clueText3">ปลดล็อกใน 6s</span>
+    </div>
+  </div>
+
+  <!-- 5. Three.js 3D WebGL Viewport Container (Full 3D Map) -->
+  <div id="threeContainer"></div>
+
+  <!-- 6. Team Status HUD (Bottom Left) -->
   <div class="team-status-hud" id="teamStatusHud">
     <div class="team-title">
-      <span>สมาชิกในทีม (3D TETHER)</span>
+      <span>สมาชิกทีม (3D TETHER)</span>
       <span style="color: #fff;" id="teamCountBadge">3/3</span>
     </div>
     <div id="teamMemberList">
@@ -94,28 +95,13 @@
     </div>
   </div>
 
-  <!-- 5. Controls & Pull Action HUD (Bottom Right) -->
+  <!-- 7. Controls & Pull Action HUD (Bottom Right) -->
   <div class="controls-hud-hint">
-    <div><span class="key-badge">W</span><span class="key-badge">A</span><span class="key-badge">S</span><span class="key-badge">D</span> เดิน 3 มิติ</div>
-    <div><span class="key-badge">SPACE</span> กระตุกเชือก 3D ดึงเพื่อน / แย่งตำแหน่ง</div>
+    <div><span class="key-badge">W</span><span class="key-badge">A</span><span class="key-badge">S</span><span class="key-badge">D</span> เดินบนแมพกว้าง 3D</div>
+    <div><span class="key-badge">SPACE</span> กระตุกเชือก 3D ดึงเพื่อน / แย่งแท่น</div>
   </div>
 
-  <!-- 6. Mobile On-Screen Controls -->
-  <div class="mobile-touch-controls">
-    <div class="touch-dpad">
-      <div></div>
-      <button class="touch-btn" id="btnUp">▲</button>
-      <div></div>
-      <button class="touch-btn" id="btnLeft">◀</button>
-      <button class="touch-btn" id="btnAction" style="font-weight: 800; font-size: 13px;">PULL</button>
-      <button class="touch-btn" id="btnRight">▶</button>
-      <div></div>
-      <button class="touch-btn" id="btnDown">▼</button>
-      <div></div>
-    </div>
-  </div>
-
-  <!-- 7. Emergency Rescue QTE Overlay -->
+  <!-- 8. Emergency Rescue QTE Overlay -->
   <div class="rescue-overlay" id="rescueOverlay">
     <div class="rescue-title" id="rescueTitle">⚠️ สมาชิกในทีมกำลังจะร่วงตกเหว 3D!</div>
     <div class="rescue-sub" id="rescueSub">ทุกคนต้องช่วยกันกดปุ่มดึงเชือกกู้ชีพขึ้นมาด่วน ก่อนจะตกลงไปทั้งหมด!</div>
@@ -123,40 +109,39 @@
       <div class="rescue-progress-fill" id="rescueProgressFill"></div>
     </div>
     <button class="pull-btn" id="pullBtn">⚡ กดรัวๆ ดึงเชือกช่วยเพื่อน (SPACEBAR)!</button>
-    <div class="pull-hint">กดปุ่ม Spacebar หรือคลิกปุ่มด้านบนรัวๆ เพื่อดึงเชือก</div>
   </div>
 
-  <!-- 8. Lobby & Room Creation Modal -->
+  <!-- 9. Lobby & Room Creation Modal -->
   <div class="screen-overlay" id="lobbyOverlay">
     <div class="lobby-modal">
       <div class="lobby-header">
-        <span class="lobby-kicker">3D CYBER VOXEL ARENA</span>
+        <span class="lobby-kicker">3D CYBER EXPANSIVE ARENA</span>
         <h2 class="lobby-title">ศึกพิทักษ์เซลล์บล็อก 3 มิติ</h2>
         <p class="lobby-desc">
-          คุณและเพื่อนร่วมทีมในร่างไซเบอร์บอท 3 มิติจะถูกผูกเชือกพลังงานติดกันบนแผ่นดินบล็อกสี่เหลี่ยมที่กำลังร่วงหล่นทีละนิด! วิ่งไปยังแท่น 3D ที่ถูกต้อง ระวังดีบัพตกจากฟ้า และกระตุกเชือกแย่งตำแหน่ง!
+          แมพกว้าง 3 มิติ พร้อมตัวละครไซเบอร์บอทและป้ายโฮโลแกรมคำตอบ 3D ลอยเหนือแท่น! วิ่งไปยังแท่นตัวเลือกที่ถูกต้อง และกระตุกเชือกดึงเพื่อน
         </p>
       </div>
 
       <div class="lobby-form-group">
         <label class="lobby-label">ชื่อผู้เล่น (Player Name)</label>
-        <input type="text" id="playerNameInput" class="lobby-input" placeholder="ใส่ชื่อของคุณ เช่น BioCyberBot" value="CyberBot-01" maxlength="15">
+        <input type="text" id="playerNameInput" class="lobby-input" placeholder="ใส่ชื่อของคุณ" value="CyberBot-01" maxlength="15">
       </div>
 
       <div class="lobby-form-group">
         <label class="lobby-label">รหัสห้องเฉพาะกลุ่ม (Room Code)</label>
-        <input type="text" id="roomCodeInput" class="lobby-input" placeholder="ใส่รหัสห้อง เช่น BIO-888" value="CYBER-774" maxlength="12">
+        <input type="text" id="roomCodeInput" class="lobby-input" placeholder="ใส่รหัสห้อง" value="CYBER-774" maxlength="12">
       </div>
 
       <div class="lobby-form-group">
         <label class="lobby-label">โหมดการเล่น (Game Mode)</label>
         <div class="team-mode-selector">
           <div class="mode-card selected" data-mode="ai">
-            <div class="mode-name">👥 ทีม 3D AI Bots</div>
-            <div class="mode-sub">เล่นคนเดียวร่วมกับเพื่อนร่วมทีม AI บล็อกไซเบอร์ 2 ตัว</div>
+            <div class="mode-name">👥 ทีม 3D Cyber Bots</div>
+            <div class="mode-sub">เล่นร่วมกับเพื่อนร่วมทีม AI บล็อกไซเบอร์ 2 ตัว</div>
           </div>
           <div class="mode-card" data-mode="solo">
             <div class="mode-name">🎯 ตะลุยเดี่ยว Solo 3D</div>
-            <div class="mode-sub">ทดสอบปฏิกิริยาบนบล็อก 3 มิติแบบคนเดียว</div>
+            <div class="mode-sub">ทดสอบปฏิกิริยาและความแม่นยำคนเดียว</div>
           </div>
         </div>
       </div>
@@ -165,7 +150,7 @@
     </div>
   </div>
 
-  <!-- 9. Game Over Modal -->
+  <!-- 10. Game Over Modal -->
   <div class="screen-overlay hidden" id="gameOverOverlay">
     <div class="lobby-modal" style="text-align: center;">
       <div class="lobby-header">
@@ -174,31 +159,31 @@
         <p class="lobby-desc" id="gameOverReason">สมาชิกในทีมทุกคนร่วงหล่นลงสู่อเวจี 3 มิติ</p>
       </div>
 
-      <div style="font-size: 36px; font-weight: 800; color: #ffffff; margin: 12px 0;" id="gameOverScore">
+      <div style="font-size: 32px; font-weight: 800; color: #ffffff; margin: 8px 0;" id="gameOverScore">
         0 PTS
       </div>
 
-      <div style="display: flex; gap: 12px;">
+      <div style="display: flex; gap: 10px;">
         <button class="start-btn" style="flex: 1;" onclick="location.reload()">เล่นใหม่อีกครั้ง ➔</button>
         <a href="../index.html" class="start-btn" style="flex: 1; background: transparent; color: #fff; border: 1px solid #fff; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;">กลับหน้าแรก</a>
       </div>
     </div>
   </div>
 
-  <!-- 10. Victory Modal -->
+  <!-- 11. Victory Modal -->
   <div class="screen-overlay hidden" id="victoryOverlay">
     <div class="lobby-modal" style="text-align: center;">
       <div class="lobby-header">
         <span class="lobby-kicker" style="color: #fff;">CHAMPION SURVIVOR</span>
         <h2 class="lobby-title" style="color: #ffffff;">รอดชีวิตสำเร็จทุกบททดสอบ 3D!</h2>
-        <p class="lobby-desc">คุณและทีมตอบคำถามชีววิทยาได้อย่างแม่นยำและเอาชีวิตรอดบนเกาะบล็อก 3 มิติได้สำเร็จ</p>
+        <p class="lobby-desc">คุณและทีมตอบคำถามชีววิทยาได้อย่างแม่นยำและเอาชีวิตรอดบนแมพบล็อก 3 มิติได้สำเร็จ</p>
       </div>
 
-      <div style="font-size: 36px; font-weight: 800; color: #ffffff; margin: 12px 0;" id="victoryScore">
+      <div style="font-size: 32px; font-weight: 800; color: #ffffff; margin: 8px 0;" id="victoryScore">
         800 PTS
       </div>
 
-      <div style="display: flex; gap: 12px;">
+      <div style="display: flex; gap: 10px;">
         <button class="start-btn" style="flex: 1;" onclick="location.reload()">เล่นอีกครั้ง ➔</button>
         <a href="../topics/quiz-hub.html" class="start-btn" style="flex: 1; background: transparent; color: #fff; border: 1px solid #fff; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;">ไปคลังข้อสอบ</a>
       </div>
@@ -206,6 +191,6 @@
   </div>
 
   <!-- Scripts -->
-  <script src="game.js?v=20261004v3d"></script>
+  <script src="game.js?v=20261004v4"></script>
 </body>
 </html>
