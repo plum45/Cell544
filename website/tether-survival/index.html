@@ -33,6 +33,9 @@
       <button class="cam-toggle-btn" id="camToggleBtn" onclick="window.bioCyber && window.bioCyber.toggleCameraMode()" title="สลับมุมมอง 1st Person (Minecraft) / 3rd Person / Iso">
         🎥 <span>1st Person</span>
       </button>
+      <button class="back-btn" id="openLobbyBtn" onclick="window.bioCyber && window.bioCyber.openLobby()" title="เปิดหน้าล็อบบี้เพื่อเปลี่ยนห้องหรือปรับแต่ง">
+        ⚙️ <span>ล็อบบี้</span>
+      </button>
     </div>
 
     <div class="nav-right">
@@ -120,11 +123,29 @@
 
   <!-- 7. Keyboard Hint (Desktop Only) -->
   <div class="controls-hud-hint" id="desktopControlsHint">
-    <div><span class="key-badge">W</span><span class="key-badge">A</span><span class="key-badge">S</span><span class="key-badge">D</span> เดินบนแมพกว้าง 3D</div>
-    <div><span class="key-badge">SPACE</span> กระตุกเชือก 3D ดึงเพื่อน / แย่งแท่น</div>
+    <div><span class="key-badge">W</span><span class="key-badge">A</span><span class="key-badge">S</span><span class="key-badge">D</span> เดินบนแมพ 3D</div>
+    <div><span class="key-badge">SPACE</span> กระโดด Super Jump</div>
+    <div><span class="key-badge">E</span> กระตุกเชือกดึงเพื่อน</div>
+    <div><span class="key-badge">1</span><span class="key-badge">2</span><span class="key-badge">3</span> ไอเทมสกิล</div>
   </div>
 
-  <!-- 7.1 Mobile Virtual Touch Controls (D-Pad & Yank Button) -->
+  <!-- 7.1 Power-Up Skills Dock (Active Abilities) -->
+  <div class="powerup-dock" id="powerupDock">
+    <button class="powerup-btn" id="skillHackBtn" onclick="window.useSkill && window.useSkill('hack')" title="💡 EMP Hack: ตัด 2 ช้อยส์ผิดทิ้งทันที">
+      <span class="powerup-icon">💡</span>
+      <span class="powerup-badge">EMP ตัดช้อยส์ (1)</span>
+    </button>
+    <button class="powerup-btn" id="skillSpeedBtn" onclick="window.useSkill && window.useSkill('speed')" title="💨 Turbo Dash: วิ่งเร็วติดสปีด 2 เท่า">
+      <span class="powerup-icon">💨</span>
+      <span class="powerup-badge">เทอร์โบ (2)</span>
+    </button>
+    <button class="powerup-btn" id="skillShieldBtn" onclick="window.useSkill && window.useSkill('shield')" title="🛡️ Energy Shield: โล่เซฟตี้กันตกเหว 1 ครั้ง">
+      <span class="powerup-icon">🛡️</span>
+      <span class="powerup-badge">โล่กันตก (3)</span>
+    </button>
+  </div>
+
+  <!-- 7.2 Mobile Virtual Touch Controls (D-Pad, Jump & Yank Button) -->
   <div class="mobile-controls-layer" id="mobileControlsLayer">
     <!-- Left: Virtual D-Pad -->
     <div class="virtual-dpad" id="virtualDpad">
@@ -139,6 +160,10 @@
 
     <!-- Right: Mobile Action Buttons -->
     <div class="mobile-actions-dock">
+      <button class="mobile-action-btn jump-btn" id="mobileJumpBtn" title="กระโดดข้ามหลุม Super Jump">
+        <span class="btn-icon">🚀</span>
+        <span class="btn-label">กระโดด</span>
+      </button>
       <button class="mobile-action-btn yank-btn" id="mobileYankBtn" title="กระตุกเชือกดึงเพื่อน">
         <span class="btn-icon">⚡</span>
         <span class="btn-label">ดึงเชือก</span>
@@ -156,73 +181,204 @@
     <button class="pull-btn" id="pullBtn">⚡ กดรัวๆ ดึงเชือกช่วยเพื่อน (SPACEBAR)!</button>
   </div>
 
-  <!-- 9. Lobby & Room Creation Modal -->
+  <!-- 9. Cyber Hub Full Lobby Screen Overlay -->
   <div class="screen-overlay" id="lobbyOverlay">
-    <div class="lobby-modal">
-      <div class="lobby-header">
-        <span class="lobby-kicker">3D CYBER EXPANSIVE ARENA</span>
-        <h2 class="lobby-title">ศึกพิทักษ์เซลล์บล็อก 3 มิติ</h2>
-        <p class="lobby-desc">
-          แมพกว้าง 3 มิติ พร้อมตัวละครไซเบอร์บอทและป้ายโฮโลแกรมคำตอบ 3D ลอยเหนือแท่น! วิ่งไปยังแท่นตัวเลือกที่ถูกต้อง และกระตุกเชือกดึงเพื่อน
-        </p>
-      </div>
-
-      <div class="lobby-form-group">
-        <label class="lobby-label">ชื่อผู้เล่น (Player Name)</label>
-        <input type="text" id="playerNameInput" class="lobby-input" placeholder="ใส่ชื่อของคุณ" value="CyberBot-01" maxlength="15">
-      </div>
-
-      <div class="lobby-form-group">
-        <label class="lobby-label">รหัสห้องเฉพาะกลุ่ม (Room Code)</label>
-        <input type="text" id="roomCodeInput" class="lobby-input" placeholder="ใส่รหัสห้อง" value="CYBER-774" maxlength="12">
-      </div>
-
-      <div class="lobby-form-group">
-        <label class="lobby-label">โหมดการเล่น (Game Mode)</label>
-        <div class="team-mode-selector">
-          <div class="mode-card selected" data-mode="ai">
-            <div class="mode-name">👥 ทีม 3D Cyber Bots</div>
-            <div class="mode-sub">เล่นร่วมกับเพื่อนร่วมทีม AI บล็อกไซเบอร์ 2 ตัว</div>
-          </div>
-          <div class="mode-card" data-mode="solo">
-            <div class="mode-name">🎯 ตะลุยเดี่ยว Solo 3D</div>
-            <div class="mode-sub">ทดสอบปฏิกิริยาและความแม่นยำคนเดียว</div>
-          </div>
+    <div class="cyber-lobby-container">
+      
+      <!-- Lobby Header Banner -->
+      <div class="lobby-top-header">
+        <div class="lobby-brand-wrap">
+          <div class="lobby-brand-title">CYTOLIFE <span class="badge-tag">3D ARENA & WHO AM I</span></div>
+          <div class="lobby-brand-sub">ศูนย์ควบคุมการต่อสู้เซลล์วิทยาและภารกิจบล็อก 3 มิติ</div>
+        </div>
+        <div class="lobby-server-status">
+          <span class="status-dot"></span>
+          <span>ASIA-SERVER · ONLINE (18ms)</span>
         </div>
       </div>
 
-      <div class="lobby-form-group">
-        <label class="lobby-label">ธีมบรรยากาศ & ฤดูกาล / เทศกาล (Atmosphere Theme)</label>
-        <div class="lobby-theme-grid">
-          <div class="theme-card selected" data-theme="sakura" onclick="selectLobbyTheme('sakura')">
-            <div class="theme-card-icon">🌸</div>
-            <div class="theme-card-title">ซากุระญี่ปุ่น</div>
-            <div class="theme-card-desc">ฤดูใบไม้ผลิ กลีบซากุระปลิว</div>
+      <!-- Lobby 2-Column Grid -->
+      <div class="lobby-main-grid">
+        
+        <!-- Left Column: Player Setup, Room, Mode & Theme -->
+        <div class="lobby-col-left">
+          
+          <!-- Player Profile & Avatar Visor -->
+          <div class="lobby-card-box">
+            <div class="card-box-title">👤 ข้อมูลตัวละคร & สีไวเซอร์ไซเบอร์</div>
+            <div class="player-input-row">
+              <div class="input-wrap-flex">
+                <input type="text" id="playerNameInput" class="lobby-input" placeholder="ใส่ชื่อของคุณ" value="CyberBot-01" maxlength="15">
+                <button class="dice-random-btn" id="diceRandomNameBtn" onclick="window.randomizePlayerName && window.randomizePlayerName()" title="สุ่มชื่อ">🎲</button>
+              </div>
+            </div>
+            
+            <!-- Visor Color Selection -->
+            <div class="avatar-color-row">
+              <span class="color-label">สีชุดตัวละคร:</span>
+              <div class="color-picker-dots">
+                <button class="color-dot active" data-color="#ffffff" style="background: #ffffff;" onclick="window.selectAvatarColor('#ffffff', this)" title="ขาวคลาสสิก"></button>
+                <button class="color-dot" data-color="#00f0ff" style="background: #00f0ff;" onclick="window.selectAvatarColor('#00f0ff', this)" title="ฟ้าไซอันนีออน"></button>
+                <button class="color-dot" data-color="#ff007f" style="background: #ff007f;" onclick="window.selectAvatarColor('#ff007f', this)" title="ชมพูซากุระ"></button>
+                <button class="color-dot" data-color="#ffd166" style="background: #ffd166;" onclick="window.selectAvatarColor('#ffd166', this)" title="ทองอำพัน"></button>
+                <button class="color-dot" data-color="#00ff88" style="background: #00ff88;" onclick="window.selectAvatarColor('#00ff88', this)" title="เขียวเอเนอร์จี้"></button>
+              </div>
+            </div>
           </div>
-          <div class="theme-card" data-theme="autumn" onclick="selectLobbyTheme('autumn')">
-            <div class="theme-card-icon">🍁</div>
-            <div class="theme-card-title">ใบไม้ร่วงเกียวโต</div>
-            <div class="theme-card-desc">อบอุ่น ใบเมเปิ้ลสีทองส้ม</div>
+
+          <!-- Room System (Create / Join PIN) -->
+          <div class="lobby-card-box">
+            <div class="card-box-title">🔑 ระบบห้องเฉพาะกลุ่ม (Room System)</div>
+            <div class="room-input-group">
+              <input type="text" id="roomCodeInput" class="lobby-input" placeholder="ใส่รหัสห้อง" value="CYBER-774" maxlength="12">
+              <button class="gen-room-btn" onclick="window.generateRandomRoom && window.generateRandomRoom()" title="สร้างรหัสห้องสุ่มใหม่">⚡ สุ่มห้อง</button>
+            </div>
           </div>
-          <div class="theme-card" data-theme="winter" onclick="selectLobbyTheme('winter')">
-            <div class="theme-card-icon">❄️</div>
-            <div class="theme-card-title">หิมะ & แสงเหนือ</div>
-            <div class="theme-card-desc">ขั้วโลก พายุหิมะ ไอซีไซอัน</div>
+
+          <!-- Game Mode Selector -->
+          <div class="lobby-card-box">
+            <div class="card-box-title">🎮 เลือกโหมดการเล่น (Game Mode)</div>
+            <div class="team-mode-selector">
+              <div class="mode-card selected" data-mode="ai" onclick="window.selectGameMode('ai')">
+                <div class="mode-name">👥 ทีม 3D Cyber Bots</div>
+                <div class="mode-sub">เล่นร่วมกับเพื่อนร่วมทีม AI บล็อกไซเบอร์ 2 ตัว</div>
+              </div>
+              <div class="mode-card" data-mode="solo" onclick="window.selectGameMode('solo')">
+                <div class="mode-name">🎯 ตะลุยเดี่ยว Solo 3D</div>
+                <div class="mode-sub">ทดสอบปฏิกิริยาและความแม่นยำคนเดียว</div>
+              </div>
+            </div>
           </div>
-          <div class="theme-card" data-theme="lantern" onclick="selectLobbyTheme('lantern')">
-            <div class="theme-card-icon">🏮</div>
-            <div class="theme-card-title">เทศกาลโคมลอย</div>
-            <div class="theme-card-desc">โคมลอยสู่ฟ้า แสงสีทองอบอุ่น</div>
+
+          <!-- Atmosphere Theme Selector -->
+          <div class="lobby-card-box">
+            <div class="card-box-title">🌸 ธีมบรรยากาศ & ฤดูกาล / เทศกาล</div>
+            <div class="lobby-theme-grid">
+              <div class="theme-card selected" data-theme="sakura" onclick="selectLobbyTheme('sakura')">
+                <div class="theme-card-icon">🌸</div>
+                <div class="theme-card-title">ซากุระญี่ปุ่น</div>
+                <div class="theme-card-desc">กลีบซากุระปลิว</div>
+              </div>
+              <div class="theme-card" data-theme="autumn" onclick="selectLobbyTheme('autumn')">
+                <div class="theme-card-icon">🍁</div>
+                <div class="theme-card-title">เกียวโตออทั่ม</div>
+                <div class="theme-card-desc">ใบเมเปิ้ลสีทอง</div>
+              </div>
+              <div class="theme-card" data-theme="winter" onclick="selectLobbyTheme('winter')">
+                <div class="theme-card-icon">❄️</div>
+                <div class="theme-card-title">หิมะขั้วโลก</div>
+                <div class="theme-card-desc">แสงเหนือน้ำแข็ง</div>
+              </div>
+              <div class="theme-card" data-theme="lantern" onclick="selectLobbyTheme('lantern')">
+                <div class="theme-card-icon">🏮</div>
+                <div class="theme-card-title">โคมลอยเอเชีย</div>
+                <div class="theme-card-desc">แสงสีทองอบอุ่น</div>
+              </div>
+              <div class="theme-card" data-theme="cyber" onclick="selectLobbyTheme('cyber')">
+                <div class="theme-card-icon">⚡</div>
+                <div class="theme-card-title">นีออนไซเบอร์</div>
+                <div class="theme-card-desc">ไซเบอร์พังก์มาทริกซ์</div>
+              </div>
+            </div>
           </div>
-          <div class="theme-card" data-theme="cyber" onclick="selectLobbyTheme('cyber')">
-            <div class="theme-card-icon">⚡</div>
-            <div class="theme-card-title">นีออนไซเบอร์</div>
-            <div class="theme-card-desc">ไซเบอร์พังก์ นีออนมาทริกซ์</div>
-          </div>
+
         </div>
+
+        <!-- Right Column: Teammates Squad & Live Gameplay Skills Showcase -->
+        <div class="lobby-col-right">
+          
+          <!-- Teammates Squad Roster -->
+          <div class="lobby-card-box">
+            <div class="card-box-title">👥 สมาชิกทีมในห้อง (Squad Roster)</div>
+            <div class="squad-roster-list">
+              <div class="squad-member-card is-host">
+                <div class="squad-avatar-dot" style="background: #00f0ff;"></div>
+                <div class="squad-info">
+                  <div class="squad-name" id="lobbyHostNamePreview">CyberBot-01 (คุณ)</div>
+                  <div class="squad-role">หัวหน้าห้อง · HOST</div>
+                </div>
+                <span class="ready-badge ready">READY 🟢</span>
+              </div>
+              <div class="squad-member-card" id="slotWatsonCard">
+                <div class="squad-avatar-dot" style="background: #ffffff;"></div>
+                <div class="squad-info">
+                  <div class="squad-name">Dr. Watson (AI)</div>
+                  <div class="squad-role">ชีววิทยาระดับโมเลกุล</div>
+                </div>
+                <span class="ready-badge ready">READY 🟢</span>
+              </div>
+              <div class="squad-member-card" id="slotRosalindCard">
+                <div class="squad-avatar-dot" style="background: #a1a1aa;"></div>
+                <div class="squad-info">
+                  <div class="squad-name">Prof. Rosalind (AI)</div>
+                  <div class="squad-role">พันธุศาสตร์และดีเอ็นเอ</div>
+                </div>
+                <span class="ready-badge ready">READY 🟢</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Gameplay Mechanics & Skills Guide -->
+          <div class="lobby-card-box">
+            <div class="card-box-title">✨ ลูกเล่น & สกิลสุดเจ๋งในสนาม (Skills Guide)</div>
+            <div class="skills-guide-grid">
+              <div class="skill-guide-item">
+                <span class="skill-guide-icon">🚀</span>
+                <div class="skill-guide-text">
+                  <div class="skill-guide-name">Super Jump & แท่นสปริง</div>
+                  <div class="skill-guide-desc">กด SPACE กระโดดข้ามหลุม หรือเหยียบแท่นสปริงมุมแมพเพื่อเด้งสูง</div>
+                </div>
+              </div>
+              <div class="skill-guide-item">
+                <span class="skill-guide-icon">💡</span>
+                <div class="skill-guide-text">
+                  <div class="skill-guide-name">EMP 50:50 Hack (กด 1)</div>
+                  <div class="skill-guide-desc">ปล่อยคลื่นช็อต ลบ 2 ช้อยส์ผิดทิ้งทันที เหลือแค่ตัวเลือกที่ถูกต้อง</div>
+                </div>
+              </div>
+              <div class="skill-guide-item">
+                <span class="skill-guide-icon">💨</span>
+                <div class="skill-guide-text">
+                  <div class="skill-guide-name">Turbo Nitro Dash (กด 2)</div>
+                  <div class="skill-guide-desc">เพิ่มความเร็ววิ่ง 2 เท่า นาน 6 วินาที วิ่งไปแท่นคำตอบได้ทันท่วงที</div>
+                </div>
+              </div>
+              <div class="skill-guide-item">
+                <span class="skill-guide-icon">🛡️</span>
+                <div class="skill-guide-text">
+                  <div class="skill-guide-name">Nano Energy Shield (กด 3)</div>
+                  <div class="skill-guide-desc">โล่เซฟตี้กันตกเหว 1 ครั้ง หากพลาดตกจะวาร์ปกลับขึ้นมาปลอดภัย</div>
+                </div>
+              </div>
+              <div class="skill-guide-item">
+                <span class="skill-guide-icon">💎</span>
+                <div class="skill-guide-text">
+                  <div class="skill-guide-name">Cyber Orbs & คริสตัล</div>
+                  <div class="skill-guide-desc">เก็บลูกแก้วพลังงานที่สุ่มเกิดบนบล็อกเพื่อรีชาร์จสกิลและคะแนนโบนัส</div>
+                </div>
+              </div>
+              <div class="skill-guide-item">
+                <span class="skill-guide-icon">🌀</span>
+                <div class="skill-guide-text">
+                  <div class="skill-guide-name">Hazard Laser Sweeper</div>
+                  <div class="skill-guide-desc">ลำแสงเลเซอร์หมุนกวาดพื้น ระวังอย่าโดนชน หรือกระโดดหลบให้พ้น</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
       </div>
 
-      <button class="start-btn" id="startArenaBtn">เข้าสู่ห้องประลอง 3D (Enter 3D Arena) ➔</button>
+      <!-- Lobby Launch Button -->
+      <div class="lobby-bottom-bar">
+        <button class="start-arena-btn-glow" id="startArenaBtn">
+          <span>🚀 เข้าสู่สนามประลอง 3D (ENTER 3D ARENA)</span>
+          <span class="btn-arrow">➔</span>
+        </button>
+      </div>
+
     </div>
   </div>
 

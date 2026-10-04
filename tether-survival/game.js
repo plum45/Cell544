@@ -249,19 +249,115 @@ const ARENA_THEMES = {
 };
 
 // ==========================================
-// 2. Web Audio Synthesizer (Native SFX)
+// 2. Web Audio Synthesizer (Native SFX & Suspense BGM)
 // ==========================================
 class SoundFX {
   constructor() {
     this.ctx = null;
     this.enabled = true;
+    this.bgmRunning = false;
+    this.bgmTimer = null;
+    this.tempo = 124; // BPM
+    this.step = 0;
   }
 
   init() {
     if (!this.ctx) {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (AudioContext) this.ctx = new AudioContext();
+      if (AudioContext) {
+        this.ctx = new AudioContext();
+        this.startBGM();
+      }
+    } else if (this.ctx.state === 'suspended') {
+      this.ctx.resume();
+      this.startBGM();
     }
+  }
+
+  startBGM() {
+    if (this.bgmRunning || !this.ctx) return;
+    this.bgmRunning = true;
+    this.step = 0;
+    this.scheduleBGMStep();
+  }
+
+  scheduleBGMStep() {
+    if (!this.bgmRunning || !this.ctx) return;
+
+    if (this.enabled) {
+      const now = this.ctx.currentTime;
+      const beatDur = 60 / this.tempo;
+      const stepDur = beatDur / 4; // 16th note
+
+      // Cyber Bass & Arpeggio Notes (Cyber D Minor scale: D, F, G, A, C)
+      const bassNotes = [73.42, 73.42, 87.31, 73.42, 65.41, 65.41, 82.41, 73.42]; // D2, F2, C2, E2
+      const arpNotes = [293.66, 349.23, 440.00, 523.25, 440.00, 349.23, 392.00, 587.33]; // D4, F4, A4, C5...
+
+      // 1. Kick / Heartbeat Sub-Bass on Beats (0, 4, 8, 12)
+      if (this.step % 4 === 0) {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(110, now);
+        osc.frequency.exponentialRampToValueAtTime(32, now + 0.12);
+        gain.gain.setValueAtTime(0.22, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      }
+
+      // 2. Pulsing Synth Bass
+      if (this.step % 2 === 0) {
+        const bassFreq = bassNotes[Math.floor(this.step / 2) % bassNotes.length];
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(bassFreq, now);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + stepDur * 1.5);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + stepDur * 1.5);
+      }
+
+      // 3. Ticking Suspense Hi-Hat
+      const hatOsc = this.ctx.createOscillator();
+      const hatGain = this.ctx.createGain();
+      hatOsc.type = 'square';
+      hatOsc.frequency.setValueAtTime(this.step % 4 === 2 ? 8000 : 5000, now);
+      hatGain.gain.setValueAtTime(this.step % 2 === 0 ? 0.025 : 0.015, now);
+      hatGain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+      hatOsc.connect(hatGain);
+      hatGain.connect(this.ctx.destination);
+      hatOsc.start(now);
+      hatOsc.stop(now + 0.03);
+
+      // 4. Ethereal Cyber Arpeggio
+      if (this.step % 2 === 1) {
+        const arpFreq = arpNotes[this.step % arpNotes.length];
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(arpFreq, now);
+        gain.gain.setValueAtTime(0.04, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + stepDur * 2);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + stepDur * 2);
+      }
+    }
+
+    this.step = (this.step + 1) % 16;
+    const interval = (60 / this.tempo / 4) * 1000;
+    this.bgmTimer = setTimeout(() => this.scheduleBGMStep(), interval);
+  }
+
+  setIntensity(isHigh) {
+    this.tempo = isHigh ? 154 : 124;
   }
 
   playJump() {
@@ -285,14 +381,30 @@ class SoundFX {
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
     osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(380, now);
-    osc.frequency.exponentialRampToValueAtTime(140, now + 0.16);
-    gain.gain.setValueAtTime(0.18, now);
-    gain.gain.linearRampToValueAtTime(0.01, now + 0.16);
+    osc.frequency.setValueAtTime(420, now);
+    osc.frequency.exponentialRampToValueAtTime(120, now + 0.18);
+    gain.gain.setValueAtTime(0.22, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.18);
     osc.connect(gain);
     gain.connect(this.ctx.destination);
     osc.start();
-    osc.stop(now + 0.16);
+    osc.stop(now + 0.18);
+  }
+
+  playEarthquake() {
+    if (!this.enabled || !this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(55, now);
+    osc.frequency.linearRampToValueAtTime(25, now + 0.45);
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start();
+    osc.stop(now + 0.45);
   }
 
   playCorrect() {
@@ -351,14 +463,128 @@ class SoundFX {
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
     osc.type = 'square';
-    osc.frequency.setValueAtTime(65, now);
-    osc.frequency.exponentialRampToValueAtTime(30, now + 0.25);
-    gain.gain.setValueAtTime(0.1, now);
-    gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+    osc.frequency.setValueAtTime(75, now);
+    osc.frequency.exponentialRampToValueAtTime(28, now + 0.3);
+    gain.gain.setValueAtTime(0.14, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
     osc.connect(gain);
     gain.connect(this.ctx.destination);
-    osc.start(now);
+    osc.start();
+    osc.stop(now + 0.3);
+  }
+
+  playEMP() {
+    if (!this.enabled || !this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(880, now);
+    osc.frequency.exponentialRampToValueAtTime(80, now + 0.4);
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start();
+    osc.stop(now + 0.4);
+  }
+
+  playTurbo() {
+    if (!this.enabled || !this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(140, now);
+    osc.frequency.exponentialRampToValueAtTime(620, now + 0.35);
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start();
+    osc.stop(now + 0.35);
+  }
+
+  playShield() {
+    if (!this.enabled || !this.ctx) return;
+    const now = this.ctx.currentTime;
+    [659.25, 830.61, 987.77, 1318.51].forEach((freq, i) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.14, now + i * 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.05 + 0.4);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now + i * 0.05);
+      osc.stop(now + i * 0.05 + 0.4);
+    });
+  }
+
+  playShieldPop() {
+    if (!this.enabled || !this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(520, now);
+    osc.frequency.exponentialRampToValueAtTime(120, now + 0.25);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start();
     osc.stop(now + 0.25);
+  }
+
+  playBouncePad() {
+    if (!this.enabled || !this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(220, now);
+    osc.frequency.exponentialRampToValueAtTime(880, now + 0.22);
+    gain.gain.setValueAtTime(0.24, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.22);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start();
+    osc.stop(now + 0.22);
+  }
+
+  playOrbCollect() {
+    if (!this.enabled || !this.ctx) return;
+    const now = this.ctx.currentTime;
+    [587.33, 880, 1174.66].forEach((freq, i) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.12, now + i * 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.04 + 0.18);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now + i * 0.04);
+      osc.stop(now + i * 0.04 + 0.18);
+    });
+  }
+
+  playLaserZap() {
+    if (!this.enabled || !this.ctx) return;
+    const now = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(950, now);
+    osc.frequency.linearRampToValueAtTime(200, now + 0.12);
+    gain.gain.setValueAtTime(0.22, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+    osc.start();
+    osc.stop(now + 0.12);
   }
 }
 
@@ -383,6 +609,7 @@ class BioCyberArena3D {
     this.pitch = -0.12;
     this.isDraggingLook = false;
     this.dragStart = { x: 0, y: 0 };
+    this.cameraShake = 0; // Camera earthquake shake intensity
 
     this.score = 0;
     this.round = 1;
@@ -392,12 +619,12 @@ class BioCyberArena3D {
     this.questionTimer = this.questionTimeMax;
 
     // Random Falling Block Mechanic (สุ่มบล็อคร่วงทีละ 1 บล็อก)
-    this.randomFallInterval = 1.8; // Seconds between random block drops
+    this.randomFallInterval = 1.6; // Seconds between random block drops
     this.randomFallTimer = 1.0;
 
-    // Map & Blocks (Wider 11x11 Cyber Island)
-    this.gridSize = 11;
-    this.blockSize = 3.6;
+    // Map & Blocks (Wider 15x15 Expansive Cyber Island)
+    this.gridSize = 15;
+    this.blockSize = 3.8;
     this.blocks = [];
 
     // 4 Answer Pads & 3D Holographic Billboards
@@ -406,9 +633,21 @@ class BioCyberArena3D {
     // Players & 3D Voxel Models
     this.players = [];
     this.tetherRopes = [];
-    this.tetherRestLength = 5.5;
+    this.tetherRestLength = 6.5;
     this.tetherStiffness = 0.07;
     this.yankCooldown = 0;
+
+    // Power-Up Skills & Hazards Mechanics (ลูกเล่นใหม่สุดแจ่ม!)
+    this.skills = { hack: 1, speed: 2, shield: 1 };
+    this.speedBoostTimer = 0;
+    this.shieldActive = false;
+    this.shieldMesh = null;
+    this.bouncePads = [];
+    this.cyberOrbs = [];
+    this.orbSpawnTimer = 4.0;
+    this.laserSweeperGroup = null;
+    this.laserSweeperAngle = 0;
+    this.comboStreak = 0;
 
     // Rescue QTE
     this.fallenPlayer = null;
@@ -429,12 +668,19 @@ class BioCyberArena3D {
     // Build the 3D scene immediately on page load so it is NEVER a black screen!
     this.buildWidePlatformGrid();
     this.build3DAnswerPads();
+    this.buildBouncePads();
+    this.buildLaserSweeper();
     this.build3DDecorations();
     this.build3DPlayers();
+    this.updateSkillsUI();
     this.loadQuestion(0);
 
     this.lastTime = performance.now();
     requestAnimationFrame((t) => this.gameLoop(t));
+  }
+
+  addCameraShake(amount) {
+    this.cameraShake = Math.min(1.2, this.cameraShake + amount);
   }
 
   initThreeJS() {
@@ -608,7 +854,7 @@ class BioCyberArena3D {
   }
 
   initInputs() {
-    // Keyboard WASD & Space
+    // Keyboard WASD, Jump, Skills & Space
     window.addEventListener('keydown', (e) => {
       this.sfx.init();
       if (e.code === 'KeyW' || e.code === 'ArrowUp') { this.keys.up = true; this.clearAutoRun(); }
@@ -620,8 +866,22 @@ class BioCyberArena3D {
         if (this.state === 'RESCUE') {
           this.performRescuePull();
         } else if (this.state === 'PLAYING') {
+          this.performJump();
+        }
+      }
+      if (e.code === 'KeyE') {
+        if (this.state === 'PLAYING') {
           this.performTetherYank(0);
         }
+      }
+      if (e.code === 'Digit1') {
+        this.useSkill('hack');
+      }
+      if (e.code === 'Digit2') {
+        this.useSkill('speed');
+      }
+      if (e.code === 'Digit3') {
+        this.useSkill('shield');
       }
       if (e.code === 'KeyF' || e.code === 'KeyV') {
         this.toggleCameraMode();
@@ -728,6 +988,22 @@ class BioCyberArena3D {
     bindDpad('dpadLeft', 'left');
     bindDpad('dpadRight', 'right');
 
+    // Mobile Jump Button
+    const mobileJumpBtn = document.getElementById('mobileJumpBtn');
+    if (mobileJumpBtn) {
+      const handleJump = (e) => {
+        e.preventDefault();
+        this.sfx.init();
+        if (this.state === 'RESCUE') {
+          this.performRescuePull();
+        } else if (this.state === 'PLAYING') {
+          this.performJump();
+        }
+      };
+      mobileJumpBtn.addEventListener('touchstart', handleJump, { passive: false });
+      mobileJumpBtn.addEventListener('click', handleJump);
+    }
+
     // Mobile Yank Button
     const mobileYankBtn = document.getElementById('mobileYankBtn');
     if (mobileYankBtn) {
@@ -765,23 +1041,22 @@ class BioCyberArena3D {
     const startBtn = document.getElementById('startArenaBtn');
     const lobbyOverlay = document.getElementById('lobbyOverlay');
     const nameInput = document.getElementById('playerNameInput');
-    const roomInput = document.getElementById('roomCodeInput');
+    const hostPreview = document.getElementById('lobbyHostNamePreview');
 
-    const modeCards = document.querySelectorAll('.mode-card');
-    modeCards.forEach(card => {
-      card.addEventListener('click', () => {
-        modeCards.forEach(c => c.classList.remove('selected'));
-        card.classList.add('selected');
-        this.teamMode = card.getAttribute('data-mode');
+    if (nameInput) {
+      nameInput.addEventListener('input', () => {
+        this.playerName = nameInput.value.trim() || 'CyberBot-01';
+        if (hostPreview) hostPreview.innerText = `${this.playerName} (คุณ)`;
       });
-    });
+    }
 
     if (startBtn && lobbyOverlay) {
       startBtn.addEventListener('click', () => {
         this.sfx.init();
-        this.playerName = nameInput.value.trim() || 'CyberBot-01';
-        this.roomCode = roomInput.value.trim() || 'CYBER-774';
-        
+        if (nameInput) this.playerName = nameInput.value.trim() || 'CyberBot-01';
+        const roomInput = document.getElementById('roomCodeInput');
+        if (roomInput) this.roomCode = roomInput.value.trim() || 'CYBER-774';
+
         const roomBadge = document.getElementById('roomBadge');
         if (roomBadge) roomBadge.innerText = this.roomCode;
 
@@ -791,17 +1066,33 @@ class BioCyberArena3D {
     }
   }
 
+  openLobby() {
+    const lobbyOverlay = document.getElementById('lobbyOverlay');
+    if (lobbyOverlay) lobbyOverlay.classList.remove('hidden');
+  }
+
   startNewGame() {
     this.state = 'PLAYING';
     this.score = 0;
     this.round = 1;
+    this.skills = { hack: 1, speed: 2, shield: 1 };
+    this.speedBoostTimer = 0;
+    this.shieldActive = false;
+    if (this.shieldMesh) {
+      const human = this.players.find(p => p.isHuman);
+      if (human && human.group) human.group.remove(this.shieldMesh);
+      this.shieldMesh = null;
+    }
     this.currentQuestionIdx = 0;
     this.questionTimer = this.questionTimeMax;
 
     this.buildWidePlatformGrid();
     this.build3DAnswerPads();
+    this.buildBouncePads();
+    this.buildLaserSweeper();
     this.build3DDecorations();
     this.build3DPlayers();
+    this.updateSkillsUI();
     this.loadQuestion(0);
 
     this.lastTime = performance.now();
@@ -1447,6 +1738,8 @@ class BioCyberArena3D {
         rightLeg,
         vx: 0,
         vz: 0,
+        vy: 0,
+        isGrounded: true,
         radius: 1.1,
         status: 'SAFE',
         slowTimer: 0,
@@ -1686,12 +1979,296 @@ class BioCyberArena3D {
       });
     }
 
+    // Update In-Game Power-Up Orbs
+    this.updateCyberOrbs(dt);
+
+    // Rotate Central Hazard Laser Sweeper
+    if (this.laserSweeperGroup) {
+      this.laserSweeperAngle += dt * 0.95;
+      this.laserSweeperGroup.rotation.y = this.laserSweeperAngle;
+    }
+
+    // Pulse 3D Bounce Pads
+    this.bouncePads.forEach(bp => {
+      bp.pulse += dt * 4;
+      if (bp.ringMesh) bp.ringMesh.scale.setScalar(1 + Math.sin(bp.pulse) * 0.08);
+    });
+
     // Billboard orientation facing camera in all views
     this.answerPads.forEach(pad => {
       if (pad.billboard) {
         pad.billboard.quaternion.copy(this.camera.quaternion);
       }
     });
+  }
+
+  // ==========================================
+  // 5.1 3D Bounce / Spring Launch Pads
+  // ==========================================
+  buildBouncePads() {
+    this.bouncePads.forEach(bp => this.scene.remove(bp.group));
+    this.bouncePads = [];
+
+    const coords = [
+      { x: 13.5, z: 13.5 },
+      { x: -13.5, z: 13.5 },
+      { x: 13.5, z: -13.5 },
+      { x: -13.5, z: -13.5 }
+    ];
+
+    coords.forEach(pos => {
+      const group = new THREE.Group();
+      group.position.set(pos.x, 0.4, pos.z);
+
+      const baseGeo = new THREE.CylinderGeometry(1.6, 1.8, 0.3, 16);
+      const baseMat = new THREE.MeshStandardMaterial({ color: 0x22222a, roughness: 0.3, metalness: 0.8 });
+      const baseMesh = new THREE.Mesh(baseGeo, baseMat);
+      group.add(baseMesh);
+
+      const ringGeo = new THREE.TorusGeometry(1.4, 0.12, 8, 24);
+      const ringMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
+      const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+      ringMesh.rotation.x = Math.PI / 2;
+      ringMesh.position.y = 0.2;
+      group.add(ringMesh);
+
+      const springGeo = new THREE.CylinderGeometry(0.5, 0.5, 0.4, 12);
+      const springMat = new THREE.MeshBasicMaterial({ color: 0xff007f });
+      const springMesh = new THREE.Mesh(springGeo, springMat);
+      springMesh.position.y = 0.25;
+      group.add(springMesh);
+
+      this.scene.add(group);
+      this.bouncePads.push({ x: pos.x, z: pos.z, radius: 1.9, group, ringMesh, springMesh, pulse: Math.random() * Math.PI });
+    });
+  }
+
+  // ==========================================
+  // 5.2 Central Rotating Hazard Laser Sweeper
+  // ==========================================
+  buildLaserSweeper() {
+    if (this.laserSweeperGroup) this.scene.remove(this.laserSweeperGroup);
+    this.laserSweeperGroup = new THREE.Group();
+    this.laserSweeperGroup.position.set(0, 0.5, 0);
+
+    const emitterGeo = new THREE.CylinderGeometry(0.6, 0.7, 0.8, 16);
+    const emitterMat = new THREE.MeshStandardMaterial({ color: 0x111118, metalness: 0.9, roughness: 0.2 });
+    const emitter = new THREE.Mesh(emitterGeo, emitterMat);
+    this.laserSweeperGroup.add(emitter);
+
+    const beamGeo = new THREE.CylinderGeometry(0.08, 0.08, 38, 8);
+    beamGeo.rotateZ(Math.PI / 2);
+    const beamMat = new THREE.MeshBasicMaterial({ color: 0xff0055, transparent: true, opacity: 0.85 });
+    const beamMesh = new THREE.Mesh(beamGeo, beamMat);
+    beamMesh.position.y = 0.2;
+    this.laserSweeperGroup.add(beamMesh);
+
+    this.scene.add(this.laserSweeperGroup);
+  }
+
+  // ==========================================
+  // 5.3 Spawning Cyber Orbs & Pickups
+  // ==========================================
+  spawnCyberOrb() {
+    if (this.cyberOrbs.length >= 4) return;
+    const livingBlocks = this.blocks.filter(b => b.alive && !b.isFalling && b.dist > 1.2 && b.dist < 5.8);
+    if (livingBlocks.length === 0) return;
+    const block = livingBlocks[Math.floor(Math.random() * livingBlocks.length)];
+
+    const orbTypes = [
+      { type: 'points', color: 0xffd166, icon: '💎', label: '+200 คะแนนโบนัส' },
+      { type: 'speed', color: 0x00f0ff, icon: '⚡', label: '+1 สปีดไนโตร' },
+      { type: 'shield', color: 0x00ff88, icon: '🛡️', label: '+1 โล่พลังงาน' },
+      { type: 'hack', color: 0xff007f, icon: '💡', label: '+1 EMP Hack' }
+    ];
+    const orbInfo = orbTypes[Math.floor(Math.random() * orbTypes.length)];
+
+    const group = new THREE.Group();
+    group.position.set(block.x, 1.4, block.z);
+
+    const geo = new THREE.OctahedronGeometry(0.45, 0);
+    const mat = new THREE.MeshBasicMaterial({ color: orbInfo.color, wireframe: false });
+    const mesh = new THREE.Mesh(geo, mat);
+    group.add(mesh);
+
+    const ringGeo = new THREE.TorusGeometry(0.65, 0.04, 6, 16);
+    const ringMat = new THREE.MeshBasicMaterial({ color: orbInfo.color, transparent: true, opacity: 0.7 });
+    const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+    ringMesh.rotation.x = Math.PI / 2;
+    group.add(ringMesh);
+
+    this.scene.add(group);
+    this.cyberOrbs.push({
+      info: orbInfo,
+      group,
+      mesh,
+      ringMesh,
+      x: block.x,
+      z: block.z,
+      baseY: 1.4,
+      age: 0
+    });
+  }
+
+  updateCyberOrbs(dt) {
+    this.orbSpawnTimer -= dt;
+    if (this.orbSpawnTimer <= 0) {
+      this.orbSpawnTimer = 6.0;
+      this.spawnCyberOrb();
+    }
+
+    const human = this.players.find(p => p.isHuman);
+
+    for (let i = this.cyberOrbs.length - 1; i >= 0; i--) {
+      const orb = this.cyberOrbs[i];
+      orb.age += dt;
+      orb.mesh.rotation.y += dt * 2.5;
+      orb.mesh.rotation.x += dt * 1.5;
+      orb.ringMesh.rotation.z += dt * 1.8;
+      orb.group.position.y = orb.baseY + Math.sin(orb.age * 3.5) * 0.25;
+
+      if (human && human.status === 'SAFE') {
+        const dx = human.group.position.x - orb.x;
+        const dz = human.group.position.z - orb.z;
+        const dist = Math.hypot(dx, dz);
+        if (dist < 1.7) {
+          this.sfx.playOrbCollect();
+          this.scene.remove(orb.group);
+          this.cyberOrbs.splice(i, 1);
+
+          if (orb.info.type === 'points') {
+            this.score += 200;
+            this.showFloatingToast(`💎 +200 PTS! (โบนัสคริสตัล)`, '#ffd166');
+          } else if (orb.info.type === 'speed') {
+            this.skills.speed = Math.min(5, this.skills.speed + 1);
+            this.showFloatingToast(`⚡ เก็บไอเทม: +1 ไนโตรสปีด`, '#00f0ff');
+          } else if (orb.info.type === 'shield') {
+            this.skills.shield = Math.min(3, this.skills.shield + 1);
+            this.showFloatingToast(`🛡️ เก็บไอเทม: +1 โล่คุ้มกัน`, '#00ff88');
+          } else if (orb.info.type === 'hack') {
+            this.skills.hack = Math.min(3, this.skills.hack + 1);
+            this.showFloatingToast(`💡 เก็บไอเทม: +1 EMP Hack`, '#ff007f');
+          }
+          this.updateSkillsUI();
+        }
+      }
+    }
+  }
+
+  // ==========================================
+  // 5.4 Active Skills (Hack, Speed, Shield)
+  // ==========================================
+  useSkill(type) {
+    this.sfx.init();
+    if (this.state !== 'PLAYING') return;
+
+    if (type === 'hack') {
+      if (this.skills.hack <= 0) {
+        this.showFloatingToast('⚠️ จำนวน EMP Hack หมดแล้ว!', '#ff4444');
+        return;
+      }
+      this.skills.hack--;
+      this.sfx.playEMP();
+      this.addCameraShake(0.4);
+
+      const questionList = this.gameType === 'whoami' ? WHO_AM_I_ROUNDS : STANDARD_QUESTIONS;
+      const q = questionList[this.currentQuestionIdx];
+      if (q && q.choices) {
+        const wrongChoices = q.choices.filter(c => !c.correct);
+        const shuffled = wrongChoices.sort(() => 0.5 - Math.random()).slice(0, 2);
+        shuffled.forEach(choice => {
+          const pad = this.answerPads.find(p => p.id === choice.id);
+          if (pad) {
+            if (pad.billboard) pad.billboard.visible = false;
+            if (pad.torus) pad.torus.material.color.setHex(0x330011);
+            const btn = document.getElementById(`choiceBtn-${choice.id}`);
+            if (btn) {
+              btn.classList.add('disabled-choice');
+              btn.disabled = true;
+            }
+          }
+        });
+      }
+      this.showFloatingToast('💡 EMP HACK! ลบ 2 ช้อยส์ผิดทิ้งสำเร็จ', '#00f0ff');
+      this.updateSkillsUI();
+    } else if (type === 'speed') {
+      if (this.skills.speed <= 0) {
+        this.showFloatingToast('⚠️ จำนวนไนโตรหมดแล้ว!', '#ff4444');
+        return;
+      }
+      this.skills.speed--;
+      this.speedBoostTimer = 6.0;
+      this.sfx.playTurbo();
+      this.addCameraShake(0.2);
+      this.showFloatingToast('💨 TURBO NITRO! สปีดติดจรวด 6 วินาที', '#00f0ff');
+      this.updateSkillsUI();
+    } else if (type === 'shield') {
+      if (this.skills.shield <= 0) {
+        this.showFloatingToast('⚠️ จำนวนโล่หมดแล้ว!', '#ff4444');
+        return;
+      }
+      if (this.shieldActive) {
+        this.showFloatingToast('⚠️ โล่พลังงานทำงานอยู่แล้ว!', '#ffd166');
+        return;
+      }
+      this.skills.shield--;
+      this.shieldActive = true;
+      this.sfx.playShield();
+
+      const human = this.players.find(p => p.isHuman);
+      if (human && human.group) {
+        const shieldGeo = new THREE.SphereGeometry(1.8, 16, 16);
+        const shieldMat = new THREE.MeshBasicMaterial({ color: 0x00ffff, wireframe: true, transparent: true, opacity: 0.65 });
+        this.shieldMesh = new THREE.Mesh(shieldGeo, shieldMat);
+        this.shieldMesh.position.y = 1.2;
+        human.group.add(this.shieldMesh);
+      }
+      this.showFloatingToast('🛡️ NANO SHIELD! เปิดใช้งานโล่เซฟตี้กันตกเหว', '#00ff88');
+      this.updateSkillsUI();
+    }
+  }
+
+  performJump() {
+    const human = this.players.find(p => p.isHuman);
+    if (!human || human.status !== 'SAFE') return;
+    if (human.isGrounded) {
+      human.vy = 13.5;
+      human.isGrounded = false;
+      this.sfx.playJump();
+    }
+  }
+
+  updateSkillsUI() {
+    const btnH = document.getElementById('skillHackBtn');
+    if (btnH) {
+      const badge = btnH.querySelector('.powerup-badge');
+      if (badge) badge.innerText = `EMP ตัดช้อยส์ (${this.skills.hack})`;
+      btnH.style.opacity = this.skills.hack > 0 ? '1.0' : '0.45';
+    }
+    const btnS = document.getElementById('skillSpeedBtn');
+    if (btnS) {
+      const badge = btnS.querySelector('.powerup-badge');
+      if (badge) badge.innerText = `เทอร์โบ (${this.skills.speed})`;
+      btnS.style.opacity = this.skills.speed > 0 ? '1.0' : '0.45';
+    }
+    const btnSh = document.getElementById('skillShieldBtn');
+    if (btnSh) {
+      const badge = btnSh.querySelector('.powerup-badge');
+      if (badge) badge.innerText = `โล่กันตก (${this.skills.shield})`;
+      btnSh.style.opacity = this.skills.shield > 0 ? '1.0' : '0.45';
+    }
+  }
+
+  showFloatingToast(text, color = '#00f0ff') {
+    const toast = document.createElement('div');
+    toast.className = 'floating-game-toast';
+    toast.style.borderColor = color;
+    toast.style.boxShadow = `0 8px 30px ${color}55`;
+    toast.innerText = text;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      if (toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 2200);
   }
 
   // Random Single Block Falling Mechanic (สุ่มบล็อคร่วงทีละ 1 บล็อก)
@@ -1705,7 +2282,7 @@ class BioCyberArena3D {
     if (eligible.length === 0) return;
 
     const block = eligible[Math.floor(Math.random() * eligible.length)];
-    block.shakeTimer = 0.01; // Start warning shake phase
+    block.shakeTimer = 0.01;
     this.sfx.playCrumble();
 
     if (block.mesh) {
@@ -1741,10 +2318,14 @@ class BioCyberArena3D {
     const baseSpeed = 16;
     const human = this.players.find(p => p.isHuman);
 
+    if (this.speedBoostTimer > 0) {
+      this.speedBoostTimer = Math.max(0, this.speedBoostTimer - dt);
+    }
+
     this.players.forEach((p, idx) => {
       if (p.status === 'FALLING' || p.status === 'LOST') return;
 
-      const speed = baseSpeed;
+      const speed = (p.isHuman && this.speedBoostTimer > 0) ? baseSpeed * 2.2 : baseSpeed;
 
       if (p.isHuman) {
         let inputX = 0;
@@ -1762,7 +2343,6 @@ class BioCyberArena3D {
           }
 
           if (this.cameraMode === 'fp' || this.cameraMode === 'tp') {
-            // First Person Minecraft Direction (Relative to Look Yaw)
             const forwardX = -Math.sin(this.yaw);
             const forwardZ = -Math.cos(this.yaw);
             const rightX = Math.cos(this.yaw);
@@ -1774,12 +2354,10 @@ class BioCyberArena3D {
             p.vx += moveX * speed * dt * 5;
             p.vz += moveZ * speed * dt * 5;
           } else {
-            // Isometric world axes
             p.vx += inputX * speed * dt * 5;
             p.vz += inputZ * speed * dt * 5;
           }
         } else if (p.autoTarget) {
-          // One-tap Auto-Run to Pad
           const dx = p.autoTarget.x - p.group.position.x;
           const dz = p.autoTarget.z - p.group.position.z;
           const dist = Math.hypot(dx, dz);
@@ -1787,7 +2365,6 @@ class BioCyberArena3D {
             p.vx += (dx / dist) * speed * dt * 4;
             p.vz += (dz / dist) * speed * dt * 4;
             if (this.cameraMode === 'fp') {
-              // Smoothly look towards destination
               const targetYaw = Math.atan2(-dx, -dz);
               let diff = targetYaw - this.yaw;
               while (diff < -Math.PI) diff += Math.PI * 2;
@@ -1822,6 +2399,51 @@ class BioCyberArena3D {
       p.group.position.x += p.vx * dt;
       p.group.position.z += p.vz * dt;
 
+      // Vertical Gravity & Jumping Physics
+      p.group.position.y += (p.vy || 0) * dt;
+      p.vy = (p.vy || 0) - 32 * dt;
+      if (p.group.position.y <= 0.8 && p.status === 'SAFE') {
+        p.group.position.y = 0.8;
+        p.vy = 0;
+        p.isGrounded = true;
+      }
+
+      // Check Stepping on 3D Bounce / Spring Pads
+      this.bouncePads.forEach(bp => {
+        const dist = Math.hypot(p.group.position.x - bp.x, p.group.position.z - bp.z);
+        if (dist <= bp.radius && p.group.position.y <= 1.2) {
+          p.vy = 24;
+          p.isGrounded = false;
+          this.sfx.playBouncePad();
+          this.addCameraShake(0.35);
+          if (p.isHuman) {
+            this.showFloatingToast('🚀 SUPER BOUNCE PAD! เด้งสปริงสูงเสียดฟ้า', '#ff007f');
+          }
+        }
+      });
+
+      // Check Hazard Laser Sweeper Collision (if on ground)
+      if (this.laserSweeperGroup && p.group.position.y <= 1.4 && p.status === 'SAFE') {
+        const px = p.group.position.x;
+        const pz = p.group.position.z;
+        const distCenter = Math.hypot(px, pz);
+        if (distCenter > 1.0 && distCenter < 19.0) {
+          const playerAngle = Math.atan2(pz, px);
+          let angleDiff = Math.abs(((playerAngle - this.laserSweeperAngle) % Math.PI + Math.PI) % Math.PI);
+          if (angleDiff > Math.PI / 2) angleDiff = Math.PI - angleDiff;
+          if (angleDiff < 0.14) {
+            const pushDir = Math.atan2(pz, px);
+            p.vx += Math.cos(pushDir) * 16;
+            p.vz += Math.sin(pushDir) * 16;
+            this.sfx.playLaserZap();
+            this.addCameraShake(0.3);
+            if (p.isHuman) {
+              this.showFloatingToast('⚡ โดนลำแสงเลเซอร์กวาด! (กระโดด SPACE ข้ามได้)', '#ff0055');
+            }
+          }
+        }
+      }
+
       // Leg & Arm swing animations
       const isMoving = Math.hypot(p.vx, p.vz) > 0.5;
       if (isMoving) {
@@ -1839,23 +2461,32 @@ class BioCyberArena3D {
       }
     });
 
+    // Update Shield Mesh Rotation
+    if (this.shieldMesh) {
+      this.shieldMesh.rotation.y += dt * 2.0;
+      this.shieldMesh.rotation.x += dt * 1.2;
+    }
+
+    // Camera Shake Decay
+    if (this.cameraShake > 0) {
+      this.cameraShake = Math.max(0, this.cameraShake - dt * 2.2);
+    }
+
     // Update Camera position based on Camera Mode (First Person / 3rd Person / Iso)
     if (human && human.group) {
+      const shakeOffset = (Math.random() - 0.5) * this.cameraShake * 0.5;
       if (this.cameraMode === 'fp') {
-        // First Person Minecraft Eye-Level Camera
-        this.camera.position.set(human.group.position.x, human.group.position.y + 1.8, human.group.position.z);
-        this.camera.rotation.set(this.pitch, this.yaw, 0, 'YXZ');
+        this.camera.position.set(human.group.position.x, human.group.position.y + 1.8 + shakeOffset, human.group.position.z);
+        this.camera.rotation.set(this.pitch, this.yaw, shakeOffset * 0.2, 'YXZ');
       } else if (this.cameraMode === 'tp') {
-        // Third Person Over-Shoulder Follow
         const dist = 9;
         const camX = human.group.position.x + Math.sin(this.yaw) * dist;
         const camZ = human.group.position.z + Math.cos(this.yaw) * dist;
-        const camY = human.group.position.y + 4.5 - this.pitch * 6;
+        const camY = human.group.position.y + 4.5 - this.pitch * 6 + shakeOffset;
         this.camera.position.set(camX, camY, camZ);
         this.camera.lookAt(human.group.position.x, human.group.position.y + 1.5, human.group.position.z);
       } else {
-        // Isometric High Overview
-        this.camera.position.set(0, 36, 44);
+        this.camera.position.set(0, 36 + shakeOffset, 44);
         this.camera.lookAt(0, 0, 0);
       }
     }
@@ -1918,7 +2549,6 @@ class BioCyberArena3D {
 
   update3DFallingBlocks(dt) {
     this.blocks.forEach(b => {
-      // Shaking warning phase before drop
       if (b.alive && b.shakeTimer > 0) {
         b.shakeTimer += dt;
         b.mesh.position.x = b.x + Math.sin(b.shakeTimer * 28) * 0.14;
@@ -1937,7 +2567,6 @@ class BioCyberArena3D {
         }
       }
 
-      // Falling into the abyss phase
       if (b.isFalling) {
         b.fallVelocity += dt * 32;
         b.mesh.position.y -= b.fallVelocity * dt;
@@ -1983,6 +2612,24 @@ class BioCyberArena3D {
       }
 
       if (!onSolidGround) {
+        // Check Shield Rescue Protection!
+        if (p.isHuman && this.shieldActive) {
+          this.shieldActive = false;
+          if (this.shieldMesh && p.group) {
+            p.group.remove(this.shieldMesh);
+            this.shieldMesh = null;
+          }
+          this.sfx.playShieldPop();
+          this.addCameraShake(0.5);
+          p.group.position.set(0, 0.8, 0);
+          p.vx = 0;
+          p.vz = 0;
+          p.vy = 0;
+          this.showFloatingToast('🛡️ NANO SHIELD คุ้มกันชีวิตสำเร็จ! (วาร์ปกลับจุดปลอดภัย)', '#00ff88');
+          this.updateSkillsUI();
+          return;
+        }
+
         this.triggerTeammateFall(p, 'ก้าวพลาดตกจากบล็อก 3 มิติ!');
       }
     });
@@ -2002,7 +2649,10 @@ class BioCyberArena3D {
 
     if (isCorrect) {
       this.sfx.playCorrect();
-      this.score += 100 * this.round;
+      this.comboStreak = (this.comboStreak || 0) + 1;
+      const bonus = this.comboStreak > 1 ? ` (+COMBO x${this.comboStreak})` : '';
+      this.score += 100 * this.round * (this.comboStreak > 1 ? 1.5 : 1);
+      this.showFloatingToast(`🌟 ถูกต้อง! +${100 * this.round} PTS${bonus}`, '#00ff88');
 
       this.round++;
       if (this.round > this.totalRounds) {
@@ -2014,6 +2664,7 @@ class BioCyberArena3D {
       }
     } else {
       this.sfx.playWrong();
+      this.comboStreak = 0;
       const safePlayers = this.players.filter(p => p.status === 'SAFE');
       if (safePlayers.length > 0) {
         const victim = safePlayers[Math.floor(Math.random() * safePlayers.length)];
@@ -2077,6 +2728,7 @@ class BioCyberArena3D {
       this.fallenPlayer.group.position.set(0, 0.8, 0);
       this.fallenPlayer.vx = 0;
       this.fallenPlayer.vz = 0;
+      this.fallenPlayer.vy = 0;
     }
 
     const overlay = document.getElementById('rescueOverlay');
@@ -2183,6 +2835,59 @@ window.selectChoiceAndRun = function(choiceId) {
   if (window.bioCyber) {
     window.bioCyber.selectChoiceAndRun(choiceId);
   }
+};
+
+// Lobby Helpers
+window.randomizePlayerName = function() {
+  const coolNames = ['BioKnight-77', 'QuantumDNA', 'HelixRunner', 'CyberSynapse', 'NanoCell', 'GeneStriker', 'AeroMito', 'ChronoRibosome'];
+  const name = coolNames[Math.floor(Math.random() * coolNames.length)];
+  const input = document.getElementById('playerNameInput');
+  const preview = document.getElementById('lobbyHostNamePreview');
+  if (input) input.value = name;
+  if (preview) preview.innerText = `${name} (คุณ)`;
+  if (window.bioCyber) window.bioCyber.playerName = name;
+};
+
+window.generateRandomRoom = function() {
+  const pin = 'CYBER-' + Math.floor(100 + Math.random() * 900);
+  const input = document.getElementById('roomCodeInput');
+  if (input) input.value = pin;
+  if (window.bioCyber) window.bioCyber.roomCode = pin;
+};
+
+window.selectAvatarColor = function(hexColor, btn) {
+  document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const human = window.bioCyber && window.bioCyber.players.find(p => p.isHuman);
+  if (human && human.group) {
+    human.group.traverse(child => {
+      if (child.isMesh && child.material && child.material.color) {
+        if (child.material.metalness > 0.5) {
+          child.material.color.setStyle(hexColor);
+        }
+      }
+    });
+  }
+};
+
+window.selectGameMode = function(mode) {
+  document.querySelectorAll('.team-mode-selector .mode-card').forEach(c => c.classList.remove('selected'));
+  const card = document.querySelector(`.team-mode-selector .mode-card[data-mode="${mode}"]`);
+  if (card) card.classList.add('selected');
+  if (window.bioCyber) window.bioCyber.teamMode = mode;
+
+  const wSlot = document.getElementById('slotWatsonCard');
+  const rSlot = document.getElementById('slotRosalindCard');
+  if (wSlot) wSlot.style.display = mode === 'solo' ? 'none' : 'flex';
+  if (rSlot) rSlot.style.display = mode === 'solo' ? 'none' : 'flex';
+};
+
+window.useSkill = function(type) {
+  if (window.bioCyber) window.bioCyber.useSkill(type);
+};
+
+window.performJump = function() {
+  if (window.bioCyber) window.bioCyber.performJump();
 };
 
 // Start on DOM ready
