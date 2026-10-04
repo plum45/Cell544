@@ -38,10 +38,19 @@
     </div>
   </header>
 
-  <!-- 2. Mode Selector Dock (Top Right) -->
-  <div class="mode-toggle-dock">
-    <button class="mode-tab-btn active" id="tabSurvival" onclick="switchGameType('survival')">⚔️ 3D Cyber Arena</button>
-    <button class="mode-tab-btn" id="tabWhoAmI" onclick="switchGameType('whoami')">🃏 Who Am I? (คู่ปริศนา)</button>
+  <!-- 2. Mode & Theme Selector Dock (Top Right) -->
+  <div class="top-controls-dock">
+    <div class="mode-toggle-dock">
+      <button class="mode-tab-btn active" id="tabSurvival" onclick="switchGameType('survival')">⚔️ 3D Cyber Arena</button>
+      <button class="mode-tab-btn" id="tabWhoAmI" onclick="switchGameType('whoami')">🃏 Who Am I? (คู่ปริศนา)</button>
+    </div>
+    <div class="theme-select-dock">
+      <button class="theme-btn active" id="themeBtn-sakura" onclick="switchTheme('sakura')" title="🌸 ฤดูใบไม้ผลิซากุระญี่ปุ่น">🌸 ซากุระ</button>
+      <button class="theme-btn" id="themeBtn-autumn" onclick="switchTheme('autumn')" title="🍁 ฤดูใบไม้ร่วงเกียวโต">🍁 ใบไม้ร่วง</button>
+      <button class="theme-btn" id="themeBtn-winter" onclick="switchTheme('winter')" title="❄️ หิมะขั้วโลก & แสงเหนือ">❄️ หิมะขั้วโลก</button>
+      <button class="theme-btn" id="themeBtn-lantern" onclick="switchTheme('lantern')" title="🏮 เทศกาลโคมลอยเอเชีย">🏮 โคมลอย</button>
+      <button class="theme-btn" id="themeBtn-cyber" onclick="switchTheme('cyber')" title="⚡ นีออนไซเบอร์พังก์โตเกียว">⚡ ไซเบอร์</button>
+    </div>
   </div>
 
   <!-- 3. Minimalist Compact Top Question Ribbon (Doesn't block the 3D map!) -->
@@ -142,6 +151,37 @@
           <div class="mode-card" data-mode="solo">
             <div class="mode-name">🎯 ตะลุยเดี่ยว Solo 3D</div>
             <div class="mode-sub">ทดสอบปฏิกิริยาและความแม่นยำคนเดียว</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lobby-form-group">
+        <label class="lobby-label">ธีมบรรยากาศ & ฤดูกาล / เทศกาล (Atmosphere Theme)</label>
+        <div class="lobby-theme-grid">
+          <div class="theme-card selected" data-theme="sakura" onclick="selectLobbyTheme('sakura')">
+            <div class="theme-card-icon">🌸</div>
+            <div class="theme-card-title">ซากุระญี่ปุ่น</div>
+            <div class="theme-card-desc">ฤดูใบไม้ผลิ กลีบซากุระปลิว</div>
+          </div>
+          <div class="theme-card" data-theme="autumn" onclick="selectLobbyTheme('autumn')">
+            <div class="theme-card-icon">🍁</div>
+            <div class="theme-card-title">ใบไม้ร่วงเกียวโต</div>
+            <div class="theme-card-desc">อบอุ่น ใบเมเปิ้ลสีทองส้ม</div>
+          </div>
+          <div class="theme-card" data-theme="winter" onclick="selectLobbyTheme('winter')">
+            <div class="theme-card-icon">❄️</div>
+            <div class="theme-card-title">หิมะ & แสงเหนือ</div>
+            <div class="theme-card-desc">ขั้วโลก พายุหิมะ ไอซีไซอัน</div>
+          </div>
+          <div class="theme-card" data-theme="lantern" onclick="selectLobbyTheme('lantern')">
+            <div class="theme-card-icon">🏮</div>
+            <div class="theme-card-title">เทศกาลโคมลอย</div>
+            <div class="theme-card-desc">โคมลอยสู่ฟ้า แสงสีทองอบอุ่น</div>
+          </div>
+          <div class="theme-card" data-theme="cyber" onclick="selectLobbyTheme('cyber')">
+            <div class="theme-card-icon">⚡</div>
+            <div class="theme-card-title">นีออนไซเบอร์</div>
+            <div class="theme-card-desc">ไซเบอร์พังก์ นีออนมาทริกซ์</div>
           </div>
         </div>
       </div>

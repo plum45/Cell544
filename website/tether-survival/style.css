@@ -198,19 +198,28 @@ body {
   transition: width 0.1s linear;
 }
 
-/* Mode Switcher Floating Tabs (Top Right below nav) */
-.mode-toggle-dock {
+/* Top Controls Container (Dock for Modes & Atmosphere Themes) */
+.top-controls-dock {
   position: absolute;
   top: 56px;
   right: 24px;
   z-index: 50;
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+/* Mode Switcher Floating Tabs */
+.mode-toggle-dock {
+  display: flex;
   gap: 6px;
-  background: rgba(14, 14, 18, 0.85);
+  background: rgba(14, 14, 18, 0.88);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border-subtle);
   border-radius: 9999px;
   padding: 4px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .mode-tab-btn {
@@ -229,6 +238,133 @@ body {
 .mode-tab-btn.active {
   background: #ffffff;
   color: #000000;
+}
+
+/* Atmosphere Theme Switcher Dock */
+.theme-select-dock {
+  display: flex;
+  gap: 4px;
+  background: rgba(14, 14, 18, 0.88);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 9999px;
+  padding: 3px 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.theme-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  font-family: var(--font-prompt);
+  padding: 4px 8px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-apple);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.theme-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.theme-btn.active {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Theme specific active accents */
+.theme-btn[id="themeBtn-sakura"].active {
+  background: rgba(255, 112, 166, 0.25);
+  border-color: #ff70a6;
+  color: #ffb7d2;
+}
+
+.theme-btn[id="themeBtn-autumn"].active {
+  background: rgba(247, 127, 0, 0.25);
+  border-color: #f77f00;
+  color: #ffc971;
+}
+
+.theme-btn[id="themeBtn-winter"].active {
+  background: rgba(0, 240, 255, 0.25);
+  border-color: #00f0ff;
+  color: #a0f4ff;
+}
+
+.theme-btn[id="themeBtn-lantern"].active {
+  background: rgba(255, 190, 11, 0.25);
+  border-color: #ffbe0b;
+  color: #ffe699;
+}
+
+.theme-btn[id="themeBtn-cyber"].active {
+  background: rgba(0, 245, 212, 0.25);
+  border-color: #00f5d4;
+  color: #70fff0;
+}
+
+/* Lobby Theme Grid */
+.lobby-theme-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.theme-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 8px 6px;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-apple);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.theme-card:hover {
+  background: rgba(255, 255, 255, 0.09);
+  transform: translateY(-2px);
+}
+
+.theme-card.selected {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: #ffffff;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.2);
+}
+
+.theme-card-icon {
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.theme-card-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.theme-card-desc {
+  font-size: 8px;
+  color: var(--text-dim);
+  line-height: 1.2;
+}
+
+@media (max-width: 600px) {
+  .lobby-theme-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 /* Floating Clue Cards for "WHO AM I?" mode */

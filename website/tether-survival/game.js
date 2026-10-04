@@ -124,6 +124,177 @@ const WHO_AM_I_ROUNDS = [
 ];
 
 // ==========================================
+// 1.5 Atmospheric & Cultural Arena Themes
+// ==========================================
+const ARENA_THEMES = {
+  sakura: {
+    id: 'sakura',
+    name: '🌸 ซากุระญี่ปุ่น (Sakura Spring)',
+    bg: 0x140a1c,
+    fog: 0x1a0d24,
+    fogDensity: 0.012,
+    blockTop: 0x22132a,
+    blockEdge: 0xff70a6,
+    blockEdgeOpacity: 0.7,
+    ambientLight: 0xffe6f0,
+    ambientIntensity: 0.65,
+    dirLight: 0xffadc6,
+    dirIntensity: 0.95,
+    pylonBeam: 0xff70a6,
+    pylonBeamOpacity: 0.6,
+    helixA: 0xff70a6,
+    helixB: 0xffffff,
+    helixRung: 0xffa8cc,
+    ring: 0xff4d88,
+    satellite: 0x3d1d36,
+    satelliteEdge: 0xff70a6,
+    padPodium: 0x1e0e24,
+    padRing: 0xff4d88,
+    billboardBg: 'rgba(28, 12, 34, 0.92)',
+    billboardBorder: '#ff70a6',
+    billboardBadge: '#ff70a6',
+    billboardBadgeText: '#ffffff',
+    billboardText: '#ffffff',
+    conduit: 0xff70a6,
+    stardust: 0xffadc6,
+    treeType: 'sakura',
+    particleType: 'sakura_petals'
+  },
+  autumn: {
+    id: 'autumn',
+    name: '🍁 ใบไม้ร่วงเกียวโต (Kyoto Autumn)',
+    bg: 0x1a0c06,
+    fog: 0x221008,
+    fogDensity: 0.012,
+    blockTop: 0x28140c,
+    blockEdge: 0xff9f1c,
+    blockEdgeOpacity: 0.75,
+    ambientLight: 0xfff0db,
+    ambientIntensity: 0.65,
+    dirLight: 0xff7b00,
+    dirIntensity: 1.0,
+    pylonBeam: 0xf77f00,
+    pylonBeamOpacity: 0.65,
+    helixA: 0xe63946,
+    helixB: 0xfcb001,
+    helixRung: 0xffaa00,
+    ring: 0xd90429,
+    satellite: 0x3d1a0e,
+    satelliteEdge: 0xff9f1c,
+    padPodium: 0x241009,
+    padRing: 0xf77f00,
+    billboardBg: 'rgba(36, 16, 10, 0.92)',
+    billboardBorder: '#ff9f1c',
+    billboardBadge: '#f77f00',
+    billboardBadgeText: '#000000',
+    billboardText: '#ffffff',
+    conduit: 0xf77f00,
+    stardust: 0xffd166,
+    treeType: 'autumn',
+    particleType: 'autumn_leaves'
+  },
+  winter: {
+    id: 'winter',
+    name: '❄️ หิมะ & แสงเหนือ (Arctic Winter)',
+    bg: 0x040e1e,
+    fog: 0x08182e,
+    fogDensity: 0.014,
+    blockTop: 0x0c253d,
+    blockEdge: 0x00f0ff,
+    blockEdgeOpacity: 0.8,
+    ambientLight: 0xd0f4ff,
+    ambientIntensity: 0.6,
+    dirLight: 0x70e000,
+    dirIntensity: 0.85,
+    pylonBeam: 0x00f0ff,
+    pylonBeamOpacity: 0.65,
+    helixA: 0x00f0ff,
+    helixB: 0xffffff,
+    helixRung: 0x80e5ff,
+    ring: 0x00f0ff,
+    satellite: 0x0f2d48,
+    satelliteEdge: 0x00f0ff,
+    padPodium: 0x081c2f,
+    padRing: 0x00f0ff,
+    billboardBg: 'rgba(8, 24, 44, 0.92)',
+    billboardBorder: '#00f0ff',
+    billboardBadge: '#00f0ff',
+    billboardBadgeText: '#000000',
+    billboardText: '#ffffff',
+    conduit: 0x00f0ff,
+    stardust: 0xa0f4ff,
+    treeType: 'winter',
+    particleType: 'snowflakes'
+  },
+  lantern: {
+    id: 'lantern',
+    name: '🏮 เทศกาลโคมลอย (Lantern Festival)',
+    bg: 0x0d091a,
+    fog: 0x140e24,
+    fogDensity: 0.012,
+    blockTop: 0x1c142e,
+    blockEdge: 0xffd166,
+    blockEdgeOpacity: 0.75,
+    ambientLight: 0xffeedb,
+    ambientIntensity: 0.65,
+    dirLight: 0xffaa00,
+    dirIntensity: 1.0,
+    pylonBeam: 0xffbe0b,
+    pylonBeamOpacity: 0.65,
+    helixA: 0xffd700,
+    helixB: 0xef233c,
+    helixRung: 0xffb703,
+    ring: 0xff006e,
+    satellite: 0x2e1e40,
+    satelliteEdge: 0xffd166,
+    padPodium: 0x181024,
+    padRing: 0xffbe0b,
+    billboardBg: 'rgba(26, 16, 40, 0.92)',
+    billboardBorder: '#ffd166',
+    billboardBadge: '#ffbe0b',
+    billboardBadgeText: '#000000',
+    billboardText: '#ffffff',
+    conduit: 0xffbe0b,
+    stardust: 0xffe699,
+    treeType: 'lantern',
+    particleType: 'sky_lanterns'
+  },
+  cyber: {
+    id: 'cyber',
+    name: '⚡ นีออนไซเบอร์ (Neo Cyberpunk)',
+    bg: 0x06060f,
+    fog: 0x090818,
+    fogDensity: 0.012,
+    blockTop: 0x10101c,
+    blockEdge: 0x00f5d4,
+    blockEdgeOpacity: 0.85,
+    ambientLight: 0xd8b4fe,
+    ambientIntensity: 0.6,
+    dirLight: 0x38bdf8,
+    dirIntensity: 0.9,
+    pylonBeam: 0x00f5d4,
+    pylonBeamOpacity: 0.65,
+    helixA: 0x00f5d4,
+    helixB: 0xf72585,
+    helixRung: 0x7b2cbf,
+    ring: 0xf72585,
+    satellite: 0x18142a,
+    satelliteEdge: 0xf72585,
+    padPodium: 0x0d0d17,
+    padRing: 0x00f5d4,
+    billboardBg: 'rgba(12, 10, 24, 0.92)',
+    billboardBorder: '#00f5d4',
+    billboardBadge: '#f72585',
+    billboardBadgeText: '#ffffff',
+    billboardText: '#ffffff',
+    conduit: 0x00f5d4,
+    stardust: 0x00f5d4,
+    treeType: 'cyber',
+    particleType: 'cyber_sparks'
+  }
+};
+
+// ==========================================
 // 2. Web Audio Synthesizer (Native SFX)
 // ==========================================
 class SoundFX {
@@ -203,6 +374,23 @@ class SoundFX {
     osc.stop(now + 0.35);
   }
 
+  playRescue() {
+    if (!this.enabled || !this.ctx) return;
+    const now = this.ctx.currentTime;
+    [440, 554, 659, 880].forEach((freq, i) => {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.15, now + i * 0.06);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.06 + 0.3);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now + i * 0.06);
+      osc.stop(now + i * 0.06 + 0.3);
+    });
+  }
+
   playCrumble() {
     if (!this.enabled || !this.ctx) return;
     const now = this.ctx.currentTime;
@@ -227,6 +415,7 @@ class BioCyberArena3D {
   constructor() {
     this.sfx = new SoundFX();
     this.gameType = 'survival'; // 'survival' or 'whoami'
+    this.currentTheme = 'sakura'; // Active theme
 
     // State
     this.state = 'LOBBY';
@@ -262,6 +451,9 @@ class BioCyberArena3D {
     this.rescueTarget = 100;
     this.rescueTimer = 8.5;
 
+    // Particles array
+    this.activeParticles = [];
+
     // Keys
     this.keys = { up: false, down: false, left: false, right: false, space: false };
 
@@ -273,8 +465,10 @@ class BioCyberArena3D {
   initThreeJS() {
     const container = document.getElementById('threeContainer');
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x060608);
-    this.scene.fog = new THREE.FogExp2(0x060608, 0.012);
+    
+    const theme = ARENA_THEMES[this.currentTheme];
+    this.scene.background = new THREE.Color(theme.bg);
+    this.scene.fog = new THREE.FogExp2(theme.fog, theme.fogDensity);
 
     // Wide Isometric Camera
     const aspect = window.innerWidth / window.innerHeight;
@@ -289,23 +483,89 @@ class BioCyberArena3D {
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     container.appendChild(this.renderer.domElement);
 
-    // Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    this.scene.add(ambientLight);
+    // Dynamic Lights
+    this.ambientLight = new THREE.AmbientLight(theme.ambientLight, theme.ambientIntensity);
+    this.scene.add(this.ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
-    dirLight.position.set(20, 45, 30);
-    dirLight.castShadow = true;
-    dirLight.shadow.mapSize.width = 1024;
-    dirLight.shadow.mapSize.height = 1024;
-    this.scene.add(dirLight);
+    this.dirLight = new THREE.DirectionalLight(theme.dirLight, theme.dirIntensity);
+    this.dirLight.position.set(20, 45, 30);
+    this.dirLight.castShadow = true;
+    this.dirLight.shadow.mapSize.width = 1024;
+    this.dirLight.shadow.mapSize.height = 1024;
+    this.scene.add(this.dirLight);
 
     // Deep Abyss Grid Helper
-    const gridHelper = new THREE.GridHelper(120, 40, 0x333333, 0x141414);
-    gridHelper.position.y = -22;
-    this.scene.add(gridHelper);
+    this.gridHelper = new THREE.GridHelper(120, 40, 0x444444, 0x141414);
+    this.gridHelper.position.y = -22;
+    this.scene.add(this.gridHelper);
 
     window.addEventListener('resize', () => this.onWindowResize());
+  }
+
+  applyTheme(themeKey) {
+    if (!ARENA_THEMES[themeKey]) return;
+    this.currentTheme = themeKey;
+    const theme = ARENA_THEMES[themeKey];
+
+    // Scene & Fog
+    if (this.scene) {
+      this.scene.background.setHex(theme.bg);
+      if (this.scene.fog) {
+        this.scene.fog.color.setHex(theme.fog);
+        this.scene.fog.density = theme.fogDensity;
+      }
+    }
+
+    // Lights
+    if (this.ambientLight) {
+      this.ambientLight.color.setHex(theme.ambientLight);
+      this.ambientLight.intensity = theme.ambientIntensity;
+    }
+    if (this.dirLight) {
+      this.dirLight.color.setHex(theme.dirLight);
+      this.dirLight.intensity = theme.dirIntensity;
+    }
+
+    // Blocks
+    this.blocks.forEach(b => {
+      if (b.mesh) {
+        b.mesh.material.color.setHex(theme.blockTop);
+        const wire = b.mesh.children.find(c => c.isLineSegments);
+        if (wire) {
+          wire.material.color.setHex(theme.blockEdge);
+          wire.material.opacity = theme.blockEdgeOpacity;
+        }
+      }
+    });
+
+    // Answer Pads & Billboards
+    this.answerPads.forEach(pad => {
+      if (pad.podium) pad.podium.material.color.setHex(theme.padPodium);
+      if (pad.torus) pad.torus.material.color.setHex(theme.padRing);
+    });
+
+    // Re-render Question Billboards
+    const questionList = this.gameType === 'whoami' ? WHO_AM_I_ROUNDS : STANDARD_QUESTIONS;
+    const q = questionList[this.currentQuestionIdx];
+    if (q) {
+      q.choices.forEach(ch => {
+        const pad = this.answerPads.find(p => p.id === ch.id);
+        if (pad) this.update3DBillboardText(pad, ch.id, ch.text);
+      });
+    }
+
+    // Rebuild 3D Decorations (Trees & Atmosphere Particles)
+    this.build3DDecorations();
+
+    // Update Dock UI Buttons & Lobby Cards
+    document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+    const activeBtn = document.getElementById(`themeBtn-${themeKey}`);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    document.querySelectorAll('.theme-card').forEach(card => {
+      if (card.getAttribute('data-theme') === themeKey) card.classList.add('selected');
+      else card.classList.remove('selected');
+    });
   }
 
   onWindowResize() {
@@ -410,6 +670,7 @@ class BioCyberArena3D {
     this.blocks.forEach(b => this.scene.remove(b.mesh));
     this.blocks = [];
 
+    const theme = ARENA_THEMES[this.currentTheme];
     const half = Math.floor(this.gridSize / 2);
     const boxGeo = new THREE.BoxGeometry(this.blockSize * 0.94, 1.4, this.blockSize * 0.94);
     const edgeGeo = new THREE.EdgesGeometry(boxGeo);
@@ -419,7 +680,7 @@ class BioCyberArena3D {
         const dist = Math.sqrt(r * r + c * c);
         if (dist <= half + 0.4) {
           const mat = new THREE.MeshStandardMaterial({
-            color: 0x16161a,
+            color: theme.blockTop,
             roughness: 0.35,
             metalness: 0.75
           });
@@ -429,7 +690,11 @@ class BioCyberArena3D {
           mesh.castShadow = true;
           mesh.receiveShadow = true;
 
-          const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.28 });
+          const lineMat = new THREE.LineBasicMaterial({
+            color: theme.blockEdge,
+            transparent: true,
+            opacity: theme.blockEdgeOpacity
+          });
           const wireframe = new THREE.LineSegments(edgeGeo, lineMat);
           mesh.add(wireframe);
 
@@ -453,21 +718,22 @@ class BioCyberArena3D {
   }
 
   // ==========================================
-  // 4.1 3D Cyber Environment Decorations
+  // 4.1 3D Multi-Theme Decorations & Atmosphere
   // ==========================================
   build3DDecorations() {
     if (this.decorationsGroup) this.scene.remove(this.decorationsGroup);
     this.decorationsGroup = new THREE.Group();
+    const theme = ARENA_THEMES[this.currentTheme];
 
     // 1. Central Holographic DNA Double Helix Monolith
     this.dnaHelixGroup = new THREE.Group();
     this.dnaHelixGroup.position.set(0, 3.5, 0);
 
     const sphereGeo = new THREE.SphereGeometry(0.24, 8, 8);
-    const sphereMatA = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    const sphereMatB = new THREE.MeshBasicMaterial({ color: 0x888888 });
+    const sphereMatA = new THREE.MeshBasicMaterial({ color: theme.helixA });
+    const sphereMatB = new THREE.MeshBasicMaterial({ color: theme.helixB });
     const rungGeo = new THREE.CylinderGeometry(0.04, 0.04, 2.2, 6);
-    const rungMat = new THREE.MeshBasicMaterial({ color: 0xaaaaaa, transparent: true, opacity: 0.7 });
+    const rungMat = new THREE.MeshBasicMaterial({ color: theme.helixRung, transparent: true, opacity: 0.75 });
 
     const totalNodes = 20;
     for (let i = 0; i < totalNodes; i++) {
@@ -493,8 +759,8 @@ class BioCyberArena3D {
     }
 
     // Orbiting Central Ring
-    const centerRingGeo = new THREE.TorusGeometry(1.8, 0.05, 8, 32);
-    const centerRingMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const centerRingGeo = new THREE.TorusGeometry(1.8, 0.06, 8, 32);
+    const centerRingMat = new THREE.MeshBasicMaterial({ color: theme.ring });
     this.centerRing = new THREE.Mesh(centerRingGeo, centerRingMat);
     this.centerRing.rotation.x = Math.PI / 2;
     this.dnaHelixGroup.add(this.centerRing);
@@ -513,23 +779,20 @@ class BioCyberArena3D {
       const pylon = new THREE.Group();
       pylon.position.set(pos.x, 0, pos.z);
 
-      // Multi-tier base
       const baseGeo = new THREE.BoxGeometry(2.4, 3.2, 2.4);
-      const baseMat = new THREE.MeshStandardMaterial({ color: 0x121216, roughness: 0.2, metalness: 0.9 });
+      const baseMat = new THREE.MeshStandardMaterial({ color: 0x121218, roughness: 0.2, metalness: 0.9 });
       const base = new THREE.Mesh(baseGeo, baseMat);
       base.position.y = 1.6;
       pylon.add(base);
 
-      // Glowing core crystal
       const crystalGeo = new THREE.OctahedronGeometry(0.9, 0);
-      const crystalMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      const crystalMat = new THREE.MeshBasicMaterial({ color: theme.pylonBeam });
       const crystal = new THREE.Mesh(crystalGeo, crystalMat);
       crystal.position.y = 4.2;
       pylon.add(crystal);
 
-      // Vertical Laser Beam Shooting into Sky
-      const beamGeo = new THREE.CylinderGeometry(0.12, 0.35, 36, 12);
-      const beamMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.45 });
+      const beamGeo = new THREE.CylinderGeometry(0.12, 0.4, 36, 12);
+      const beamMat = new THREE.MeshBasicMaterial({ color: theme.pylonBeam, transparent: true, opacity: theme.pylonBeamOpacity });
       const beam = new THREE.Mesh(beamGeo, beamMat);
       beam.position.y = 20;
       pylon.add(beam);
@@ -544,10 +807,10 @@ class BioCyberArena3D {
     const satEdgeGeo = new THREE.EdgesGeometry(satGeo);
 
     for (let i = 0; i < numSats; i++) {
-      const satMat = new THREE.MeshStandardMaterial({ color: 0x222228, roughness: 0.2, metalness: 0.8 });
+      const satMat = new THREE.MeshStandardMaterial({ color: theme.satellite, roughness: 0.2, metalness: 0.8 });
       const sat = new THREE.Mesh(satGeo, satMat);
 
-      const edgeMat = new THREE.LineBasicMaterial({ color: 0xffffff });
+      const edgeMat = new THREE.LineBasicMaterial({ color: theme.satelliteEdge });
       sat.add(new THREE.LineSegments(satEdgeGeo, edgeMat));
 
       const angle = (i / numSats) * Math.PI * 2;
@@ -572,65 +835,122 @@ class BioCyberArena3D {
       const p2 = new THREE.Vector3(x2, 0.72, z2);
       const curve = new THREE.LineCurve3(p1, p2);
       const tubeGeo = new THREE.TubeGeometry(curve, 16, 0.06, 6, false);
-      const tubeMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 });
+      const tubeMat = new THREE.MeshBasicMaterial({ color: theme.conduit, transparent: true, opacity: 0.7 });
       const line = new THREE.Mesh(tubeGeo, tubeMat);
       this.decorationsGroup.add(line);
     });
 
-    // 5. 3D Voxel Cyber Sakura Trees (ต้นซากุระบล็อก 3 มิติ)
-    const createVoxelSakuraTree = (x, z, scale = 1.0) => {
+    // 5. Theme Specific 3D Voxel Trees
+    const buildThemeTree = (x, z, scale = 1.0) => {
       const tree = new THREE.Group();
       tree.position.set(x, 0.7, z);
       tree.scale.set(scale, scale, scale);
 
-      // Dark Cyber Trunk
-      const trunkMat = new THREE.MeshStandardMaterial({ color: 0x1f1b24, roughness: 0.8, metalness: 0.2 });
-      
-      const mainTrunkGeo = new THREE.BoxGeometry(0.7, 3.2, 0.7);
-      const mainTrunk = new THREE.Mesh(mainTrunkGeo, trunkMat);
-      mainTrunk.position.y = 1.6;
-      mainTrunk.castShadow = true;
-      tree.add(mainTrunk);
+      if (theme.treeType === 'sakura') {
+        // 🌸 Sakura Tree
+        const trunkMat = new THREE.MeshStandardMaterial({ color: 0x241724, roughness: 0.8, metalness: 0.1 });
+        const trunk = new THREE.Mesh(new THREE.BoxGeometry(0.7, 3.2, 0.7), trunkMat);
+        trunk.position.y = 1.6;
+        tree.add(trunk);
 
-      // Branches
-      const branchGeoA = new THREE.BoxGeometry(1.4, 0.4, 0.5);
-      const branchA = new THREE.Mesh(branchGeoA, trunkMat);
-      branchA.position.set(0.6, 2.8, 0.3);
-      branchA.rotation.z = -0.25;
-      tree.add(branchA);
+        const b1 = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.4, 0.5), trunkMat);
+        b1.position.set(0.6, 2.8, 0.3); b1.rotation.z = -0.25; tree.add(b1);
 
-      const branchGeoB = new THREE.BoxGeometry(1.3, 0.4, 0.5);
-      const branchB = new THREE.Mesh(branchGeoB, trunkMat);
-      branchB.position.set(-0.6, 2.5, -0.3);
-      branchB.rotation.z = 0.3;
-      tree.add(branchB);
+        const m1 = new THREE.MeshStandardMaterial({ color: 0xff70a6, roughness: 0.4 });
+        const m2 = new THREE.MeshStandardMaterial({ color: 0xff9ebb, roughness: 0.3 });
+        const m3 = new THREE.MeshStandardMaterial({ color: 0xffd1dc, roughness: 0.5 });
 
-      // Voxel Sakura Blossom Foliage Clouds (Layered White-Sakura Voxels)
-      const blossomMatA = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.4, metalness: 0.1 });
-      const blossomMatB = new THREE.MeshStandardMaterial({ color: 0xf5edf0, roughness: 0.3, metalness: 0.2 });
-      const blossomMatC = new THREE.MeshStandardMaterial({ color: 0xe8dce2, roughness: 0.5, metalness: 0.1 });
+        [{ x: 0, y: 4.0, z: 0, w: 3.0, h: 1.6, d: 3.0, m: m1 },
+         { x: 0.8, y: 3.6, z: 0.6, w: 2.2, h: 1.4, d: 2.2, m: m2 },
+         { x: -0.8, y: 3.4, z: -0.5, w: 2.0, h: 1.3, d: 2.0, m: m3 },
+         { x: 0, y: 4.8, z: 0, w: 1.8, h: 1.1, d: 1.8, m: m1 }
+        ].forEach(c => {
+          const leaf = new THREE.Mesh(new THREE.BoxGeometry(c.w, c.h, c.d), c.m);
+          leaf.position.set(c.x, c.y, c.z);
+          tree.add(leaf);
+        });
+      } else if (theme.treeType === 'autumn') {
+        // 🍁 Kyoto Autumn Maple Tree
+        const trunkMat = new THREE.MeshStandardMaterial({ color: 0x261408, roughness: 0.8 });
+        const trunk = new THREE.Mesh(new THREE.BoxGeometry(0.7, 3.2, 0.7), trunkMat);
+        trunk.position.y = 1.6;
+        tree.add(trunk);
 
-      const canopyClusters = [
-        { x: 0, y: 4.0, z: 0, w: 2.8, h: 1.6, d: 2.8, mat: blossomMatA },
-        { x: 0.8, y: 3.6, z: 0.6, w: 2.2, h: 1.4, d: 2.2, mat: blossomMatB },
-        { x: -0.8, y: 3.4, z: -0.5, w: 2.0, h: 1.3, d: 2.0, mat: blossomMatC },
-        { x: 0, y: 4.8, z: 0, w: 1.8, h: 1.1, d: 1.8, mat: blossomMatA },
-        { x: -0.4, y: 3.8, z: 0.8, w: 1.6, h: 1.2, d: 1.6, mat: blossomMatB }
-      ];
+        const m1 = new THREE.MeshStandardMaterial({ color: 0xe63946, roughness: 0.4 });
+        const m2 = new THREE.MeshStandardMaterial({ color: 0xf77f00, roughness: 0.3 });
+        const m3 = new THREE.MeshStandardMaterial({ color: 0xfcbf49, roughness: 0.4 });
 
-      canopyClusters.forEach(c => {
-        const leafGeo = new THREE.BoxGeometry(c.w, c.h, c.d);
-        const leafMesh = new THREE.Mesh(leafGeo, c.mat);
-        leafMesh.position.set(c.x, c.y, c.z);
-        leafMesh.castShadow = true;
-        leafMesh.receiveShadow = true;
-        tree.add(leafMesh);
-      });
+        [{ x: 0, y: 4.0, z: 0, w: 2.9, h: 1.6, d: 2.9, m: m1 },
+         { x: 0.8, y: 3.5, z: 0.6, w: 2.1, h: 1.3, d: 2.1, m: m2 },
+         { x: -0.8, y: 3.3, z: -0.5, w: 2.0, h: 1.2, d: 2.0, m: m3 },
+         { x: 0, y: 4.8, z: 0, w: 1.7, h: 1.1, d: 1.7, m: m2 }
+        ].forEach(c => {
+          const leaf = new THREE.Mesh(new THREE.BoxGeometry(c.w, c.h, c.d), c.m);
+          leaf.position.set(c.x, c.y, c.z);
+          tree.add(leaf);
+        });
+      } else if (theme.treeType === 'winter') {
+        // ❄️ Arctic Snow Covered Pine Tree
+        const trunkMat = new THREE.MeshStandardMaterial({ color: 0x141e28, roughness: 0.8 });
+        const trunk = new THREE.Mesh(new THREE.BoxGeometry(0.6, 3.0, 0.6), trunkMat);
+        trunk.position.y = 1.5;
+        tree.add(trunk);
+
+        const pineMat = new THREE.MeshStandardMaterial({ color: 0x0f3b4c, roughness: 0.5 });
+        const snowMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2 });
+
+        // Tiered Conical Pine with Snow Caps
+        const tier1 = new THREE.Mesh(new THREE.BoxGeometry(3.0, 1.2, 3.0), pineMat); tier1.position.y = 2.6; tree.add(tier1);
+        const snow1 = new THREE.Mesh(new THREE.BoxGeometry(3.1, 0.3, 3.1), snowMat); snow1.position.y = 3.2; tree.add(snow1);
+
+        const tier2 = new THREE.Mesh(new THREE.BoxGeometry(2.2, 1.1, 2.2), pineMat); tier2.position.y = 3.8; tree.add(tier2);
+        const snow2 = new THREE.Mesh(new THREE.BoxGeometry(2.3, 0.3, 2.3), snowMat); snow2.position.y = 4.4; tree.add(snow2);
+
+        const tier3 = new THREE.Mesh(new THREE.BoxGeometry(1.4, 1.0, 1.4), pineMat); tier3.position.y = 4.9; tree.add(tier3);
+        const snow3 = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.3, 1.5), snowMat); snow3.position.y = 5.5; tree.add(snow3);
+      } else if (theme.treeType === 'lantern') {
+        // 🏮 Festive Shrine / Lantern Tree
+        const trunkMat = new THREE.MeshStandardMaterial({ color: 0x3d0c11, roughness: 0.5 });
+        const trunk = new THREE.Mesh(new THREE.BoxGeometry(0.7, 3.4, 0.7), trunkMat);
+        trunk.position.y = 1.7;
+        tree.add(trunk);
+
+        const roofMat = new THREE.MeshStandardMaterial({ color: 0xef233c, roughness: 0.3 });
+        const roof = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.4, 2.6), roofMat);
+        roof.position.y = 3.4;
+        tree.add(roof);
+
+        // Glowing Hanging Mini-Lanterns
+        const lanternMat = new THREE.MeshBasicMaterial({ color: 0xffbe0b });
+        const miniL1 = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.6, 0.4), lanternMat);
+        miniL1.position.set(1.0, 2.7, 1.0); tree.add(miniL1);
+        const miniL2 = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.6, 0.4), lanternMat);
+        miniL2.position.set(-1.0, 2.7, -1.0); tree.add(miniL2);
+
+        const leafMat = new THREE.MeshStandardMaterial({ color: 0xffd166, roughness: 0.4 });
+        const canopy = new THREE.Mesh(new THREE.BoxGeometry(2.0, 1.6, 2.0), leafMat);
+        canopy.position.y = 4.4;
+        tree.add(canopy);
+      } else {
+        // ⚡ Cyber Matrix Holographic Tree
+        const trunkMat = new THREE.MeshStandardMaterial({ color: 0x050510, roughness: 0.1, metalness: 0.9 });
+        const trunk = new THREE.Mesh(new THREE.BoxGeometry(0.6, 3.4, 0.6), trunkMat);
+        trunk.position.y = 1.7;
+        tree.add(trunk);
+
+        const cyberMatA = new THREE.MeshBasicMaterial({ color: 0x00f5d4, wireframe: true });
+        const cyberMatB = new THREE.MeshBasicMaterial({ color: 0xf72585, transparent: true, opacity: 0.85 });
+
+        const node1 = new THREE.Mesh(new THREE.BoxGeometry(2.4, 1.4, 2.4), cyberMatA);
+        node1.position.y = 3.6; tree.add(node1);
+
+        const node2 = new THREE.Mesh(new THREE.BoxGeometry(1.4, 1.4, 1.4), cyberMatB);
+        node2.position.y = 4.6; tree.add(node2);
+      }
 
       return tree;
     };
 
-    // Place 4 Scenic Sakura Trees at Island Edges
     const treeCoords = [
       { x: -11, z: -8, scale: 1.15 },
       { x: 11, z: -8, scale: 1.1 },
@@ -639,50 +959,126 @@ class BioCyberArena3D {
     ];
 
     treeCoords.forEach(pos => {
-      const tree = createVoxelSakuraTree(pos.x, pos.z, pos.scale);
+      const tree = buildThemeTree(pos.x, pos.z, pos.scale);
       this.decorationsGroup.add(tree);
     });
 
-    // 6. Falling Sakura Blossom Petals (กลีบซากุระปลิวในสายลม 3 มิติ)
-    this.sakuraPetals = [];
-    const petalCount = 140;
-    const petalGeo = new THREE.PlaneGeometry(0.22, 0.16);
-    const petalMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, transparent: true, opacity: 0.85 });
+    // 6. Dynamic Atmosphere Particle Simulator
+    this.activeParticles = [];
+    const pType = theme.particleType;
 
-    for (let i = 0; i < petalCount; i++) {
-      const petal = new THREE.Mesh(petalGeo, petalMat);
-      petal.position.set(
-        (Math.random() - 0.5) * 36,
-        Math.random() * 18 + 1,
-        (Math.random() - 0.5) * 36
-      );
-      petal.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-      this.decorationsGroup.add(petal);
+    if (pType === 'sakura_petals') {
+      // 🌸 160 Drifting Pink Sakura Petals
+      const count = 160;
+      const geo = new THREE.PlaneGeometry(0.24, 0.18);
+      const mat = new THREE.MeshBasicMaterial({ color: 0xffa8cc, side: THREE.DoubleSide, transparent: true, opacity: 0.88 });
 
-      this.sakuraPetals.push({
-        mesh: petal,
-        fallSpeed: 1.2 + Math.random() * 1.5,
-        driftSpeed: 0.8 + Math.random() * 1.2,
-        rotSpeedX: Math.random() * 2 - 1,
-        rotSpeedY: Math.random() * 2 - 1,
-        phase: Math.random() * Math.PI * 2
-      });
+      for (let i = 0; i < count; i++) {
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set((Math.random() - 0.5) * 40, Math.random() * 20 + 1, (Math.random() - 0.5) * 40);
+        this.decorationsGroup.add(mesh);
+        this.activeParticles.push({
+          type: 'sakura_petals',
+          mesh,
+          fallSpeed: 1.2 + Math.random() * 1.6,
+          driftSpeed: 0.8 + Math.random() * 1.2,
+          rotSpeedX: Math.random() * 2 - 1,
+          rotSpeedY: Math.random() * 2 - 1,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    } else if (pType === 'autumn_leaves') {
+      // 🍁 150 Golden & Crimson Maple Leaves
+      const count = 150;
+      const geo = new THREE.PlaneGeometry(0.28, 0.28);
+      const leafColors = [0xe63946, 0xf77f00, 0xfcbf49];
+
+      for (let i = 0; i < count; i++) {
+        const col = leafColors[Math.floor(Math.random() * leafColors.length)];
+        const mat = new THREE.MeshBasicMaterial({ color: col, side: THREE.DoubleSide, transparent: true, opacity: 0.9 });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set((Math.random() - 0.5) * 40, Math.random() * 20 + 1, (Math.random() - 0.5) * 40);
+        this.decorationsGroup.add(mesh);
+        this.activeParticles.push({
+          type: 'autumn_leaves',
+          mesh,
+          fallSpeed: 1.4 + Math.random() * 1.8,
+          driftSpeed: 1.1 + Math.random() * 1.5,
+          rotSpeedX: Math.random() * 3 - 1.5,
+          rotSpeedY: Math.random() * 2 - 1,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    } else if (pType === 'snowflakes') {
+      // ❄️ 240 Swirling Blizzard Snow Crystals
+      const count = 240;
+      const geo = new THREE.BufferGeometry();
+      const pos = new Float32Array(count * 3);
+      for (let i = 0; i < count * 3; i += 3) {
+        pos[i] = (Math.random() - 0.5) * 50;
+        pos[i + 1] = Math.random() * 24 - 2;
+        pos[i + 2] = (Math.random() - 0.5) * 50;
+      }
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      const mat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.28, transparent: true, opacity: 0.95 });
+      const points = new THREE.Points(geo, mat);
+      this.decorationsGroup.add(points);
+      this.activeParticles.push({ type: 'snowflakes_points', points, count });
+    } else if (pType === 'sky_lanterns') {
+      // 🏮 50 Glowing Asian Sky Lanterns Ascending into the Heavens
+      const count = 50;
+      const lanternGeo = new THREE.CylinderGeometry(0.35, 0.28, 0.65, 8);
+      const lanternColors = [0xffbe0b, 0xfb5607, 0xff006e, 0xffd166];
+
+      for (let i = 0; i < count; i++) {
+        const col = lanternColors[Math.floor(Math.random() * lanternColors.length)];
+        const mat = new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.88 });
+        const mesh = new THREE.Mesh(lanternGeo, mat);
+        mesh.position.set((Math.random() - 0.5) * 44, Math.random() * 28 - 6, (Math.random() - 0.5) * 44);
+        this.decorationsGroup.add(mesh);
+        this.activeParticles.push({
+          type: 'sky_lanterns',
+          mesh,
+          riseSpeed: 1.2 + Math.random() * 1.4,
+          driftSpeed: 0.5 + Math.random() * 0.8,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    } else {
+      // ⚡ 180 Cyber Neon Data Sparks
+      const count = 180;
+      const geo = new THREE.BoxGeometry(0.18, 0.18, 0.18);
+      const colors = [0x00f5d4, 0xf72585, 0x7b2cbf];
+
+      for (let i = 0; i < count; i++) {
+        const mat = new THREE.MeshBasicMaterial({ color: colors[i % colors.length] });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set((Math.random() - 0.5) * 40, Math.random() * 22, (Math.random() - 0.5) * 40);
+        this.decorationsGroup.add(mesh);
+        this.activeParticles.push({
+          type: 'cyber_sparks',
+          mesh,
+          riseSpeed: 1.5 + Math.random() * 2.0,
+          driftSpeed: 1.2,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
     }
 
-    // 7. Atmospheric Ambient Stardust Particle Field
-    const particleCount = 200;
-    const particleGeo = new THREE.BufferGeometry();
-    const particlePositions = new Float32Array(particleCount * 3);
+    // 7. Ambient Stardust Field
+    const stardustCount = 160;
+    const stardustGeo = new THREE.BufferGeometry();
+    const stardustPos = new Float32Array(stardustCount * 3);
 
-    for (let i = 0; i < particleCount * 3; i += 3) {
-      particlePositions[i] = (Math.random() - 0.5) * 60;
-      particlePositions[i + 1] = Math.random() * 24 - 4;
-      particlePositions[i + 2] = (Math.random() - 0.5) * 60;
+    for (let i = 0; i < stardustCount * 3; i += 3) {
+      stardustPos[i] = (Math.random() - 0.5) * 60;
+      stardustPos[i + 1] = Math.random() * 24 - 4;
+      stardustPos[i + 2] = (Math.random() - 0.5) * 60;
     }
 
-    particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-    const particleMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.2, transparent: true, opacity: 0.7 });
-    this.stardustParticles = new THREE.Points(particleGeo, particleMat);
+    stardustGeo.setAttribute('position', new THREE.BufferAttribute(stardustPos, 3));
+    const stardustMat = new THREE.PointsMaterial({ color: theme.stardust, size: 0.2, transparent: true, opacity: 0.75 });
+    this.stardustParticles = new THREE.Points(stardustGeo, stardustMat);
     this.decorationsGroup.add(this.stardustParticles);
 
     this.scene.add(this.decorationsGroup);
@@ -698,7 +1094,8 @@ class BioCyberArena3D {
     });
     this.answerPads = [];
 
-    const offset = this.blockSize * 3.4; // Wide distance for spacious arena!
+    const theme = ARENA_THEMES[this.currentTheme];
+    const offset = this.blockSize * 3.4;
     const padPositions = [
       { id: 'A', x: 0, z: -offset, label: 'A' },
       { id: 'B', x: offset, z: 0, label: 'B' },
@@ -712,14 +1109,14 @@ class BioCyberArena3D {
 
       // Raised 3D Cyber Podium
       const podiumGeo = new THREE.CylinderGeometry(2.4, 2.7, 0.8, 20);
-      const podiumMat = new THREE.MeshStandardMaterial({ color: 0x0e0e12, roughness: 0.2, metalness: 0.9 });
+      const podiumMat = new THREE.MeshStandardMaterial({ color: theme.padPodium, roughness: 0.2, metalness: 0.9 });
       const podium = new THREE.Mesh(podiumGeo, podiumMat);
       podium.receiveShadow = true;
       group.add(podium);
 
       // Glowing Outer Hologram Ring
       const torusGeo = new THREE.TorusGeometry(2.6, 0.08, 8, 32);
-      const torusMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      const torusMat = new THREE.MeshBasicMaterial({ color: theme.padRing });
       const torus = new THREE.Mesh(torusGeo, torusMat);
       torus.rotation.x = Math.PI / 2;
       torus.position.y = 0.45;
@@ -745,6 +1142,8 @@ class BioCyberArena3D {
         z: pos.z,
         radius: 2.7,
         group,
+        podium,
+        torus,
         canvas,
         texture,
         billboard
@@ -755,36 +1154,37 @@ class BioCyberArena3D {
   update3DBillboardText(pad, choiceLetter, choiceText) {
     const ctx = pad.canvas.getContext('2d');
     ctx.clearRect(0, 0, 512, 256);
+    const theme = ARENA_THEMES[this.currentTheme];
 
-    // Glass Cyber Background
-    ctx.fillStyle = 'rgba(10, 10, 14, 0.92)';
+    // Theme Glass Gradient Background
+    ctx.fillStyle = theme.billboardBg;
     ctx.roundRect(10, 10, 492, 236, 24);
     ctx.fill();
 
-    ctx.strokeStyle = '#ffffff';
+    ctx.strokeStyle = theme.billboardBorder;
     ctx.lineWidth = 4;
     ctx.stroke();
 
     // Choice Badge [A]
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = theme.billboardBadge;
     ctx.beginPath();
     ctx.arc(65, 80, 36, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = '#000000';
+    ctx.fillStyle = theme.billboardBadgeText;
     ctx.font = '800 40px Prompt';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(choiceLetter, 65, 82);
 
     // Choice Text (Academic biological term)
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = theme.billboardText;
     ctx.font = '700 32px Prompt';
     ctx.textAlign = 'left';
     ctx.fillText(choiceText.length > 20 ? choiceText.substring(0, 20) + '...' : choiceText, 120, 80);
 
     // Sub-caption
-    ctx.fillStyle = '#a1a1aa';
+    ctx.fillStyle = '#d4d4d8';
     ctx.font = '500 22px Prompt';
     ctx.fillText('แท่นตัวเลือก 3 มิติ · วิ่งมาเหยียบ', 120, 150);
 
@@ -1024,19 +1424,54 @@ class BioCyberArena3D {
       this.stardustParticles.rotation.y += dt * 0.04;
     }
 
-    // Animate Drifting 3D Voxel Sakura Petals (กลีบซากุระปลิวพลิ้วไหว)
-    if (this.sakuraPetals) {
+    // Animate Dynamic Theme Atmosphere Particles
+    if (this.activeParticles && this.activeParticles.length > 0) {
       const time = Date.now() * 0.001;
-      this.sakuraPetals.forEach((p) => {
-        p.mesh.position.y -= p.fallSpeed * dt;
-        p.mesh.position.x += Math.sin(time * p.driftSpeed + p.phase) * dt * 1.4;
-        p.mesh.position.z += Math.cos(time * p.driftSpeed + p.phase) * dt * 1.4;
-        p.mesh.rotation.x += p.rotSpeedX * dt;
-        p.mesh.rotation.y += p.rotSpeedY * dt;
-        if (p.mesh.position.y < -5) {
-          p.mesh.position.y = 18;
-          p.mesh.position.x = (Math.random() - 0.5) * 36;
-          p.mesh.position.z = (Math.random() - 0.5) * 36;
+      this.activeParticles.forEach((p) => {
+        if (p.type === 'sakura_petals' || p.type === 'autumn_leaves') {
+          p.mesh.position.y -= p.fallSpeed * dt;
+          p.mesh.position.x += Math.sin(time * p.driftSpeed + p.phase) * dt * 1.5;
+          p.mesh.position.z += Math.cos(time * p.driftSpeed + p.phase) * dt * 1.5;
+          p.mesh.rotation.x += p.rotSpeedX * dt;
+          p.mesh.rotation.y += p.rotSpeedY * dt;
+          if (p.mesh.position.y < -5) {
+            p.mesh.position.y = 19;
+            p.mesh.position.x = (Math.random() - 0.5) * 40;
+            p.mesh.position.z = (Math.random() - 0.5) * 40;
+          }
+        } else if (p.type === 'sky_lanterns') {
+          // Floating lanterns ascending gently to the sky
+          p.mesh.position.y += p.riseSpeed * dt;
+          p.mesh.position.x += Math.sin(time * 0.8 + p.phase) * dt * 0.6;
+          p.mesh.position.z += Math.cos(time * 0.8 + p.phase) * dt * 0.6;
+          p.mesh.rotation.y += dt * 0.3;
+          if (p.mesh.position.y > 32) {
+            p.mesh.position.y = -6;
+            p.mesh.position.x = (Math.random() - 0.5) * 44;
+            p.mesh.position.z = (Math.random() - 0.5) * 44;
+          }
+        } else if (p.type === 'cyber_sparks') {
+          p.mesh.position.y += p.riseSpeed * dt;
+          p.mesh.rotation.x += dt * 2.0;
+          p.mesh.rotation.y += dt * 3.0;
+          if (p.mesh.position.y > 24) {
+            p.mesh.position.y = 0;
+            p.mesh.position.x = (Math.random() - 0.5) * 40;
+            p.mesh.position.z = (Math.random() - 0.5) * 40;
+          }
+        } else if (p.type === 'snowflakes_points') {
+          const pos = p.points.geometry.attributes.position.array;
+          for (let i = 1; i < pos.length; i += 3) {
+            pos[i] -= dt * 4.5;
+            pos[i - 1] += Math.sin(time * 2 + i) * dt * 0.8;
+            if (pos[i] < -6) {
+              pos[i] = 22;
+              pos[i - 1] = (Math.random() - 0.5) * 50;
+              pos[i + 1] = (Math.random() - 0.5) * 50;
+            }
+          }
+          p.points.geometry.attributes.position.needsUpdate = true;
+          p.points.rotation.y += dt * 0.05;
         }
       });
     }
@@ -1417,7 +1852,7 @@ class BioCyberArena3D {
   }
 }
 
-// Global Game Type Switcher
+// Global Mode Switcher
 window.switchGameType = function(type) {
   if (window.bioCyber) {
     window.bioCyber.gameType = type;
@@ -1427,7 +1862,24 @@ window.switchGameType = function(type) {
   }
 };
 
+// Global Theme Switcher
+window.switchTheme = function(themeKey) {
+  if (window.bioCyber) {
+    window.bioCyber.applyTheme(themeKey);
+  }
+};
+
+window.selectLobbyTheme = function(themeKey) {
+  document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
+  const card = document.querySelector(`.theme-card[data-theme="${themeKey}"]`);
+  if (card) card.classList.add('selected');
+  if (window.bioCyber) {
+    window.bioCyber.applyTheme(themeKey);
+  }
+};
+
 // Start on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
   window.bioCyber = new BioCyberArena3D();
 });
+
