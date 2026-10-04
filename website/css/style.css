@@ -1,17 +1,17 @@
 /* ==========================================================================
-   CYTOLIFE PRO // APPLE MONOCHROME TITANIUM SYSTEM
-   Pure Black & White Minimalist Design // Font: Prompt
+   CYTOLIFE PRO // 100% PURE MONOCHROME BLACK & WHITE TITANIUM
+   Zero Blue / Zero Navy Tints // Font: Prompt
    ========================================================================== */
 
 :root {
-  /* Core Monochromatic Palette */
+  /* 100% Pure Monochrome Black, Carbon & White Palette */
   --bg: #000000;
   --apple-black: #000000;
-  --apple-bg-secondary: #0a0a0c;
-  --apple-bg-card: rgba(18, 18, 22, 0.75);
-  --apple-bg-card-hover: rgba(26, 26, 32, 0.95);
-  --apple-card-border: rgba(255, 255, 255, 0.12);
-  --apple-card-border-glow: rgba(255, 255, 255, 0.45);
+  --apple-bg-secondary: #0a0a0a;
+  --apple-bg-card: rgba(18, 18, 18, 0.82);
+  --apple-bg-card-hover: rgba(28, 28, 28, 0.95);
+  --apple-card-border: rgba(255, 255, 255, 0.14);
+  --apple-card-border-glow: rgba(255, 255, 255, 0.5);
 
   --ink: #ffffff;
   --dim: #a1a1aa;
@@ -21,10 +21,10 @@
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
   --persp: 1200px;
   
-  /* Monochromatic White & Titanium Accents */
+  /* Monochromatic White & Chrome Accents */
   --accent-cyan: #ffffff;
-  --accent-cyan-light: #f4f4f5;
-  --accent-cyan-glow: rgba(255, 255, 255, 0.85);
+  --accent-cyan-light: #ffffff;
+  --accent-cyan-glow: rgba(255, 255, 255, 0.9);
   --accent-azure: #27272a;
   --accent-azure-hover: #3f3f46;
   --accent-ice: #e4e4e7;
@@ -49,27 +49,27 @@
 }
 
 html {
-  background: var(--bg);
+  background: #000000 !important;
   scrollbar-gutter: stable;
   font-family: var(--font-sans);
-  color: var(--ink);
+  color: #ffffff;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--bg);
-  color: var(--ink);
+  background: #000000 !important;
+  color: #ffffff !important;
   overflow-x: hidden;
   min-height: 100vh;
   line-height: 1.5;
   font-weight: 300;
   position: relative;
-  font-family: var(--font-sans);
+  font-family: var(--font-sans) !important;
 }
 
-/* Subtle Monochromatic Silver Ambient Glow */
+/* Monochromatic Silver Ambient Glow - Zero Blue */
 body::before {
   content: '';
   position: fixed;
@@ -77,8 +77,8 @@ body::before {
   left: 50%;
   transform: translateX(-50%);
   width: 100vw;
-  height: 850px;
-  background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 45%, transparent 75%);
+  height: 750px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.01) 45%, transparent 75%);
   pointer-events: none;
   z-index: 0;
 }
@@ -114,15 +114,15 @@ a {
 }
 
 /* ==========================================================================
-   1. Apple Global Navigation Bar (Monochrome)
+   1. Apple Global Navigation Bar (Pure Black)
    ========================================================================== */
 .apple-global-nav {
   position: sticky;
   top: 0;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(24px) saturate(190%);
-  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  background: rgba(0, 0, 0, 0.9) !important;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   height: 48px;
 }
@@ -138,7 +138,7 @@ a {
 }
 
 .apple-logo-link {
-  color: #fff;
+  color: #fff !important;
   font-size: 15px;
   font-weight: 700;
   display: flex;
@@ -164,7 +164,7 @@ a {
 }
 
 .nav-links-desktop a {
-  color: var(--text-gray);
+  color: #a1a1aa !important;
   font-size: 12.5px;
   font-weight: 400;
   letter-spacing: 0.01em;
@@ -172,34 +172,34 @@ a {
 }
 
 .nav-links-desktop a:hover {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .nav-cta-btn {
-  background: #ffffff;
-  color: #000000;
+  background: #ffffff !important;
+  color: #000000 !important;
   padding: 5px 15px;
   border-radius: var(--r-pill);
   font-size: 12px;
   font-weight: 600;
-  box-shadow: 0 2px 12px rgba(255, 255, 255, 0.25);
+  box-shadow: 0 2px 12px rgba(255, 255, 255, 0.2);
   transition: all 0.2s var(--ease);
 }
 
 .nav-cta-btn:hover {
-  background: #e4e4e7;
+  background: #e4e4e7 !important;
   transform: scale(1.03);
-  box-shadow: 0 4px 18px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 18px rgba(255, 255, 255, 0.35);
 }
 
 /* ==========================================================================
-   2. Apple Local Sub-Header (Sticky)
+   2. Apple Local Sub-Header (Pure Black)
    ========================================================================== */
 .apple-local-nav {
   position: sticky;
   top: 48px;
   z-index: 998;
-  background: rgba(10, 10, 12, 0.85);
+  background: rgba(8, 8, 8, 0.9) !important;
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -219,13 +219,13 @@ a {
 .local-title {
   font-size: 15.5px;
   font-weight: 600;
-  color: var(--text-white);
+  color: #ffffff !important;
   display: flex;
   align-items: center;
 }
 
 .local-title span {
-  color: var(--text-dim);
+  color: #71717a !important;
   font-size: 12px;
   font-weight: 400;
   margin-left: 10px;
@@ -240,18 +240,18 @@ a {
 }
 
 .local-link {
-  color: var(--text-silver);
+  color: #a1a1aa !important;
   font-size: 12px;
   transition: color 0.2s;
 }
 
 .local-link:hover {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .local-btn-primary {
-  background: #ffffff;
-  color: #000000;
+  background: #ffffff !important;
+  color: #000000 !important;
   padding: 6px 16px;
   border-radius: var(--r-pill);
   font-size: 12px;
@@ -260,13 +260,13 @@ a {
 }
 
 .local-btn-primary:hover {
-  background: var(--accent-ice);
+  background: #e4e4e7 !important;
   transform: scale(1.03);
   box-shadow: 0 2px 14px rgba(255, 255, 255, 0.25);
 }
 
 /* ==========================================================================
-   3. Dynamic Island Interactive Capsule Widget (Monochrome)
+   3. Dynamic Island Widget (Pure Black & White)
    ========================================================================== */
 .dynamic-island-wrapper {
   display: flex;
@@ -280,29 +280,28 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: rgba(18, 18, 22, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(18, 18, 18, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
   padding: 7px 20px;
   border-radius: var(--r-pill);
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: all 0.3s var(--ease-spring);
   user-select: none;
   backdrop-filter: blur(16px);
 }
 
 .dynamic-island:hover {
-  border-color: rgba(255, 255, 255, 0.45);
+  border-color: rgba(255, 255, 255, 0.45) !important;
   transform: scale(1.03);
   box-shadow: 0 12px 35px rgba(255, 255, 255, 0.15);
 }
 
-/* Pure White Pulsing Dot */
 .island-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #ffffff;
+  background: #ffffff !important;
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
   animation: pulseWhite 2s infinite;
 }
@@ -317,16 +316,16 @@ a {
   font-size: 11.5px;
   font-weight: 500;
   letter-spacing: 0.04em;
-  color: var(--text-silver);
+  color: #e4e4e7 !important;
 }
 
 .island-badge {
   font-size: 10px;
   padding: 2px 8px;
   border-radius: var(--r-pill);
-  background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
   font-weight: 600;
   letter-spacing: 0.04em;
 }
@@ -346,6 +345,7 @@ a {
   align-items: center;
   justify-content: flex-end;
   padding-bottom: 28px;
+  background: #000000 !important;
 }
 
 .stage-hero-viewport {
@@ -414,9 +414,9 @@ a {
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
   padding: 4px 14px;
   border-radius: var(--r-pill);
   backdrop-filter: blur(8px);
@@ -427,15 +427,15 @@ a {
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.02em;
-  background: linear-gradient(180deg, #ffffff 40%, #a1a1aa 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.85);
+  background: linear-gradient(180deg, #ffffff 40%, #a1a1aa 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
 }
 
 #headline .hero-desc {
   font-size: clamp(13px, 1.4vw, 15px);
-  color: var(--text-gray);
+  color: #a1a1aa !important;
   max-width: 440px;
   line-height: 1.55;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
@@ -465,9 +465,9 @@ a {
   position: relative;
   border-radius: 12px;
   overflow: hidden;
-  background: #0d0d10;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+  background: #0d0d0d !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
   transition: all 0.25s var(--ease-spring);
 }
 
@@ -487,9 +487,9 @@ a {
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #ffffff;
-  background: rgba(0, 0, 0, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff !important;
+  background: rgba(0, 0, 0, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
   padding: 2px 7px;
   border-radius: var(--r-pill);
   backdrop-filter: blur(4px);
@@ -510,7 +510,7 @@ a {
 .sphere-card-label .title {
   font-size: 11px;
   font-weight: 600;
-  color: #ffffff;
+  color: #ffffff !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -518,7 +518,7 @@ a {
 
 .sphere-card-label .sub {
   font-size: 8.5px;
-  color: var(--text-gray);
+  color: #a1a1aa !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -532,8 +532,8 @@ a {
 
 .sphere-card:hover .sphere-card-inner,
 .sphere-card.is-hovered .sphere-card-inner {
-  border-color: #ffffff;
-  box-shadow: 0 16px 36px rgba(255, 255, 255, 0.3), 0 0 0 1.5px rgba(255, 255, 255, 0.8);
+  border-color: #ffffff !important;
+  box-shadow: 0 16px 36px rgba(255, 255, 255, 0.35), 0 0 0 1.5px rgba(255, 255, 255, 0.9) !important;
   transform: scale(1.08);
 }
 
@@ -570,35 +570,35 @@ a {
 }
 
 .apple-btn-large.primary {
-  background: #ffffff;
-  color: #000000;
+  background: #ffffff !important;
+  color: #000000 !important;
   box-shadow: 0 4px 22px rgba(255, 255, 255, 0.25);
 }
 
 .apple-btn-large.primary:hover {
-  background: #e4e4e7;
+  background: #e4e4e7 !important;
   transform: scale(1.03);
   box-shadow: 0 6px 28px rgba(255, 255, 255, 0.4);
 }
 
 .apple-btn-large.secondary {
-  background: rgba(24, 24, 27, 0.7);
-  color: var(--text-white);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(24, 24, 24, 0.8) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
   backdrop-filter: blur(12px);
 }
 
 .apple-btn-large.secondary:hover {
-  background: rgba(39, 39, 42, 0.85);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(38, 38, 38, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
   transform: scale(1.03);
 }
 
 .hero-hint {
   font-size: 11.5px;
-  color: var(--text-gray);
-  background: rgba(18, 18, 22, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #a1a1aa !important;
+  background: rgba(18, 18, 18, 0.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
   padding: 6px 16px;
   border-radius: var(--r-pill);
   backdrop-filter: blur(12px);
@@ -608,12 +608,13 @@ a {
 }
 
 /* ==========================================================================
-   5. Apple Big Spec Numbers Bar (Monochrome Chrome)
+   5. Apple Big Spec Numbers Bar (100% Monochrome)
    ========================================================================== */
 .apple-specs-bar {
   padding: 50px 0 70px;
   position: relative;
   z-index: 10;
+  background: #000000 !important;
 }
 
 .specs-grid {
@@ -621,11 +622,11 @@ a {
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
   padding: 36px 32px;
-  background: var(--apple-bg-card);
-  border: 1px solid var(--apple-card-border);
+  background: var(--apple-bg-card) !important;
+  border: 1px solid var(--apple-card-border) !important;
   border-radius: var(--r-card);
   backdrop-filter: blur(20px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
 }
 
 .spec-col {
@@ -637,30 +638,31 @@ a {
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
-  background: linear-gradient(180deg, #ffffff 40%, #a1a1aa 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background: linear-gradient(180deg, #ffffff 40%, #71717a 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
   margin-bottom: 8px;
 }
 
 .spec-label {
   font-size: 14.5px;
   font-weight: 600;
-  color: var(--text-white);
+  color: #ffffff !important;
   margin-bottom: 6px;
 }
 
 .spec-sub {
   font-size: 12px;
-  color: var(--text-gray);
+  color: #a1a1aa !important;
   line-height: 1.45;
 }
 
 /* ==========================================================================
-   6. Explore the Lineup (Apple Bento Grid Universe)
+   6. Explore the Lineup (100% Monochrome Bento Grid)
    ========================================================================== */
 .apple-lineup-section {
   padding: 60px 0 100px;
+  background: #000000 !important;
 }
 
 .section-header-apple {
@@ -675,7 +677,7 @@ a {
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #ffffff;
+  color: #a1a1aa !important;
   margin-bottom: 10px;
 }
 
@@ -684,13 +686,13 @@ a {
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.15;
-  color: #fff;
+  color: #fff !important;
   margin-bottom: 14px;
 }
 
 .desc-apple {
   font-size: 15px;
-  color: var(--text-gray);
+  color: #a1a1aa !important;
   line-height: 1.55;
 }
 
@@ -709,23 +711,23 @@ a {
 .bento-span-4  { grid-column: span 4; }
 
 .apple-bento-card {
-  background: var(--apple-bg-card);
-  border: 1px solid var(--apple-card-border);
+  background: var(--apple-bg-card) !important;
+  border: 1px solid var(--apple-card-border) !important;
   border-radius: var(--r-card);
   padding: 34px;
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(24px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
   transition: all 0.3s var(--ease);
   display: flex;
   flex-direction: column;
 }
 
 .apple-bento-card:hover {
-  border-color: var(--apple-card-border-glow);
+  border-color: var(--apple-card-border-glow) !important;
   transform: translateY(-4px);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(255, 255, 255, 0.12);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(255, 255, 255, 0.15);
 }
 
 /* Bento Split Layout (Horizontal) */
@@ -734,7 +736,7 @@ a {
   grid-template-columns: 1.15fr 0.85fr;
   align-items: center;
   gap: 32px;
-  background: linear-gradient(135deg, rgba(18, 18, 22, 0.95) 0%, rgba(10, 10, 14, 0.9) 100%);
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(10, 10, 10, 0.95) 100%) !important;
 }
 
 /* Bento Media Top Layout (Vertical card with photo on top) */
@@ -747,7 +749,7 @@ a {
   aspect-ratio: 16/9;
   position: relative;
   overflow: hidden;
-  background: #0a0a0c;
+  background: #0a0a0a !important;
 }
 
 .apple-bento-card.bento-vertical .bento-media-header img {
@@ -768,16 +770,16 @@ a {
   flex-grow: 1;
 }
 
-/* Cohesive Monochromatic Bento Tags */
+/* 100% Monochrome Bento Tags */
 .bento-tag {
   display: inline-block;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
   padding: 4px 12px;
   border-radius: var(--r-pill);
   margin-bottom: 14px;
@@ -786,15 +788,15 @@ a {
 
 .bento-tag.green,
 .bento-tag.purple {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
 }
 
 .bento-title {
   font-size: clamp(20px, 2.2vw, 26px);
   font-weight: 600;
-  color: #fff;
+  color: #fff !important;
   letter-spacing: -0.015em;
   margin-bottom: 10px;
   line-height: 1.25;
@@ -802,7 +804,7 @@ a {
 
 .bento-desc {
   font-size: 14px;
-  color: var(--text-gray);
+  color: #a1a1aa !important;
   line-height: 1.6;
   margin-bottom: 20px;
   flex-grow: 1;
@@ -817,9 +819,9 @@ a {
 
 .bento-features-list span {
   font-size: 11px;
-  color: var(--text-silver);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e4e4e7 !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
   padding: 4px 12px;
   border-radius: var(--r-pill);
 }
@@ -836,25 +838,25 @@ a {
 }
 
 .apple-btn.primary {
-  background: #ffffff;
-  color: #000000;
+  background: #ffffff !important;
+  color: #000000 !important;
 }
 
 .apple-btn.primary:hover {
-  background: var(--accent-ice);
+  background: #e4e4e7 !important;
   transform: scale(1.03);
   box-shadow: 0 4px 16px rgba(255, 255, 255, 0.25);
 }
 
 .apple-btn.secondary {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
 .apple-btn.secondary:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.16) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
   transform: scale(1.03);
 }
 
@@ -864,8 +866,8 @@ a {
   aspect-ratio: 16/10;
   border-radius: 18px;
   overflow: hidden;
-  background: radial-gradient(circle at center, #18181b 0%, #000000 100%);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: radial-gradient(circle at center, #181818 0%, #000000 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
   position: relative;
   display: flex;
   align-items: center;
@@ -887,9 +889,9 @@ a {
   position: absolute;
   top: 14px;
   right: 14px;
-  background: rgba(0, 0, 0, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  color: #ffffff;
+  background: rgba(0, 0, 0, 0.88) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
   font-size: 11px;
   font-weight: 600;
   padding: 4px 12px;
@@ -898,11 +900,11 @@ a {
 }
 
 /* ==========================================================================
-   7. Core Curriculum (6 Topics Bento Grid Universe)
+   7. Core Curriculum (100% Monochrome Bento Grid)
    ========================================================================== */
 .apple-curriculum-section {
   padding: 60px 0 100px;
-  background: linear-gradient(180deg, transparent 0%, rgba(10, 10, 12, 0.6) 50%, transparent 100%);
+  background: linear-gradient(180deg, #000000 0%, #0d0d0d 50%, #000000 100%) !important;
 }
 
 .curriculum-bento-grid {
@@ -914,9 +916,9 @@ a {
 .curr-icon {
   font-size: 12px;
   font-weight: 700;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -929,20 +931,20 @@ a {
 .curr-title {
   font-size: 19px;
   font-weight: 600;
-  color: #fff;
+  color: #fff !important;
   margin-bottom: 4px;
 }
 
 .curr-subtitle {
   font-size: 13px;
-  color: var(--text-silver);
+  color: #e4e4e7 !important;
   font-weight: 400;
   margin-bottom: 12px;
 }
 
 .curr-desc {
   font-size: 13.5px;
-  color: var(--text-gray);
+  color: #a1a1aa !important;
   line-height: 1.6;
   margin-bottom: 20px;
   flex-grow: 1;
@@ -951,7 +953,7 @@ a {
 .curr-link {
   font-size: 13px;
   font-weight: 600;
-  color: #fff;
+  color: #fff !important;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -960,26 +962,27 @@ a {
 }
 
 .curr-link:hover {
-  color: #ffffff;
+  color: #ffffff !important;
   gap: 10px;
 }
 
 /* ==========================================================================
-   8. AI Assistant Section (Monochrome)
+   8. AI Assistant Section (100% Monochrome)
    ========================================================================== */
 .apple-ai-section {
   padding: 60px 0 100px;
+  background: #000000 !important;
 }
 
 .apple-ai-card {
   max-width: 860px;
   margin: 0 auto;
-  background: var(--apple-bg-card);
-  border: 1px solid var(--apple-card-border);
+  background: var(--apple-bg-card) !important;
+  border: 1px solid var(--apple-card-border) !important;
   border-radius: var(--r-card);
   padding: 32px;
   backdrop-filter: blur(24px);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
 }
 
 .ai-card-header {
@@ -995,22 +998,22 @@ a {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #ffffff;
+  background: #ffffff !important;
   box-shadow: 0 0 10px #ffffff;
 }
 
 .ai-title {
   font-size: 16px;
   font-weight: 600;
-  color: #fff;
+  color: #fff !important;
 }
 
 .ai-model-tag {
   margin-left: auto;
   font-size: 11px;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
   padding: 3px 12px;
   border-radius: var(--r-pill);
   font-weight: 600;
@@ -1033,13 +1036,13 @@ a {
 }
 
 .apple-ai-bubble {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
   padding: 14px 18px;
   border-radius: 18px 18px 18px 4px;
   font-size: 13.5px;
   line-height: 1.6;
-  color: var(--text-silver);
+  color: #e4e4e7 !important;
   max-width: 85%;
 }
 
@@ -1048,10 +1051,10 @@ a {
 }
 
 .apple-ai-msg.user .apple-ai-bubble {
-  background: #ffffff;
-  color: #000000;
+  background: #ffffff !important;
+  color: #000000 !important;
   font-weight: 500;
-  border-color: transparent;
+  border-color: transparent !important;
   border-radius: 18px 18px 4px 18px;
 }
 
@@ -1062,11 +1065,11 @@ a {
 
 .apple-input {
   flex-grow: 1;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
   padding: 12px 18px;
   border-radius: var(--r-pill);
-  color: #fff;
+  color: #fff !important;
   font-size: 13.5px;
   outline: none;
   transition: border-color 0.2s;
@@ -1074,7 +1077,7 @@ a {
 }
 
 .apple-input:focus {
-  border-color: #ffffff;
+  border-color: #ffffff !important;
 }
 
 /* ==========================================================================
@@ -1101,7 +1104,7 @@ body.lit #lit {
 #lit .scrim {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.88);
+  background: rgba(0, 0, 0, 0.92) !important;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   cursor: pointer;
@@ -1113,10 +1116,10 @@ body.lit #lit {
   width: min(92vw, 760px);
   max-height: 90vh;
   overflow-y: auto;
-  background: #0d0d10;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #0d0d0d !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
   border-radius: var(--r-card);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 255, 255, 0.15);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 40px rgba(255, 255, 255, 0.15);
   transform: scale(0.95);
   transition: transform 0.35s var(--ease-spring);
 }
@@ -1172,26 +1175,26 @@ body.lit .apple-modal-card {
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #ffffff;
+  color: #ffffff !important;
   margin-bottom: 8px;
 }
 
 .modal-title {
   font-size: clamp(22px, 2.5vw, 30px);
   font-weight: 600;
-  color: #fff;
+  color: #fff !important;
   margin-bottom: 4px;
 }
 
 .modal-subtitle {
   font-size: 13.5px;
-  color: var(--text-silver);
+  color: #e4e4e7 !important;
   margin-bottom: 16px;
 }
 
 .modal-desc {
   font-size: 14.5px;
-  color: var(--text-silver);
+  color: #a1a1aa !important;
   line-height: 1.65;
   margin-bottom: 26px;
 }
@@ -1203,11 +1206,11 @@ body.lit .apple-modal-card {
 }
 
 /* ==========================================================================
-   10. Apple Cupertino Footer (Monochrome)
+   10. Apple Cupertino Footer (100% Monochrome)
    ========================================================================== */
 .apple-footer {
-  background: #000000;
-  color: var(--text-gray);
+  background: #000000 !important;
+  color: #a1a1aa !important;
   font-size: 12px;
   padding: 48px 0 36px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -1217,15 +1220,15 @@ body.lit .apple-modal-card {
 
 .footer-breadcrumb {
   margin-bottom: 32px;
-  color: var(--text-dim);
+  color: #71717a !important;
 }
 
 .footer-breadcrumb a {
-  color: var(--text-gray);
+  color: #a1a1aa !important;
 }
 
 .footer-breadcrumb a:hover {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .footer-columns {
@@ -1237,7 +1240,7 @@ body.lit .apple-modal-card {
 
 .footer-heading {
   font-weight: 600;
-  color: var(--text-white);
+  color: #ffffff !important;
   margin-bottom: 14px;
 }
 
@@ -1249,12 +1252,12 @@ body.lit .apple-modal-card {
 }
 
 .footer-links a {
-  color: var(--text-gray);
+  color: #a1a1aa !important;
   transition: color 0.2s;
 }
 
 .footer-links a:hover {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .footer-bottom {
@@ -1268,12 +1271,12 @@ body.lit .apple-modal-card {
 }
 
 .footer-privacy a {
-  color: var(--text-gray);
+  color: #a1a1aa !important;
   margin: 0 4px;
 }
 
 .footer-privacy a:hover {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 /* ==========================================================================
