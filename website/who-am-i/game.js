@@ -1,8 +1,8 @@
 /**
  * WHO AM I? (ทายฉันสิ: แฟ้มลับชีววิทยา 3 มิติ)
- * 3D Interactive Card & Dossier Mystery Game Engine
- * Featuring 8 Multi-Card Fan Deck & 15 Deep Academic Cases
- * Powered by Three.js & Web Audio Synth
+ * 24+ Biological Cards Unified Master Deck & Multi-Room Matchmaking Engine
+ * Featuring Real Biological Specimen Photography & Clean Crisp White Card Design
+ * Powered by Three.js, Web Audio Synth, PeerJS (WebRTC), & BroadcastChannel
  */
 
 // --- 1. Sound Effects Engine (Web Audio API) ---
@@ -36,7 +36,7 @@ class SoundController {
   }
 
   playCardHover() {
-    this.playTone(520, 'sine', 0.08, 0.08);
+    this.playTone(520, 'sine', 0.06, 0.06);
   }
 
   playCardFlip() {
@@ -57,19 +57,13 @@ class SoundController {
     } catch(e) {}
   }
 
-  playClueReveal() {
-    this.playTone(587.33, 'sine', 0.15, 0.15);
-    setTimeout(() => this.playTone(880, 'sine', 0.25, 0.15), 100);
+  playCardEliminate() {
+    this.playTone(280, 'sine', 0.12, 0.1);
   }
 
-  playBuzzer() {
-    this.playTone(150, 'sawtooth', 0.25, 0.25);
-  }
-
-  playShuffle() {
-    for (let i = 0; i < 6; i++) {
-      setTimeout(() => this.playTone(300 + Math.random() * 400, 'sine', 0.06, 0.08), i * 40);
-    }
+  playMessageChime() {
+    this.playTone(659.25, 'sine', 0.12, 0.12);
+    setTimeout(() => this.playTone(880, 'sine', 0.18, 0.12), 80);
   }
 
   playSuccess() {
@@ -80,41 +74,38 @@ class SoundController {
   }
 
   playWrong() {
-    this.playTone(220, 'sawtooth', 0.3, 0.25);
-    setTimeout(() => this.playTone(164.81, 'sawtooth', 0.4, 0.25), 180);
+    this.playTone(220, 'sawtooth', 0.25, 0.2);
+    setTimeout(() => this.playTone(164.81, 'sawtooth', 0.35, 0.2), 160);
   }
 }
 
-// --- 2. Biological Database (12 Deep Cases with 8 Options Each) ---
-const BIO_CASES = [
+// --- 2. Master Pool of 24+ Biological Cards (with Real Photography on Crisp White Background) ---
+const MASTER_CARD_POOL = [
   {
     id: 1,
-    nameTh: "ไมโทคอนเดรีย (Mitochondria)",
+    nameTh: "ไมโทคอนเดรีย",
     nameEn: "Mitochondria",
+    tag: "POWERHOUSE",
+    color: "#ea580c",
+    icon: "⚡",
+    img: "../img/08_mitochondria.jpg",
     category: "ORGANELLE // ENERGY FACTORY",
-    desc: "ออร์แกเนลล์เยื่อหุ้ม 2 ชั้น แหล่งสร้างพลังงาน ATP หลักของเซลล์ผ่าน Krebs Cycle และ Oxidative Phosphorylation มี Circular DNA และ 70S Ribosome เป็นของตัวเอง",
+    desc: "ออร์แกเนลล์เยื่อหุ้ม 2 ชั้น แหล่งสร้าง ATP หลักของเซลล์ผ่าน Krebs Cycle และ Oxidative Phosphorylation มี Circular DNA และ 70S Ribosome เป็นของตัวเอง",
     clues: [
       "ฉันมีเยื่อหุ้ม 2 ชั้น (Double Membrane) โดยเยื่อชั้นในพับทบเป็นรอยหยักเรียกว่า <em>Cristae</em>",
       "ภายในตัวฉันมีของเหลวที่เรียกว่า <em>Matrix</em> บรรจุเอนไซม์สำหรับวัฏจักรเครบส์ (Krebs Cycle)",
       "ฉันมีสารพันธุกรรม (Circular DNA) และไรโบโซมขนาด 70S เป็นของตัวเอง ถ่ายทอดผ่านทางแม่",
       "ฉายาของฉันคือ <em>Powerhouse of the Cell</em> ผลิต ATP มหาศาลให้กับเซลล์ที่มีเมแทบอลิซึมสูง"
-    ],
-    options: [
-      { nameTh: "คลอโรพลาสต์", nameEn: "Chloroplast", tag: "PLANT PLASTID", color: "#10b981", icon: "🍃" },
-      { nameTh: "ไมโทคอนเดรีย", nameEn: "Mitochondria", tag: "POWERHOUSE", color: "#f59e0b", icon: "⚡" },
-      { nameTh: "กอลจิบอดี", nameEn: "Golgi Complex", tag: "PACKAGING", color: "#a855f7", icon: "📦" },
-      { nameTh: "เพอรอกซิโซม", nameEn: "Peroxisome", tag: "DETOX", color: "#00f0ff", icon: "🧪" },
-      { nameTh: "ไลโซโซม", nameEn: "Lysosome", tag: "DIGESTION", color: "#ef4444", icon: "✂️" },
-      { nameTh: "ไรโบโซม", nameEn: "Ribosome", tag: "TRANSLATION", color: "#ec4899", icon: "🧬" },
-      { nameTh: "เซนโทรโซม", nameEn: "Centrosome", tag: "DIVISION", color: "#8b5cf6", icon: "⭐" },
-      { nameTh: "SER", nameEn: "Smooth ER", tag: "LIPID SYNTHESIS", color: "#eab308", icon: "🧈" }
-    ],
-    correctIndex: 1
+    ]
   },
   {
     id: 2,
-    nameTh: "คลอโรพลาสต์ (Chloroplast)",
+    nameTh: "คลอโรพลาสต์",
     nameEn: "Chloroplast",
+    tag: "SOLAR HARVEST",
+    color: "#16a34a",
+    icon: "🍃",
+    img: "../img/02_gene_regulation.jpg",
     category: "ORGANELLE // PHOTOSYNTHESIS",
     desc: "พลาสติดที่พบในพืชและสาหร่าย ภายในมี Thylakoid เรียงซ้อนเป็น Granum บรรจุรงควัตถุ Chlorophyll ดักจับพลังงานแสงเพื่อสร้างน้ำตาล",
     clues: [
@@ -122,272 +113,407 @@ const BIO_CASES = [
       "ภายในฉันมีถุงแบนๆ เรียกว่า <em>Thylakoid</em> ซ้อนกันเป็นตั้งเรียกว่า <em>Granum</em>",
       "มีของเหลวรอบๆ เรียกว่า <em>Stroma</em> ซึ่งเกิดปฏิกิริยาตรึงคาร์บอนไดออกไซด์ (Calvin Cycle)",
       "ฉันมีรงควัตถุสีเขียว (Chlorophyll) ดักจับพลังงานแสงอาทิตย์เปลี่ยนเป็นพลังงานเคมี"
-    ],
-    options: [
-      { nameTh: "ไมโทคอนเดรีย", nameEn: "Mitochondria", tag: "ATP SYNTHESIS", color: "#f59e0b", icon: "⚡" },
-      { nameTh: "แวคิวโอลกลาง", nameEn: "Central Vacuole", tag: "TURGOR PRESSURE", color: "#3b82f6", icon: "💧" },
-      { nameTh: "คลอโรพลาสต์", nameEn: "Chloroplast", tag: "SOLAR HARVEST", color: "#10b981", icon: "☀️" },
-      { nameTh: "โครโมพลาสต์", nameEn: "Chromoplast", tag: "PIGMENT PLASTID", color: "#f97316", icon: "🎨" },
-      { nameTh: "อะไมโลพลาสต์", nameEn: "Amyloplast", tag: "STARCH STORAGE", color: "#eab308", icon: "🥔" },
-      { nameTh: "โทโนพลาสต์", nameEn: "Tonoplast", tag: "VACUOLE MEMBRANE", color: "#06b6d4", icon: "🫧" },
-      { nameTh: "กอลจิบอดี", nameEn: "Golgi Body", tag: "CELL PLATE", color: "#a855f7", icon: "📦" },
-      { nameTh: "เพอรอกซิโซม", nameEn: "Peroxisome", tag: "PHOTORESPIRATION", color: "#00f0ff", icon: "🛡️" }
-    ],
-    correctIndex: 2
+    ]
   },
   {
     id: 3,
-    nameTh: "ไรโบโซม (Ribosome)",
+    nameTh: "ไรโบโซม",
     nameEn: "Ribosome",
+    tag: "TRANSLATION",
+    color: "#db2777",
+    icon: "🧬",
+    img: "../img/09_ribosome.jpg",
     category: "MOLECULAR MACHINE // TRANSLATION",
-    desc: "อนุภาคไร้เยื่อหุ้ม (Non-membrane organelle) ประกอบด้วย rRNA และโปรตีน ทำหน้าที่อ่านรหัสพันธุกรรม mRNA เพื่อสังเคราะห์สาย Polypeptide",
+    desc: "อนุภาคไร้เยื่อหุ้ม ประกอบด้วย rRNA และโปรตีน ทำหน้าที่อ่านรหัสพันธุกรรม mRNA เพื่อสังเคราะห์สาย Polypeptide",
     clues: [
-      "ฉันไม่มีเยื่อหุ้มเซลล์ (Non-membrane bound) พบได้ในทั้งโพรแคริโอตและยูแคริโอต",
-      "ประกอบด้วย 2 หน่วยย่อย (Subunits) คือ หน่วยเล็ก (Small) และหน่วยใหญ่ (Large) จับกันเวลาทำงาน",
+      "ฉันไม่มีเยื่อหุ้มเซลล์ (Non-membrane bound) พบได้ทั้งในโพรแคริโอตและยูแคริโอต",
+      "ประกอบด้วย 2 หน่วยย่อย (Subunits) คือ หน่วยเล็ก (Small) และหน่วยใหญ่ (Large)",
       "มีทั้งชนิดที่ลอยอิสระในไซโทพลาซึม และชนิดที่เกาะอยู่บนเยื่อหุ้ม RER",
       "ฉันคือโรงงานประกอบกรดอะมิโนเป็นโปรตีนผ่านกระบวนการ <em>Translation</em>"
-    ],
-    options: [
-      { nameTh: "ไรโบโซม", nameEn: "Ribosome", tag: "PROTEIN SYNTHESIS", color: "#ec4899", icon: "🧬" },
-      { nameTh: "ไลโซโซม", nameEn: "Lysosome", tag: "AUTOPHAGY", color: "#ef4444", icon: "✂️" },
-      { nameTh: "เซนโทรโซม", nameEn: "Centrosome", tag: "SPINDLE FIBER", color: "#8b5cf6", icon: "⭐" },
-      { nameTh: "นิวคลีโอลัส", nameEn: "Nucleolus", tag: "rRNA SYNTHESIS", color: "#06b6d4", icon: "🔵" },
-      { nameTh: "โปรตีเอโซม", nameEn: "Proteasome", tag: "PROTEIN DEGRADE", color: "#f97316", icon: "🗑️" },
-      { nameTh: "สไปลซีโอโซม", nameEn: "Spliceosome", tag: "INTRON REMOVAL", color: "#10b981", icon: "🎞️" },
-      { nameTh: "RER", nameEn: "Rough ER", tag: "MEMBRANE HOST", color: "#3b82f6", icon: "🏗️" },
-      { nameTh: "โพลีโซม", nameEn: "Polysome", tag: "TRANSLATION CLUSTER", color: "#a855f7", icon: "📿" }
-    ],
-    correctIndex: 0
+    ]
   },
   {
     id: 4,
-    nameTh: "ไลโซโซม (Lysosome)",
+    nameTh: "ไลโซโซม",
     nameEn: "Lysosome",
+    tag: "SUICIDE BAG",
+    color: "#dc2626",
+    icon: "✂️",
+    img: "../img/05_apoptosis.jpg",
     category: "ORGANELLE // DIGESTION & AUTOPHAGY",
-    desc: "เวสิเคิลเยื่อหุ้มเดี่ยวที่สร้างจาก Golgi apparatus ภายในบรรจุ Hydrolytic enzymes ทำงานได้ดีที่ pH เป็นกรด (~5.0) ย่อยสลายสารและออร์แกเนลล์เสื่อมสภาพ",
+    desc: "เวสิเคิลเยื่อหุ้มเดี่ยว ภายในบรรจุ Hydrolytic enzymes ทำงานได้ดีที่ pH เป็นกรด (~5.0) ย่อยสลายสารและออร์แกเนลล์เสื่อมสภาพ",
     clues: [
       "ฉันมีเยื่อหุ้มเดี่ยว หลุดออกมาจาก Golgi Apparatus และพบมากในเซลล์เม็ดเลือดขาวฟาโกไซต์",
       "ภายในตัวฉันมีเอนไซม์กลุ่ม <em>Acid Hydrolases</em> ซึ่งทำงานได้ดีที่สุดที่สภาวะ pH เป็นกรด (~4.5-5.0)",
       "ฉันทำหน้าที่ทำลายเชื้อโรคที่เข้ามาในเซลล์ และย่อยออร์แกเนลล์ที่เสื่อมสภาพ (Autophagy)",
       "ถ้าเยื่อหุ้มของฉันแตกพร้อมกันทั่วเซลล์ เซลล์จะเกิดการย่อยตัวเองตายลง (Autolysis)"
-    ],
-    options: [
-      { nameTh: "เพอรอกซิโซม", nameEn: "Peroxisome", tag: "H2O2 DETOX", color: "#00f0ff", icon: "🧪" },
-      { nameTh: "ไลโซโซม", nameEn: "Lysosome", tag: "SUICIDE BAG", color: "#ef4444", icon: "🔥" },
-      { nameTh: "กอลจิบอดี", nameEn: "Golgi Body", tag: "SECRETION", color: "#a855f7", icon: "📦" },
-      { nameTh: "SER", nameEn: "Smooth ER", tag: "LIPID SYNTHESIS", color: "#f59e0b", icon: "🧈" },
-      { nameTh: "เอนโดโซม", nameEn: "Endosome", tag: "SORTING VESICLE", color: "#3b82f6", icon: "📬" },
-      { nameTh: "ฟาโกโซม", nameEn: "Phagosome", tag: "ENGULFED VESICLE", color: "#f97316", icon: "🫧" },
-      { nameTh: "ไกลออกซิโซม", nameEn: "Glyoxysome", tag: "FAT TO SUGAR", color: "#10b981", icon: "🌱" },
-      { nameTh: "แวคิวโอล", nameEn: "Vacuole", tag: "STORAGE", color: "#06b6d4", icon: "💧" }
-    ],
-    correctIndex: 1
+    ]
   },
   {
     id: 5,
-    nameTh: "กอลจิคอมเพล็กซ์ (Golgi Apparatus)",
-    nameEn: "Golgi Apparatus",
+    nameTh: "กอลจิคอมเพล็กซ์",
+    nameEn: "Golgi Complex",
+    tag: "POST OFFICE",
+    color: "#9333ea",
+    icon: "📦",
+    img: "../img/04_cellular_response.jpg",
     category: "ORGANELLE // PACKAGING & SECRETION",
-    desc: "ถุงแบนเรียงซ้อนกันเป็นชั้นๆ เรียกว่า Cisternae มีด้าน Cis-face รับโปรตีนจาก RER มาเติมหมู่น้ำตาล (Glycosylation) แล้วส่งออกทางด้าน Trans-face",
+    desc: "ถุงแบนเรียงซ้อนกันเป็นชั้นๆ Cisternae ด้าน Cis-face รับโปรตีนจาก RER มาเติมหมู่น้ำตาล (Glycosylation) แล้วส่งออกทาง Trans-face",
     clues: [
       "โครงสร้างของฉันเป็นถุงเยื่อแบนๆ ซ้อนกันเป็นพับ เรียกว่า <em>Cisternae</em>",
-      "ฉันมี 2 ด้านชัดเจน: ด้าน <em>Cis-face</em> รับถุงเวสิเคิลจาก RER และด้าน <em>Trans-face</em> ปล่อยเวสิเคิลส่งออก",
-      "หน้าที่หลักของฉันคือดัดแปลง เติมหมู่น้ำตาล (Glycosylation) และแพ็คเกจโปรตีนก่อนส่งออกนอกเซลล์",
+      "ฉันมี 2 ด้านชัดเจน: ด้าน <em>Cis-face</em> รับถุงเวสิเคิล และด้าน <em>Trans-face</em> ปล่อยเวสิเคิลส่งออก",
+      "หน้าที่หลักของฉันคือดัดแปลง เติมหมู่น้ำตาล (Glycosylation) และแพ็คเกจโปรตีนก่อนส่งออก",
       "ฉันยังมีส่วนสำคัญในการสร้าง Acrosome ที่ส่วนหัวของอสุจิ และสร้างแผ่นกั้นเซลล์พืช (Cell Plate)"
-    ],
-    options: [
-      { nameTh: "เอนโดพลาสมิก เรติคิวลัม", nameEn: "Rough ER", tag: "TRANSLATION HOST", color: "#3b82f6", icon: "🏗️" },
-      { nameTh: "กอลจิคอมเพล็กซ์", nameEn: "Golgi Apparatus", tag: "POST OFFICE", color: "#a855f7", icon: "📮" },
-      { nameTh: "ไมโครทูบูล", nameEn: "Microtubules", tag: "CYTOSKELETON", color: "#10b981", icon: "🪜" },
-      { nameTh: "นิวเคลียส", nameEn: "Nucleus", tag: "GENOME VAULT", color: "#f43f5e", icon: "👑" },
-      { nameTh: "เวสิเคิลขนส่ง", nameEn: "Transport Vesicle", tag: "CARGO BUBBLE", color: "#00f0ff", icon: "🚐" },
-      { nameTh: "พลาสมาเมมเบรน", nameEn: "Plasma Membrane", tag: "OUTER BARRIER", color: "#f59e0b", icon: "🛡️" },
-      { nameTh: "เซนโทรโซม", nameEn: "Centrosome", tag: "SPINDLE POLE", color: "#8b5cf6", icon: "⭐" },
-      { nameTh: "แอโครโซม", nameEn: "Acrosome", tag: "SPERM CAP", color: "#ec4899", icon: "🏹" }
-    ],
-    correctIndex: 1
+    ]
   },
   {
     id: 6,
-    nameTh: "เพอรอกซิโซม (Peroxisome)",
+    nameTh: "เพอรอกซิโซม",
     nameEn: "Peroxisome",
+    tag: "CATALASE DETOX",
+    color: "#0284c7",
+    icon: "🧪",
+    img: "../img/11_enzyme.jpg",
     category: "ORGANELLE // OXIDATION & DETOX",
-    desc: "ออร์แกเนลล์เยื่อหุ้มเดี่ยว มีเอนไซม์ Catalase ช่วยย่อยสลาย Hydrogen Peroxide (H2O2) ที่เป็นพิษให้กลายเป็นน้ำและออกซิเจน พร้อมสลายกรดไขมันสายยาว (Beta-oxidation)",
+    desc: "ออร์แกเนลล์เยื่อหุ้มเดี่ยว มีเอนไซม์ Catalase ช่วยย่อยสลาย Hydrogen Peroxide (H2O2) ที่เป็นพิษให้กลายเป็นน้ำและออกซิเจน",
     clues: [
       "ฉันมีเยื่อหุ้ม 1 ชั้น ภายในมักเห็นผลึกรูปทรงเรขาคณิตของเอนไซม์ใต้กล้องจุลทรรศน์",
       "ในระหว่างที่ฉันสลายกรดไขมันสายยาว จะเกิดสารพิษคือ <em>ไฮโดรเจนเปอร์ออกไซด์ (H2O2)</em>",
-      "แต่ฉันมีเอนไซม์พิเศษคือ <em>Catalase</em> ที่สามารถสลาย H2O2 กลายเป็นน้ำ (H2O) และออกซิเจน (O2) ทันที",
+      "แต่ฉันมีเอนไซม์พิเศษคือ <em>Catalase</em> ที่สามารถสลาย H2O2 กลายเป็นน้ำและออกซิเจนทันที",
       "พบมากในเซลล์ตับและเซลล์ไตเพื่อทำลายสารพิษและแอลกอฮอล์"
-    ],
-    options: [
-      { nameTh: "เพอรอกซิโซม", nameEn: "Peroxisome", tag: "CATALASE DETOX", color: "#00f0ff", icon: "🛡️" },
-      { nameTh: "ไลโซโซม", nameEn: "Lysosome", tag: "HYDROLASES", color: "#ef4444", icon: "✂️" },
-      { nameTh: "SER", nameEn: "Smooth ER", tag: "DETOX & LIPID", color: "#eab308", icon: "💊" },
-      { nameTh: "แวคิวโอล", nameEn: "Vacuole", tag: "STORAGE", color: "#3b82f6", icon: "💧" },
-      { nameTh: "ไกลออกซิโซม", nameEn: "Glyoxysome", tag: "FAT METABOLISM", color: "#10b981", icon: "🌱" },
-      { nameTh: "ไมโทคอนเดรีย", nameEn: "Mitochondria", tag: "ATP MATRIX", color: "#f59e0b", icon: "⚡" },
-      { nameTh: "คลอโรพลาสต์", nameEn: "Chloroplast", tag: "CALVIN CYCLE", color: "#84cc16", icon: "☀️" },
-      { nameTh: "เอนไซม์แคตาเลส", nameEn: "Catalase", tag: "H2O2 ENZYME", color: "#a855f7", icon: "🧪" }
-    ],
-    correctIndex: 0
+    ]
   },
   {
     id: 7,
-    nameTh: "เอนโดพลาสมิกเรติคิวลัมผิวเรียบ (Smooth ER)",
+    nameTh: "SER (ผิวเรียบ)",
     nameEn: "Smooth ER",
+    tag: "STEROID & Ca2+",
+    color: "#d97706",
+    icon: "🧈",
+    img: "../img/10_membrane.jpg",
     category: "ORGANELLE // LIPID & CALCIUM",
-    desc: "โครงข่ายท่อเยื่อหุ้มที่ไม่มีไรโบโซมเกาะ ทำหน้าที่สังเคราะห์ไขมัน สเตียรอยด์ฮอร์โมน กำจัดสารพิษในตับ และสะสมแคลเซียมไอออนในเซลล์กล้ามเนื้อ (Sarcoplasmic Reticulum)",
+    desc: "โครงข่ายท่อเยื่อหุ้มที่ไม่มีไรโบโซมเกาะ ทำหน้าที่สังเคราะห์ไขมัน สเตียรอยด์ฮอร์โมน กำจัดสารพิษ และสะสมแคลเซียมไอออน",
     clues: [
-      "โครงสร้างเป็นท่อกลมเชื่อมติดต่อกัน แต่ผิวภายนอกไม่มีเม็ดไรโบโซมมาเกาะ",
-      "ฉันทำหน้าที่สังเคราะห์สารกลุ่มลิพิด (Lipids), ฟอสโฟลิพิด และฮอร์โมนสเตียรอยด์ เช่น เทสโทสเตอโรน",
-      "ในเซลล์กล้ามเนื้อ ฉันถูกเรียกว่า <em>Sarcoplasmic Reticulum</em> ทำหน้าที่กักเก็บและปล่อย Ca2+",
+      "โครงสร้างเป็นท่อกลมเชื่อมติดต่อกัน ผิวภายนอกไม่มีเม็ดไรโบโซมมาเกาะ",
+      "ฉันทำหน้าที่สังเคราะห์สารกลุ่มลิพิด (Lipids) และฮอร์โมนสเตียรอยด์ เช่น เทสโทสเตอโรน",
+      "ในเซลล์กล้ามเนื้อ ฉันทำหน้าที่กักเก็บและปล่อย Ca2+ สำหรับการหดตัว",
       "ในเซลล์ตับ ฉันช่วยกำจัดสารพิษจำพวกยาและสารเคมีแปลกปลอม"
-    ],
-    options: [
-      { nameTh: "RER", nameEn: "Rough ER", tag: "RIBOSOME-BOUND", color: "#8b5cf6", icon: "🧱" },
-      { nameTh: "SER", nameEn: "Smooth ER", tag: "STEROID & Ca2+", color: "#f59e0b", icon: "🧬" },
-      { nameTh: "กอลจิบอดี", nameEn: "Golgi Complex", tag: "SORTING", color: "#a855f7", icon: "📦" },
-      { nameTh: "พลาสมาเมมเบรน", nameEn: "Plasma Membrane", tag: "BARRIER", color: "#10b981", icon: "🛡️" },
-      { nameTh: "ซาร์โคพลาสมิก", nameEn: "Sarcoplasmic Reticulum", tag: "MUSCLE Ca2+", color: "#ef4444", icon: "💪" },
-      { nameTh: "เพอรอกซิโซม", nameEn: "Peroxisome", tag: "BETA-OXIDATION", color: "#00f0ff", icon: "🧪" },
-      { nameTh: "นิวเคลียร์เมมเบรน", nameEn: "Nuclear Membrane", tag: "DOUBLE LAYER", color: "#ec4899", icon: "👑" },
-      { nameTh: "ไลโซโซม", nameEn: "Lysosome", tag: "AUTOPHAGY", color: "#f97316", icon: "✂️" }
-    ],
-    correctIndex: 1
+    ]
   },
   {
     id: 8,
-    nameTh: "เซนทริโอล (Centriole / Centrosome)",
-    nameEn: "Centriole",
-    category: "CYTOSKELETON // CELL DIVISION",
-    desc: "ประกอบด้วย Microtubules เรียงตัวแบบ 9+0 จำนวน 1 คู่ วางตั้งฉากกัน ทำหน้าที่เป็นศูนย์กลางกำเนิดเส้นใยสปินเดิล (MTOC) ดึงโครโมโซมในระยะแบ่งเซลล์สัตว์",
+    nameTh: "RER (ผิวขรุขระ)",
+    nameEn: "Rough ER",
+    tag: "MEMBRANE PROTEIN",
+    color: "#2563eb",
+    icon: "🏗️",
+    img: "../img/01_gene_expression.jpg",
+    category: "ORGANELLE // SECRETORY PROTEIN",
+    desc: "ถุงแบนเชื่อมต่อกับเยื่อหุ้มนิวเคลียส มีไรโบโซมเกาะที่ผิวด้านนอก ทำหน้าที่สังเคราะห์โปรตีนที่จะส่งออกนอกเซลล์",
     clues: [
-      "ฉันไม่มีเยื่อหุ้ม พบในเซลล์สัตว์และโพรทิสต์บางชนิด แต่ไม่พบในเซลล์พืชชั้นสูง",
-      "โครงสร้างเกิดจากหลอดไมโครทูบูลเรียงเป็นวงแบบ <em>9+0 (Triplets)</em>",
-      "มักอยู่เป็นคู่ตั้งฉากกัน 90 องศา เรียกว่า <em>Centrosome</em>",
-      "ทำหน้าที่สร้างและควบคุม <em>Spindle Fiber</em> ดึงโครมาทิดออกจากกันระหว่างระยะ Anaphase"
-    ],
-    options: [
-      { nameTh: "เซนทริโอล", nameEn: "Centriole", tag: "SPINDLE APPARATUS", color: "#ec4899", icon: "🎯" },
-      { nameTh: "เบซัลบอดี", nameEn: "Basal Body", tag: "CILIA ROOT", color: "#06b6d4", icon: "⚓" },
-      { nameTh: "ไมโครฟิลาเมนต์", nameEn: "Microfilament", tag: "ACTIN CRAWL", color: "#f97316", icon: "🧵" },
-      { nameTh: "ไคนีโตคอร์", nameEn: "Kinetochore", tag: "CENTROMERE DISC", color: "#84cc16", icon: "🧲" },
-      { nameTh: "ไมโครทูบูล", nameEn: "Microtubule", tag: "TUBULIN TUBE", color: "#3b82f6", icon: "🪵" },
-      { nameTh: "อินเตอร์มีเดียต", nameEn: "Intermediate Filament", tag: "KERATIN ROPE", color: "#eab308", icon: "🪢" },
-      { nameTh: "ซิเลีย & แฟลกเจลลา", nameEn: "Cilia & Flagella", tag: "9+2 MOTILITY", color: "#10b981", icon: "🏊" },
-      { nameTh: "เดสโมโซม", nameEn: "Desmosome", tag: "JUNCTION", color: "#a855f7", icon: "🔒" }
-    ],
-    correctIndex: 0
+      "โครงสร้างของฉันเชื่อมต่อโดยตรงกับเยื่อหุ้มชั้นนอกของนิวเคลียส",
+      "ผิวด้านนอกของฉันมีเม็ดไรโบโซมเกาะอยู่หนาแน่น ทำให้ดูขรุขระ",
+      "ฉันทำหน้าที่สังเคราะห์โปรตีนสำหรับส่งออกนอกเซลล์และโปรตีนแทรกในเยื่อหุ้ม",
+      "โปรตีนที่สังเคราะห์จะถูกบรรจุลงใน Transport Vesicle เพื่อส่งต่อไปยังกอลจิคอมเพล็กซ์"
+    ]
   },
   {
     id: 9,
-    nameTh: "ATP Synthase",
-    nameEn: "ATP Synthase",
-    category: "MACROMOLECULE // ROTARY ENZYME",
-    desc: "เอนไซม์กังหันโมเลกุลที่เยื่อหุ้มชั้นในไมโทคอนเดรียและไทลาคอยด์ ขับเคลื่อนด้วยแรงเคลื่อนโปรตอน (Proton Motive Force) หมุนสังเคราะห์ ATP จาก ADP + Pi",
+    nameTh: "เซนทริโอล",
+    nameEn: "Centriole",
+    tag: "SPINDLE APPARATUS",
+    color: "#7c3aed",
+    icon: "⭐",
+    img: "../img/06_cell_cycle.jpg",
+    category: "CYTOSKELETON // CELL DIVISION",
+    desc: "ประกอบด้วย Microtubules เรียงตัวแบบ 9+0 จำนวน 1 คู่ วางตั้งฉากกัน ทำหน้าที่สร้างเส้นใยสปินเดิลดึงโครโมโซมในเซลล์สัตว์",
     clues: [
-      "ฉันไม่ใช่ทั้งเซลล์หรือออร์แกเนลล์ แต่เป็น <em>เอนไซม์โปรตีนเชิงซ้อน</em> ขนาดใหญ่ที่ฝังอยู่ในเยื่อหุ้ม",
-      "ฉันมีส่วนประกอบสำคัญคือ F0 (ฝังในเยื่อหุ้ม) และ F1 (ยื่นออกมาทำปฏิกิริยาเคมี)",
-      "ฉันทำงานเหมือน <em>กังหันน้ำระดับโมเลกุล</em> หมุนเมื่อมีโปรตอน (H+) ไหลผ่านตามเกรเดียนต์",
-      "ผลลัพธ์จากการหมุนของฉันคือการเปลี่ยน ADP + ฟอสเฟต ให้กลายเป็น <em>ATP</em>"
-    ],
-    options: [
-      { nameTh: "Rubisco", nameEn: "Rubisco Enzyme", tag: "CARBON FIXATION", color: "#10b981", icon: "🌱" },
-      { nameTh: "ATP Synthase", nameEn: "ATP Synthase", tag: "ROTARY ENGINE", color: "#eab308", icon: "⚙️" },
-      { nameTh: "DNA Polymerase", nameEn: "DNA Polymerase", tag: "REPLICATION", color: "#3b82f6", icon: "🧬" },
-      { nameTh: "Sodium-Potassium Pump", nameEn: "Na+/K+ Pump", tag: "ACTIVE TRANSPORT", color: "#ef4444", icon: "⚡" },
-      { nameTh: "Cytochrome c", nameEn: "Cytochrome c", tag: "ELECTRON CARRIER", color: "#ec4899", icon: "🩸" },
-      { nameTh: "Helicase", nameEn: "DNA Helicase", tag: "UNZIP STRAND", color: "#06b6d4", icon: "✂️" },
-      { nameTh: "Caspase-3", nameEn: "Caspase-3", tag: "APOPTOSIS", color: "#f97316", icon: "💀" },
-      { nameTh: "RNA Polymerase", nameEn: "RNA Polymerase", tag: "TRANSCRIPTION", color: "#a855f7", icon: "📜" }
-    ],
-    correctIndex: 1
+      "ฉันไม่มีเยื่อหุ้ม พบในเซลล์สัตว์แต่ไม่พบในเซลล์พืชชั้นสูง",
+      "โครงสร้างเกิดจากหลอดไมโครทูบูลเรียงเป็นวงแบบ <em>9+0 (Triplets)</em>",
+      "มักอยู่เป็นคู่ตั้งฉากกัน 90 องศา เรียกว่า <em>Centrosome</em>",
+      "ทำหน้าที่สร้าง <em>Spindle Fiber</em> ดึงโครมาทิดออกจากกันระหว่างระยะ Anaphase"
+    ]
   },
   {
     id: 10,
-    nameTh: "โซเดียม-โพแทสเซียม ปั๊ม (Na+/K+ Pump)",
-    nameEn: "Sodium-Potassium Pump",
-    category: "MEMBRANE TRANSPORT // ACTIVE PUMP",
-    desc: "โปรตีนขนส่งแบบปฐมภูมิ (Primary Active Transport) ใช้ 1 ATP ปั๊ม 3 Na+ ออกนอกเซลล์ และนำ 2 K+ เข้าสู่เซลล์ เพื่อรักษาระดับ Resting Membrane Potential ของเซลล์ประสาท",
+    nameTh: "นิวคลีโอลัส",
+    nameEn: "Nucleolus",
+    tag: "rRNA SYNTHESIS",
+    color: "#0891b2",
+    icon: "🔵",
+    img: "../img/12_nuclear_pore.jpg",
+    category: "NUCLEAR BODY // RIBOSOME FACTORY",
+    desc: "บริเวณทึบแสงภายในนิวเคลียสที่ไม่มีเยื่อหุ้ม เกิดจากการรวมตัวของยีน rRNA ทำหน้าที่สังเคราะห์และประกอบ Subunits ของไรโบโซม",
     clues: [
-      "ฉันเป็นโปรตีนขนส่งแบบข้ามเยื่อหุ้มเซลล์ (Transmembrane Protein) ที่ใช้พลังงาน ATP โดยตรง",
-      "ฉันเป็นตัวอย่างคลาสสิกของกระบวนการ <em>Active Transport</em> ขนส่งสารต้านความเข้มข้น",
-      "ในแต่ละรอบ ฉันจะส่งไอออนโซเดียม <em>3 Na+ ออกนอกเซลล์</em> และดึง <em>2 K+ เข้าสู่เซลล์</em>",
-      "หน้าที่สำคัญยิ่งของฉันคือการรักษาระดับความต่างศักย์ขณะพัก (Resting Potential ~-70 mV) ของเซลล์ประสาท"
-    ],
-    options: [
-      { nameTh: "Aquaporin", nameEn: "Aquaporin Channel", tag: "WATER OSMOSIS", color: "#06b6d4", icon: "💧" },
-      { nameTh: "โซเดียม-โพแทสเซียม ปั๊ม", nameEn: "Na+/K+ Pump", tag: "RESTING POTENTIAL", color: "#f43f5e", icon: "🔋" },
-      { nameTh: "GLUT Transporter", nameEn: "Glucose Transporter", tag: "FACILITATED", color: "#a855f7", icon: "🍬" },
-      { nameTh: "Voltage-gated Ca2+", nameEn: "Ca2+ Channel", tag: "ACTION POTENTIAL", color: "#eab308", icon: "⚡" },
-      { nameTh: "Proton Pump", nameEn: "H+ ATPase", tag: "STOMACH ACID", color: "#ec4899", icon: "🍋" },
-      { nameTh: "CFTR Channel", nameEn: "CFTR Cl- Channel", tag: "CHLORIDE FLUX", color: "#10b981", icon: "🌊" },
-      { nameTh: "ABC Transporter", nameEn: "ABC Cassette", tag: "MDR PUMP", color: "#f97316", icon: "📦" },
-      { nameTh: "GABA Receptor", nameEn: "GABA-A Channel", tag: "INHIBITORY", color: "#3b82f6", icon: "🧠" }
-    ],
-    correctIndex: 1
+      "ฉันเป็นโครงสร้างทรงกลมทึบแสงเข้มที่มองเห็นเด่นชัดที่สุดภายในนิวเคลียส",
+      "ฉันไม่มีเยื่อหุ้ม เกิดจากสายดีเอ็นเอบริเวณ <em>NOR</em> มารวมตัวกัน",
+      "ฉันเป็นแหล่งถอดรหัสและสังเคราะห์ <em>rRNA</em> ปริมาณมหาศาล",
+      "ฉันนำ rRNA มาประกอบกับโปรตีน เพื่อสร้างเป็น Subunits ของ <em>Ribosome</em>"
+    ]
   },
   {
     id: 11,
-    nameTh: "แวคิวโอลกลาง (Central Vacuole)",
-    nameEn: "Central Vacuole",
-    category: "PLANT ORGANELLE // TURGOR PRESSURE",
-    desc: "ถุงเยื่อหุ้มเดี่ยวขนาดใหญ่ (Tonoplast) ในเซลล์พืช ทำหน้าที่สะสมน้ำ แร่ธาตุ รงควัตถุแอนโทไซยานิน และสร้างแรงดันเต่ง (Turgor Pressure)",
+    nameTh: "ATP Synthase",
+    nameEn: "ATP Synthase",
+    tag: "ROTARY ENGINE",
+    color: "#ea580c",
+    icon: "⚙️",
+    img: "../img/08_mitochondria.jpg",
+    category: "MACROMOLECULE // ROTARY ENZYME",
+    desc: "เอนไซม์กังหันโมเลกุลที่เยื่อหุ้มชั้นในไมโทคอนเดรียและไทลาคอยด์ ขับเคลื่อนด้วยแรงเคลื่อนโปรตอน หมุนสังเคราะห์ ATP",
     clues: [
-      "ในเซลล์พืชที่โตเต็มวัย ฉันจะขยายตัวจนกินพื้นที่มากกว่า 80-90% ของปริมาตรเซลล์ทั้งหมด",
-      "เยื่อหุ้มของฉันมีชื่อเรียกเฉพาะว่า <em>Tonoplast</em> และของเหลวข้างในเรียกว่า Cell Sap",
-      "ฉันสะสมน้ำ ของเสีย ผลึกแคลเซียมออกซาเลต และสารสีแอนโทไซยานิน (Anthocyanin) สีม่วงแดง",
-      "การอุ้มน้ำของฉันสร้าง <em>แรงดันเต่ง (Turgor Pressure)</em> ช่วยพยุงให้ลำต้นพืชอวบน้ำตั้งตรงได้"
-    ],
-    options: [
-      { nameTh: "คอนแทร็กไทล์ แวคิวโอล", nameEn: "Contractile Vacuole", tag: "WATER EXPULSION", color: "#3b82f6", icon: "🫧" },
-      { nameTh: "ฟู้ด แวคิวโอล", nameEn: "Food Vacuole", tag: "PHAGOCYTOSIS", color: "#f97316", icon: "🍔" },
-      { nameTh: "แวคิวโอลกลาง", nameEn: "Central Vacuole", tag: "PLANT TURGIDITY", color: "#10b981", icon: "🌱" },
-      { nameTh: "กอลจิบอดี", nameEn: "Golgi Body", tag: "CELL PLATE", color: "#a855f7", icon: "📦" },
-      { nameTh: "โทโนพลาสต์", nameEn: "Tonoplast", tag: "VACUOLAR MEMBRANE", color: "#06b6d4", icon: "🛡️" },
-      { nameTh: "อะไมโลพลาสต์", nameEn: "Amyloplast", tag: "STARCH GRAIN", color: "#eab308", icon: "🥔" },
-      { nameTh: "เพอรอกซิโซม", nameEn: "Peroxisome", tag: "CATALASE", color: "#00f0ff", icon: "🧪" },
-      { nameTh: "ไลโซโซม", nameEn: "Lysosome", tag: "HYDROLYTIC", color: "#ef4444", icon: "✂️" }
-    ],
-    correctIndex: 2
+      "ฉันไม่ใช่ทั้งเซลล์หรือออร์แกเนลล์ แต่เป็น <em>เอนไซม์โปรตีนเชิงซ้อน</em> ขนาดใหญ่ที่ฝังอยู่ในเยื่อหุ้ม",
+      "ฉันมีส่วนประกอบสำคัญคือ F0 (ฝังในเยื่อหุ้ม) และ F1 (ยื่นออกมาทำปฏิกิริยาเคมี)",
+      "ฉันทำงานเหมือน <em>กังหันน้ำระดับโมเลกุล</em> หมุนเมื่อมีโปรตอน (H+) ไหลผ่าน",
+      "ผลลัพธ์จากการหมุนของฉันคือการเปลี่ยน ADP + Pi ให้กลายเป็น <em>ATP</em>"
+    ]
   },
   {
     id: 12,
-    nameTh: "นิวคลีโอลัส (Nucleolus)",
-    nameEn: "Nucleolus",
-    category: "NUCLEAR BODY // RIBOSOME FACTORY",
-    desc: "บริเวณทึบแสงภายในนิวเคลียสที่ไม่มีเยื่อหุ้ม เกิดจากการรวมตัวของยีน rRNA ทำหน้าที่สังเคราะห์และประกอบหน่วยย่อยของไรโบโซม",
+    nameTh: "Na+/K+ Pump",
+    nameEn: "Na+/K+ Pump",
+    tag: "RESTING POTENTIAL",
+    color: "#e11d48",
+    icon: "🔋",
+    img: "../img/10_membrane.jpg",
+    category: "MEMBRANE TRANSPORT // ACTIVE PUMP",
+    desc: "โปรตีนขนส่งแบบ Primary Active Transport ใช้ 1 ATP ปั๊ม 3 Na+ ออกนอกเซลล์ และนำ 2 K+ เข้าสู่เซลล์",
     clues: [
-      "ฉันเป็นโครงสร้างทรงกลมทึบแสงเข้มที่มองเห็นเด่นชัดที่สุดภายในนิวเคลียส",
-      "ฉันไม่มีเยื่อหุ้มแยกต่างหาก แต่เกิดจากสายดีเอ็นเอบริเวณ <em>NOR (Nucleolar Organizer Region)</em> มารวมตัวกัน",
-      "ฉันเป็นแหล่งถอดรหัสและสังเคราะห์ <em>rRNA (Ribosomal RNA)</em> ปริมาณมหาศาล",
-      "ฉันนำ rRNA มาประกอบรวมกับโปรตีน เพื่อสร้างเป็น Subunits ของ <em>Ribosome</em> ส่งออกไปทาง Nuclear Pore"
-    ],
-    options: [
-      { nameTh: "นิวคลีโอลัส", nameEn: "Nucleolus", tag: "rRNA SYNTHESIS", color: "#8b5cf6", icon: "🔵" },
-      { nameTh: "โครมาทิน", nameEn: "Chromatin", tag: "GENETIC FIBER", color: "#06b6d4", icon: "🧬" },
-      { nameTh: "นิวเคลียร์ลามินา", nameEn: "Nuclear Lamina", tag: "STRUCTURAL MESH", color: "#64748b", icon: "🕸️" },
-      { nameTh: "เซนโตรเมียร์", nameEn: "Centromere", tag: "CHROMOSOME WAIST", color: "#f43f5e", icon: "🎀" },
-      { nameTh: "เทโลเมียร์", nameEn: "Telomere", tag: "CHROMOSOME CAP", color: "#eab308", icon: "🛡️" },
-      { nameTh: "เฮเทอโรโครมาทิน", nameEn: "Heterochromatin", tag: "CONDENSED SILENT", color: "#475569", icon: "🔒" },
-      { nameTh: "ยูโครมาทิน", nameEn: "Euchromatin", tag: "ACTIVE TRANSCRIPTION", color: "#10b981", icon: "📖" },
-      { nameTh: "นิวเคลียร์พอร์", nameEn: "Nuclear Pore", tag: "GATEWAY", color: "#ec4899", icon: "🚪" }
-    ],
-    correctIndex: 0
+      "ฉันเป็นโปรตีนขนส่งแบบข้ามเยื่อหุ้มเซลล์ที่ใช้พลังงาน ATP โดยตรง",
+      "ฉันเป็นตัวอย่างคลาสสิกของกระบวนการ <em>Active Transport</em> ขนส่งสารต้านเกรเดียนต์",
+      "ในแต่ละรอบ ฉันจะส่งไอออนโซเดียม <em>3 Na+ ออกนอกเซลล์</em> และดึง <em>2 K+ เข้าสู่เซลล์</em>",
+      "หน้าที่สำคัญยิ่งของฉันคือการรักษาระดับความต่างศักย์ขณะพัก (~-70 mV) ของเซลล์ประสาท"
+    ]
+  },
+  {
+    id: 13,
+    nameTh: "แวคิวโอลกลาง",
+    nameEn: "Central Vacuole",
+    tag: "TURGOR PRESSURE",
+    color: "#0284c7",
+    icon: "💧",
+    img: "../img/04_cellular_response.jpg",
+    category: "PLANT ORGANELLE // STORAGE",
+    desc: "ถุงเยื่อหุ้มเดี่ยวขนาดใหญ่ (Tonoplast) ในเซลล์พืช ทำหน้าที่สะสมน้ำ แร่ธาตุ สารสี และสร้างแรงดันเต่ง",
+    clues: [
+      "ในเซลล์พืชที่โตเต็มวัย ฉันจะขยายตัวจนกินพื้นที่มากกว่า 80-90% ของปริมาตรเซลล์",
+      "เยื่อหุ้มของฉันมีชื่อเรียกเฉพาะว่า <em>Tonoplast</em>",
+      "ฉันสะสมน้ำ ของเสีย ผลึกแคลเซียมออกซาเลต และสารสีแอนโทไซยานินสีม่วงแดง",
+      "การอุ้มน้ำของฉันสร้าง <em>แรงดันเต่ง (Turgor Pressure)</em> ช่วยพยุงลำต้นพืชให้ตั้งตรง"
+    ]
+  },
+  {
+    id: 14,
+    nameTh: "เอนไซม์รูบิสโก",
+    nameEn: "Rubisco",
+    tag: "CARBON FIXATION",
+    color: "#16a34a",
+    icon: "🌱",
+    img: "../img/11_enzyme.jpg",
+    category: "ENZYME // CALVIN CYCLE",
+    desc: "เอนไซม์ที่มีปริมาณมากที่สุดในโลก ทำหน้าที่ตรึง CO2 เข้ากับ RuBP ในวัฏจักรคัลวินของพืช",
+    clues: [
+      "ฉันเป็นโปรตีนเอนไซม์ที่มีปริมาณมากที่สุดในโลกชีวภาพ (คิดเป็น 50% ของโปรตีนในใบพืช)",
+      "ฉันอยู่ในสโตรมา (Stroma) ของคลอโรพลาสต์",
+      "หน้าที่หลักของฉันคือการเร่งปฏิกิริยาตรึงคาร์บอนไดออกไซด์ (CO2) เข้ากับสาร RuBP",
+      "แต่ในสภาวะที่ร้อนและแล้ง ฉันอาจจับกับ O2 แทนทำให้เกิดกระบวนการ Photorespiration"
+    ]
+  },
+  {
+    id: 15,
+    nameTh: "แคสเปส-3",
+    nameEn: "Caspase-3",
+    tag: "APOPTOSIS",
+    color: "#ea580c",
+    icon: "💀",
+    img: "../img/05_apoptosis.jpg",
+    category: "ENZYME // PROGRAMMED CELL DEATH",
+    desc: "เอนไซม์โปรตีเอสสำคัญในกระบวนการ Apoptosis ทำหน้าที่ตัดโปรตีนโครงสร้างเซลล์และกระตุ้นการทำลาย DNA",
+    clues: [
+      "ฉันเป็นเอนไซม์กลุ่ม Cysteine Protease ที่ทำหน้าที่เป็นเพชฌฆาตระดับโมเลกุล (Executioner)",
+      "ฉันถูกกระตุ้นเมื่อเซลล์ได้รับสัญญาณเข้าสู่วิถีการตายแบบมีแบบแผน (Apoptosis)",
+      "ฉันเข้าตัดทำลาย Cytoskeleton และ Nuclear Lamina ทำให้เซลล์หดตัวและเกิด Blebbing",
+      "ช่วยควบคุมจำนวนเซลล์และกำจัดเซลล์ที่มีการกลายพันธุ์หรือติดเชื้อไวรัส"
+    ]
+  },
+  {
+    id: 16,
+    nameTh: "อควาพอริน",
+    nameEn: "Aquaporin",
+    tag: "WATER CHANNEL",
+    color: "#0891b2",
+    icon: "🌊",
+    img: "../img/10_membrane.jpg",
+    category: "MEMBRANE PROTEIN // OSMOSIS",
+    desc: "ช่องโปรตีนจำเพาะสำหรับการลำเลียงน้ำผ่านเยื่อหุ้มเซลล์แบบ Facilitated Diffusion ด้วยความเร็วสูง",
+    clues: [
+      "ฉันเป็นโปรตีนช่อง (Channel Protein) ฝังตัวบนเยื่อหุ้มเซลล์",
+      "ฉันยอมให้โมเลกุลของ <em>น้ำ (H2O)</em> ไหลผ่านเข้าออกเซลล์ด้วยความเร็วระดับพันล้านโมเลกุลต่อวินาที",
+      "การลำเลียงน้ำผ่านตัวฉันเป็นแบบ <em>Facilitated Diffusion</em> โดยไม่ต้องใช้พลังงาน ATP",
+      "พบหนาแน่นมากที่ท่อหน่วยไต (Kidney Tubules) และเซลล์เม็ดเลือดแดง"
+    ]
+  },
+  {
+    id: 17,
+    nameTh: "DNA Polymerase",
+    nameEn: "DNA Polymerase",
+    tag: "REPLICATION",
+    color: "#2563eb",
+    icon: "🧬",
+    img: "../img/07_dna_helix.jpg",
+    category: "ENZYME // DNA REPLICATION",
+    desc: "เอนไซม์หลักในการจำลองสายดีเอ็นเอ สังเคราะห์สายนิวคลีโอไทด์ใหม่ในทิศทาง 5' -> 3' พร้อมระบบตรวจทาน Proofreading",
+    clues: [
+      "ฉันเป็นเอนไซม์หลักที่ทำหน้าที่ในกระบวนการ <em>DNA Replication</em> ในระยะ S phase",
+      "ฉันสามารถต่อสายดีเอ็นเอใหม่ได้เฉพาะในทิศทาง <em>5' ไปยัง 3'</em> เท่านั้น",
+      "ฉันต้องการ RNA Primer ในการเริ่มต้นสังเคราะห์สายใหม่",
+      "ฉันมีคุณสมบัติพิเศษในการตรวจทานและแก้ไขข้อผิดพลาด (Proofreading 3'->5' exonuclease)"
+    ]
+  },
+  {
+    id: 18,
+    nameTh: "DNA Helicase",
+    nameEn: "DNA Helicase",
+    tag: "UNZIP STRAND",
+    color: "#db2777",
+    icon: "✂️",
+    img: "../img/07_dna_helix.jpg",
+    category: "ENZYME // REPLICATION FORK",
+    desc: "เอนไซม์คลายเกลียวคู่ DNA โดยการสลายพันธะไฮโดรเจนระหว่างคู่เบส เพื่อสร้าง Replication Fork",
+    clues: [
+      "ฉันทำหน้าที่เหมือน <em>ซิปรูดเปิด</em> สายคู่ของกรดนิวคลีอิก",
+      "ฉันใช้พลังงานจาก ATP เพื่อเข้าสลาย <em>พันธะไฮโดรเจน (Hydrogen Bonds)</em> ระหว่างคู่เบส",
+      "การทำงานของฉันทำให้เกิดโครงสร้างง่ามจำลอง (Replication Fork)",
+      "ถ้าฉันไม่ทำงาน DNA Polymerase จะไม่สามารถเข้าถึงแม่แบบดีเอ็นเอเพื่อจำลองสายได้"
+    ]
+  },
+  {
+    id: 19,
+    nameTh: "โทโนพลาสต์",
+    nameEn: "Tonoplast",
+    tag: "VACUOLE MEMBRANE",
+    color: "#16a34a",
+    icon: "🛡️",
+    img: "../img/10_membrane.jpg",
+    category: "MEMBRANE // PLANT VACUOLE",
+    desc: "เยื่อหุ้มเดี่ยวที่ล้อมรอบแวคิวโอลกลางในเซลล์พืช ควบคุมการเข้าออกของสารและรักษาความดันออสโมซิส",
+    clues: [
+      "ฉันเป็น <em>เยื่อหุ้มเดี่ยว (Single Membrane)</em> ที่ห่อหุ้มออร์แกเนลล์ขนาดใหญ่ในเซลล์พืช",
+      "ฉันทำหน้าที่กั้นระหว่างของเหลว Cytosol กับน้ำ Cell Sap ภายในแวคิวโอล",
+      "ฉันมีปั๊มโปรตอน (Proton Pumps) ปั๊ม H+ เข้าไปข้างในทำให้ภายในมีสภาพเป็นกรด",
+      "ฉันช่วยรักษาสภาพเต่งและความดันออสโมซิสของเซลล์พืช"
+    ]
+  },
+  {
+    id: 20,
+    nameTh: "อะไมโลพลาสต์",
+    nameEn: "Amyloplast",
+    tag: "STARCH STORAGE",
+    color: "#d97706",
+    icon: "🥔",
+    img: "../img/02_gene_regulation.jpg",
+    category: "PLASTID // LEUCOPLAST",
+    desc: "พลาสติดไม่มีสีในเซลล์พืช ทำหน้าที่สังเคราะห์และสะสมแป้ง และทำหน้าที่เป็น Statolith รับรู้แรงโน้มถ่วงที่ปลายราก",
+    clues: [
+      "ฉันเป็นพลาสติดชนิดที่ไม่มีสี (Leucoplast) พบมากในหัวมันฝรั่งและเมล็ดพืช",
+      "หน้าที่หลักของฉันคือการเปลี่ยนน้ำตาลกลูโคสให้กลายเป็น <em>เม็ดแป้ง (Starch Grains)</em> สะสมไว้",
+      "เมื่อย้อมด้วยสารละลายไอโอดีน เม็ดแป้งในตัวฉันจะเปลี่ยนเป็นสีน้ำเงินเข้ม",
+      "ที่บริเวณหมวกราก (Root Cap) ฉันทำหน้าที่เป็น <em>Statolith</em> ช่วยให้รากพืชรับรู้ทิศทางแรงโน้มถ่วง"
+    ]
+  },
+  {
+    id: 21,
+    nameTh: "ไมโครทูบูล",
+    nameEn: "Microtubules",
+    tag: "TUBULIN TUBE",
+    color: "#7c3aed",
+    icon: "🪵",
+    img: "../img/13_cytoskeleton.jpg",
+    category: "CYTOSKELETON // STRUCTURAL TUBE",
+    desc: "ท่อกลวงขนาดเส้นผ่านศูนย์กลาง 25 nm ประกอบจากโปรตีน Tubulin ทำหน้าที่เป็นรางขนส่งเวสิเคิลและแกนซิเลีย-แฟลกเจลลา",
+    clues: [
+      "ฉันเป็นเส้นใยไซโทสเกเลตันที่มีขนาดเส้นผ่านศูนย์กลาง <em>ใหญ่ที่สุด (~25 นาโนเมตร)</em>",
+      "โครงสร้างของฉันเป็นท่อกลวงทรงกระบอก เกิดจากการประกอบกันของโปรตีน <em>Tubulin</em>",
+      "ฉันทำหน้าที่เป็น <em>รางรถไฟโมเลกุล</em> ให้โปรตีน Kinesin และ Dynein เดินขนส่งเวสิเคิล",
+      "ฉันเป็นโครงสร้างหลักของ Spindle Fiber, Centriole และแกน 9+2 ของ Cilia และ Flagella"
+    ]
+  },
+  {
+    id: 22,
+    nameTh: "โปรตีเอโซม",
+    nameEn: "Proteasome",
+    tag: "PROTEIN RECYCLING",
+    color: "#ea580c",
+    icon: "🗑️",
+    img: "../img/11_enzyme.jpg",
+    category: "COMPLEX // QUALITY CONTROL",
+    desc: "ถังโปรตีนเชิงซ้อนขนาดใหญ่ ทำหน้าที่ย่อยสลายโปรตีนที่ติดฉลาก Ubiquitin ให้กลายเป็นเปปไทด์สั้นๆ",
+    clues: [
+      "ฉันมีรูปร่างคล้าย <em>ถังขยะทรงกระบอกระดับโมเลกุล</em> อยู่ในไซโทพลาซึมและนิวเคลียส",
+      "ฉันทำหน้าที่กำจัดโปรตีนที่พับผิดรูปหรือโปรตีนที่เซลล์ไม่ต้องการแล้ว",
+      "ฉันจะเข้าย่อยสลายเฉพาะโปรตีนที่ถูกติดแท็กด้วยโมเลกุล <em>Ubiquitin</em> เท่านั้น",
+      "ผลผลิตที่ได้จากการย่อยของฉันคือกรดอะมิโนและเปปไทด์สั้นๆ ที่นำกลับมาหมุนเวียนใช้ใหม่ได้"
+    ]
+  },
+  {
+    id: 23,
+    nameTh: "สไปลซีโอโซม",
+    nameEn: "Spliceosome",
+    tag: "RNA SPLICING",
+    color: "#db2777",
+    icon: "🎞️",
+    img: "../img/01_gene_expression.jpg",
+    category: "COMPLEX // PRE-mRNA EDIT",
+    desc: "อนุภาคไรโบนิวคลีโอโปรตีน (snRNP) ทำหน้าที่ตัด Intron ที่ไม่ต้องการออก และต่อ Exon เข้าด้วยกันในการแต่งเติม pre-mRNA",
+    clues: [
+      "ฉันเป็นอนุภาคเชิงซ้อนขนาดใหญ่ที่ประกอบด้วยโปรตีนและโมเลกุล <em>snRNA (snRNPs)</em>",
+      "ฉันทำงานอยู่ภายในนิวเคลียสของเซลล์ยูแคริโอตในขั้นตอน Post-transcriptional Modification",
+      "หน้าที่ของฉันคือการตัดช่วงลำดับเบสที่ไม่เข้ารหัสโปรตีนคือ <em>Introns</em> ทิ้งไป",
+      "แล้วทำการเชื่อมต่อท่อน <em>Exons</em> เข้าด้วยกันจนได้โมเลกุล Mature mRNA ที่สมบูรณ์"
+    ]
+  },
+  {
+    id: 24,
+    nameTh: "ซาร์โคพลาสมิก",
+    nameEn: "Sarcoplasmic Reticulum",
+    tag: "CALCIUM RESERVOIR",
+    color: "#dc2626",
+    icon: "💪",
+    img: "../img/13_cytoskeleton.jpg",
+    category: "ORGANELLE // MUSCLE CONTRACTION",
+    desc: "SER รูปแบบพิเศษในเซลล์กล้ามเนื้อลาย ทำหน้าที่กักเก็บไอออน Ca2+ และปล่อยออกมาเมื่อมีกระแสประสาทมากระตุ้นการหดตัว",
+    clues: [
+      "ฉันเป็นรูปแบบพิเศษของ Smooth ER ที่พบเฉพาะในเซลล์กล้ามเนื้อ (Muscle Fibers)",
+      "ฉันล้อมรอบเส้นใยไมโอไฟบริล (Myofibrils) ไว้อย่างแนบแน่น",
+      "หน้าที่สำคัญที่สุดของฉันคือการ <em>กักเก็บไอออนแคลเซียม (Ca2+)</em> ด้วยปั๊ม SERCA",
+      "เมื่อเซลล์ประสาทส่ง Action Potential มา ฉันจะปล่อย Ca2+ ออกไปกระตุ้นให้กล้ามเนื้อหดตัวทันที"
+    ]
   }
 ];
 
-// --- 3. Main 3D Card Detective Game Engine ---
+// --- 3. Image Preloader Cache ---
+const IMAGE_CACHE = {};
+MASTER_CARD_POOL.forEach(card => {
+  if (card.img) {
+    const img = new Image();
+    img.src = card.img;
+    IMAGE_CACHE[card.id] = img;
+  }
+});
+
+// --- 4. Main Multi-Card & Room Matchmaking Engine ---
 class WhoAmIGame {
   constructor() {
     this.sound = new SoundController();
     this.currentCaseIndex = 0;
+    this.targetCard = null;
     this.score = 0;
     this.streak = 0;
     this.cluesRevealedCount = 1;
     this.attemptsInCase = 0;
-    this.isDuoMode = false;
     this.isTransitioning = false;
+    this.myRole = 'guesser'; // 'host', 'guesser', 'spectator'
+    this.roomCode = 'CYTO-' + Math.floor(100 + Math.random() * 900);
 
     // Three.js State
     this.container = document.getElementById('canvas-container');
@@ -397,32 +523,107 @@ class WhoAmIGame {
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
     this.cardMeshes = [];
+    this.eliminatedCardIds = new Set();
     this.hoveredCard = null;
-    this.selectedCard = null;
     this.deskMesh = null;
     this.particles = null;
 
-    // Center offset to align 3D table perfectly to the right of the dossier panel
-    this.tableCenterX = 1.35;
+    // View Angle State
+    this.viewMode = 'perspective';
+    this.tableCenterX = 0.6;
 
+    // Networking (BroadcastChannel + PeerJS)
+    this.broadcastChannel = null;
+    this.peer = null;
+    this.peerConnections = [];
+
+    this.initNetworking();
     this.initThree();
     this.initDOM();
-    this.loadCase(0);
+    this.startNewGameRound(0);
     this.animate();
+  }
+
+  // --- Networking: BroadcastChannel & PeerJS WebRTC ---
+  initNetworking() {
+    try {
+      this.broadcastChannel = new BroadcastChannel('whoami_room_channel');
+      this.broadcastChannel.onmessage = (event) => this.handleNetworkMessage(event.data);
+    } catch(e) {}
+
+    if (window.Peer) {
+      try {
+        const peerId = 'cell544-' + this.roomCode.toLowerCase() + '-' + Math.floor(Math.random() * 1000);
+        this.peer = new Peer(peerId);
+        this.peer.on('connection', (conn) => {
+          this.peerConnections.push(conn);
+          conn.on('data', (data) => this.handleNetworkMessage(data));
+          conn.on('open', () => {
+            conn.send({
+              type: 'SYNC_STATE',
+              roomCode: this.roomCode,
+              targetId: this.targetCard ? this.targetCard.id : 1,
+              eliminated: Array.from(this.eliminatedCardIds),
+              cluesRevealed: this.cluesRevealedCount
+            });
+          });
+        });
+      } catch(e) {}
+    }
+  }
+
+  broadcast(msg) {
+    msg.sender = this.myRole;
+    msg.room = this.roomCode;
+    msg.time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    if (this.broadcastChannel) {
+      try { this.broadcastChannel.postMessage(msg); } catch(e) {}
+    }
+
+    this.peerConnections.forEach(conn => {
+      try { conn.send(msg); } catch(e) {}
+    });
+  }
+
+  handleNetworkMessage(data) {
+    if (!data || data.room !== this.roomCode) return;
+
+    if (data.type === 'CHAT_MSG') {
+      this.addChatMessage(data.text, data.senderRole, data.time);
+      this.sound.playMessageChime();
+    } else if (data.type === 'SYNC_STATE') {
+      if (this.myRole !== 'host' && data.targetId) {
+        const found = MASTER_CARD_POOL.find(c => c.id === data.targetId);
+        if (found) this.targetCard = found;
+        if (data.cluesRevealed) {
+          this.cluesRevealedCount = data.cluesRevealed;
+          this.renderClues();
+        }
+      }
+    } else if (data.type === 'CARD_ELIMINATED') {
+      this.eliminateCardById(data.cardId, false);
+    } else if (data.type === 'CLUE_REVEALED') {
+      this.cluesRevealedCount = data.count;
+      this.renderClues();
+      this.sound.playTone(587.33, 'sine', 0.15, 0.15);
+    } else if (data.type === 'GAME_WON') {
+      this.sound.playSuccess();
+      this.showVictoryModal(this.targetCard, data.score);
+    }
   }
 
   // --- Initialize Three.js 3D Scene ---
   initThree() {
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0x07090e);
-    this.scene.fog = new THREE.FogExp2(0x07090e, 0.035);
+    this.scene.fog = new THREE.FogExp2(0x07090e, 0.03);
 
     const width = window.innerWidth;
     const height = window.innerHeight;
     this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    // Position camera aimed right at tableCenterX
-    this.camera.position.set(this.tableCenterX, 4.3, 6.8);
-    this.camera.lookAt(this.tableCenterX, 0.5, 0);
+    this.camera.position.set(this.tableCenterX, 4.8, 7.6);
+    this.camera.lookAt(this.tableCenterX, 0.3, 0.2);
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setSize(width, height);
@@ -432,19 +633,19 @@ class WhoAmIGame {
     this.container.appendChild(this.renderer.domElement);
 
     // Dynamic Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
     this.scene.add(ambientLight);
 
-    const pointLightCyan = new THREE.PointLight(0x00f0ff, 2.2, 18);
-    pointLightCyan.position.set(this.tableCenterX - 3.5, 4.5, 3.5);
+    const pointLightCyan = new THREE.PointLight(0x00f0ff, 2.2, 20);
+    pointLightCyan.position.set(this.tableCenterX - 4.5, 5, 4);
     this.scene.add(pointLightCyan);
 
-    const pointLightPurple = new THREE.PointLight(0xa855f7, 2.2, 18);
-    pointLightPurple.position.set(this.tableCenterX + 3.5, 4.5, 3.5);
+    const pointLightPurple = new THREE.PointLight(0xa855f7, 2.2, 20);
+    pointLightPurple.position.set(this.tableCenterX + 4.5, 5, 4);
     this.scene.add(pointLightPurple);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.3);
-    keyLight.position.set(this.tableCenterX, 9, 5);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    keyLight.position.set(this.tableCenterX, 10, 6);
     keyLight.castShadow = true;
     keyLight.shadow.mapSize.width = 1024;
     keyLight.shadow.mapSize.height = 1024;
@@ -456,18 +657,19 @@ class WhoAmIGame {
     // Ambient Cyber Particles
     this.createParticles();
 
-    // Window Resize & Mouse Listeners
+    // Event Listeners
     window.addEventListener('resize', () => this.onWindowResize());
     window.addEventListener('mousemove', (e) => this.onMouseMove(e));
     window.addEventListener('click', (e) => this.onMouseClick(e));
+    window.addEventListener('contextmenu', (e) => this.onRightClick(e));
   }
 
   createDesk() {
-    const deskGeo = new THREE.BoxGeometry(11, 0.3, 6.5);
+    const deskGeo = new THREE.BoxGeometry(13, 0.3, 8.5);
     const deskMat = new THREE.MeshStandardMaterial({
       color: 0x0c101a,
       roughness: 0.25,
-      metalness: 0.8,
+      metalness: 0.85,
     });
     this.deskMesh = new THREE.Mesh(deskGeo, deskMat);
     this.deskMesh.position.set(this.tableCenterX, -0.15, 0);
@@ -475,28 +677,28 @@ class WhoAmIGame {
     this.scene.add(this.deskMesh);
 
     // Glowing Holographic Desk Grid Lines
-    const grid = new THREE.GridHelper(10, 20, 0x00f0ff, 0x1e293b);
+    const grid = new THREE.GridHelper(12, 24, 0x00f0ff, 0x1e293b);
     grid.position.set(this.tableCenterX, 0.01, 0);
     this.scene.add(grid);
 
-    // Holographic Cyber Rings
-    const ringGeo = new THREE.RingGeometry(2.0, 2.04, 64);
-    const ringMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, side: THREE.DoubleSide, transparent: true, opacity: 0.35 });
+    // Holographic Cyber Ring
+    const ringGeo = new THREE.RingGeometry(2.4, 2.44, 64);
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, side: THREE.DoubleSide, transparent: true, opacity: 0.3 });
     const ring = new THREE.Mesh(ringGeo, ringMat);
     ring.rotation.x = -Math.PI / 2;
-    ring.position.set(this.tableCenterX, 0.02, 0.3);
+    ring.position.set(this.tableCenterX, 0.02, 0);
     this.scene.add(ring);
   }
 
   createParticles() {
-    const pCount = 240;
+    const pCount = 280;
     const pGeo = new THREE.BufferGeometry();
     const pPos = new Float32Array(pCount * 3);
 
     for (let i = 0; i < pCount * 3; i += 3) {
-      pPos[i] = (Math.random() - 0.5) * 14 + this.tableCenterX;
-      pPos[i + 1] = Math.random() * 6;
-      pPos[i + 2] = (Math.random() - 0.5) * 10;
+      pPos[i] = (Math.random() - 0.5) * 16 + this.tableCenterX;
+      pPos[i + 1] = Math.random() * 7;
+      pPos[i + 2] = (Math.random() - 0.5) * 12;
     }
 
     pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
@@ -504,131 +706,166 @@ class WhoAmIGame {
       size: 0.04,
       color: 0x00f0ff,
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.65,
       blending: THREE.AdditiveBlending
     });
     this.particles = new THREE.Points(pGeo, pMat);
     this.scene.add(this.particles);
   }
 
-  // --- Dynamic Canvas Textures for 3D Cards ---
-  createCardTexture(option, isBack = false) {
+  // --- Dynamic Canvas Textures with Real Image & Crisp White Background ---
+  createCardTexture(cardData, isBack = false) {
     const canvas = document.createElement('canvas');
     canvas.width = 512;
     canvas.height = 768;
     const ctx = canvas.getContext('2d');
 
     if (isBack) {
-      // 3D Card Back: Cyber Confidential Bio-Seal
-      const grad = ctx.createLinearGradient(0, 0, 512, 768);
-      grad.addColorStop(0, '#0c101c');
-      grad.addColorStop(0.5, '#161c2d');
-      grad.addColorStop(1, '#07090e');
-      ctx.fillStyle = grad;
+      // 3D Card Back: Clean Platinum White Scientific Bio-Seal
+      ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, 512, 768);
 
-      // Cyber Frame
-      ctx.strokeStyle = '#00f0ff';
-      ctx.lineWidth = 12;
-      ctx.strokeRect(20, 20, 472, 728);
+      // Outer & Inner Borders
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 14;
+      ctx.strokeRect(16, 16, 480, 736);
 
-      ctx.strokeStyle = 'rgba(168, 85, 247, 0.5)';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(36, 36, 440, 696);
+      ctx.strokeStyle = 'rgba(168, 85, 247, 0.4)';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(32, 32, 448, 704);
 
-      // Central Holographic Hexagon Bio-Hazard Seal
+      // Central Bio-Hazard Holographic Seal
       ctx.save();
-      ctx.translate(256, 340);
+      ctx.translate(256, 330);
       ctx.beginPath();
       for (let i = 0; i < 6; i++) {
         const angle = (i * Math.PI) / 3;
-        const x = 110 * Math.cos(angle);
-        const y = 110 * Math.sin(angle);
+        const x = 115 * Math.cos(angle);
+        const y = 115 * Math.sin(angle);
         if (i === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       }
       ctx.closePath();
-      ctx.strokeStyle = '#00f0ff';
+      ctx.strokeStyle = '#a855f7';
       ctx.lineWidth = 6;
       ctx.stroke();
 
-      ctx.fillStyle = 'rgba(0, 240, 255, 0.1)';
+      ctx.fillStyle = 'rgba(168, 85, 247, 0.08)';
       ctx.fill();
       ctx.restore();
 
-      // Big Bio-Mystery Symbol
-      ctx.fillStyle = '#00f0ff';
+      ctx.fillStyle = '#7c3aed';
       ctx.font = 'bold 90px "Prompt", sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('?', 256, 375);
+      ctx.fillText('?', 256, 365);
 
       // Labels
-      ctx.fillStyle = '#94a3b8';
-      ctx.font = 'bold 22px "JetBrains Mono", monospace';
-      ctx.fillText('CYTO-ARCHIVE // SPECIMEN', 256, 520);
-
-      ctx.fillStyle = '#f59e0b';
-      ctx.font = 'bold 18px "JetBrains Mono", monospace';
-      ctx.fillText('TOP SECRET BIOLOGICAL DOSSIER', 256, 555);
-
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-      ctx.font = '16px "JetBrains Mono", monospace';
-      ctx.fillText('CLICK TO ARREST / REVEAL IDENTITY', 256, 680);
-
-    } else {
-      // 3D Card Front: Identity Reveal
-      const grad = ctx.createLinearGradient(0, 0, 512, 768);
-      grad.addColorStop(0, '#101726');
-      grad.addColorStop(1, '#070a12');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 512, 768);
-
-      // Glowing Neon Accent Border
-      ctx.strokeStyle = option.color || '#00f0ff';
-      ctx.lineWidth = 14;
-      ctx.strokeRect(20, 20, 472, 728);
-
-      // Category Tag Header
-      ctx.fillStyle = option.color || '#00f0ff';
-      ctx.fillRect(36, 36, 440, 44);
-      ctx.fillStyle = '#000';
-      ctx.font = 'bold 20px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(option.tag || 'BIOMOLECULE', 256, 66);
-
-      // Biological Icon / Avatar Box
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-      ctx.lineWidth = 3;
-      ctx.fillRect(56, 110, 400, 310);
-      ctx.strokeRect(56, 110, 400, 310);
-
-      ctx.font = '130px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(option.icon || '🧬', 256, 315);
-
-      // Specimen Thai Name
-      ctx.fillStyle = '#f8fafc';
-      ctx.font = 'bold 34px "Prompt", sans-serif';
-      ctx.fillText(option.nameTh, 256, 480);
-
-      // Specimen English Name
-      ctx.fillStyle = option.color || '#00f0ff';
-      ctx.font = 'bold 22px "JetBrains Mono", monospace';
-      ctx.fillText(option.nameEn, 256, 525);
-
-      // Cyber bar decoration
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-      ctx.fillRect(70, 560, 372, 2);
-
-      // Holographic Verification Stamp
-      ctx.fillStyle = '#10b981';
-      ctx.font = 'bold 20px "Prompt", sans-serif';
-      ctx.fillText('✔ ยืนยันพิกัดทางชีววิทยา', 256, 615);
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 24px "JetBrains Mono", monospace';
+      ctx.fillText('CYTO-ARCHIVE // SPECIMEN', 256, 510);
 
       ctx.fillStyle = '#64748b';
-      ctx.font = '16px "JetBrains Mono", monospace';
-      ctx.fillText('IDENTITY VERIFIED // CAMPBELL 12TH ED', 256, 655);
+      ctx.font = 'bold 18px "JetBrains Mono", monospace';
+      ctx.fillText('24+ UNIFIED MASTER DECK', 256, 545);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '16px "Prompt", sans-serif';
+      ctx.fillText('TOP SECRET BIOLOGICAL DOSSIER', 256, 675);
+
+    } else {
+      // 3D Card Front: CRISP PURE WHITE BACKGROUND WITH REAL PHOTOGRAPHY
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, 512, 768);
+
+      // Glowing Accent Border
+      ctx.strokeStyle = cardData.color || '#0284c7';
+      ctx.lineWidth = 14;
+      ctx.strokeRect(16, 16, 480, 736);
+
+      // Inner subtle border
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(28, 28, 456, 712);
+
+      // Category Tag Header Bar
+      ctx.fillStyle = cardData.color || '#0284c7';
+      ctx.fillRect(36, 36, 440, 46);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 22px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(cardData.tag || 'BIOMOLECULE', 256, 68);
+
+      // Real Photography Image Window
+      const imgBoxX = 40;
+      const imgBoxY = 96;
+      const imgBoxW = 432;
+      const imgBoxH = 350;
+
+      // Draw real specimen image if loaded in cache
+      const cachedImg = IMAGE_CACHE[cardData.id];
+      if (cachedImg && cachedImg.complete && cachedImg.naturalWidth > 0) {
+        ctx.save();
+        // Clip to rounded rectangle
+        ctx.beginPath();
+        ctx.roundRect ? ctx.roundRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH, 12) : ctx.rect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
+        ctx.clip();
+        ctx.drawImage(cachedImg, imgBoxX, imgBoxY, imgBoxW, imgBoxH);
+        ctx.restore();
+
+        // Image Frame Overlay
+        ctx.strokeStyle = '#cbd5e1';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
+
+        // Small floating biology icon badge
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.beginPath();
+        ctx.arc(imgBoxX + 40, imgBoxY + 40, 26, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = cardData.color || '#0284c7';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.font = '28px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(cardData.icon || '🧬', imgBoxX + 40, imgBoxY + 50);
+
+      } else {
+        // Fallback placeholder container
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
+        ctx.strokeStyle = '#cbd5e1';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
+
+        ctx.font = '130px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(cardData.icon || '🧬', 256, 310);
+      }
+
+      // Specimen Thai Name (High Contrast Dark Slate on White)
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 36px "Prompt", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(cardData.nameTh, 256, 500);
+
+      // Specimen English Name (Accent Color)
+      ctx.fillStyle = cardData.color || '#0284c7';
+      ctx.font = 'bold 24px "JetBrains Mono", monospace';
+      ctx.fillText(cardData.nameEn, 256, 545);
+
+      // Subtle Divider
+      ctx.fillStyle = '#e2e8f0';
+      ctx.fillRect(60, 580, 392, 2);
+
+      // Scientific Verification Stamp
+      ctx.fillStyle = '#475569';
+      ctx.font = 'bold 18px "Prompt", sans-serif';
+      ctx.fillText(`SPECIMEN #${String(cardData.id).padStart(2, '0')} · CAMPBELL BIOLOGY 12TH`, 256, 625);
+
+      ctx.fillStyle = '#16a34a';
+      ctx.font = 'bold 18px "Prompt", sans-serif';
+      ctx.fillText('✔ ยืนยันพิกัดโครงสร้างชีววิทยา', 256, 665);
     }
 
     const texture = new THREE.CanvasTexture(canvas);
@@ -636,117 +873,127 @@ class WhoAmIGame {
     return texture;
   }
 
-  // --- Spawn & Deal 3D Cards in a Wide Multi-Card Arc (8 Cards) ---
-  spawnCards(currCase) {
-    // Clear old card meshes
+  // --- Spawn & Layout 24 Biological Cards on the 3D Table ---
+  spawn24Cards() {
     this.cardMeshes.forEach(mesh => {
       this.scene.remove(mesh);
       if (mesh.geometry) mesh.geometry.dispose();
     });
     this.cardMeshes = [];
+    this.eliminatedCardIds.clear();
 
-    const options = currCase.options;
-    const count = options.length;
-    
-    // Scale cards to comfortably fit 8 cards in a gorgeous fan layout
-    const cardWidth = 0.92;
-    const cardHeight = 1.45;
-    const cardDepth = 0.02;
+    const cardWidth = 0.74;
+    const cardHeight = 1.18;
+    const cardDepth = 0.015;
 
-    // Total arc span centered around this.tableCenterX
-    const totalSpan = 5.2;
-    const step = totalSpan / (count - 1);
-    const startX = this.tableCenterX - totalSpan / 2;
+    // Arrange 24 cards in a 4 rows x 6 columns laboratory grid on the desk
+    const cols = 6;
+    const spacingX = 0.94;
+    const spacingZ = 1.38;
+    const startX = this.tableCenterX - ((cols - 1) * spacingX) / 2;
+    const startZ = -1.6;
 
-    options.forEach((opt, idx) => {
+    MASTER_CARD_POOL.forEach((cardData, idx) => {
+      const row = Math.floor(idx / cols);
+      const col = idx % cols;
+
       const cardGeo = new THREE.BoxGeometry(cardWidth, cardHeight, cardDepth);
-      
-      const frontTex = this.createCardTexture(opt, false);
-      const backTex = this.createCardTexture(opt, true);
-      const sideMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.8, roughness: 0.3 });
+      const frontTex = this.createCardTexture(cardData, false);
+      const backTex = this.createCardTexture(cardData, true);
+      const sideMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, metalness: 0.1, roughness: 0.2 });
 
       const materials = [
-        sideMat, // right
-        sideMat, // left
-        sideMat, // top
-        sideMat, // bottom
-        new THREE.MeshStandardMaterial({ map: frontTex, roughness: 0.3, metalness: 0.2 }), // Front (+Z)
-        new THREE.MeshStandardMaterial({ map: backTex, roughness: 0.3, metalness: 0.2 })  // Back (-Z)
+        sideMat, sideMat, sideMat, sideMat,
+        new THREE.MeshStandardMaterial({ map: frontTex, roughness: 0.2, metalness: 0.05 }),
+        new THREE.MeshStandardMaterial({ map: backTex, roughness: 0.2, metalness: 0.05 })
       ];
 
       const cardMesh = new THREE.Mesh(cardGeo, materials);
       cardMesh.castShadow = true;
       cardMesh.receiveShadow = true;
 
-      // Arc Layout: Cards fan out with a natural parabolic depth curve
-      const posX = startX + idx * step;
-      const normalizedOffset = (posX - this.tableCenterX) / (totalSpan / 2); // -1 to +1
-      
-      const posY = 1.05 - Math.abs(normalizedOffset) * 0.12;
-      const posZ = 0.6 - Math.pow(Math.abs(normalizedOffset), 1.6) * 0.55; // Curve backward at edges
-      
-      const rotY = -normalizedOffset * 0.22; // Fan angle facing slightly inward towards center
-      const rotZ = -normalizedOffset * 0.08;
-      const rotX = -0.18;
+      const posX = startX + col * spacingX;
+      const posY = 0.85 + (3 - row) * 0.1;
+      const posZ = startZ + row * spacingZ;
+      const rotX = -0.32; // tilted towards camera
+      const rotY = (col - 2.5) * 0.04;
+      const rotZ = 0;
 
-      // Start above desk with staggered deal animation
-      cardMesh.position.set(posX, posY + 3.0, posZ);
+      // Drop animation from sky
+      cardMesh.position.set(posX, posY + 4.0, posZ);
       cardMesh.rotation.set(rotX, rotY, rotZ);
 
-      // Metadata for raycasting & gameplay
       cardMesh.userData = {
-        optionIndex: idx,
-        isCorrect: idx === currCase.correctIndex,
-        optionData: opt,
+        cardId: cardData.id,
+        cardData: cardData,
+        isTarget: this.targetCard ? (cardData.id === this.targetCard.id) : false,
         origX: posX,
         origY: posY,
         origZ: posZ,
         origRotX: rotX,
         origRotY: rotY,
         origRotZ: rotZ,
-        isFlipped: false
+        isEliminated: false
       };
 
       this.scene.add(cardMesh);
       this.cardMeshes.push(cardMesh);
 
-      // Smooth Deal Animation using TWEEN
+      // Staggered deal animation
       new TWEEN.Tween(cardMesh.position)
-        .to({ x: posX, y: posY, z: posZ }, 550 + idx * 80)
+        .to({ x: posX, y: posY, z: posZ }, 500 + idx * 30)
         .easing(TWEEN.Easing.Back.Out)
         .start();
     });
 
-    this.sound.playShuffle();
+    this.updateCardCount();
+    this.sound.playTone(320, 'sine', 0.15, 0.1);
   }
 
-  // --- 4. Game Logic & Case Management ---
-  loadCase(index) {
-    this.currentCaseIndex = index % BIO_CASES.length;
-    const currCase = BIO_CASES[this.currentCaseIndex];
+  // --- Start New Game Round ---
+  startNewGameRound(caseIndex = 0) {
+    this.currentCaseIndex = caseIndex % MASTER_CARD_POOL.length;
+    // Pick exactly 1 target card
+    this.targetCard = MASTER_CARD_POOL[this.currentCaseIndex];
     this.cluesRevealedCount = 1;
     this.attemptsInCase = 0;
     this.isTransitioning = false;
 
-    // Update Top Navigation
-    document.getElementById('case-val').innerText = `${this.currentCaseIndex + 1} / ${BIO_CASES.length}`;
+    // Update Room & Case Indicators
+    document.getElementById('room-code-txt').innerText = this.roomCode;
     document.getElementById('dossier-case-id').innerText = `CASE #${String(this.currentCaseIndex + 1).padStart(2, '0')}`;
 
-    // Render Clues in Dossier Panel
-    this.renderClues(currCase);
+    // Update Host Secret Target Preview
+    const secretBox = document.getElementById('secret-target-box');
+    if (this.myRole === 'host') {
+      secretBox.style.display = 'block';
+      document.getElementById('st-name').innerText = `${this.targetCard.nameTh} (${this.targetCard.nameEn})`;
+    } else {
+      secretBox.style.display = 'none';
+    }
 
-    // Spawn 8 3D Cards on Desk
-    this.spawnCards(currCase);
+    // Render Clues
+    this.renderClues();
 
-    // Reset Guidance Message
-    document.getElementById('guide-text').innerText = `สำรับ 8 ใบ: หมุนดูการ์ดบนโต๊ะ แล้วคลิกการ์ดที่คุณมั่นใจว่าเป็นคำตอบ!`;
+    // Spawn All 24 Cards
+    this.spawn24Cards();
+
+    // Sync state
+    this.broadcast({
+      type: 'SYNC_STATE',
+      targetId: this.targetCard.id,
+      cluesRevealed: this.cluesRevealedCount
+    });
+
+    document.getElementById('guide-text').innerText = 'สำรับรวม 24 ใบ: ภาพจริงพื้นหลังสีขาว! คลิกขวาเพื่อคว่ำการ์ดตัดช้อยส์ / คลิกซ้ายเพื่อทายคำตอบสุดท้าย';
   }
 
-  renderClues(currCase) {
+  renderClues() {
+    if (!this.targetCard) return;
     const cluesContainer = document.getElementById('clues-container');
     cluesContainer.innerHTML = '';
 
-    currCase.clues.forEach((clueText, idx) => {
+    this.targetCard.clues.forEach((clueText, idx) => {
       const clueDiv = document.createElement('div');
       clueDiv.className = 'clue-item';
 
@@ -761,17 +1008,16 @@ class WhoAmIGame {
       } else {
         clueDiv.classList.add('hidden-clue');
         clueDiv.innerHTML = `
-          <span>🔒 คำใบ้ระดับลึก #0${idx + 1} (คลิกปุ่มเปิดคำใบ้เพื่อปลดล็อก)</span>
+          <span>🔒 คำใบ้ระดับลึก #0${idx + 1} (คลิกเพื่อปลดล็อก)</span>
         `;
       }
       cluesContainer.appendChild(clueDiv);
     });
 
-    // Update Clue Button State
     const clueBtn = document.getElementById('reveal-clue-btn');
-    if (this.cluesRevealedCount >= currCase.clues.length) {
+    if (this.cluesRevealedCount >= this.targetCard.clues.length) {
       clueBtn.disabled = true;
-      clueBtn.querySelector('.clue-btn-text').innerText = 'เปิดคำใบ้ครบทุกระดับแล้ว';
+      clueBtn.querySelector('.clue-btn-text').innerText = 'เปิดคำใบ้ครบ 4 ระดับแล้ว';
     } else {
       clueBtn.disabled = false;
       const penalty = 50 * this.cluesRevealedCount;
@@ -780,30 +1026,86 @@ class WhoAmIGame {
   }
 
   revealNextClue() {
-    const currCase = BIO_CASES[this.currentCaseIndex];
-    if (this.cluesRevealedCount < currCase.clues.length) {
+    if (!this.targetCard) return;
+    if (this.cluesRevealedCount < this.targetCard.clues.length) {
       this.cluesRevealedCount++;
-      this.sound.playClueReveal();
-      this.renderClues(currCase);
+      this.sound.playTone(587.33, 'sine', 0.15, 0.15);
+      this.renderClues();
+      this.broadcast({ type: 'CLUE_REVEALED', count: this.cluesRevealedCount });
     }
   }
 
-  shuffleCurrentCards() {
-    const currCase = BIO_CASES[this.currentCaseIndex];
-    this.spawnCards(currCase);
-    this.triggerHoloSignal('🎴 สับและจัดเรียงสำรับการ์ด 8 ใบใหม่!');
+  // --- Eliminate / Flip Down Card ---
+  eliminateCard(cardMesh) {
+    if (cardMesh.userData.isEliminated) {
+      // Restore card
+      cardMesh.userData.isEliminated = false;
+      this.eliminatedCardIds.delete(cardMesh.userData.cardId);
+
+      new TWEEN.Tween(cardMesh.rotation)
+        .to({ x: cardMesh.userData.origRotX, y: cardMesh.userData.origRotY, z: 0 }, 300)
+        .start();
+
+      new TWEEN.Tween(cardMesh.position)
+        .to({ y: cardMesh.userData.origY }, 300)
+        .start();
+
+      this.sound.playCardHover();
+    } else {
+      // Flip face-down & dim
+      cardMesh.userData.isEliminated = true;
+      this.eliminatedCardIds.add(cardMesh.userData.cardId);
+
+      new TWEEN.Tween(cardMesh.rotation)
+        .to({ x: Math.PI / 2, y: 0, z: 0 }, 350)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .start();
+
+      new TWEEN.Tween(cardMesh.position)
+        .to({ y: cardMesh.userData.origY - 0.2 }, 350)
+        .start();
+
+      this.sound.playCardEliminate();
+      this.triggerHoloSignal(`ตัดช้อยส์: ${cardMesh.userData.cardData.nameTh} ❌`);
+    }
+
+    this.updateCardCount();
+    this.broadcast({ type: 'CARD_ELIMINATED', cardId: cardMesh.userData.cardId });
   }
 
-  // --- Player Card Selection Handling ---
-  selectCard(cardMesh) {
+  eliminateCardById(cardId, shouldBroadcast = true) {
+    const mesh = this.cardMeshes.find(m => m.userData.cardId === cardId);
+    if (mesh) {
+      this.eliminateCard(mesh);
+    }
+  }
+
+  resetAllEliminations() {
+    this.cardMeshes.forEach(mesh => {
+      if (mesh.userData.isEliminated) {
+        mesh.userData.isEliminated = false;
+        new TWEEN.Tween(mesh.rotation)
+          .to({ x: mesh.userData.origRotX, y: mesh.userData.origRotY, z: 0 }, 300)
+          .start();
+        new TWEEN.Tween(mesh.position)
+          .to({ y: mesh.userData.origY }, 300)
+          .start();
+      }
+    });
+    this.eliminatedCardIds.clear();
+    this.updateCardCount();
+    this.triggerHoloSignal('🔄 รีเซ็ตการ์ด 24 ใบกลับมาเปิดทั้งหมด');
+  }
+
+  // --- Guess Final Answer ---
+  guessCard(cardMesh) {
     if (this.isTransitioning) return;
     this.attemptsInCase++;
-    const isCorrect = cardMesh.userData.isCorrect;
-    const currCase = BIO_CASES[this.currentCaseIndex];
+    const isCorrect = cardMesh.userData.cardId === this.targetCard.id;
 
-    // Dramatic 3D Card Flip & Lift Animation
+    // Dramatic Flip
     new TWEEN.Tween(cardMesh.position)
-      .to({ y: 1.65, z: 1.5 }, 350)
+      .to({ y: 1.8, z: 2.2 }, 350)
       .easing(TWEEN.Easing.Cubic.Out)
       .chain(
         new TWEEN.Tween(cardMesh.rotation)
@@ -817,53 +1119,54 @@ class WhoAmIGame {
       this.streak++;
       const cluePenalty = (this.cluesRevealedCount - 1) * 50;
       const attemptPenalty = (this.attemptsInCase - 1) * 100;
-      const earned = Math.max(100, (600 - cluePenalty - attemptPenalty) * (1 + this.streak * 0.2));
+      const earned = Math.max(100, (800 - cluePenalty - attemptPenalty) * (1 + this.streak * 0.2));
       this.score += Math.round(earned);
 
       this.updateStats();
 
-      // Confetti & Particle Celebration
       if (window.confetti) {
         window.confetti({
-          particleCount: 90,
+          particleCount: 100,
           spread: 80,
-          origin: { x: 0.65, y: 0.55 }
+          origin: { x: 0.5, y: 0.5 }
         });
       }
 
+      this.broadcast({ type: 'GAME_WON', score: earned });
+
       setTimeout(() => {
-        this.showVictoryModal(currCase, earned);
-      }, 700);
+        this.showVictoryModal(this.targetCard, earned);
+      }, 750);
 
     } else {
       this.sound.playWrong();
       this.streak = 0;
       this.updateStats();
 
-      // Shake Card
-      const origX = cardMesh.userData.origX;
-      new TWEEN.Tween(cardMesh.position)
-        .to({ x: origX + 0.1 }, 60)
-        .yoyo(true)
-        .repeat(5)
-        .chain(
-          new TWEEN.Tween(cardMesh.position).to({ x: origX, y: cardMesh.userData.origY, z: cardMesh.userData.origZ }, 200)
-        )
-        .start();
-
-      document.getElementById('guide-text').innerText = `❌ ยังไม่ถูกต้อง! ลองดูคำใบ้ในแฟ้มและเลือกจากการ์ด 8 ใบอีกครั้ง`;
+      // Auto eliminate wrong guess
+      this.eliminateCard(cardMesh);
+      document.getElementById('guide-text').innerText = `❌ ${cardMesh.userData.cardData.nameTh} ไม่ใช่คำตอบ! ตัดช้อยส์ออกแล้ว`;
     }
   }
 
-  showVictoryModal(currCase, earnedScore) {
+  updateCardCount() {
+    const remain = MASTER_CARD_POOL.length - this.eliminatedCardIds.size;
+    document.getElementById('cards-remain-val').innerText = `${remain} / ${MASTER_CARD_POOL.length}`;
+  }
+
+  updateStats() {
+    document.getElementById('score-val').innerText = this.score;
+  }
+
+  showVictoryModal(target, earned) {
     const modal = document.getElementById('result-modal');
-    document.getElementById('modal-target-name').innerText = currCase.nameEn;
-    document.getElementById('modal-bio-tag').innerText = currCase.category;
-    document.getElementById('modal-bio-title').innerText = `${currCase.nameTh} (${currCase.nameEn})`;
-    document.getElementById('modal-bio-desc').innerText = currCase.desc;
-    document.getElementById('modal-round-score').innerText = `+${Math.round(earnedScore)}`;
-    document.getElementById('modal-clues-used').innerText = `${this.cluesRevealedCount} / 4`;
-    document.getElementById('modal-accuracy').innerText = this.attemptsInCase === 1 ? '100% (ครั้งแรก!)' : `ครั้งที่ ${this.attemptsInCase}`;
+    document.getElementById('modal-target-name').innerText = target.nameEn;
+    document.getElementById('modal-bio-tag').innerText = target.category;
+    document.getElementById('modal-bio-title').innerText = `${target.nameTh} (${target.nameEn})`;
+    document.getElementById('modal-bio-desc').innerText = target.desc;
+    document.getElementById('modal-round-score').innerText = `+${Math.round(earned)}`;
+    document.getElementById('modal-elim-count').innerText = `${this.eliminatedCardIds.size} / 24 ใบ`;
+    document.getElementById('modal-accuracy').innerText = this.attemptsInCase <= 1 ? '100% (ครั้งแรก!)' : `ทายครั้งที่ ${this.attemptsInCase}`;
 
     modal.classList.add('show');
   }
@@ -872,79 +1175,144 @@ class WhoAmIGame {
     document.getElementById('result-modal').classList.remove('show');
   }
 
-  nextCase() {
-    this.hideVictoryModal();
-    this.loadCase(this.currentCaseIndex + 1);
+  // --- Live Chat & Messaging ---
+  addChatMessage(text, role, time = null) {
+    const container = document.getElementById('chat-messages');
+    const msgDiv = document.createElement('div');
+    const roleClass = role === 'host' ? 'host-msg' : (role === 'spectator' ? 'spectator-msg' : '');
+    msgDiv.className = `chat-msg ${roleClass}`;
+
+    const timeStr = time || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const roleLabel = role === 'host' ? '👑 ผู้ถือคำตอบ' : (role === 'spectator' ? '🍿 ผู้ชม' : '🕵️ ผู้ทาย');
+
+    msgDiv.innerHTML = `<span class="msg-sender">[${timeStr}] ${roleLabel}:</span> ${text}`;
+    container.appendChild(msgDiv);
+    container.scrollTop = container.scrollHeight;
   }
 
-  replayCase() {
-    this.hideVictoryModal();
-    this.loadCase(this.currentCaseIndex);
+  sendChatMessage(text) {
+    if (!text.trim()) return;
+    this.addChatMessage(text, this.myRole);
+    this.broadcast({
+      type: 'CHAT_MSG',
+      text: text,
+      senderRole: this.myRole
+    });
   }
 
-  updateStats() {
-    document.getElementById('score-val').innerText = this.score;
-    document.getElementById('streak-val').innerText = `x${this.streak}`;
-  }
-
-  // --- Interaction Listeners ---
+  // --- DOM Listeners ---
   initDOM() {
+    // Clue & Elim Actions
     document.getElementById('reveal-clue-btn').addEventListener('click', () => this.revealNextClue());
-    
-    document.getElementById('modal-next-btn').addEventListener('click', () => this.nextCase());
-    document.getElementById('modal-replay-btn').addEventListener('click', () => this.replayCase());
+    document.getElementById('reset-elim-btn').addEventListener('click', () => this.resetAllEliminations());
 
-    // Shuffle Deck Button
-    const shuffleBtn = document.getElementById('shuffle-deck-btn');
-    if (shuffleBtn) {
-      shuffleBtn.addEventListener('click', () => this.shuffleCurrentCards());
-    }
+    // Modal Actions
+    document.getElementById('modal-next-btn').addEventListener('click', () => {
+      this.hideVictoryModal();
+      this.startNewGameRound(this.currentCaseIndex + 1);
+    });
+    document.getElementById('modal-replay-btn').addEventListener('click', () => {
+      this.hideVictoryModal();
+      this.startNewGameRound(this.currentCaseIndex);
+    });
 
-    // Toggle Duo / Solo Mode
-    const toggleModeBtn = document.getElementById('toggle-mode-btn');
-    toggleModeBtn.addEventListener('click', () => {
-      this.isDuoMode = !this.isDuoMode;
-      const banner = document.getElementById('duo-role-banner');
-      const buzzers = document.getElementById('duo-buzzers');
-      if (this.isDuoMode) {
-        toggleModeBtn.querySelector('.btn-txt').innerText = 'โหมดเล่นเดี่ยว (Solo Detective)';
-        banner.style.display = 'flex';
-        buzzers.style.display = 'block';
-        this.triggerHoloSignal('👥 เข้าสู่โหมดคู่: ผู้เล่น 1 อ่านคำใบ้ & ผู้เล่น 2 เลือกการ์ด');
+    // Shuffle / Re-arrange 24 Cards
+    document.getElementById('shuffle-deck-btn').addEventListener('click', () => {
+      this.spawn24Cards();
+      this.triggerHoloSignal('🎴 จัดเรียงสำรับ 24 ใบใหม่บนโต๊ะทดลอง');
+    });
+
+    // Camera View Mode Toggle
+    document.getElementById('view-mode-btn').addEventListener('click', () => {
+      if (this.viewMode === 'perspective') {
+        this.viewMode = 'topdown';
+        new TWEEN.Tween(this.camera.position)
+          .to({ x: this.tableCenterX, y: 7.2, z: 3.5 }, 600)
+          .easing(TWEEN.Easing.Cubic.InOut)
+          .start();
       } else {
-        toggleModeBtn.querySelector('.btn-txt').innerText = 'โหมดคู่ (Co-op Duo)';
-        banner.style.display = 'none';
-        buzzers.style.display = 'none';
-        this.triggerHoloSignal('🕵️ โหมดเล่นเดี่ยว: วิเคราะห์แฟ้มลับ');
+        this.viewMode = 'perspective';
+        new TWEEN.Tween(this.camera.position)
+          .to({ x: this.tableCenterX, y: 4.8, z: 7.6 }, 600)
+          .easing(TWEEN.Easing.Cubic.InOut)
+          .start();
       }
     });
 
-    // Bio Signal Quick Buzzers
-    document.querySelectorAll('.buzzer-btn').forEach(btn => {
+    // Chat Form Submit
+    document.getElementById('chat-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('chat-input');
+      this.sendChatMessage(input.value);
+      input.value = '';
+    });
+
+    // Toggle Chat Panel
+    document.getElementById('toggle-chat-btn').addEventListener('click', () => {
+      const panel = document.getElementById('live-chat-panel');
+      panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
+    });
+    document.getElementById('close-chat-btn').addEventListener('click', () => {
+      document.getElementById('live-chat-panel').style.display = 'none';
+    });
+
+    // Quick Inquiry Probes
+    document.querySelectorAll('.probe-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        const text = e.currentTarget.getAttribute('data-buzz');
-        this.sound.playBuzzer();
-        this.triggerHoloSignal(text);
+        const text = e.currentTarget.getAttribute('data-ask');
+        this.sendChatMessage(`❓ คำถาม: "${text}"`);
+        this.triggerHoloSignal(`ส่งคำถาม: ${text}`);
       });
     });
 
-    // Sound Hint Button
-    document.getElementById('sound-hint-btn').addEventListener('click', () => {
-      this.sound.playClueReveal();
-      this.triggerHoloSignal('🧬 สัญญาณเรดาร์ชีวภาพตรวจพบโครงสร้างเฉพาะตัว!');
+    // Host Quick Reply Bar
+    document.querySelectorAll('.hr-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const reply = e.currentTarget.getAttribute('data-answer');
+        this.sendChatMessage(`📢 คำตอบ: ${reply}`);
+      });
     });
 
-    // Keyboard Shortcuts
-    window.addEventListener('keydown', (e) => {
-      if (e.code === 'Space') {
-        e.preventDefault();
-        this.revealNextClue();
+    // Copy Room Code
+    document.getElementById('copy-room-btn').addEventListener('click', () => {
+      navigator.clipboard.writeText(this.roomCode);
+      this.triggerHoloSignal(`📋 คัดลอกรหัสห้อง: ${this.roomCode}`);
+    });
+
+    // Lobby Modal
+    const lobbyModal = document.getElementById('lobby-modal');
+    document.getElementById('open-lobby-btn').addEventListener('click', () => {
+      document.getElementById('gen-room-code').innerText = this.roomCode;
+      lobbyModal.classList.add('show');
+    });
+    document.getElementById('close-lobby-modal').addEventListener('click', () => {
+      lobbyModal.classList.remove('show');
+    });
+
+    // Create Room (Host)
+    document.getElementById('create-room-btn').addEventListener('click', () => {
+      this.myRole = 'host';
+      document.getElementById('role-val').innerText = '👑 ผู้ถือคำตอบ (Host)';
+      document.getElementById('host-reply-bar').style.display = 'block';
+      lobbyModal.classList.remove('show');
+      this.startNewGameRound(Math.floor(Math.random() * MASTER_CARD_POOL.length));
+      this.triggerHoloSignal(`สร้างห้อง ${this.roomCode} สำเร็จ! คุณคือผู้ถือคำตอบ`);
+    });
+
+    // Join Room by Code
+    document.getElementById('join-room-btn').addEventListener('click', () => {
+      const inputCode = document.getElementById('join-room-input').value.trim().toUpperCase();
+      if (inputCode) {
+        this.roomCode = inputCode;
+        const selectedRole = document.querySelector('input[name="join-role"]:checked').value;
+        this.myRole = selectedRole;
+        document.getElementById('role-val').innerText = selectedRole === 'spectator' ? '🍿 ผู้ชม (Spectator)' : '🕵️ ผู้ทาย (Guesser)';
+        document.getElementById('host-reply-bar').style.display = 'none';
+        lobbyModal.classList.remove('show');
+        this.startNewGameRound(0);
+        this.triggerHoloSignal(`เข้าร่วมห้อง ${this.roomCode} แล้ว!`);
       }
     });
-
-    // Default duo banner state
-    document.getElementById('duo-role-banner').style.display = 'none';
-    document.getElementById('duo-buzzers').style.display = 'none';
   }
 
   triggerHoloSignal(text) {
@@ -989,32 +1357,25 @@ class WhoAmIGame {
   }
 
   applyCardHover(card) {
+    if (card.userData.isEliminated) return;
     document.body.style.cursor = 'pointer';
     new TWEEN.Tween(card.position)
-      .to({ y: card.userData.origY + 0.3, z: card.userData.origZ + 0.45 }, 180)
+      .to({ y: card.userData.origY + 0.3, z: card.userData.origZ + 0.35 }, 180)
       .easing(TWEEN.Easing.Cubic.Out)
-      .start();
-
-    new TWEEN.Tween(card.rotation)
-      .to({ x: 0.04, y: 0, z: 0 }, 180)
       .start();
   }
 
   resetCardHover(card) {
+    if (card.userData.isEliminated) return;
     document.body.style.cursor = 'default';
     new TWEEN.Tween(card.position)
       .to({ y: card.userData.origY, z: card.userData.origZ }, 200)
       .easing(TWEEN.Easing.Cubic.Out)
       .start();
-
-    new TWEEN.Tween(card.rotation)
-      .to({ x: card.userData.origRotX, y: card.userData.origRotY, z: card.userData.origRotZ }, 200)
-      .start();
   }
 
   onMouseClick(event) {
-    // Only raycast if click didn't land on UI elements
-    if (event.target.closest('.dossier-panel') || event.target.closest('.top-nav') || event.target.closest('.result-modal-box') || event.target.closest('.guidance-card')) {
+    if (event.target.closest('.dossier-panel') || event.target.closest('.top-nav') || event.target.closest('.live-chat-panel') || event.target.closest('.modal-card') || event.target.closest('.guidance-card')) {
       return;
     }
 
@@ -1023,25 +1384,38 @@ class WhoAmIGame {
 
     if (intersects.length > 0) {
       const clickedCard = intersects[0].object;
-      this.selectCard(clickedCard);
+      if (event.shiftKey) {
+        this.eliminateCard(clickedCard);
+      } else {
+        this.guessCard(clickedCard);
+      }
     }
   }
 
-  // --- Main Animation Loop ---
+  onRightClick(event) {
+    event.preventDefault();
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+    const intersects = this.raycaster.intersectObjects(this.cardMeshes);
+    if (intersects.length > 0) {
+      const clickedCard = intersects[0].object;
+      this.eliminateCard(clickedCard);
+    }
+  }
+
+  // --- Animation Loop ---
   animate(time) {
     requestAnimationFrame((t) => this.animate(t));
     TWEEN.update();
 
-    // Ambient particle drift
     if (this.particles) {
-      this.particles.rotation.y += 0.0008;
+      this.particles.rotation.y += 0.0006;
     }
 
     this.renderer.render(this.scene, this.camera);
   }
 }
 
-// Instantiate Game on DOM Load
+// Start Game
 window.addEventListener('DOMContentLoaded', () => {
   window.game = new WhoAmIGame();
 });

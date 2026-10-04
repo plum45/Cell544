@@ -3,50 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WHO AM I? — แฟ้มลับชีววิทยา 3 มิติ | CYTOLIFE</title>
+  <title>WHO AM I? — แฟ้มลับชีววิทยา 3 มิติ (24+ Cards Multi-Room) | CYTOLIFE</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <!-- Three.js CDN & TWEEN for smooth 3D animations -->
+  <!-- Three.js & TWEEN CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- PeerJS for Free WebRTC Real-time Cross-Device Multi-Room Matchmaking -->
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 </head>
 <body>
   <!-- 3D Canvas Viewport -->
   <div id="canvas-container"></div>
 
-  <!-- Top Navigation & Status Bar -->
+  <!-- Top Navigation & Room Status Bar -->
   <header class="top-nav">
     <div class="nav-brand">
       <span class="brand-badge">BIO-DOSSIER 3D</span>
       <h1 class="brand-title">CYTO-DETECTIVE: <span>WHO AM I?</span></h1>
     </div>
     
+    <!-- Room Code & Live Multiplayer Info -->
     <div class="nav-center-stats">
+      <div class="room-pill" id="room-pill" title="คลิกเพื่อจัดการห้อง">
+        <span class="room-status-dot online"></span>
+        <span class="room-label">ห้อง:</span>
+        <span class="room-code-display" id="room-code-txt">LOCAL-544</span>
+        <button class="room-copy-btn" id="copy-room-btn" title="คัดลอกรหัสห้อง">📋</button>
+      </div>
+
+      <div class="stat-pill role-pill" id="my-role-badge">
+        <span class="stat-label">บทบาท</span>
+        <span class="stat-val text-cyan" id="role-val">ผู้ทาย (Detective)</span>
+      </div>
+
+      <div class="stat-pill count-pill">
+        <span class="stat-label">การ์ดในโต๊ะ</span>
+        <span class="stat-val text-amber" id="cards-remain-val">24 / 24</span>
+      </div>
+
       <div class="stat-pill score-pill">
-        <span class="stat-label">คะแนนสืบสวน</span>
-        <span class="stat-val" id="score-val">0</span>
-      </div>
-      <div class="stat-pill streak-pill">
-        <span class="stat-label">STREAK 🔥</span>
-        <span class="stat-val" id="streak-val">x0</span>
-      </div>
-      <div class="stat-pill case-pill">
-        <span class="stat-label">คดีที่</span>
-        <span class="stat-val" id="case-val">1 / 15</span>
+        <span class="stat-label">คะแนน</span>
+        <span class="stat-val text-green" id="score-val">0</span>
       </div>
     </div>
 
     <div class="nav-actions">
-      <button class="nav-btn btn-mode" id="toggle-mode-btn">
-        <span class="btn-icon">👥</span>
-        <span class="btn-txt">โหมดคู่ (Co-op Duo)</span>
+      <button class="nav-btn btn-lobby" id="open-lobby-btn">
+        <span class="btn-icon">🌐</span>
+        <span class="btn-txt">จับคู่เลขห้อง</span>
+      </button>
+      <button class="nav-btn btn-chat-toggle" id="toggle-chat-btn">
+        <span class="btn-icon">💬</span>
+        <span class="btn-txt">แชทโต้ตอบ</span>
+        <span class="chat-unread-badge" id="chat-unread" style="display: none;">1</span>
       </button>
       <a href="../tether-survival/index.html" class="nav-btn btn-arena">
         <span class="btn-icon">⚡</span>
-        <span class="btn-txt">ไป 3D Tether Arena</span>
+        <span class="btn-txt">3D Tether Arena</span>
       </a>
       <a href="../index.html" class="nav-btn btn-home">
         <span class="btn-icon">🏠</span>
@@ -61,61 +78,82 @@
     <!-- Left: 3D Clue Dossier View -->
     <aside class="dossier-panel" id="dossier-panel">
       <div class="dossier-header">
-        <div class="dossier-stamp">TOP SECRET // CLASSIFIED</div>
+        <div class="dossier-stamp" id="dossier-stamp">CONFIDENTIAL // 24+ CARDS POOL</div>
         <div class="dossier-title-wrap">
           <span class="case-id" id="dossier-case-id">CASE #01</span>
           <h2 class="dossier-heading">แฟ้มสืบสวนอัตลักษณ์ชีวโมเลกุล</h2>
         </div>
       </div>
 
-      <!-- Co-op Duo Role Banner -->
-      <div class="duo-role-banner" id="duo-role-banner">
-        <div class="role-badge role-reader">
-          <span class="role-icon">📜</span>
-          <div class="role-info">
-            <strong>ผู้เล่น 1 (คนอ่านแฟ้มลับ):</strong>
-            <span>ส่งสัญญาณ/ใบ้คีย์เวิร์ดให้คู่หู! ห้ามบอกชื่อตรงๆ</span>
-          </div>
-        </div>
-        <div class="role-badge role-picker">
-          <span class="role-icon">🃏</span>
-          <div class="role-info">
-            <strong>ผู้เล่น 2 (นักสืบภาคสนาม):</strong>
-            <span>ฟังคำใบ้ แล้วคลิกเลือกการ์ด 3D บนโต๊ะทดลอง</span>
-          </div>
-        </div>
+      <!-- Secret Target Preview (Only for Host / Questioner) -->
+      <div class="secret-target-card" id="secret-target-box" style="display: none;">
+        <div class="st-tag">🔒 คุณคือผู้ถือคำตอบลับ (Secret Specimen)</div>
+        <div class="st-name" id="st-name">ไมโทคอนเดรีย (Mitochondria)</div>
+        <div class="st-hint">คอยตอบคำถามฝ่ายตรงข้าม & ผู้ชม หรือส่งคำใบ้</div>
       </div>
 
       <!-- Progressive Clues Container -->
       <div class="clues-container" id="clues-container">
-        <!-- Clues injected by JS with typewriter effect -->
+        <!-- Clues injected by JS -->
       </div>
 
       <!-- Clue Actions -->
       <div class="dossier-actions">
         <button class="clue-btn" id="reveal-clue-btn">
-          <span class="btn-glow"></span>
           <span class="clue-btn-icon">🔍</span>
           <span class="clue-btn-text">เปิดคำใบ้ถัดไป (-50 คะแนน)</span>
         </button>
-        <button class="buzz-btn" id="sound-hint-btn">
-          <span class="buzz-icon">🔊</span>
-          <span>ส่งเสียงสัญญาณชีวภาพ</span>
+        <button class="buzz-btn" id="reset-elim-btn">
+          <span class="buzz-icon">🔄</span>
+          <span>รีเซ็ตการคว่ำการ์ดทั้งหมด</span>
         </button>
       </div>
 
-      <!-- Co-op Quick Signaling Buzzers (For Duo mode) -->
-      <div class="duo-buzzers" id="duo-buzzers">
-        <div class="buzzer-label">ส่งสัญญาณด่วนถึงผู้เล่น 2:</div>
-        <div class="buzzer-grid">
-          <button class="buzzer-btn" data-buzz="⚡ พลังงานสูง!">⚡ พลังงานสูง</button>
-          <button class="buzzer-btn" data-buzz="🌿 พบในพืช!">🌿 พบในพืช</button>
-          <button class="buzzer-btn" data-buzz="🛡️ เยื่อหุ้ม 2 ชั้น!">🛡️ เยื่อหุ้ม 2 ชั้น</button>
-          <button class="buzzer-btn" data-buzz="🧬 มี DNA ของตัวเอง!">🧬 มี DNA ตัวเอง</button>
-          <button class="buzzer-btn" data-buzz="✂️ ย่อยสลายสาร!">✂️ ย่อยสลาย</button>
-          <button class="buzzer-btn" data-buzz="🏭 สังเคราะห์โปรตีน!">🏭 สังเคราะห์โปรตีน</button>
+      <!-- Quick Inquiry Probes (ส่งคำถามโต้ตอบทันที) -->
+      <div class="probe-section">
+        <div class="probe-label">📡 กดถามด่วนฝ่ายตรงข้าม (One-Click Inquiries):</div>
+        <div class="probe-grid">
+          <button class="probe-btn" data-ask="มีเยื่อหุ้ม 2 ชั้นใช่ไหม?">🛡️ เยื่อหุ้ม 2 ชั้น?</button>
+          <button class="probe-btn" data-ask="พบในเซลล์พืชใช่ไหม?">🌿 พบในพืช?</button>
+          <button class="probe-btn" data-ask="ทำหน้าที่สร้าง ATP ใช่ไหม?">⚡ สร้าง ATP?</button>
+          <button class="probe-btn" data-ask="เป็นเอนไซม์หรือโปรตีนใช่ไหม?">🧪 เป็นเอนไซม์?</button>
+          <button class="probe-btn" data-ask="มีสารพันธุกรรม DNA ตัวเองไหม?">🧬 มี DNA ตัวเอง?</button>
+          <button class="probe-btn" data-ask="ทำหน้าที่ย่อยสลายสารใช่ไหม?">✂️ ย่อยสลาย?</button>
         </div>
       </div>
+    </aside>
+
+    <!-- Right: Real-time Live Chat & Audience Intercom Panel -->
+    <aside class="live-chat-panel" id="live-chat-panel">
+      <div class="chat-header">
+        <div class="chat-title">
+          <span class="live-badge">LIVE INTERCOM</span>
+          <h3>ห้องสนทนา & ตอบคำถาม</h3>
+        </div>
+        <button class="close-chat-btn" id="close-chat-btn">✕</button>
+      </div>
+
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-msg system-msg">
+          <span class="msg-sender">📢 ระบบ:</span> ยินดีต้อนรับสู่ห้องสืบสวนชีววิทยา! ผู้ชมและผู้เล่นสามารถพิมพ์ถามตอบเพื่อตัดช้อยส์การ์ด 24 ใบได้ที่นี่
+        </div>
+      </div>
+
+      <!-- Answer Response Quick Bar (For Host / Target Holder) -->
+      <div class="host-reply-bar" id="host-reply-bar">
+        <span class="hr-label">ตอบคำถามด่วน:</span>
+        <div class="hr-btns">
+          <button class="hr-btn hr-yes" data-answer="ใช่! ✅ (YES)">ใช่ ✅</button>
+          <button class="hr-btn hr-no" data-answer="ไม่ใช่! ❌ (NO)">ไม่ใช่ ❌</button>
+          <button class="hr-btn hr-maybe" data-answer="บางกรณี / ไม่แน่นอน ⚠️">บางกรณี ⚠️</button>
+        </div>
+      </div>
+
+      <!-- Chat Input Form -->
+      <form class="chat-input-row" id="chat-form">
+        <input type="text" class="chat-input" id="chat-input" placeholder="พิมพ์คำถามถึงฝ่ายตรงข้าม หรือบอกใบ้..." maxlength="120" autocomplete="off">
+        <button type="submit" class="chat-send-btn">ส่ง</button>
+      </form>
     </aside>
 
     <!-- Center-Bottom: Instructions & 3D Interactive Controls -->
@@ -123,34 +161,82 @@
       <div class="guidance-card">
         <div class="guide-indicator">
           <span class="pulse-dot"></span>
-          <span id="guide-text">สำรับ 8 ใบ: หมุนดูการ์ดบนโต๊ะ แล้วคลิกการ์ดที่คุณมั่นใจว่าเป็นคำตอบ!</span>
+          <span id="guide-text">สำรับรวม 24 ใบ: คลิกขวาเพื่อคว่ำการ์ดตัดช้อยส์ / คลิกซ้ายเพื่อทายคำตอบสุดท้าย!</span>
         </div>
         <div class="deck-actions">
-          <button class="deck-action-btn" id="shuffle-deck-btn" title="สับสำรับและแจกการ์ดใหม่">
-            <span>🎴 สับสำรับ 8 ใบ</span>
+          <button class="deck-action-btn" id="shuffle-deck-btn" title="จัดเรียงสำรับ 24 ใบใหม่">
+            <span>🎴 จัดเรียง 24 ใบ</span>
+          </button>
+          <button class="deck-action-btn" id="view-mode-btn" title="สลับมุมมอง">
+            <span>📐 ปรับมุมกล้อง 3D</span>
           </button>
         </div>
         <div class="control-hints">
-          <span class="hint-item"><kbd>คลิกซ้าย</kbd> เลือก/พลิกการ์ด 3D</span>
-          <span class="hint-item"><kbd>เลื่อนเมาส์</kbd> ยกการ์ดตรวจสเปก</span>
-          <span class="hint-item"><kbd>Spacebar</kbd> ปลดล็อกคำใบ้</span>
+          <span class="hint-item"><kbd>คลิกซ้าย</kbd> ทายคำตอบ</span>
+          <span class="hint-item"><kbd>คลิกขวา / ดับเบิลคลิก</kbd> คว่ำการ์ดทิ้ง</span>
+          <span class="hint-item"><kbd>ลากเมาส์</kbd> ตรวจดูการ์ด</span>
         </div>
       </div>
     </div>
 
     <!-- Active Holographic Signal Popup -->
     <div class="holo-signal" id="holo-signal">
-      <div class="holo-signal-content" id="holo-signal-text">⚡ พลังงานสูง!</div>
+      <div class="holo-signal-content" id="holo-signal-text">⚡ สัญญาณชีวภาพ</div>
     </div>
 
   </main>
+
+  <!-- Multiplayer Room Lobby Modal -->
+  <div class="modal-backdrop" id="lobby-modal">
+    <div class="modal-card lobby-card">
+      <div class="modal-close-btn" id="close-lobby-modal">✕</div>
+      <div class="lobby-header">
+        <div class="brand-badge">MULTIPLAYER MATCHMAKING</div>
+        <h2>จับคู่ห้องสืบสวนชีววิทยา (Room Matching)</h2>
+        <p>สร้างห้องใหม่เพื่อเป็นผู้ตั้งคำถาม หรือใส่เลขห้องเพื่อเข้าร่วมเป็นผู้ทาย / ผู้ชม</p>
+      </div>
+
+      <div class="lobby-grid">
+        <!-- Option 1: Create Room (Host) -->
+        <div class="lobby-box host-box">
+          <div class="lb-icon">👑</div>
+          <h3>สร้างห้องใหม่ (Host Game)</h3>
+          <p>เป็นผู้ถือแฟ้มลับ และสุ่มการ์ดเป้าหมาย 1 ใบจาก 24 ใบ</p>
+          <div class="generated-room-box">
+            <span class="gr-label">รหัสห้องของคุณ:</span>
+            <div class="gr-code" id="gen-room-code">CYTO-544</div>
+          </div>
+          <button class="lobby-action-btn btn-create-room" id="create-room-btn">สร้างห้อง & รอผู้เล่น</button>
+        </div>
+
+        <!-- Option 2: Join Room by Code -->
+        <div class="lobby-box join-box">
+          <div class="lb-icon">🕵️</div>
+          <h3>เข้าร่วมด้วยเลขห้อง (Join by Code)</h3>
+          <p>ใส่เลขห้อง 4-6 หลักเพื่อเข้าร่วมประลองทายการ์ด 24 ใบ</p>
+          <div class="join-input-wrap">
+            <input type="text" class="room-input" id="join-room-input" placeholder="ใส่รหัสห้อง เช่น CYTO-544" maxlength="12">
+          </div>
+          <div class="role-select-row">
+            <label><input type="radio" name="join-role" value="guesser" checked> 🕵️ ผู้เล่นทายการ์ด (Guesser)</label>
+            <label><input type="radio" name="join-role" value="spectator"> 🍿 ผู้ชมร่วมพิมพ์ถาม (Spectator)</label>
+          </div>
+          <button class="lobby-action-btn btn-join-room" id="join-room-btn">เข้าร่วมห้องทันที</button>
+        </div>
+      </div>
+
+      <div class="lobby-footer">
+        <span>💡 ระบบรองรับการเล่นข้ามอุปกรณ์ (มือถือ, แท็บเล็ต, PC) ผ่าน WebRTC P2P เครือข่ายเดียวกันหรือออนไลน์</span>
+      </div>
+    </div>
+  </div>
 
   <!-- Victory / Result Modal -->
   <div class="result-modal-backdrop" id="result-modal">
     <div class="result-modal-box">
       <div class="modal-icon-badge" id="modal-icon">🎉</div>
-      <h2 class="modal-title" id="modal-title">ไขปริศนาสำเร็จ!</h2>
-      <div class="modal-subtitle" id="modal-subtitle">อัตลักษณ์ที่ถูกต้องคือ: <strong id="modal-target-name">Mitochondria</strong></div>
+      <h2 class="modal-title" id="modal-title">ไขปริศนาถูกต้อง 100%!</h2>
+      <div class="modal-subtitle" id="modal-subtitle">อัตลักษณ์ที่ถูกต้องเพียง 1 เดียวคือ: <strong id="modal-target-name">Mitochondria</strong></div>
 
       <div class="modal-bio-card" id="modal-bio-card">
         <div class="bio-card-header">
@@ -163,22 +249,22 @@
         <div class="bio-stats-grid">
           <div class="bio-stat">
             <span class="bs-label">คะแนนที่ได้</span>
-            <span class="bs-val text-cyan" id="modal-round-score">+450</span>
+            <span class="bs-val text-cyan" id="modal-round-score">+550</span>
           </div>
-          <div class="bs-stat">
-            <span class="bs-label">คำใบ้ที่ใช้</span>
-            <span class="bs-val text-purple" id="modal-clues-used">2 / 4</span>
+          <div class="bio-stat">
+            <span class="bs-label">การ์ดที่ตัดช้อยส์</span>
+            <span class="bs-val text-purple" id="modal-elim-count">18 / 24 ใบ</span>
           </div>
-          <div class="bs-stat">
+          <div class="bio-stat">
             <span class="bs-label">ความแม่นยำ</span>
-            <span class="bs-val text-green" id="modal-accuracy">100% (1st Try)</span>
+            <span class="bs-val text-green" id="modal-accuracy">100% (First Guess)</span>
           </div>
         </div>
       </div>
 
       <div class="modal-actions">
         <button class="modal-btn btn-next" id="modal-next-btn">
-          <span>คดีถัดไป (Next Case)</span>
+          <span>สุ่มคดีถัดไป (Next Case)</span>
           <span class="btn-arrow">➔</span>
         </button>
         <button class="modal-btn btn-replay" id="modal-replay-btn">
@@ -188,7 +274,6 @@
     </div>
   </div>
 
-  <!-- Sound Synth Audio Script -->
   <script src="game.js"></script>
 </body>
 </html>
