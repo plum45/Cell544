@@ -22,9 +22,10 @@
 
       <ul class="nav-links-desktop">
         <li><a href="#overview">ภาพรวม</a></li>
+        <li><a href="#showcase-3d">แกลเลอรี 3D</a></li>
         <li><a href="#lineup">3 โหมดโปรเจกต์</a></li>
         <li><a href="#curriculum">6 ฐานความรู้</a></li>
-        <li><a href="#specs">สเปกและฟีเจอร์</a></li>
+        <li><a href="#specs">สเปก</a></li>
         <li><a href="#compare">เปรียบเทียบ</a></li>
       </ul>
 
@@ -39,7 +40,7 @@
         Cellular OS 18 <span>Pro Edition</span>
       </div>
       <div class="local-actions">
-        <a href="#lineup" class="local-link">สำรวจโหมด</a>
+        <a href="#showcase-3d" class="local-link">แกลเลอรีเนื้อหา</a>
         <a href="../game-2d/index.html" class="local-link">เกมแล็บ 2D</a>
         <a href="../island-3d/index.html" class="local-btn-primary">เข้าสู่โลก 3D</a>
       </div>
@@ -111,8 +112,174 @@
     </div>
   </section>
 
-  <!-- ===== 5. Apple Big Spec Numbers Bar ===== -->
-  <section class="section-apple" id="specs" style="padding-top: 20px;">
+  <!-- ===== 5. 3D ROTATING CYLINDER SHOWCASE (วงแหวนภาพ 3 มิติหมุนรอบ สัมผัสแล้วหยุด) ===== -->
+  <section class="apple-3d-showcase-section" id="showcase-3d">
+    <div class="apple-container">
+      <div class="showcase-header">
+        <div class="apple-eyebrow">INTERACTIVE 3D REEL</div>
+        <h2 class="apple-title-huge">
+          เนื้อหาชีวโมเลกุล. <span>หมุนรอบ 3 มิติ.</span>
+        </h2>
+        <p style="color: var(--text-gray); font-size: 15px; margin-top: 10px;">
+          เอาเมาส์ชี้เพื่อหยุดและดูข้อมูล หรือคลิกและลากเพื่อหมุนสำรวจเนื้อหาได้รอบทิศทาง
+        </p>
+      </div>
+
+      <!-- 3D Cylinder Viewport -->
+      <div class="showcase-stage-viewport" id="showcase-stage">
+        <div class="showcase-cylinder-ring" id="showcase-cylinder-ring">
+
+          <!-- Card 1: Gene Expression -->
+          <div class="showcase-card">
+            <div class="card-img-banner" style="background: linear-gradient(135deg, #1e1b4b, #312e81);">
+              <div class="card-img-banner-bg" style="background: radial-gradient(circle at center, #6366f1 0%, #1e1b4b 100%);"></div>
+              <div class="card-img-icon-overlay">🧬</div>
+            </div>
+            <div class="card-content-body">
+              <span class="card-tag-pill tag-blue">MODULE 01</span>
+              <h4 class="card-item-title">Gene Expression</h4>
+              <p class="card-item-desc">Central Dogma: จากสายรหัส DNA สู่การถอดรหัส mRNA และสังเคราะห์โปรตีน</p>
+            </div>
+            <div class="card-footer-action">
+              <span class="card-read-time">⏱️ 3 นาที</span>
+              <a href="../topics/gene-expression.html" class="card-btn-action">อ่านบทเรียน ➔</a>
+            </div>
+          </div>
+
+          <!-- Card 2: Gene Regulation -->
+          <div class="showcase-card">
+            <div class="card-img-banner" style="background: linear-gradient(135deg, #311042, #581c87);">
+              <div class="card-img-banner-bg" style="background: radial-gradient(circle at center, #a855f7 0%, #3b0764 100%);"></div>
+              <div class="card-img-icon-overlay">🎛️</div>
+            </div>
+            <div class="card-content-body">
+              <span class="card-tag-pill tag-purple">MODULE 02</span>
+              <h4 class="card-item-title">Gene Regulation</h4>
+              <p class="card-item-desc">การควบคุมการแสดงออกของยีน: กลไก Lac Operon, ปัจจัยถอดรหัส และ Epigenetics</p>
+            </div>
+            <div class="card-footer-action">
+              <span class="card-read-time">⏱️ 4 นาที</span>
+              <a href="../topics/gene-regulation.html" class="card-btn-action" style="background: var(--apple-purple);">อ่านบทเรียน ➔</a>
+            </div>
+          </div>
+
+          <!-- Card 3: Cell Signaling -->
+          <div class="showcase-card">
+            <div class="card-img-banner" style="background: linear-gradient(135deg, #082f49, #0369a1);">
+              <div class="card-img-banner-bg" style="background: radial-gradient(circle at center, #0284c7 0%, #0c4a6e 100%);"></div>
+              <div class="card-img-icon-overlay">📡</div>
+            </div>
+            <div class="card-content-body">
+              <span class="card-tag-pill tag-blue">MODULE 03</span>
+              <h4 class="card-item-title">Cell Signaling</h4>
+              <p class="card-item-desc">การสื่อสารระหว่างเซลล์: ตัวรับสัญญาณ GPCR, RTK และตัวส่งสัญญาณขั้นที่สอง</p>
+            </div>
+            <div class="card-footer-action">
+              <span class="card-read-time">⏱️ 3 นาที</span>
+              <a href="../topics/cell-signaling.html" class="card-btn-action">อ่านบทเรียน ➔</a>
+            </div>
+          </div>
+
+          <!-- Card 4: Cellular Response -->
+          <div class="showcase-card">
+            <div class="card-img-banner" style="background: linear-gradient(135deg, #052e16, #15803d);">
+              <div class="card-img-banner-bg" style="background: radial-gradient(circle at center, #22c55e 0%, #14532d 100%);"></div>
+              <div class="card-img-icon-overlay">⚡</div>
+            </div>
+            <div class="card-content-body">
+              <span class="card-tag-pill tag-green">MODULE 04</span>
+              <h4 class="card-item-title">Cellular Response</h4>
+              <p class="card-item-desc">การตอบสนองต่อสิ่งเร้า: การปรับเมแทบอลิซึม และการจัดโครงสร้างไซโทสเกเลตัน</p>
+            </div>
+            <div class="card-footer-action">
+              <span class="card-read-time">⏱️ 3 นาที</span>
+              <a href="../topics/cell-response.html" class="card-btn-action" style="background: var(--apple-green); color: #000;">อ่านบทเรียน ➔</a>
+            </div>
+          </div>
+
+          <!-- Card 5: Apoptosis -->
+          <div class="showcase-card">
+            <div class="card-img-banner" style="background: linear-gradient(135deg, #450a0a, #991b1b);">
+              <div class="card-img-banner-bg" style="background: radial-gradient(circle at center, #ef4444 0%, #7f1d1d 100%);"></div>
+              <div class="card-img-icon-overlay">🍂</div>
+            </div>
+            <div class="card-content-body">
+              <span class="card-tag-pill tag-orange">MODULE 05</span>
+              <h4 class="card-item-title">Apoptosis</h4>
+              <p class="card-item-desc">การตายของเซลล์ตามโปรแกรม: กลไก Caspase Cascade และ Cytochrome C</p>
+            </div>
+            <div class="card-footer-action">
+              <span class="card-read-time">⏱️ 4 นาที</span>
+              <a href="../topics/apoptosis.html" class="card-btn-action" style="background: var(--apple-orange); color: #000;">อ่านบทเรียน ➔</a>
+            </div>
+          </div>
+
+          <!-- Card 6: Cell Cycle -->
+          <div class="showcase-card">
+            <div class="card-img-banner" style="background: linear-gradient(135deg, #172554, #1e40af);">
+              <div class="card-img-banner-bg" style="background: radial-gradient(circle at center, #3b82f6 0%, #1e3a8a 100%);"></div>
+              <div class="card-img-icon-overlay">🔄</div>
+            </div>
+            <div class="card-content-body">
+              <span class="card-tag-pill tag-blue">MODULE 06</span>
+              <h4 class="card-item-title">Cell Cycle</h4>
+              <p class="card-item-desc">วัฏจักรเซลล์และการควบคุม: Interphase, Mitosis และจุดตรวจ G1/S/G2-M</p>
+            </div>
+            <div class="card-footer-action">
+              <span class="card-read-time">⏱️ 4 นาที</span>
+              <a href="../topics/cell-cycle.html" class="card-btn-action">อ่านบทเรียน ➔</a>
+            </div>
+          </div>
+
+          <!-- Card 7: 2D Research Lab Simulation -->
+          <div class="showcase-card">
+            <div class="card-img-banner" style="background: linear-gradient(135deg, #064e3b, #047857);">
+              <div class="card-img-banner-bg" style="background: radial-gradient(circle at center, #10b981 0%, #064e3b 100%);"></div>
+              <div class="card-img-icon-overlay">🔬</div>
+            </div>
+            <div class="card-content-body">
+              <span class="card-tag-pill tag-green">PROJECT 2D</span>
+              <h4 class="card-item-title">สถาบันวิจัย 2D</h4>
+              <p class="card-item-desc">เกมแล็บเอาชีวิตรอดจากซอมบี้เซลล์กลายพันธุ์ ค้นหายารักษาและตอบคำถามวิชาการ</p>
+            </div>
+            <div class="card-footer-action">
+              <span class="card-read-time">🎮 Game Sim</span>
+              <a href="../game-2d/index.html" class="card-btn-action" style="background: var(--apple-green); color: #000;">เข้าเล่นเกม ➔</a>
+            </div>
+          </div>
+
+          <!-- Card 8: 3D Floating Island -->
+          <div class="showcase-card">
+            <div class="card-img-banner" style="background: linear-gradient(135deg, #1e3a8a, #0369a1);">
+              <div class="card-img-banner-bg" style="background: radial-gradient(circle at center, #38bdf8 0%, #0c4a6e 100%);"></div>
+              <div class="card-img-icon-overlay">🏝️</div>
+            </div>
+            <div class="card-content-body">
+              <span class="card-tag-pill tag-blue">PROJECT 3D</span>
+              <h4 class="card-item-title">เกาะลอยฟ้า 3D</h4>
+              <p class="card-item-desc">โลกเปิด 3 มิติสไตล์ Zelda Forest Temple วิ่งเล่นกับสัตว์ป่าและล่า 7 ขุมทรัพย์เซลล์</p>
+            </div>
+            <div class="card-footer-action">
+              <span class="card-read-time">🌟 Open World</span>
+              <a href="../island-3d/index.html" class="card-btn-action">ท่องโลก 3D ➔</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Controls Bar -->
+      <div class="showcase-controls-bar">
+        <button class="ctrl-btn" id="btn-cylinder-prev" title="ก่อนหน้า">‹</button>
+        <button class="ctrl-btn" id="btn-cylinder-toggle" title="หยุด/หมุนต่อ">⏸️</button>
+        <button class="ctrl-btn" id="btn-cylinder-next" title="ถัดไป">›</button>
+        <span class="ctrl-hint-text">หมุนอัตโนมัติ 360&deg; &bull; ลากเมาส์เพื่อหมุนเอง</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. Apple Big Spec Numbers Bar ===== -->
+  <section class="section-apple" id="specs" style="padding-top: 30px;">
     <div class="apple-container">
       <div class="apple-specs-bar">
         <div class="spec-item">
@@ -135,7 +302,7 @@
     </div>
   </section>
 
-  <!-- ===== 6. Apple "Explore the Lineup" Bento Grid ===== -->
+  <!-- ===== 7. Apple "Explore the Lineup" Bento Grid ===== -->
   <section class="section-apple" id="lineup" style="background: #050505;">
     <div class="apple-container">
       <div class="apple-section-header">
@@ -218,7 +385,7 @@
     </div>
   </section>
 
-  <!-- ===== 7. Apple Cupertino 6-Card Curriculum Grid ===== -->
+  <!-- ===== 8. Apple Cupertino 6-Card Curriculum Grid ===== -->
   <section class="section-apple" id="curriculum">
     <div class="apple-container">
       <div class="apple-section-header">
@@ -292,7 +459,7 @@
     </div>
   </section>
 
-  <!-- ===== 8. Apple Comparison Matrix ===== -->
+  <!-- ===== 9. Apple Comparison Matrix ===== -->
   <section class="section-apple" id="compare" style="background: #080808;">
     <div class="apple-container">
       <div class="apple-section-header">
@@ -349,7 +516,7 @@
     </div>
   </section>
 
-  <!-- ===== 9. Apple Cupertino Footer ===== -->
+  <!-- ===== 10. Apple Cupertino Footer ===== -->
   <footer class="apple-footer">
     <div class="apple-container">
       <div class="footer-footnotes">
@@ -406,6 +573,7 @@
   </footer>
 
   <script src="js/dna-viewer.js"></script>
+  <script src="js/cylinder-showcase.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

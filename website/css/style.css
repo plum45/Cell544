@@ -1,7 +1,7 @@
 /* ==========================================================================
    CYTOLIFE // APPLE DESIGN SYSTEM & STYLESHEET (Cupertino Pro Edition)
    Designed in authentic Apple.com Aesthetic: Pitch Black OLED, Frosted Glass,
-   SF Pro / Inter Typography, Titanium Gradients, Dynamic Island & Interactive Cards
+   SF Pro / Inter Typography, Titanium Gradients, Dynamic Island & 3D Cylinder Ring
    ========================================================================== */
 
 :root {
@@ -301,7 +301,7 @@ body {
    4. Apple Cinematic Hero Section
    ========================================================================== */
 .apple-hero {
-  padding: 40px 0 80px;
+  padding: 40px 0 60px;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -354,7 +354,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 16px;
-  margin-bottom: 48px;
+  margin-bottom: 36px;
   flex-wrap: wrap;
 }
 
@@ -401,7 +401,215 @@ body {
 }
 
 /* ==========================================================================
-   5. Interactive Titanium 3D Stage / Display Device
+   5. NEW: 3D Rotating Cylinder Content Showcase (ทรงกลม/วงแหวน 3 มิติหมุนรอบ)
+   ========================================================================== */
+.apple-3d-showcase-section {
+  padding: 70px 0 90px;
+  position: relative;
+  background: radial-gradient(circle at 50% 30%, rgba(41, 151, 255, 0.07) 0%, transparent 70%);
+  overflow: hidden;
+  text-align: center;
+}
+
+.showcase-header {
+  margin-bottom: 50px;
+}
+
+.showcase-stage-viewport {
+  perspective: 1300px;
+  width: 100%;
+  height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  user-select: none;
+}
+
+.showcase-cylinder-ring {
+  width: 320px;
+  height: 400px;
+  position: absolute;
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
+  cursor: grab;
+}
+
+.showcase-cylinder-ring:active {
+  cursor: grabbing;
+}
+
+/* Rectangular Content Cards on 3D Cylinder */
+.showcase-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 390px;
+  border-radius: var(--r-card);
+  background: rgba(22, 22, 23, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: transform 0.4s var(--ease-spring), border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+  transform-style: preserve-3d;
+  text-align: left;
+}
+
+.showcase-card:hover {
+  border-color: var(--apple-blue);
+  box-shadow: 0 25px 70px rgba(41, 151, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  background: rgba(28, 28, 30, 0.95);
+}
+
+.card-img-banner {
+  height: 140px;
+  width: 100%;
+  border-radius: var(--r-inner);
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-img-banner-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+}
+
+.showcase-card:hover .card-img-banner-bg {
+  transform: scale(1.08);
+}
+
+.card-img-icon-overlay {
+  position: relative;
+  z-index: 2;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.card-content-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-tag-pill {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  margin-bottom: 8px;
+}
+
+.tag-blue { background: rgba(41, 151, 255, 0.15); color: var(--apple-blue); }
+.tag-green { background: rgba(48, 209, 88, 0.15); color: var(--apple-green); }
+.tag-purple { background: rgba(191, 90, 242, 0.15); color: var(--apple-purple); }
+.tag-orange { background: rgba(255, 159, 10, 0.15); color: var(--apple-orange); }
+
+.card-item-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+  line-height: 1.25;
+}
+
+.card-item-desc {
+  font-size: 12.5px;
+  color: var(--text-gray);
+  line-height: 1.45;
+}
+
+.card-footer-action {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-btn-action {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--apple-blue);
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  text-decoration: none;
+  transition: transform 0.15s, background 0.2s;
+}
+
+.card-btn-action:hover {
+  transform: scale(1.04);
+  background: var(--apple-blue-hover);
+}
+
+.card-read-time {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* 3D Showcase Controls */
+.showcase-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 36px;
+}
+
+.ctrl-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.ctrl-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.08);
+}
+
+.ctrl-hint-text {
+  font-size: 12px;
+  color: var(--text-gray);
+}
+
+/* ==========================================================================
+   6. Interactive Titanium 3D Stage / Display Device
    ========================================================================== */
 .hero-stage-device {
   position: relative;
@@ -476,11 +684,39 @@ body {
   color: var(--text-gray);
 }
 
+/* Color Switcher Dots */
+.switcher-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 32px 0 16px;
+}
+
+.switcher-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.switcher-dot.active {
+  border-color: #fff;
+  transform: scale(1.15);
+}
+
+.dot-3d { background: radial-gradient(circle, #2997ff, #004085); }
+.dot-2d { background: radial-gradient(circle, #30d158, #0b5321); }
+.dot-ai { background: radial-gradient(circle, #bf5af2, #561678); }
+
 /* ==========================================================================
-   6. Apple "Explore the Lineup" - 3 Pillars Triad (Interactive Bento)
+   7. Apple "Explore the Lineup" - 3 Pillars Triad (Interactive Bento)
    ========================================================================== */
 .section-apple {
-  padding: 100px 0;
+  padding: 90px 0;
   position: relative;
 }
 
@@ -536,21 +772,10 @@ body {
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
 }
 
-.card-span-7 {
-  grid-column: span 7;
-}
-
-.card-span-5 {
-  grid-column: span 5;
-}
-
-.card-span-6 {
-  grid-column: span 6;
-}
-
-.card-span-12 {
-  grid-column: span 12;
-}
+.card-span-7 { grid-column: span 7; }
+.card-span-5 { grid-column: span 5; }
+.card-span-6 { grid-column: span 6; }
+.card-span-12 { grid-column: span 12; }
 
 .apple-card-tag {
   font-size: 12px;
@@ -598,36 +823,6 @@ body {
   text-decoration: underline;
   gap: 8px;
 }
-
-/* ==========================================================================
-   7. Apple Interactive Color / Mode Palette Switcher
-   ========================================================================== */
-.switcher-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin: 32px 0 16px;
-}
-
-.switcher-dot {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  cursor: pointer;
-  position: relative;
-  transition: transform 0.2s, border-color 0.2s;
-}
-
-.switcher-dot.active {
-  border-color: #fff;
-  transform: scale(1.15);
-}
-
-.dot-3d { background: radial-gradient(circle, #2997ff, #004085); }
-.dot-2d { background: radial-gradient(circle, #30d158, #0b5321); }
-.dot-ai { background: radial-gradient(circle, #bf5af2, #561678); }
 
 /* ==========================================================================
    8. Apple Spec Grid (Big Stat Numbers)
@@ -925,5 +1120,17 @@ body {
   .hero-stage-device {
     padding: 8px;
     border-radius: 24px;
+  }
+  .showcase-stage-viewport {
+    height: 440px;
+  }
+  .showcase-cylinder-ring {
+    width: 260px;
+    height: 360px;
+  }
+  .showcase-card {
+    width: 250px;
+    height: 350px;
+    padding: 18px;
   }
 }
