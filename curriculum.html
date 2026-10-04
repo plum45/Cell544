@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>CYTOLIFE Pro — ศูนย์รวมเนื้อหาบทเรียนชีววิทยาเซลล์</title>
+  <meta name="description" content="เลือกและสำรวจบทเรียนชีววิทยาเซลล์ระดับโปรทั้ง 4 เซกเตอร์ 6 บทเรียนหลัก และแล็บจำลองอินเทอร์แอคทีฟ">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="website/css/style.css?v=20261004puremono">
+  <link rel="stylesheet" href="css/style.css?v=20261004puremono">
+  
+  <style>
+    /* Curriculum Directory Specific Styles (100% Monochrome Black & White) */
+    .dir-hero {
+      padding: 70px 0 40px;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+    
+    .dir-filter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 32px 0 40px;
+    }
+    
+    .filter-btn {
+      padding: 8px 18px;
+      border-radius: var(--r-pill);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #a1a1aa;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s var(--ease);
+      cursor: pointer;
+    }
+    
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: #ffffff;
+      color: #000000;
+      border-color: #ffffff;
+      font-weight: 600;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(255, 255, 255, 0.25);
+    }
+    
+    .search-box-wrapper {
+      max-width: 520px;
+      margin: 0 auto 40px;
+      position: relative;
+    }
+    
+    .search-box {
+      width: 100%;
+      background: rgba(20, 20, 20, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--r-pill);
+      padding: 14px 24px 14px 48px;
+      color: #ffffff;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.25s var(--ease);
+      font-family: var(--font-sans);
+    }
+    
+    .search-box:focus {
+      border-color: #ffffff;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      background: rgba(30, 30, 30, 0.95);
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #71717a;
+      pointer-events: none;
+    }
+    
+    .sector-block {
+      margin-bottom: 70px;
+    }
+    
+    .sector-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      padding-bottom: 14px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    
+    .sector-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .sector-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: var(--r-pill);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+    
+    .topic-card-link {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    .topic-card-link:hover .apple-bento-card {
+      border-color: #ffffff !important;
+      transform: translateY(-6px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(255, 255, 255, 0.2) !important;
+    }
+  </style>
+</head>
+<body class="apple-theme">
+
+  <!-- 1. Apple Global Navigation Bar -->
+  <header class="apple-global-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="apple-logo-link">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+          <circle cx="12" cy="12" r="4" fill="currentColor"/>
+          <path d="M12 3v3M12 18v3M3 12h3M18 12h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>CYTOLIFE PRO</span>
+      </a>
+      <nav>
+        <ul class="nav-links-desktop">
+          <li><a href="index.html">หน้าแรก (Home)</a></li>
+          <li><a href="curriculum.html" style="color: #fff; font-weight: 600;">ศูนย์รวมเนื้อหา</a></li>
+          <li><a href="island-3d/index.html">เกาะลอยฟ้า 3D</a></li>
+          <li><a href="game-2d/index.html">เกมแล็บ 2D</a></li>
+          <li><a href="topics/quiz-hub.html">คลังข้อสอบ</a></li>
+          <li><a href="index.html#ai-assistant">AI Mentor</a></li>
+        </ul>
+      </nav>
+      <a href="island-3d/index.html" class="nav-cta-btn">เข้าสู่โลก 3D</a>
+    </div>
+  </header>
+
+  <!-- Main Directory Container -->
+  <main class="apple-container">
+    
+    <!-- Hero Header -->
+    <section class="dir-hero">
+      <span class="eyebrow-apple">Content Directory & Explorer</span>
+      <h1 class="title-apple">ศูนย์รวมเนื้อหาและบทเรียนชีววิทยาเซลล์</h1>
+      <p class="desc-apple">เลือกหัวข้อบทเรียนหรือเซกเตอร์ที่คุณต้องการศึกษา ทุกการ์ดสามารถคลิกเพื่อเข้าสู่เนื้อหาเจาะลึกได้ทันที</p>
+      
+      <!-- Search Box -->
+      <div class="search-box-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="dirSearch" class="search-box" placeholder="ค้นหาบทเรียน เช่น Transcription, GPCR, p53, Mitosis..." oninput="filterLessons()">
+      </div>
+      
+      <!-- Category Filter Tabs -->
+      <div class="dir-filter-bar">
+        <button class="filter-btn active" onclick="setCategory('all', this)">ทั้งหมด (All Sectors)</button>
+        <button class="filter-btn" onclick="setCategory('dogma', this)">พันธุศาสตร์โมเลกุล</button>
+        <button class="filter-btn" onclick="setCategory('signaling', this)">การสื่อสาร & ตอบสนอง</button>
+        <button class="filter-btn" onclick="setCategory('cycle', this)">วัฏจักร & การตายของเซลล์</button>
+        <button class="filter-btn" onclick="setCategory('lab', this)">โลก 3D & แล็บจำลอง</button>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SECTOR 01: 3D & 2D VIRTUAL SIMULATIONS
+         ========================================================================= -->
+    <section class="sector-block" data-category="lab">
+      <div class="sector-header">
+        <div class="sector-title">
+          <span>SECTOR 01</span>
+          <span>โลกเสมือนจริง 3D & ห้องทดลองจำลอง 2D</span>
+        </div>
+        <span class="sector-tag">Interactive World</span>
+      </div>
+
+      <div class="curriculum-bento-grid">
+        <!-- 3D Island -->
+        <div class="bento-span-7 lesson-card" data-keywords="3d island world open zeld webgl threejs explore shrine quest treasure">
+          <a href="island-3d/index.html" class="topic-card-link">
+            <div class="apple-bento-card bento-split" style="height: 100%;">
+              <div class="bento-content">
+                <span class="bento-tag">3D Open World</span>
+                <h3 class="bento-title">เกาะลอยฟ้าเซลล์ชีววิทยา 3 มิติ</h3>
+                <p class="bento-desc">
+                  ผจญภัยในโลก 3 มิติ สำรวจ 6 ศาลเจ้าแห่งชีวโมเลกุล ตามหา 7 ขุมทรัพย์ลับ และทดสอบความรู้แบบ 360 องศา
+                </p>
+                <div class="bento-features-list">
+                  <span>Three.js Engine</span>
+                  <span>Spatial Audio</span>
+                  <span>NPC Dialogues</span>
+                </div>
+                <div class="curr-link">เปิดโลก 3D เต็มจอ ➔</div>
+              </div>
+              <div class="bento-preview-box">
+                <div class="preview-badge">WebGL 3D</div>
+                <img src="img/07_dna_helix.jpg" alt="3D Island">
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- 2D Simulation Lab -->
+        <div class="bento-span-5 lesson-card" data-keywords="2d lab simulation game chemical synthesis stanford agents antigen antibody">
+          <a href="game-2d/index.html" class="topic-card-link">
+            <div class="apple-bento-card bento-vertical" style="height: 100%;">
+              <div class="bento-media-header">
+                <img src="img/04_cellular_response.jpg" alt="2D Lab">
+                <div class="preview-badge">Simulation Lab</div>
+              </div>
+              <div class="bento-card-body">
+                <span class="bento-tag">Research Simulation</span>
+                <h3 class="bento-title">ห้องปฏิบัติการเซลล์จำลอง 2D</h3>
+                <p class="bento-desc">
+                  จำลองห้องทดลองชีวเคมี ผสมยาต้านแอนติเจน และศึกษาการเอาชีวิตรอดของเซลล์
+                </p>
+                <div class="bento-features-list">
+                  <span>Stanford Agents</span>
+                  <span>Chemical Lab</span>
+                </div>
+                <div class="curr-link">เข้าสู่เกมแล็บ 2D ➔</div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SECTOR 02: 6 CORE MOLECULAR BIOLOGY LESSONS
+         ========================================================================= -->
+    <section class="sector-block" data-category="dogma signaling cycle">
+      <div class="sector-header">
+        <div class="sector-title">
+          <span>SECTOR 02</span>
+          <span>6 บทเรียนกลไกควบคุมชีวิตของเซลล์</span>
+        </div>
+        <span class="sector-tag">Core Curriculum</span>
+      </div>
+
+      <div class="curriculum-bento-grid">
+        <!-- Topic 1: Gene Expression -->
+        <div class="bento-span-8 lesson-card" data-category="dogma" data-keywords="gene expression central dogma transcription translation mrna ribosome 80s polypeptide codon dna">
+          <a href="topics/gene-expression.html" class="topic-card-link">
+            <div class="apple-bento-card bento-split" style="height: 100%;">
+              <div class="bento-content">
+                <div class="curr-icon">01</div>
+                <span class="bento-tag">Central Dogma</span>
+                <h3 class="bento-title">Gene Expression (การแสดงออกของยีน)</h3>
+                <p class="bento-desc">
+                  กระบวนการถอดรหัส DNA เป็น mRNA (Transcription) โดย RNA Polymerase II และการแปลรหัสเป็นโปรตีน (Translation) ที่ไรโบโซม 80S พร้อมกลไก tRNA & Peptide Bond
+                </p>
+                <div class="bento-features-list">
+                  <span>Transcription</span>
+                  <span>Translation</span>
+                  <span>Ribosome 80S</span>
+                </div>
+                <div class="curr-link">เข้าสู่บทเรียนที่ 1 ➔</div>
+              </div>
+              <div class="bento-preview-box">
+                <div class="preview-badge">Lesson 01</div>
+                <img src="img/01_gene_expression.jpg" alt="Gene Expression">
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- Topic 2: Gene Regulation -->
+        <div class="bento-span-4 lesson-card" data-category="dogma" data-keywords="gene regulation lac operon epigenetics transcription factors histone acetylation promoter repressor">
+          <a href="topics/gene-regulation.html" class="topic-card-link">
+            <div class="apple-bento-card bento-vertical" style="height: 100%;">
+              <div class="bento-media-header">
+                <img src="img/02_gene_regulation.jpg" alt="Gene Regulation">
+                <div class="preview-badge">Lesson 02</div>
+              </div>
+              <div class="bento-card-body">
+                <div class="curr-icon">02</div>
+                <span class="bento-tag">Gene Control</span>
+                <h3 class="bento-title">Gene Regulation (การควบคุมยีน)</h3>
+                <p class="bento-desc">
+                  กลไกเปิด-ปิดยีน เช่น Lac Operon ในโพรแคริโอต และการควบคุมระดับโครมาทิน Epigenetics ในยูแคริโอต
+                </p>
+                <div class="bento-features-list">
+                  <span>Lac Operon</span>
+                  <span>Epigenetics</span>
+                </div>
+                <div class="curr-link">เข้าสู่บทเรียนที่ 2 ➔</div>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- Topic 3: Cell Signaling -->
+        <div class="bento-span-4 lesson-card" data-category="signaling" data-keywords="cell signaling gpcr receptor tyrosine kinase camp ip3 ca2+ secondary messengers signal transduction">
+          <a href="topics/cell-signaling.html" class="topic-card-link">
+            <div class="apple-bento-card bento-vertical" style="height: 100%;">
+              <div class="bento-media-header">
+                <img src="img/03_cell_signaling.jpg" alt="Cell Signaling">
+                <div class="preview-badge">Lesson 03</div>
+              </div>
+              <div class="bento-card-body">
+                <div class="curr-icon">03</div>
+                <span class="bento-tag">Transduction</span>
+                <h3 class="bento-title">Cell Signaling (การสื่อสารเซลล์)</h3>
+                <p class="bento-desc">
+                  การรับสัญญาณผ่าน Membrane Receptors เช่น GPCR & Tyrosine Kinase พร้อมตัวส่งสัญญาณทุติยภูมิ (cAMP, Ca²⁺)
+                </p>
+                <div class="bento-features-list">
+                  <span>GPCR Receptors</span>
+                  <span>cAMP Cascade</span>
+                </div>
+                <div class="curr-link">เข้าสู่บทเรียนที่ 3 ➔</div>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- Topic 4: Cellular Response -->
+        <div class="bento-span-4 lesson-card" data-category="signaling" data-keywords="cellular response kinase cascades cytoskeleton actin tubulin metabolic enzyme mitochondria atp synthase">
+          <a href="topics/cell-response.html" class="topic-card-link">
+            <div class="apple-bento-card bento-vertical" style="height: 100%;">
+              <div class="bento-media-header">
+                <img src="img/04_cellular_response.jpg" alt="Cellular Response">
+                <div class="preview-badge">Lesson 04</div>
+              </div>
+              <div class="bento-card-body">
+                <div class="curr-icon">04</div>
+                <span class="bento-tag">Cell Dynamics</span>
+                <h3 class="bento-title">Cellular Response (การตอบสนอง)</h3>
+                <p class="bento-desc">
+                  ผลลัพธ์ของสัญญาณชีวเคมี เช่น การกระตุ้นเอนไซม์เมแทบอลิซึม การจัดรูป Cytoskeleton และการเคลื่อนที่
+                </p>
+                <div class="bento-features-list">
+                  <span>Cytoskeleton</span>
+                  <span>ATP Engine</span>
+                </div>
+                <div class="curr-link">เข้าสู่บทเรียนที่ 4 ➔</div>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- Topic 5: Apoptosis -->
+        <div class="bento-span-4 lesson-card" data-category="cycle" data-keywords="apoptosis caspase cascade cytochrome c programmed cell death dna cleavage cell suicide">
+          <a href="topics/apoptosis.html" class="topic-card-link">
+            <div class="apple-bento-card bento-vertical" style="height: 100%;">
+              <div class="bento-media-header">
+                <img src="img/05_apoptosis.jpg" alt="Apoptosis">
+                <div class="preview-badge">Lesson 05</div>
+              </div>
+              <div class="bento-card-body">
+                <div class="curr-icon">05</div>
+                <span class="bento-tag">Cell Defense</span>
+                <h3 class="bento-title">Apoptosis (การตายตามโปรแกรม)</h3>
+                <p class="bento-desc">
+                  การสลายตัวของเซลล์อย่างเป็นระบบผ่าน Caspase Cascade เมื่อเซลล์ติดเชื้อหรือ DNA เสียหายร้ายแรง
+                </p>
+                <div class="bento-features-list">
+                  <span>Caspase Cascade</span>
+                  <span>Cytochrome c</span>
+                </div>
+                <div class="curr-link">เข้าสู่บทเรียนที่ 5 ➔</div>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- Topic 6: Cell Cycle & Checkpoints -->
+        <div class="bento-span-12 lesson-card" data-category="cycle" data-keywords="cell cycle checkpoints interphase mitosis p53 tumor suppressor cyclin cdk g1 s g2 m phase">
+          <a href="topics/cell-cycle.html" class="topic-card-link">
+            <div class="apple-bento-card bento-split" style="height: 100%;">
+              <div class="bento-content">
+                <div class="curr-icon">06</div>
+                <span class="bento-tag">Genome Guardian</span>
+                <h3 class="bento-title">Cell Cycle & Checkpoints (วัฏจักรเซลล์ & จุดตรวจ)</h3>
+                <p class="bento-desc">
+                  วงจรชีวิตเซลล์ตั้งแต่ Interphase (G1, S, G2) จนถึง Mitotic Phase (M) พร้อมกลไกพิทักษ์จีโนม G1/S, G2/M และ Spindle Checkpoint โดย Cyclin, CDK และโปรตีนพิทักษ์จีโนม p53 Tumor Suppressor ป้องกันการกลายพันธุ์เป็นมะเร็ง
+                </p>
+                <div class="bento-features-list">
+                  <span>Interphase</span>
+                  <span>Mitosis</span>
+                  <span>Cyclin-CDK</span>
+                  <span>p53 Guardian</span>
+                </div>
+                <div class="curr-link">เข้าสู่บทเรียนที่ 6 ➔</div>
+              </div>
+              <div class="bento-preview-box">
+                <div class="preview-badge">Lesson 06</div>
+                <img src="img/06_cell_cycle.jpg" alt="Cell Cycle">
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SECTOR 03: BIO-AI MENTOR & EXAM ARENA
+         ========================================================================= -->
+    <section class="sector-block" data-category="lab">
+      <div class="sector-header">
+        <div class="sector-title">
+          <span>SECTOR 03</span>
+          <span>ระบบประเมินความรู้ & AI ติวเตอร์</span>
+        </div>
+        <span class="sector-tag">Assessment Hub</span>
+      </div>
+
+      <div class="curriculum-bento-grid">
+        <!-- Quiz Arena -->
+        <div class="bento-span-6 lesson-card" data-keywords="quiz test exam score trophy questions assessment 15 questions">
+          <a href="topics/quiz-hub.html" class="topic-card-link">
+            <div class="apple-bento-card bento-vertical" style="height: 100%;">
+              <div class="bento-media-header">
+                <img src="img/06_cell_cycle.jpg" alt="Quiz Arena">
+                <div class="preview-badge">15 Master Quizzes</div>
+              </div>
+              <div class="bento-card-body">
+                <span class="bento-tag">Exam Arena</span>
+                <h3 class="bento-title">คลังข้อสอบประมวลความรู้ 15 ข้อ</h3>
+                <p class="bento-desc">
+                  ทดสอบความเข้าใจชีวโมเลกุลครบทุกมิติ พร้อมระบบตรวจคะแนนทันทีและวิเคราะห์ผลลัพธ์
+                </p>
+                <div class="bento-features-list">
+                  <span>15 Quizzes</span>
+                  <span>Instant Grading</span>
+                </div>
+                <div class="curr-link">เริ่มทำแบบทดสอบ ➔</div>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- AI Bio-Mentor -->
+        <div class="bento-span-6 lesson-card" data-keywords="ai mentor neural tutor assistant chat question answer nemotron">
+          <a href="index.html#ai-assistant" class="topic-card-link">
+            <div class="apple-bento-card bento-vertical" style="height: 100%;">
+              <div class="bento-media-header">
+                <img src="img/03_cell_signaling.jpg" alt="AI Mentor">
+                <div class="preview-badge">Neural AI</div>
+              </div>
+              <div class="bento-card-body">
+                <span class="bento-tag">AI Mentor</span>
+                <h3 class="bento-title">สนทนากับ CYTOLIFE Bio-Mentor</h3>
+                <p class="bento-desc">
+                  ซักถามข้อสงสัยระดับลึกกับปัญญาประดิษฐ์ผู้ช่วยสอนชีววิทยาเซลล์ได้ตลอดเวลา
+                </p>
+                <div class="bento-features-list">
+                  <span>Context Aware</span>
+                  <span>24/7 Available</span>
+                </div>
+                <div class="curr-link">เปิดระบบสนทนา AI ➔</div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Apple Cupertino Footer -->
+  <footer class="apple-footer">
+    <div class="apple-container">
+      <div class="footer-breadcrumb">
+        <a href="index.html">CYTOLIFE Pro</a> &gt; <span>ศูนย์รวมเนื้อหา (Curriculum Directory)</span>
+      </div>
+      <div class="footer-columns">
+        <div>
+          <div class="footer-heading">บทเรียนชีววิทยาเซลล์</div>
+          <ul class="footer-links">
+            <li><a href="topics/gene-expression.html">01. Gene Expression</a></li>
+            <li><a href="topics/gene-regulation.html">02. Gene Regulation</a></li>
+            <li><a href="topics/cell-signaling.html">03. Cell Signaling</a></li>
+            <li><a href="topics/cell-response.html">04. Cellular Response</a></li>
+            <li><a href="topics/apoptosis.html">05. Apoptosis</a></li>
+            <li><a href="topics/cell-cycle.html">06. Cell Cycle</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">แพลตฟอร์มการเรียนรู้</div>
+          <ul class="footer-links">
+            <li><a href="island-3d/index.html">เกาะลอยฟ้า 3D (Three.js)</a></li>
+            <li><a href="game-2d/index.html">ห้องทดลองเซลล์ 2D Lab</a></li>
+            <li><a href="topics/quiz-hub.html">คลังข้อสอบ 15 ข้อ</a></li>
+            <li><a href="index.html#ai-assistant">CYTOLIFE AI Mentor</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">กลุ่มผู้พัฒนา</div>
+          <p style="color: var(--text-gray); line-height: 1.6;">
+            กลุ่มที่ 3 · ระบบควบคุมชีวิตของเซลล์<br>
+            สื่อการเรียนรู้ชีววิทยาระดับมัธยมศึกษาตอนปลายและอุดมศึกษา
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>Copyright © 2026 CYTOLIFE Pro. All rights reserved.</div>
+        <div class="footer-privacy">
+          <a href="index.html">หน้าแรก</a> |
+          <a href="curriculum.html">ศูนย์รวมเนื้อหา</a> |
+          <a href="island-3d/index.html">โลก 3D</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Search and Filtering Script -->
+  <script>
+    let activeCategory = 'all';
+
+    function setCategory(cat, btn) {
+      activeCategory = cat;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterLessons();
+    }
+
+    function filterLessons() {
+      const q = document.getElementById('dirSearch').value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.lesson-card');
+      
+      cards.forEach(card => {
+        const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+        const cardCat = card.getAttribute('data-category') || '';
+        const cardText = card.innerText.toLowerCase();
+
+        const matchCategory = activeCategory === 'all' || cardCat.includes(activeCategory);
+        const matchSearch = q === '' || keywords.includes(q) || cardText.includes(q);
+
+        if (matchCategory && matchSearch) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
