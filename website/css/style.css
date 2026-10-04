@@ -656,7 +656,7 @@ a {
 }
 
 /* ==========================================================================
-   6. Explore the Lineup (Cupertino Bento Grid)
+   6. Explore the Lineup (Cupertino Bento Grid Universe)
    ========================================================================== */
 .apple-lineup-section {
   padding: 60px 0 100px;
@@ -699,35 +699,72 @@ a {
   gap: 24px;
 }
 
+/* Bento Column Spans */
+.bento-span-12 { grid-column: span 12; }
+.bento-span-8  { grid-column: span 8; }
+.bento-span-7  { grid-column: span 7; }
+.bento-span-6  { grid-column: span 6; }
+.bento-span-5  { grid-column: span 5; }
+.bento-span-4  { grid-column: span 4; }
+
 .apple-bento-card {
   background: var(--apple-bg-card);
   border: 1px solid var(--apple-card-border);
   border-radius: var(--r-card);
-  padding: 38px;
+  padding: 34px;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(24px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
   transition: all 0.3s var(--ease);
+  display: flex;
+  flex-direction: column;
 }
 
 .apple-bento-card:hover {
   border-color: var(--apple-card-border-glow);
   transform: translateY(-4px);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(56, 189, 248, 0.15);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 35px rgba(56, 189, 248, 0.18);
 }
 
-.apple-bento-card.bento-hero {
-  grid-column: span 12;
+/* Bento Split Layout (Horizontal) */
+.apple-bento-card.bento-split {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.15fr 0.85fr;
   align-items: center;
-  gap: 36px;
-  background: linear-gradient(135deg, rgba(11, 18, 33, 0.9) 0%, rgba(8, 14, 28, 0.85) 100%);
+  gap: 32px;
+  background: linear-gradient(135deg, rgba(11, 18, 33, 0.95) 0%, rgba(8, 14, 28, 0.9) 100%);
 }
 
-.apple-bento-card:not(.bento-hero) {
-  grid-column: span 6;
+/* Bento Media Top Layout (Vertical card with photo on top) */
+.apple-bento-card.bento-vertical {
+  padding: 0;
+}
+
+.apple-bento-card.bento-vertical .bento-media-header {
+  width: 100%;
+  aspect-ratio: 16/9;
+  position: relative;
+  overflow: hidden;
+  background: #060a14;
+}
+
+.apple-bento-card.bento-vertical .bento-media-header img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s var(--ease);
+}
+
+.apple-bento-card.bento-vertical:hover .bento-media-header img {
+  transform: scale(1.05);
+}
+
+.apple-bento-card.bento-vertical .bento-card-body {
+  padding: 28px 30px 32px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 /* Cohesive Bento Tags */
@@ -742,44 +779,39 @@ a {
   border: 1px solid rgba(56, 189, 248, 0.28);
   padding: 4px 12px;
   border-radius: var(--r-pill);
-  margin-bottom: 16px;
-}
-
-.bento-tag.green,
-.bento-tag.purple {
-  color: var(--accent-cyan-light);
-  background: rgba(56, 189, 248, 0.12);
-  border-color: rgba(56, 189, 248, 0.28);
+  margin-bottom: 14px;
+  align-self: flex-start;
 }
 
 .bento-title {
-  font-size: clamp(22px, 2.4vw, 28px);
+  font-size: clamp(20px, 2.2vw, 26px);
   font-weight: 700;
   color: #fff;
   letter-spacing: -0.015em;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   line-height: 1.25;
 }
 
 .bento-desc {
-  font-size: 14.5px;
+  font-size: 14px;
   color: var(--text-gray);
   line-height: 1.6;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
+  flex-grow: 1;
 }
 
 .bento-features-list {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 26px;
+  margin-bottom: 24px;
 }
 
 .bento-features-list span {
-  font-size: 11.5px;
+  font-size: 11px;
   color: var(--text-silver);
   background: rgba(56, 189, 248, 0.06);
-  border: 1px solid rgba(56, 189, 248, 0.14);
+  border: 1px solid rgba(56, 189, 248, 0.16);
   padding: 4px 12px;
   border-radius: var(--r-pill);
 }
@@ -788,9 +820,9 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 9px 18px;
   border-radius: var(--r-pill);
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 600;
   transition: all 0.25s var(--ease);
 }
@@ -836,6 +868,11 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.4s var(--ease);
+}
+
+.apple-bento-card:hover .bento-preview-box img {
+  transform: scale(1.04);
 }
 
 .preview-badge {
@@ -853,49 +890,32 @@ a {
 }
 
 /* ==========================================================================
-   7. Core Curriculum (6 Topics Grid)
+   7. Core Curriculum (6 Topics Bento Grid Universe)
    ========================================================================== */
 .apple-curriculum-section {
   padding: 60px 0 100px;
   background: linear-gradient(180deg, transparent 0%, rgba(8, 13, 26, 0.6) 50%, transparent 100%);
 }
 
-.curriculum-apple-grid {
+.curriculum-bento-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(12, 1fr);
   gap: 24px;
 }
 
-.curriculum-apple-card {
-  background: var(--apple-bg-card);
-  border: 1px solid var(--apple-card-border);
-  border-radius: var(--r-card);
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  backdrop-filter: blur(20px);
-  transition: all 0.3s var(--ease);
-}
-
-.curriculum-apple-card:hover {
-  border-color: var(--accent-cyan);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 25px rgba(56, 189, 248, 0.15);
-}
-
 .curr-icon {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
   color: var(--accent-cyan);
   background: rgba(56, 189, 248, 0.12);
   border: 1px solid rgba(56, 189, 248, 0.3);
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .curr-title {
@@ -916,7 +936,7 @@ a {
   font-size: 13.5px;
   color: var(--text-gray);
   line-height: 1.6;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   flex-grow: 1;
 }
 
@@ -928,6 +948,7 @@ a {
   align-items: center;
   gap: 6px;
   transition: gap 0.2s, color 0.2s;
+  margin-top: auto;
 }
 
 .curr-link:hover {
@@ -1249,16 +1270,24 @@ body.lit .apple-modal-card {
    11. Responsive Breakpoints
    ========================================================================== */
 @media (max-width: 1024px) {
-  .curriculum-apple-grid { grid-template-columns: repeat(2, 1fr); }
-  .apple-specs-bar .specs-grid { grid-template-columns: repeat(2, 1fr); }
-  .apple-bento-card.bento-hero { grid-template-columns: 1fr; }
-  .apple-bento-card:not(.bento-hero) { grid-column: span 12; }
+  .bento-span-8, .bento-span-7, .bento-span-6, .bento-span-5, .bento-span-4 {
+    grid-column: span 12;
+  }
+  .curriculum-bento-grid {
+    grid-template-columns: 1fr;
+  }
+  .apple-specs-bar .specs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .apple-bento-card.bento-split {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {
   .nav-links-desktop { display: none; }
-  .curriculum-apple-grid { grid-template-columns: 1fr; }
-  .apple-specs-bar .specs-grid { grid-template-columns: 1fr; gap: 28px; }
+  .apple-specs-bar .specs-grid { grid-template-columns: 1fr; gap: 24px; }
   .footer-columns { grid-template-columns: 1fr; }
   .sphere-hero-section { height: 75vh; min-height: 520px; }
+  .apple-bento-card { padding: 24px; }
 }
