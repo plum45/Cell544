@@ -2368,3 +2368,285 @@ body {
     padding: 12px;
   }
 }
+
+/* ==========================================================================
+   APPLE VISIONOS DESIGN OVERRIDE FOR 3D ISLAND GAME
+   Sleek frosted glass capsules, clean typography, zero clutter
+   ========================================================================== */
+
+body.in-landing .floating-hud-tools,
+body.in-landing #character-selector,
+body.in-landing #labels-overlay,
+body.in-landing #interact-prompt,
+body.in-landing #hud-hint,
+body.in-landing #minimap,
+body.in-landing #treasure-hud,
+body.in-landing #ai-guide-container,
+body.in-landing #ai-guide-avatar,
+body.in-landing .landing-controls-preview,
+body.in-landing .aerial-banner {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* VisionOS Game Start Card */
+.game-start-card {
+  background: rgba(18, 18, 22, 0.82) !important;
+  backdrop-filter: blur(40px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(40px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 28px !important;
+  padding: 42px 36px !important;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  max-width: 540px !important;
+  width: 92% !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 16px !important;
+  text-align: center !important;
+  animation: heroFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both !important;
+}
+
+.game-kicker {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  color: #2997ff !important;
+  background: rgba(41, 151, 255, 0.12) !important;
+  border: 1px solid rgba(41, 151, 255, 0.28) !important;
+  padding: 5px 14px !important;
+  border-radius: 980px !important;
+}
+
+.game-title {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Prompt", sans-serif !important;
+  font-size: clamp(24px, 4vw, 32px) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  color: #ffffff !important;
+  line-height: 1.2 !important;
+}
+
+.game-subtitle {
+  font-size: 12px !important;
+  color: #86868b !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+}
+
+/* Character Selection Inside Start Card */
+.game-char-select-section {
+  width: 100% !important;
+  margin: 10px 0 !important;
+}
+
+.char-select-label {
+  font-size: 12px !important;
+  color: #d2d2d7 !important;
+  margin-bottom: 8px !important;
+}
+
+.char-select-options {
+  display: flex !important;
+  gap: 8px !important;
+  background: rgba(0, 0, 0, 0.45) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 6px !important;
+  border-radius: 18px !important;
+}
+
+.char-opt-btn {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 4px !important;
+  padding: 10px 6px !important;
+  border-radius: 12px !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  color: #86868b !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  font-size: 11.5px !important;
+  font-weight: 500 !important;
+}
+
+.char-opt-btn:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.char-opt-btn.active {
+  background: rgba(255, 255, 255, 0.16) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+.char-opt-emoji {
+  font-size: 22px !important;
+}
+
+/* Apple Pro Blue Play Button */
+.btn-start-game {
+  width: 100% !important;
+  padding: 14px 24px !important;
+  border-radius: 980px !important;
+  background: linear-gradient(135deg, #0071e3, #2997ff) !important;
+  color: #ffffff !important;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Prompt", sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  box-shadow: 0 6px 24px rgba(0, 113, 227, 0.45) !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  border: none !important;
+}
+
+.btn-start-game:hover {
+  background: linear-gradient(135deg, #0077ed, #40a9ff) !important;
+  transform: scale(1.02) !important;
+  box-shadow: 0 8px 30px rgba(0, 113, 227, 0.6) !important;
+}
+
+.btn-start-game:active {
+  transform: scale(0.98) !important;
+}
+
+.game-controls-hint {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  font-size: 11px !important;
+  color: #86868b !important;
+  flex-wrap: wrap !important;
+  margin-top: 4px !important;
+}
+
+.game-controls-hint span {
+  background: rgba(255, 255, 255, 0.05) !important;
+  padding: 3px 10px !important;
+  border-radius: 980px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.game-exit-row {
+  margin-top: 4px !important;
+}
+
+.game-back-link {
+  font-size: 13px !important;
+  color: #2997ff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  transition: all 0.2s !important;
+}
+
+.game-back-link:hover {
+  color: #0077ed !important;
+  text-decoration: underline !important;
+}
+
+/* ==========================================================================
+   Apple VisionOS In-Game Controls (Clean & Minimal)
+   ========================================================================== */
+.floating-hud-tools {
+  position: fixed !important;
+  top: 18px !important;
+  left: 18px !important;
+  z-index: 90 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: rgba(18, 18, 22, 0.65) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  padding: 5px 8px !important;
+  border-radius: 980px !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+.btn-help,
+.btn-toggle-touch,
+.btn-switch-2d {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 980px !important;
+  color: #f5f5f7 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Prompt", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  padding: 6px 14px !important;
+  box-shadow: none !important;
+  transition: all 0.15s ease !important;
+}
+
+.btn-help:hover,
+.btn-toggle-touch:hover,
+.btn-switch-2d:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+}
+
+/* In-Game Character Switcher (Top-Right) */
+#character-selector {
+  position: fixed !important;
+  top: 18px !important;
+  right: 18px !important;
+  z-index: 90 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: rgba(18, 18, 22, 0.65) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  padding: 4px 6px !important;
+  border-radius: 980px !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+}
+
+.selector-title {
+  display: none !important;
+}
+
+.selector-buttons {
+  display: inline-flex !important;
+  gap: 4px !important;
+}
+
+.char-btn {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 980px !important;
+  color: #86868b !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  padding: 5px 12px !important;
+  box-shadow: none !important;
+  transition: all 0.15s ease !important;
+}
+
+.char-btn:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.char-btn.active {
+  background: rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+

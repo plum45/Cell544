@@ -9,7 +9,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/style.css">
@@ -68,13 +68,15 @@
     <!-- 3D Viewport -->
     <div class="stage-hero-viewport" id="stage-hero">
       <div id="world">
-        <!-- 3D Fibonacci Orb Sphere -->
+        <!-- 3D Fibonacci Orb Sphere (Cards populated by sphere-hero.js) -->
         <div id="orb"></div>
         
         <!-- Centered Counter-Rotated Title -->
         <div id="headline">
           <div class="inner">
-            <span>ระบบควบคุมชีวิตของเซลล์</span>
+            <span class="hero-kicker">BIOTECH OPERATING SYSTEM 18</span>
+            <h1 class="hero-main-title">สถาปัตยกรรมแห่งชีวิต</h1>
+            <p class="hero-desc">สำรวจกลไกควบคุมชีวิตระดับเซลล์ผ่าน 3 มิติประสบการณ์สุดล้ำยุค</p>
           </div>
         </div>
       </div>
@@ -82,9 +84,6 @@
 
     <!-- Hero Controls Dock -->
     <div class="hero-controls-dock">
-      <div class="hero-subtext">
-        หมุนทรงกลม 3 มิติเพื่อสำรวจ 21 หัวข้อชีววิทยาเซลล์ หรือคลิกการ์ดเพื่อดูรายละเอียด
-      </div>
       <div class="hero-action-row">
         <a href="../island-3d/index.html" class="apple-btn-large primary">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -102,9 +101,16 @@
           </svg>
           เล่นเกมแล็บ 2D
         </a>
+        <a href="#curriculum" class="apple-btn-large secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+          คลัง 6 บทเรียน
+        </a>
       </div>
       <div class="hero-hint">
-        <span>ลากเมาส์ / สัมผัสเพื่อหมุน</span> &bull; <span>กด Space เพื่อหยุด/เล่น</span> &bull; <span>กดคลิกเพื่อดู FLIP Modal</span>
+        <span>✦ ลากเมาส์หมุน 3D</span> &bull; <span>ชี้เพื่อหยุดดู</span> &bull; <span>คลิกการ์ดเพื่ออ่านข้อมูล</span>
       </div>
     </div>
   </section>
@@ -157,7 +163,7 @@
             </p>
             <div class="bento-features-list">
               <span>Three.js Engine 60 FPS</span>
-              <span>Audio System</span>
+              <span>Spatial Audio</span>
               <span>NPC Dialogue</span>
               <span>Full Screen Orbit</span>
             </div>
@@ -167,23 +173,23 @@
           </div>
           <div class="bento-preview-box">
             <div class="preview-badge">WebGL 3D Live</div>
-            <div class="preview-mockup-3d">
-              <div class="island-cube-mockup">
-                <div class="cube-face face-front">3D World</div>
-                <div class="cube-face face-top">Zelda Sky</div>
-              </div>
-            </div>
+            <img src="img/07_dna_helix.jpg" alt="3D Island Preview">
           </div>
         </div>
 
         <!-- Bento Card 2: 2D Game Simulation -->
         <div class="apple-bento-card">
           <div class="bento-content">
-            <span class="bento-tag green">Interactive Simulation</span>
+            <span class="bento-tag">Interactive Simulation</span>
             <h3 class="bento-title">สถาบันวิจัยชีววิทยา 2D Lab</h3>
             <p class="bento-desc">
               เกมจำลองห้องทดลองชีววิทยาระดับเซลล์ ผสมยาต้านแอนติเจน ทำการทดลองเคมีโมเลกุล และเอาชีวิตรอดจากซอมบี้เซลล์กลายพันธุ์
             </p>
+            <div class="bento-features-list">
+              <span>Stanford Agents</span>
+              <span>Chemical Synthesis</span>
+              <span>Wave Survival</span>
+            </div>
             <div class="bento-btn-group">
               <a href="../game-2d/index.html" class="apple-btn secondary">เข้าเล่นเกม 2D ➔</a>
             </div>
@@ -193,13 +199,18 @@
         <!-- Bento Card 3: 3D Molecular Showcase & Quiz -->
         <div class="apple-bento-card">
           <div class="bento-content">
-            <span class="bento-tag purple">Molecular Core</span>
-            <h3 class="bento-title">แบบจำลองโครงสร้าง DNA & Quiz</h3>
+            <span class="bento-tag">Molecular Core</span>
+            <h3 class="bento-title">แบบจำลองโครงสร้าง DNA & AI Mentor</h3>
             <p class="bento-desc">
-              สำรวจเกลียวคู่ดีเอ็นเอและไรโบโซมแบบ Interactive 3 มิติ พร้อมคลังข้อสอบชีววิทยาประเมินผลแบบเรียลไทม์
+              สำรวจเกลียวคู่ดีเอ็นเอและไรโบโซมแบบ Interactive 3 มิติ พร้อมคลังข้อสอบและปัญญาประดิษฐ์ผู้ช่วยสอน
             </p>
+            <div class="bento-features-list">
+              <span>Interactive Model</span>
+              <span>Neural Assistant</span>
+              <span>Real-time Scoring</span>
+            </div>
             <div class="bento-btn-group">
-              <a href="#curriculum" class="apple-btn secondary">ดูบทเรียนทั้งหมด ➔</a>
+              <a href="#ai-assistant" class="apple-btn secondary">สนทนากับ AI Mentor ➔</a>
             </div>
           </div>
         </div>
@@ -225,7 +236,7 @@
           <p class="curr-desc">
             กระบวนการถอดรหัส DNA เป็น mRNA (Transcription) และการแปลรหัสเป็นสายพอลิเพปไทด์ (Translation) เพื่อสร้างโปรตีนทำงานในเซลล์
           </p>
-          <a href="../topics/topic1.html" class="curr-link">อ่านเนื้อหาเจาะลึก ➔</a>
+          <a href="topics/topic1.html" class="curr-link">อ่านเนื้อหาเจาะลึก ➔</a>
         </div>
 
         <!-- Topic 2 -->
@@ -236,7 +247,7 @@
           <p class="curr-desc">
             กลไกเปิด-ปิดยีน เช่น Lac Operon ในโพรแคริโอต และการควบคุมผ่าน Transcription Factors และ Epigenetics ในยูแคริโอต
           </p>
-          <a href="../topics/topic2.html" class="curr-link">อ่านเนื้อหาเจาะลึก ➔</a>
+          <a href="topics/topic2.html" class="curr-link">อ่านเนื้อหาเจาะลึก ➔</a>
         </div>
 
         <!-- Topic 3 -->
@@ -247,7 +258,7 @@
           <p class="curr-desc">
             การรับสัญญาณผ่าน Membrane Receptors เช่น GPCR และ Tyrosine Kinase พร้อมการส่งต่อสัญญาณด้วย Secondary Messengers (cAMP, Ca2+)
           </p>
-          <a href="../topics/topic3.html" class="curr-link">อ่านเนื้อหาเจาะลึก ➔</a>
+          <a href="topics/topic3.html" class="curr-link">อ่านเนื้อหาเจาะลึก ➔</a>
         </div>
 
         <!-- Topic 4 -->
@@ -256,9 +267,9 @@
           <h4 class="curr-title">Cellular Response</h4>
           <div class="curr-subtitle">การตอบสนองของเซลล์</div>
           <p class="curr-desc">
-            การตอบสนองผ่าน Enzyme Activation, การเปลี่ยนวิถี Metabolic Pathway และการจัดรูป Cytoskeleton เพื่อการเคลื่อนที่
+            ผลลัพธ์ของการสื่อสาร เช่น การเปิด-ปิดเอนไซม์ในเมแทบอลิซึม การเปลี่ยนแปลงรูปร่างของเซลล์ และการจัดระเบียบโครงร่างไซโทสเกเลตัน
           </p>
-          <a href="../topics/topic4.html" class="curr-link">อ่านเนื้อหาเจาะลึก ➔</a>
+          <a href="topics/topic4.html" class="curr-link">อ่านเนื้อหาเจาะลึก ➔</a>
         </div>
 
         <!-- Topic 5 -->
@@ -267,86 +278,36 @@
           <h4 class="curr-title">Apoptosis</h4>
           <div class="curr-subtitle">การตายของเซลล์ตามโปรแกรม</div>
           <p class="curr-desc">
-            กระบวนการทำลายเซลล์ที่เสื่อมสภาพหรือติดเชื้อด้วย Caspase Cascade และ Cytochrome C เพื่อรักษาสมดุลและป้องกันมะเร็ง
+            กลไกการสลายตัวของเซลล์อย่างเป็นระบบผ่าน Caspase Cascade เมื่อเซลล์เสื่อมสภาพ ติดเชื้อไวรัส หรือ DNA เสียหายจนซ่อมแซมไม่ได้
           </p>
-          <a href="../topics/topic5.html" class="curr-link">อ่านเนื้อหาเจาะลึก ➔</a>
+          <a href="topics/topic5.html" class="curr-link">อ่านเนื้อหาเจาะลึก ➔</a>
         </div>
 
         <!-- Topic 6 -->
         <div class="curriculum-apple-card">
           <div class="curr-icon">06</div>
-          <h4 class="curr-title">Cell Cycle & Checkpoints</h4>
-          <div class="curr-subtitle">วัฏจักรเซลล์และจุดตรวจ</div>
+          <h4 class="curr-title">Cell Cycle</h4>
+          <div class="curr-subtitle">วัฏจักรเซลล์และการควบคุม</div>
           <p class="curr-desc">
-            ขั้นตอน Interphase และ Mitosis ควบคุมด้วย Checkpoints (G1, G2/M, M) พร้อมโปรตีน Cyclin, CDK และ p53 Tumor Suppressor
+            วงจรชีวิตของเซลล์ตั้งแต่ Interphase จนถึง Mitosis พร้อมกลไกจุดตรวจความปลอดภัย (Checkpoints) ที่ควบคุมโดย Cyclin และ CDK
           </p>
-          <a href="../topics/topic6.html" class="curr-link">อ่านเนื้อหาเจาะลึก ➔</a>
+          <a href="topics/topic6.html" class="curr-link">อ่านเนื้อหาเจาะลึก ➔</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 8. Comparison Matrix (Apple Pro Table) -->
-  <section class="apple-comparison-section">
-    <div class="apple-container">
-      <div class="section-header-apple">
-        <span class="eyebrow-apple">Compare</span>
-        <h2 class="title-apple">เปรียบเทียบมิติแห่งการเรียนรู้</h2>
-        <p class="desc-apple">ดูความแตกต่างระหว่าง CYTOLIFE Pro กับการเรียนชีววิทยาแบบดั้งเดิม</p>
-      </div>
-
-      <div class="comparison-table-wrapper">
-        <table class="apple-table">
-          <thead>
-            <tr>
-              <th>คุณสมบัติ</th>
-              <th class="highlight">CYTOLIFE Pro</th>
-              <th>หนังสือเรียน 2D</th>
-              <th>ภาพประกอบทั่วไป</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>โมเดล 3 มิติแบบ Real-Time</td>
-              <td class="highlight check">✓ WebGL 60 FPS</td>
-              <td class="cross">✕ ภาพนิ่งขาวดำ</td>
-              <td class="cross">✕ ภาพ 2D ธรรมดา</td>
-            </tr>
-            <tr>
-              <td>เกมจำลองสภาพแวดล้อมจริง</td>
-              <td class="highlight check">✓ เกาะ 3D & แล็บ 2D</td>
-              <td class="cross">✕ ไม่มี</td>
-              <td class="cross">✕ ไม่มี</td>
-            </tr>
-            <tr>
-              <td>AI ติวเตอร์ชีวโมเลกุล</td>
-              <td class="highlight check">✓ ถาม-ตอบอัจฉริยะ</td>
-              <td class="cross">✕ ไม่มี</td>
-              <td class="cross">✕ ไม่มี</td>
-            </tr>
-            <tr>
-              <td>การจำลองกลไก Caspase & Operon</td>
-              <td class="highlight check">✓ จำลองเคลื่อนไหวจริง</td>
-              <td class="partial">△ แผนภาพผัง</td>
-              <td class="partial">△ ภาพไดอะแกรม</td>
-            </tr>
-            <tr>
-              <td>รองรับอุปกรณ์สัมผัส & Desktop</td>
-              <td class="highlight check">✓ 100% Responsive</td>
-              <td class="check">✓ กระดาษ</td>
-              <td class="partial">△ แล้วแต่ไฟล์</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <!-- 9. AI Assistant Console (Apple Cupertino Style) -->
+  <!-- 8. AI Assistant Section -->
   <section class="apple-ai-section" id="ai-assistant">
     <div class="apple-container">
-      <div class="ai-console-card">
-        <div class="ai-header">
+      <div class="section-header-apple">
+        <span class="eyebrow-apple">Intelligent Assistant</span>
+        <h2 class="title-apple">CYTOLIFE Neural Bio-Mentor</h2>
+        <p class="desc-apple">สนทนาและไขข้อข้องใจทางชีววิทยาเซลล์ได้ทันที ด้วยปัญญาประดิษฐ์อัจฉริยะ</p>
+      </div>
+
+      <div class="apple-ai-card">
+        <div class="ai-card-header">
           <div class="ai-status-indicator"></div>
           <div class="ai-title">CYTOLIFE Neural Bio-Mentor</div>
           <div class="ai-model-tag">Nemotron Bio-Engine</div>
@@ -368,26 +329,28 @@
     </div>
   </section>
 
-  <!-- 10. Lightbox Dialog for 3D Sphere Cards (FLIP Modal) -->
-  <dialog id="lit" class="lightbox-dialog">
-    <div class="sheet">
-      <div class="frame">
-        <img id="lit-img" src="" alt="">
+  <!-- 9. Lightbox Modal for 3D Sphere Cards -->
+  <div id="lit" class="apple-modal-overlay">
+    <div class="scrim" data-close></div>
+    <div class="apple-modal-card" id="litPlate">
+      <div class="modal-shot">
+        <img id="litImg" src="" alt="">
+        <button class="modal-close-btn" data-close aria-label="Close">✕</button>
       </div>
-      <div class="meta">
-        <h3 id="lit-title" class="lit-title"></h3>
-        <div id="lit-place" class="lit-place"></div>
-        <p id="lit-note" class="lit-note"></p>
-        <div class="lit-actions">
-          <a id="lit-link" href="#" class="apple-btn primary">อ่านหัวข้อนี้แบบเต็ม ➔</a>
-          <button id="lit-close-btn" class="apple-btn secondary">ปิดหน้าต่าง</button>
+      <div class="modal-body">
+        <div class="modal-tag" id="litTag">BIOLOGY MODULE</div>
+        <h3 id="litTitle" class="modal-title"></h3>
+        <div id="litWhere" class="modal-subtitle"></div>
+        <p id="litNote" class="modal-desc"></p>
+        <div class="modal-actions">
+          <a id="litLink" href="#" class="apple-btn-large primary">เข้าสู่เนื้อหาบทเรียน ➔</a>
+          <button class="apple-btn-large secondary" data-close>ปิดหน้าต่าง</button>
         </div>
       </div>
     </div>
-    <button class="close-hit" id="close-hit" aria-label="Close modal">✕</button>
-  </dialog>
+  </div>
 
-  <!-- 11. Apple Cupertino Footer -->
+  <!-- 10. Apple Cupertino Footer -->
   <footer class="apple-footer">
     <div class="apple-container">
       <div class="footer-breadcrumb">
@@ -400,18 +363,18 @@
           <ul class="footer-links">
             <li><a href="../island-3d/index.html">เกาะลอยฟ้าแฟนตาซี 3D</a></li>
             <li><a href="../game-2d/index.html">เกมจำลองห้องแล็บ 2D</a></li>
-            <li><a href="index.html#sphere-hero">ทรงกลม Fibonacci 3D</a></li>
+            <li><a href="index.html#sphere-hero">ทรงกลมโมเลกุล 3D</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <div class="footer-heading">6 บทเรียนชีววิทยา</div>
           <ul class="footer-links">
-            <li><a href="../topics/topic1.html">1. Gene Expression</a></li>
-            <li><a href="../topics/topic2.html">2. Gene Regulation</a></li>
-            <li><a href="../topics/topic3.html">3. Cell Signaling</a></li>
-            <li><a href="../topics/topic4.html">4. Cellular Response</a></li>
-            <li><a href="../topics/topic5.html">5. Apoptosis</a></li>
-            <li><a href="../topics/topic6.html">6. Cell Cycle</a></li>
+            <li><a href="topics/topic1.html">1. Gene Expression</a></li>
+            <li><a href="topics/topic2.html">2. Gene Regulation</a></li>
+            <li><a href="topics/topic3.html">3. Cell Signaling</a></li>
+            <li><a href="topics/topic4.html">4. Cellular Response</a></li>
+            <li><a href="topics/topic5.html">5. Apoptosis</a></li>
+            <li><a href="topics/topic6.html">6. Cell Cycle</a></li>
           </ul>
         </div>
         <div class="footer-col">

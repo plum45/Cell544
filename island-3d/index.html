@@ -12,15 +12,15 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/ai-guide.css">
 </head>
-<body>
+<body class="in-landing">
 
   <!-- ===== Loading Screen ===== -->
   <div id="loading">
     <div class="loading-slime"></div>
-    <div class="loading-text">กำลังสร้างโลก...</div>
+    <div class="loading-text">กำลังสร้างโลก 3D...</div>
   </div>
 
-  <!-- ===== Landing Page ===== -->
+  <!-- ===== Clean Cinematic Zelda Game Start Screen ===== -->
   <div id="landing">
     <!-- Cinematic Zelda Forest Temple Video Background -->
     <div class="landing-video-container">
@@ -33,186 +33,54 @@
     <!-- Ambient Fireflies / Pollen -->
     <div class="landing-particles" id="landing-particles"></div>
 
-    <!-- Premium Hero Content Container -->
+    <!-- Clean Focused Game Start Modal -->
     <div class="landing-content">
-      <!-- Top Tag Badges -->
-      <div class="landing-badge-group">
-        <div class="landing-badge">
-          <span class="badge-dot"></span>
-          <span class="badge-icon">🌿</span>
-          <span>3D Interactive Biology World</span>
-        </div>
-        <div class="landing-badge badge-ai" id="landing-badge-ai" style="cursor: pointer;" title="คลิกเพื่อสนทนากับ AI Guide">
-          <span class="badge-dot ai-dot"></span>
-          <span class="badge-icon">🐰</span>
-          <span>AI Guide • NVIDIA Nemotron</span>
-        </div>
-      </div>
+      <div class="game-start-card">
+        <div class="game-kicker">🌿 3D OPEN WORLD ADVENTURE</div>
+        <h1 class="game-title">เกาะลอยฟ้าชีววิทยาเซลล์</h1>
+        <p class="game-subtitle">ZELDA FOREST TEMPLE &bull; 6 ศาลเจ้าชีวโมเลกุล &bull; 7 ขุมทรัพย์ลับ</p>
 
-      <!-- Main Titles -->
-      <h1 class="landing-title">ระบบควบคุมชีวิตของเซลล์</h1>
-      <div class="landing-subtitle">GENE EXPRESSION &bull; CELL SIGNALING &bull; APOPTOSIS</div>
-
-      <!-- Hero Description Card -->
-      <div class="landing-card ds-glass-heavy">
-        <p class="landing-desc">
-          ผจญภัยในเกาะลอยฟ้าแฟนตาซีสไตล์ Zelda Forest Temple 🍃<br>
-          สำรวจ <strong>6 ฐานความรู้ชีววิทยาโมเลกุล</strong>, ตะลุย <strong>สถาบันวิจัย 2D จำลองชีวิต</strong>, และค้นพบ <strong>7 ขุมทรัพย์เซลล์</strong>
-        </p>
-
-        <!-- Feature Highlights -->
-        <div class="landing-features">
-          <div class="feature-pill">
-            <span class="pill-icon">🏛️</span>
-            <span>6 ฐานความรู้ 3D</span>
-          </div>
-          <div class="feature-pill">
-            <span class="pill-icon">🔬</span>
-            <span>2D Lab Sim</span>
-          </div>
-          <div class="feature-pill">
-            <span class="pill-icon">📚</span>
-            <span>คลังข้อสอบ 15 ข้อ</span>
-          </div>
-          <div class="feature-pill">
-            <span class="pill-icon">💎</span>
-            <span>7 ขุมทรัพย์เซลล์</span>
-          </div>
-          <div class="feature-pill">
-            <span class="pill-icon">🐰</span>
-            <span>AI Guide สนทนาสด</span>
+        <!-- Character Selection inside Start Card -->
+        <div class="game-char-select-section">
+          <div class="char-select-label">เลือกตัวละครของคุณ:</div>
+          <div class="char-select-options">
+            <button class="char-opt-btn active" id="start-char-fox" data-char="fox">
+              <span class="char-opt-emoji">🦊</span>
+              <span class="char-opt-name">จิ้งจอก (ว่องไว)</span>
+            </button>
+            <button class="char-opt-btn" id="start-char-slime" data-char="slime">
+              <span class="char-opt-emoji">🐌</span>
+              <span class="char-opt-name">สไลม์ (นุ่มนิ่ม)</span>
+            </button>
+            <button class="char-opt-btn" id="start-char-sprite" data-char="sprite">
+              <span class="char-opt-emoji">✨</span>
+              <span class="char-opt-name">ภูติน้อย (บินลอย)</span>
+            </button>
           </div>
         </div>
-      </div>
 
-      <!-- Interactive Experience Modes Grid -->
-      <div class="landing-modes-grid">
-        <!-- Mode 1: 3D Open World (Primary) -->
-        <button class="landing-mode-card mode-3d active" id="btn-enter">
-          <div class="mode-badge-glow">โหมดหลัก ✨</div>
-          <div class="mode-icon">🌟</div>
-          <div class="mode-info">
-            <div class="mode-title">เข้าสู่เกาะลอยฟ้า 3D</div>
-            <div class="mode-sub">Open World &bull; บินชมเกาะ &bull; ล่าสมบัติ</div>
-          </div>
-          <div class="mode-arrow">➔</div>
+        <!-- Big Enter Button -->
+        <button class="btn-start-game" id="btn-enter">
+          <span class="btn-icon">🌟</span>
+          <span>เริ่มต้นการผจญภัย (Enter Island)</span>
+          <span class="btn-arrow">➔</span>
         </button>
 
-        <!-- Mode 2: 2D Research Lab Simulation -->
-        <a class="landing-mode-card mode-2d" href="../game-2d/index.html">
-          <div class="mode-badge-glow">2D Lab 🔬</div>
-          <div class="mode-icon">🧪</div>
-          <div class="mode-info">
-            <div class="mode-title">สถาบันวิจัยชีววิทยา 2D</div>
-            <div class="mode-sub">Stanford Agents &bull; ซอมบี้ &bull; เขาวงกต</div>
-          </div>
-          <div class="mode-arrow">➔</div>
-        </a>
+        <!-- Controls Overview -->
+        <div class="game-controls-hint">
+          <span>🎮 <strong>W A S D</strong> เดิน</span>
+          <span><strong>Shift</strong> วิ่งเร็ว</span>
+          <span><strong>Space</strong> กระโดด</span>
+          <span><strong>E</strong> สำรวจ/คุย</span>
+          <span><strong>M</strong> แผนที่มุมสูง</span>
+        </div>
 
-        <!-- Mode 3: Futuristic Portal Website -->
-        <a class="landing-mode-card mode-quiz" href="../website/index.html">
-          <div class="mode-badge-glow">หน้าเว็บหลัก 🌐</div>
-          <div class="mode-icon">🧬</div>
-          <div class="mode-info">
-            <div class="mode-title">เว็บไซต์พอร์ทัลล้ำยุค</div>
-            <div class="mode-sub">Next-Gen Bio &bull; Bento Grid &bull; AI Hub</div>
-          </div>
-          <div class="mode-arrow">➔</div>
-        </a>
-
-        <!-- Mode 4: Quiz Hub -->
-        <a class="landing-mode-card mode-quiz" href="topics/quiz-hub.html">
-          <div class="mode-badge-glow">ทบทวน 📝</div>
-          <div class="mode-icon">📚</div>
-          <div class="mode-info">
-            <div class="mode-title">ห้องสมุดคลังข้อสอบ</div>
-            <div class="mode-sub">15 ข้อสอบ &bull; เฉลยทันที &bull; รับสมบัติ</div>
-          </div>
-          <div class="mode-arrow">➔</div>
-        </a>
-      <!-- Direct 6 Knowledge Topics Section -->
-      <div class="landing-topics-section">
-        <button class="landing-topics-toggle" id="btn-toggle-topics" type="button">
-          <span class="toggle-icon">📚</span>
-          <span class="toggle-title">หน้าความรู้ชีววิทยาโมเลกุล 6 บทเรียน</span>
-          <span class="toggle-arrow" id="topics-arrow">▾</span>
-        </button>
-
-        <div class="landing-topics-grid" id="landing-topics-grid">
-          <!-- 1. Gene Expression -->
-          <a href="topics/gene-expression.html" class="landing-topic-card" style="--card-accent: #8b5cf6;">
-            <div class="topic-mini-icon">🧬</div>
-            <div class="topic-mini-info">
-              <span class="topic-mini-tag">บทที่ 1</span>
-              <strong class="topic-mini-title">Gene Expression</strong>
-              <span class="topic-mini-desc">การแสดงออกของยีน (DNA → RNA → Protein)</span>
-            </div>
-            <span class="topic-mini-arrow">➔</span>
-          </a>
-
-          <!-- 2. Gene Regulation -->
-          <a href="topics/gene-regulation.html" class="landing-topic-card" style="--card-accent: #10b981;">
-            <div class="topic-mini-icon">🎛️</div>
-            <div class="topic-mini-info">
-              <span class="topic-mini-tag">บทที่ 2</span>
-              <strong class="topic-mini-title">Gene Regulation</strong>
-              <span class="topic-mini-desc">การควบคุมยีน (Operon & Epigenetics)</span>
-            </div>
-            <span class="topic-mini-arrow">➔</span>
-          </a>
-
-          <!-- 3. Cell Signaling -->
-          <a href="topics/cell-signaling.html" class="landing-topic-card" style="--card-accent: #f59e0b;">
-            <div class="topic-mini-icon">📡</div>
-            <div class="topic-mini-info">
-              <span class="topic-mini-tag">บทที่ 3</span>
-              <strong class="topic-mini-title">Cell Signaling</strong>
-              <span class="topic-mini-desc">การสื่อสารระหว่างเซลล์ (GPCR & Pathways)</span>
-            </div>
-            <span class="topic-mini-arrow">➔</span>
-          </a>
-
-          <!-- 4. Cell Response -->
-          <a href="topics/cell-response.html" class="landing-topic-card" style="--card-accent: #3b82f6;">
-            <div class="topic-mini-icon">⚡</div>
-            <div class="topic-mini-info">
-              <span class="topic-mini-tag">บทที่ 4</span>
-              <strong class="topic-mini-title">Cell Response</strong>
-              <span class="topic-mini-desc">การตอบสนองของเซลล์ต่อสิ่งเร้า & สารสื่อ</span>
-            </div>
-            <span class="topic-mini-arrow">➔</span>
-          </a>
-
-          <!-- 5. Cell Cycle -->
-          <a href="topics/cell-cycle.html" class="landing-topic-card" style="--card-accent: #f43f5e;">
-            <div class="topic-mini-icon">🔄</div>
-            <div class="topic-mini-info">
-              <span class="topic-mini-tag">บทที่ 5</span>
-              <strong class="topic-mini-title">Cell Cycle</strong>
-              <span class="topic-mini-desc">การควบคุมวัฏจักรเซลล์ & p53 Checkpoint</span>
-            </div>
-            <span class="topic-mini-arrow">➔</span>
-          </a>
-
-          <!-- 6. Apoptosis -->
-          <a href="topics/apoptosis.html" class="landing-topic-card" style="--card-accent: #6366f1;">
-            <div class="topic-mini-icon">💀</div>
-            <div class="topic-mini-info">
-              <span class="topic-mini-tag">บทที่ 6</span>
-              <strong class="topic-mini-title">Apoptosis</strong>
-              <span class="topic-mini-desc">การตายแบบมีแบบแผน (Caspase Cascade)</span>
-            </div>
-            <span class="topic-mini-arrow">➔</span>
+        <!-- Back to Website Link -->
+        <div class="game-exit-row">
+          <a href="../index.html" class="game-back-link">
+            <span>⬅</span> กลับสู่หน้าหลัก CYTOLIFE
           </a>
         </div>
-      </div>
-
-      <!-- Controls Hint & Credits -->
-      <div class="landing-footer">
-        <div class="landing-controls-preview">
-          <span>🎮 รองรับทั้ง <strong>W A S D / ลูกศร (ไ ฟ ห ก)</strong> &bull; [E] สำรวจ &bull; [M] แผนที่ &bull; [T] สมบัติ &bull; [Ctrl+Shift+A] คุย AI</span>
-        </div>
-        <p class="landing-credits">ระบบควบคุมชีวิตของเซลล์ | 3D Interactive Educational Platform</p>
       </div>
     </div>
   </div>
@@ -271,8 +139,8 @@
       <span>🎮</span>
       <span>โหมด 2D</span>
     </a>
-    <a href="../website/index.html" class="btn-switch-2d" style="background: rgba(0, 242, 254, 0.15); border-color: rgba(0, 242, 254, 0.4); color: #00f2fe;" title="กลับหน้าเว็บไซต์หลัก">
-      <span>🌐</span>
+    <a href="../index.html" class="btn-switch-2d" title="กลับหน้าเว็บไซต์หลัก">
+      <span>🏠</span>
       <span>เว็บหลัก</span>
     </a>
   </div>

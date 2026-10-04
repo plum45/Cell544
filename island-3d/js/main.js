@@ -157,18 +157,24 @@ function init() {
     });
   });
 
-  // Character Selector buttons
+  // Character Selector buttons (Both In-Game and Start Screen)
   ['slime', 'fox', 'sprite'].forEach((type) => {
     const btn = document.getElementById(`btn-char-${type}`);
+    const startBtn = document.getElementById(`start-char-${type}`);
     if (btn) {
       btn.addEventListener('click', () => switchAvatar(type));
+    }
+    if (startBtn) {
+      startBtn.addEventListener('click', () => switchAvatar(type));
     }
   });
 
   window.addEventListener('avatar-changed', (e) => {
     ['slime', 'fox', 'sprite'].forEach((type) => {
       const btn = document.getElementById(`btn-char-${type}`);
+      const startBtn = document.getElementById(`start-char-${type}`);
       if (btn) btn.classList.toggle('active', type === e.detail.type);
+      if (startBtn) startBtn.classList.toggle('active', type === e.detail.type);
     });
   });
 
@@ -627,6 +633,7 @@ function createLandingParticles() {
 }
 
 function enterWorld() {
+  document.body.classList.remove('in-landing');
   landingEl.classList.add('exit');
   setTimeout(() => {
     landingEl.style.display = 'none';

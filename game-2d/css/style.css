@@ -1,18 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Prompt:wght@400;500;600;700&family=Pixelify+Sans:wght@500;600;700&display=swap');
 
 :root {
-  --font-main: 'Prompt', -apple-system, sans-serif;
-  --font-en: 'Plus Jakarta Sans', sans-serif;
+  --font-main: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Prompt', sans-serif;
+  --font-en: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Plus Jakarta Sans', sans-serif;
   --font-pixel: 'Pixelify Sans', monospace;
 
-  --glass-bg: rgba(255, 255, 255, 0.82);
-  --glass-border: rgba(255, 255, 255, 0.95);
-  --glass-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.15), 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+  --glass-bg: rgba(18, 18, 22, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.6), 0 4px 12px -2px rgba(0, 0, 0, 0.4);
 
-  --accent-primary: #8B5CF6;
-  --accent-green: #10B981;
-  --accent-orange: #F97316;
-  --accent-blue: #0284C7;
+  --accent-primary: #38bdf8;
+  --accent-green: #30d158;
+  --accent-orange: #ff9f0a;
+  --accent-blue: #2997ff;
 }
 
 * {
@@ -31,9 +31,9 @@ body, html {
   -webkit-overflow-scrolling: auto;
   touch-action: none;
   position: fixed;
-  background-color: #0F172A;
+  background-color: #030712;
   font-family: var(--font-main);
-  color: #1E293B;
+  color: #f5f5f7;
 }
 
 /* ===== Game Canvas ===== */

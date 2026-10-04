@@ -33,25 +33,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const realityThemes = {
     '3d': {
-      title: 'เกาะลอยฟ้าแฟนตาซี 3 มิติ (Titanium Edition)',
+      title: 'เกาะลอยฟ้าแฟนตาซี 3 มิติ (Titanium Spatial)',
       sub: 'Open-world spatial exploration rendered in full WebGL 60 FPS',
       btnText: 'เปิดโลก 3D เต็มจอ ➔',
       btnLink: '../island-3d/index.html',
-      color: '#2997ff'
+      color: '#38bdf8'
     },
     '2d': {
-      title: 'สถาบันวิจัยชีววิทยา 2D Lab (Pixel Green)',
+      title: 'สถาบันวิจัยชีววิทยา 2D Lab (Bio-Simulation)',
       sub: 'Autonomous Stanford Agents sandbox & zombie cellular outbreak',
       btnText: 'เข้าเล่นเกมแล็บ 2D ➔',
       btnLink: '../game-2d/index.html',
-      color: '#30d158'
+      color: '#0284c7'
     },
     'ai': {
-      title: 'AI Neural Bio-Assistant (Purple Core)',
+      title: 'AI Neural Bio-Assistant (Neural Core)',
       sub: 'Interactive NVIDIA Nemotron molecular question-answering',
       btnText: 'สนทนากับ AI Guide ➔',
       btnLink: '#ai-assistant',
-      color: '#bf5af2'
+      color: '#00d2ff'
     }
   };
 
