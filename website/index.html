@@ -3,456 +3,407 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>CYTOLIFE // Next-Gen Cellular Biology Ecosystem</title>
-  <meta name="description" content="ระบบควบคุมชีวิตของเซลล์ — แพลตฟอร์มการเรียนรู้ชีววิทยาโมเลกุลล้ำยุค 3D Open World & 2D Simulation">
+  <title>CYTOLIFE Pro — ระบบควบคุมชีวิตของเซลล์ | Apple Design Edition</title>
+  <meta name="description" content="ระบบควบคุมชีวิตของเซลล์ — แพลตฟอร์มการเรียนรู้ชีววิทยาโมเลกุลระดับโปร 3D Open World & 2D Simulation">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- Ambient FX Backgrounds -->
-  <div class="bg-grid-pattern"></div>
-  <div class="bg-aurora"></div>
+  <!-- ===== 1. Apple Global Navigation ===== -->
+  <header class="apple-global-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="apple-logo-link">
+        <span>🧬</span>
+        <span>CYTOLIFE</span>
+      </a>
 
-  <!-- Main Container -->
-  <div class="container">
+      <ul class="nav-links-desktop">
+        <li><a href="#overview">ภาพรวม</a></li>
+        <li><a href="#lineup">3 โหมดโปรเจกต์</a></li>
+        <li><a href="#curriculum">6 ฐานความรู้</a></li>
+        <li><a href="#specs">สเปกและฟีเจอร์</a></li>
+        <li><a href="#compare">เปรียบเทียบ</a></li>
+      </ul>
 
-    <!-- ===== Navigation Bar ===== -->
-    <header class="site-header">
-      <nav class="nav-wrapper">
-        <a href="index.html" class="nav-brand">
-          <div class="brand-icon-box">🧬</div>
-          <div class="brand-text-wrapper">
-            <span class="brand-name">CYTOLIFE</span>
-            <span class="brand-tag">3D BIO PLATFORM</span>
-          </div>
-        </a>
+      <a href="../island-3d/index.html" class="nav-cta-btn">เปิดเกาะ 3D ↗</a>
+    </div>
+  </header>
 
-        <ul class="nav-links">
-          <li><a href="#overview" class="nav-link active">ภาพรวม</a></li>
-          <li><a href="#projects" class="nav-link">3 โปรเจกต์หลัก</a></li>
-          <li><a href="#curriculum" class="nav-link">6 ฐานความรู้</a></li>
-          <li><a href="#comparison" class="nav-link">ตารางเทียบโหมด</a></li>
-          <li><a href="#ai-assistant" class="nav-link">AI Guide</a></li>
-        </ul>
-
-        <div class="nav-actions">
-          <div class="sys-status-badge">
-            <span class="status-pulse"></span>
-            <span>SYSTEM ONLINE</span>
-          </div>
-          <a href="../island-3d/index.html" class="btn-header-primary">
-            <span>เข้าสู่เกาะลอยฟ้า 3D</span>
-            <span>➔</span>
-          </a>
-        </div>
-      </nav>
-    </header>
-
-    <!-- ===== Hero Section ===== -->
-    <section class="hero-section" id="overview">
-      <div class="hero-pill-badge">
-        <span class="hero-pill-sparkle">✨</span>
-        <span>NEXT-GENERATION CELLULAR BIOLOGY ECOSYSTEM • 2026 EDITION</span>
+  <!-- ===== 2. Apple Local Sub-Header (Sticky) ===== -->
+  <div class="apple-local-nav">
+    <div class="local-nav-inner">
+      <div class="local-title">
+        Cellular OS 18 <span>Pro Edition</span>
       </div>
+      <div class="local-actions">
+        <a href="#lineup" class="local-link">สำรวจโหมด</a>
+        <a href="../game-2d/index.html" class="local-link">เกมแล็บ 2D</a>
+        <a href="../island-3d/index.html" class="local-btn-primary">เข้าสู่โลก 3D</a>
+      </div>
+    </div>
+  </div>
 
-      <h1 class="hero-title-main">
-        <span class="title-glow-gradient">ระบบควบคุมชีวิตของเซลล์</span>
-        <span class="title-sub-english">GENE EXPRESSION &bull; CELL SIGNALING &bull; APOPTOSIS</span>
+  <!-- ===== 3. Apple Dynamic Island Interactive Capsule ===== -->
+  <div class="dynamic-island-wrapper">
+    <div class="dynamic-island" id="dynamic-island" title="คลิกเพื่อสลับสถานะเรียลไทม์">
+      <span class="island-dot"></span>
+      <span class="island-text" id="island-text">CELLULAR OS 18 PRO &bull; 60 FPS</span>
+      <span class="island-badge" id="island-badge">LIVE</span>
+    </div>
+  </div>
+
+  <!-- ===== 4. Apple Cinematic Hero Section ===== -->
+  <section class="apple-hero" id="overview">
+    <div class="apple-container">
+      <div class="hero-eyebrow">ระบบควบคุมชีวิตของเซลล์</div>
+      
+      <h1 class="hero-headline">
+        <span class="hero-headline-gradient">พลังระดับโปร.</span>
+        <span class="hero-headline-color">เพื่อชีววิทยายุคใหม่.</span>
       </h1>
 
-      <p class="hero-description">
-        สถาปัตยกรรมการเรียนรู้ชีววิทยาเชิงลึกแห่งอนาคต ผสานพลัง <strong>3D Open-World Spatial Simulation</strong>, 
-        <strong>2D Retro Lab Simulation Game</strong>, และผู้ช่วยอัจฉริยะ <strong>NVIDIA Nemotron AI Guide</strong>
+      <p class="hero-subheadline">
+        พบกับแพลตฟอร์มการเรียนรู้ชีวโมเลกุลที่ล้ำหน้าที่สุด 
+        ผสานกราฟิก 3D WebGL สมจริง, เกมจำลอง 2D และผู้ช่วยอัจฉริยะ AI ในดีไซน์เดียว
       </p>
 
-      <div class="hero-cta-group">
-        <a href="../island-3d/index.html" class="btn-hero btn-hero-3d">
-          <span>🏝️ เข้าสู่เกาะลอยฟ้า 3D</span>
+      <div class="hero-cta-buttons">
+        <a href="../island-3d/index.html" class="apple-btn-primary">
+          <span>เข้าสู่เกาะลอยฟ้า 3D</span>
           <span>➔</span>
         </a>
-        <a href="../game-2d/index.html" class="btn-hero btn-hero-game">
-          <span>🎮 ตะลุยแล็บ 2D RPG Game</span>
-          <span>⚡</span>
+        <a href="../game-2d/index.html" class="apple-btn-secondary">
+          <span>🎮 เล่นเกมแล็บ 2D</span>
         </a>
-        <a href="#ai-assistant" class="btn-hero btn-hero-ai">
-          <span>🤖 คุยกับ AI Bio-Guide</span>
-          <span>💬</span>
+        <a href="#ai-assistant" class="apple-btn-secondary">
+          <span>🤖 คุยกับ AI Guide</span>
         </a>
       </div>
 
-      <!-- Telemetry Ticker Dock -->
-      <div class="hero-telemetry-bar">
-        <div class="telemetry-item">
-          <span class="telemetry-val">6</span>
-          <span class="telemetry-lbl">ฐานความรู้<br>ชีวโมเลกุล</span>
-        </div>
-        <div class="telemetry-divider"></div>
-        <div class="telemetry-item">
-          <span class="telemetry-val">7</span>
-          <span class="telemetry-lbl">ขุมทรัพย์เซลล์<br>Cell Treasures</span>
-        </div>
-        <div class="telemetry-divider"></div>
-        <div class="telemetry-item">
-          <span class="telemetry-val">15</span>
-          <span class="telemetry-lbl">ข้อสอบประเมิน<br>Adaptive Quiz</span>
-        </div>
-        <div class="telemetry-divider"></div>
-        <div class="telemetry-item">
-          <span class="telemetry-val">100%</span>
-          <span class="telemetry-lbl">Real-Time 3D<br>Interactive WebGL</span>
-        </div>
+      <!-- Color / Reality Switcher Dots (Apple Style) -->
+      <div class="switcher-container">
+        <div class="switcher-dot dot-3d active" data-mode="3d" title="ไทเทเนียม 3D โลกเปิด"></div>
+        <div class="switcher-dot dot-2d" data-mode="2d" title="เรโทร 2D แล็บจำลอง"></div>
+        <div class="switcher-dot dot-ai" data-mode="ai" title="นิวรอล AI คอร์"></div>
+      </div>
+      <div style="font-size: 12px; color: var(--text-gray); margin-bottom: 30px;">
+        คลิกจุดสีเพื่อสลับมิติการแสดงผลและโครงสร้างโมเลกุล 3D
       </div>
 
-      <!-- Hero Interactive 3D / Live Showcase Preview -->
-      <div class="hero-preview-container">
-        <div class="hero-preview-inner">
-          <div class="preview-top-toolbar">
-            <div class="window-dots">
-              <span class="dot dot-red"></span>
-              <span class="dot dot-yellow"></span>
-              <span class="dot dot-green"></span>
-            </div>
-            <div class="preview-tabs">
-              <button class="preview-tab active" data-stage="dna">🧬 3D DNA Simulation</button>
-              <button class="preview-tab" data-stage="island">🏝️ เกาะลอยฟ้า 3D</button>
-              <button class="preview-tab" data-stage="game">🔬 เกมแล็บ 2D</button>
-            </div>
-            <div class="preview-badge-status">WebGL 2.0 • 60 FPS</div>
-          </div>
+      <!-- Interactive Titanium 3D Display Device Stage -->
+      <div class="hero-stage-device">
+        <div class="device-screen-inner">
+          <div class="device-notch">DNA 3D SENSOR</div>
+          <canvas id="canvas-dna-3d"></canvas>
 
-          <div class="preview-content-stage">
-            <!-- Stage 1: Interactive 3D DNA Simulation -->
-            <div class="stage-panel active" id="stage-dna">
-              <canvas id="canvas-dna-3d"></canvas>
-              <div class="stage-overlay-info">
-                <div>
-                  <div class="overlay-title">DNA Double Helix & Molecular Core</div>
-                  <div class="overlay-desc">ขยับเมาส์เพื่อหมุนมุมมอง 3 มิติของโครงสร้างพันธุกรรมแบบเรียลไทม์</div>
-                </div>
-                <a href="../island-3d/index.html" class="btn-stage-action">เปิดโลกเต็มจอ ➔</a>
-              </div>
+          <div class="device-caption-overlay">
+            <div>
+              <div class="caption-title" id="caption-title">เกาะลอยฟ้าแฟนตาซี 3 มิติ (Titanium Edition)</div>
+              <div class="caption-sub" id="caption-sub">Open-world spatial exploration rendered in full WebGL 60 FPS</div>
             </div>
-
-            <!-- Stage 2: 3D Island Preview -->
-            <div class="stage-panel" id="stage-island" style="background: radial-gradient(circle at center, #0f2744 0%, #030814 100%);">
-              <div style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center;">
-                <div style="font-size: 54px; margin-bottom: 16px;">🏝️✨</div>
-                <h3 style="font-family: var(--font-heading); font-size: 1.8rem; color: #fff; margin-bottom: 10px;">เกาะลอยฟ้าแฟนตาซี 3D (Zelda Style)</h3>
-                <p style="max-width: 540px; color: var(--text-secondary); margin-bottom: 24px;">สำรวจโลกเปิดกว้าง ค้นพบ 6 ศาลเจ้าชีววิทยา วิ่งเล่นกับสัตว์ป่า และล่า 7 ขุมทรัพย์ลับ</p>
-                <a href="../island-3d/index.html" class="btn-hero btn-hero-3d">เข้าสู่เกาะลอยฟ้า 3D ➔</a>
-              </div>
-            </div>
-
-            <!-- Stage 3: 2D Game Preview -->
-            <div class="stage-panel" id="stage-game" style="background: radial-gradient(circle at center, #0e3020 0%, #030814 100%);">
-              <div style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center;">
-                <div style="font-size: 54px; margin-bottom: 16px;">🔬🧟</div>
-                <h3 style="font-family: var(--font-heading); font-size: 1.8rem; color: #fff; margin-bottom: 10px;">2D Bio-Lab Simulation & Zombie Outbreak</h3>
-                <p style="max-width: 540px; color: var(--text-secondary); margin-bottom: 24px;">สวมบทบาทนักวิจัยในแล็บจำลอง ค้นหาแอนติเจน ผสมสารละลาย และตอบคำถามชีววิทยาเพื่อเอาชีวิตรอด</p>
-                <a href="../game-2d/index.html" class="btn-hero btn-hero-game">เล่นเกม 2D ตอนนี้ ➔</a>
-              </div>
-            </div>
+            <a href="../island-3d/index.html" class="apple-btn-primary" id="caption-btn" style="padding: 8px 18px; font-size: 13px;">เปิดโลก 3D เต็มจอ ➔</a>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ===== Section: 3 Dedicated Projects (Bento Grid) ===== -->
-    <section class="section-wrapper" id="projects">
-      <div class="section-header">
-        <span class="section-eyebrow">ECOSYSTEM ARCHITECTURE</span>
-        <h2 class="section-title">3 โปรเจกต์ที่แยกอิสระ พร้อมฟังก์ชันสมบูรณ์</h2>
-        <p class="section-subtitle">เลือกโหมดการเรียนรู้ที่เหมาะกับคุณ ทั้งโลก 3 มิติ เกมเพลย์ 2 มิติ และเว็บพอร์ทัลล้ำยุค</p>
+  <!-- ===== 5. Apple Big Spec Numbers Bar ===== -->
+  <section class="section-apple" id="specs" style="padding-top: 20px;">
+    <div class="apple-container">
+      <div class="apple-specs-bar">
+        <div class="spec-item">
+          <div class="spec-number">6x</div>
+          <div class="spec-label">ฐานความรู้ชีวโมเลกุลเชิงลึก</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-number">100%</div>
+          <div class="spec-label">Real-time WebGL 3D 60 FPS</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-number">7</div>
+          <div class="spec-label">ขุมทรัพย์และไอเทมชีววิทยา</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-number">15</div>
+          <div class="spec-label">ข้อสอบประเมินผลแบบอินเทอร์แอคทีฟ</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. Apple "Explore the Lineup" Bento Grid ===== -->
+  <section class="section-apple" id="lineup" style="background: #050505;">
+    <div class="apple-container">
+      <div class="apple-section-header">
+        <div class="apple-eyebrow">EXPLORE THE LINEUP</div>
+        <h2 class="apple-title-huge">
+          3 ประสบการณ์ <span>ที่ออกแบบมาเพื่อความโปร.</span>
+        </h2>
       </div>
 
-      <div class="bento-grid">
-        <!-- Project 1: 3D Floating Island -->
-        <div class="bento-card bento-card-3d">
-          <div class="bento-header">
-            <span class="bento-pill bento-pill-cyan">PROJECT 01 &bull; 3D WORLD</span>
-            <h3 class="bento-card-title">เกาะลอยฟ้าแฟนตาซี 3D</h3>
-            <p class="bento-card-desc">โลกเปิด 3 มิติสไตล์ Zelda Forest Temple ควบคุมตัวละคร สัตว์ป่า ระบบส่องกล้อง และสำรวจ 6 ฐานความรู้อย่างอิสระ</p>
-            <ul class="bento-feature-list">
-              <li class="bento-feature-item">
-                <span class="bento-feature-icon icon-cyan">✓</span>
-                <span>Three.js WebGL เรนเดอร์ 60 FPS แสงเงา Dynamic Real-time</span>
-              </li>
-              <li class="bento-feature-item">
-                <span class="bento-feature-icon icon-cyan">✓</span>
-                <span>6 ศาลเจ้าชีววิทยา + บทเรียนเจาะลึกพร้อมโมเดล 3D</span>
-              </li>
-              <li class="bento-feature-item">
-                <span class="bento-feature-icon icon-cyan">✓</span>
-                <span>7 ขุมทรัพย์เซลล์ซ่อนอยู่ทั่วเกาะ พร้อมระบบสะสมแต้ม</span>
-              </li>
-            </ul>
+      <div class="apple-cards-grid">
+        <!-- Card 1: 3D Floating Island (Span 7) -->
+        <div class="apple-card card-span-7">
+          <div>
+            <div class="apple-card-tag">3D SPATIAL WORLD</div>
+            <h3 class="apple-card-heading">เกาะลอยฟ้าแฟนตาซี 3D.<br>ยิ่งใหญ่ในทุกองศา.</h3>
+            <p class="apple-card-desc">
+              ท่องไปในเกาะลอยฟ้าสไตล์ Zelda Forest Temple สำรวจ 6 ศาลเจ้าวิทยาศาสตร์, 
+              วิ่งเล่นกับสิงสาราสัตว์ และสะสม 7 ขุมทรัพย์ลับของเซลล์
+            </p>
           </div>
-          <a href="../island-3d/index.html" class="bento-cta-btn btn-cyan-action">
-            <span>เข้าสู่เกาะลอยฟ้า 3D</span>
-            <span>➔</span>
-          </a>
+          <div class="apple-card-link-group">
+            <a href="../island-3d/index.html" class="apple-btn-primary" style="padding: 10px 20px; font-size: 14px;">เข้าสู่โลก 3D ➔</a>
+            <a href="../island-3d/index.html" class="apple-text-link">ดูคู่มือสำรวจ ↗</a>
+          </div>
         </div>
 
-        <!-- Project 2: 2D Research RPG Game -->
-        <div class="bento-card bento-card-game">
-          <div class="bento-header">
-            <span class="bento-pill bento-pill-green">PROJECT 02 &bull; 2D RPG</span>
-            <h3 class="bento-card-title">สถาบันวิจัยแล็บ 2D</h3>
-            <p class="bento-card-desc">เกมแนวจำลองห้องทดลองและเอาชีวิตรอดจากซอมบี้เซลล์กลายพันธุ์ ค้นหายารักษาและตอบคำถามวิชาการ</p>
-            <ul class="bento-feature-list">
-              <li class="bento-feature-item">
-                <span class="bento-feature-icon icon-green">✓</span>
-                <span>HTML5 Canvas Pixel Art ระบบเดิน สำรวจ พูดคุย</span>
-              </li>
-              <li class="bento-feature-item">
-                <span class="bento-feature-icon icon-green">✓</span>
-                <span>ระบบต่อสู้และตอบคำถามชีววิทยาเพื่อปลดล็อกไอเทม</span>
-              </li>
-            </ul>
+        <!-- Card 2: 2D Research Institute (Span 5) -->
+        <div class="apple-card card-span-5" style="background: linear-gradient(180deg, #161617 0%, #0d1e14 100%);">
+          <div>
+            <div class="apple-card-tag" style="color: var(--apple-green);">2D RETRO LAB</div>
+            <h3 class="apple-card-heading">สถาบันวิจัย 2D.<br>เกมซอมบี้สุดระทึก.</h3>
+            <p class="apple-card-desc">
+              สวมบทบาทนักวิจัยในแล็บ Pixel Art เอาชีวิตรอดจากซอมบี้เซลล์กลายพันธุ์ และผสมยารักษา
+            </p>
           </div>
-          <a href="../game-2d/index.html" class="bento-cta-btn btn-green-action">
-            <span>เล่นเกมแล็บ 2D</span>
-            <span>➔</span>
-          </a>
+          <div class="apple-card-link-group">
+            <a href="../game-2d/index.html" class="apple-btn-primary" style="background: var(--apple-green); padding: 10px 20px; font-size: 14px; color: #000; font-weight: 600;">เล่นเกม 2D ➔</a>
+          </div>
         </div>
 
-        <!-- Project 3: AI Bio-Mentor -->
-        <div class="bento-card bento-card-ai" id="ai-assistant">
-          <div class="bento-header">
-            <span class="bento-pill bento-pill-purple">PROJECT 03 &bull; AI MENTOR</span>
-            <h3 class="bento-card-title">ผู้ช่วยอัจฉริยะ AI Nemotron</h3>
-            <p class="bento-card-desc">ถาม-ตอบข้อสงสัยชีวโมเลกุลแบบสดๆ ด้วยโมเดลภาษาขั้นสูงที่ถูกปรับจูนเพื่อการศึกษา</p>
-            
-            <div class="ai-demo-box">
-              <div class="ai-chat-history" id="ai-chat-history">
-                <div class="ai-msg">
-                  <div class="ai-avatar-badge">🤖</div>
-                  <div class="ai-bubble">สวัสดีครับ! ผมคือ AI Guide ถามเรื่อง Apoptosis, Cell Signaling หรือ Gene Expression ได้เลยครับ ✨</div>
+        <!-- Card 3: AI Bio-Mentor (Span 6) -->
+        <div class="apple-card card-span-6" id="ai-assistant">
+          <div>
+            <div class="apple-card-tag" style="color: var(--apple-purple);">INTELLIGENT ASSISTANT</div>
+            <h3 class="apple-card-heading">ผู้ช่วย AI Guide.<br>ตอบทุกคำถามเซลล์.</h3>
+            <p class="apple-card-desc">
+              ขับเคลื่อนด้วยโมเดลภาษา NVIDIA Nemotron ตอบคำถามโครงสร้างและการทำงานระดับโมเลกุล
+            </p>
+
+            <div class="apple-ai-box">
+              <div class="ai-chat-thread" id="ai-chat-thread">
+                <div class="apple-ai-msg">
+                  <div class="apple-ai-bubble">
+                    สวัสดีครับ! มีข้อสงสัยเรื่อง Gene Expression หรือ Apoptosis ถามได้เลยครับ 🧬
+                  </div>
                 </div>
               </div>
-              <form class="ai-input-form" id="ai-mini-form">
-                <input type="text" class="ai-input-field" id="ai-mini-input" placeholder="พิมพ์คำถาม เช่น Apoptosis คืออะไร?..." required>
-                <button type="submit" class="ai-send-btn">ส่ง</button>
+              <form class="apple-ai-input-bar" id="ai-apple-form">
+                <input type="text" class="apple-ai-input" id="ai-apple-input" placeholder="พิมพ์คำถาม เช่น Apoptosis คืออะไร?..." required>
+                <button type="submit" class="apple-ai-btn">ส่ง</button>
               </form>
             </div>
           </div>
         </div>
 
-        <!-- Project 4: Quiz Arena Hub -->
-        <div class="bento-card bento-card-quiz">
-          <div class="bento-header">
-            <span class="bento-pill bento-pill-amber">PROJECT 04 &bull; EXAM ARENA</span>
-            <h3 class="bento-card-title">คลังข้อสอบและประเมินผล</h3>
-            <p class="bento-card-desc">ท้าทายความรู้ด้วยข้อสอบชีวโมเลกุล 15 ข้อ พร้อมระบบเฉลยละเอียดและตรวจคะแนนอัตโนมัติ</p>
-            <ul class="bento-feature-list">
-              <li class="bento-feature-item">
-                <span class="bento-feature-icon icon-amber">✓</span>
-                <span>ครอบคลุมทุกหัวข้อ: Transcription, Translation, GPCR, Apoptosis</span>
-              </li>
-              <li class="bento-feature-item">
-                <span class="bento-feature-icon icon-amber">✓</span>
-                <span>เฉลยพร้อมคำอธิบายกลไกระดับโมเลกุล</span>
-              </li>
-            </ul>
+        <!-- Card 4: Quiz Hub (Span 6) -->
+        <div class="apple-card card-span-6" style="background: linear-gradient(180deg, #161617 0%, #241a0e 100%);">
+          <div>
+            <div class="apple-card-tag" style="color: var(--apple-orange);">EVALUATION SUITE</div>
+            <h3 class="apple-card-heading">คลังข้อสอบ 15 ข้อ.<br>วัดระดับความรู้.</h3>
+            <p class="apple-card-desc">
+              แบบทดสอบชีววิทยาโมเลกุล 15 ข้อ พร้อมเฉลยละเอียดและวิเคราะห์จุดที่ต้องทบทวนทันที
+            </p>
           </div>
-          <a href="../topics/quiz-hub.html" class="bento-cta-btn btn-amber-action">
-            <span>เข้าสู่คลังข้อสอบ 15 ข้อ</span>
-            <span>➔</span>
-          </a>
+          <div class="apple-card-link-group">
+            <a href="../topics/quiz-hub.html" class="apple-btn-primary" style="background: var(--apple-orange); padding: 10px 20px; font-size: 14px; color: #000; font-weight: 600;">ทำข้อสอบ 15 ข้อ ➔</a>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ===== Section: 6 Core Biology Curriculum Pillars ===== -->
-    <section class="section-wrapper" id="curriculum">
-      <div class="section-header">
-        <span class="section-eyebrow">CURRICULUM MATRIX</span>
-        <h2 class="section-title">6 ฐานความรู้ชีววิทยาโมเลกุล</h2>
-        <p class="section-subtitle">เนื้อหามาตรฐานระดับมหาวิทยาลัยและมัธยมปลาย เจาะลึกกระบวนการทำงานของเซลล์สิ่งมีชีวิต</p>
+  <!-- ===== 7. Apple Cupertino 6-Card Curriculum Grid ===== -->
+  <section class="section-apple" id="curriculum">
+    <div class="apple-container">
+      <div class="apple-section-header">
+        <div class="apple-eyebrow">MOLECULAR CURRICULUM</div>
+        <h2 class="apple-title-huge">
+          6 ฐานความรู้ <span>ชีววิทยาโมเลกุลระดับโปร.</span>
+        </h2>
       </div>
 
-      <div class="curriculum-grid">
+      <div class="curriculum-apple-grid">
         <!-- 1. Gene Expression -->
-        <div class="curriculum-card">
+        <div class="curr-apple-card">
           <div>
-            <div class="curr-number">MODULE 01</div>
-            <div class="curr-icon">🧬</div>
-            <h4 class="curr-title">Gene Expression</h4>
-            <p class="curr-desc">การแสดงออกของยีน Central Dogma: จากสายรหัส DNA สู่ mRNA (Transcription) และสังเคราะห์โปรตีน (Translation)</p>
+            <div class="curr-badge-num">MODULE 01</div>
+            <h4 class="curr-apple-title">Gene Expression</h4>
+            <p class="curr-apple-desc">การแสดงออกของยีน Central Dogma: การถอดรหัส (Transcription) และการแปลรหัส (Translation)</p>
           </div>
-          <a href="../topics/gene-expression.html" class="curr-link">อ่านเนื้อหาแบบเต็ม ➔</a>
+          <a href="../topics/gene-expression.html" class="apple-text-link">อ่านเนื้อหาบทเรียน ➔</a>
         </div>
 
         <!-- 2. Gene Regulation -->
-        <div class="curriculum-card">
+        <div class="curr-apple-card">
           <div>
-            <div class="curr-number">MODULE 02</div>
-            <div class="curr-icon">🎛️</div>
-            <h4 class="curr-title">Gene Regulation</h4>
-            <p class="curr-desc">การควบคุมการแสดงออกของยีน ระบบ Lac Operon, ปัจจัยการถอดรหัส (Transcription Factors) และ Epigenetics</p>
+            <div class="curr-badge-num">MODULE 02</div>
+            <h4 class="curr-apple-title">Gene Regulation</h4>
+            <p class="curr-apple-desc">การควบคุมยีน Lac Operon, ปัจจัยการถอดรหัส และกลไก Epigenetics</p>
           </div>
-          <a href="../topics/gene-regulation.html" class="curr-link">อ่านเนื้อหาแบบเต็ม ➔</a>
+          <a href="../topics/gene-regulation.html" class="apple-text-link">อ่านเนื้อหาบทเรียน ➔</a>
         </div>
 
         <!-- 3. Cell Signaling -->
-        <div class="curriculum-card">
+        <div class="curr-apple-card">
           <div>
-            <div class="curr-number">MODULE 03</div>
-            <div class="curr-icon">📡</div>
-            <h4 class="curr-title">Cell Signaling</h4>
-            <p class="curr-desc">การสื่อสารระหว่างเซลล์ ตัวรับสัญญาณบนเยื่อหุ้มเซลล์ (GPCR, RTK), Kinase Cascades และโมเลกุลสื่อสารขั้นที่สอง</p>
+            <div class="curr-badge-num">MODULE 03</div>
+            <h4 class="curr-apple-title">Cell Signaling</h4>
+            <p class="curr-apple-desc">ระบบสื่อสารระดับเซลล์ GPCR, Kinase Cascades และโมเลกุลสื่อสารขั้นที่สอง</p>
           </div>
-          <a href="../topics/cell-signaling.html" class="curr-link">อ่านเนื้อหาแบบเต็ม ➔</a>
+          <a href="../topics/cell-signaling.html" class="apple-text-link">อ่านเนื้อหาบทเรียน ➔</a>
         </div>
 
         <!-- 4. Cellular Response -->
-        <div class="curriculum-card">
+        <div class="curr-apple-card">
           <div>
-            <div class="curr-number">MODULE 04</div>
-            <div class="curr-icon">⚡</div>
-            <h4 class="curr-title">Cellular Response</h4>
-            <p class="curr-desc">การตอบสนองของเซลล์ต่อสิ่งเร้า การปรับเปลี่ยนเมแทบอลิซึม การจัดระเบียบโครงร่างเซลล์ (Cytoskeleton) และการเคลื่อนที่</p>
+            <div class="curr-badge-num">MODULE 04</div>
+            <h4 class="curr-apple-title">Cellular Response</h4>
+            <p class="curr-apple-desc">การตอบสนองของเซลล์ การปรับเมแทบอลิซึม และการจัดระเบียบ Cytoskeleton</p>
           </div>
-          <a href="../topics/cell-response.html" class="curr-link">อ่านเนื้อหาแบบเต็ม ➔</a>
+          <a href="../topics/cell-response.html" class="apple-text-link">อ่านเนื้อหาบทเรียน ➔</a>
         </div>
 
         <!-- 5. Apoptosis -->
-        <div class="curriculum-card">
+        <div class="curr-apple-card">
           <div>
-            <div class="curr-number">MODULE 05</div>
-            <div class="curr-icon">🍂</div>
-            <h4 class="curr-title">Apoptosis</h4>
-            <p class="curr-desc">การตายของเซลล์ตามโปรแกรม กลไก Caspase Cascade, Cytochrome C จากไมโทคอนเดรีย และการรักษาสมดุลของเนื้อเยื่อ</p>
+            <div class="curr-badge-num">MODULE 05</div>
+            <h4 class="curr-apple-title">Apoptosis</h4>
+            <p class="curr-apple-desc">การตายของเซลล์ตามโปรแกรม Caspase Cascade และ Cytochrome C</p>
           </div>
-          <a href="../topics/apoptosis.html" class="curr-link">อ่านเนื้อหาแบบเต็ม ➔</a>
+          <a href="../topics/apoptosis.html" class="apple-text-link">อ่านเนื้อหาบทเรียน ➔</a>
         </div>
 
-        <!-- 6. Cell Cycle & Checkpoints -->
-        <div class="curriculum-card">
+        <!-- 6. Cell Cycle -->
+        <div class="curr-apple-card">
           <div>
-            <div class="curr-number">MODULE 06</div>
-            <div class="curr-icon">🔄</div>
-            <h4 class="curr-title">Cell Cycle</h4>
-            <p class="curr-desc">วัฏจักรเซลล์และการควบคุม Interphase, Mitosis, จุดตรวจความผิดปกติ G1/S/G2-M Checkpoints และโปรตีน p53</p>
+            <div class="curr-badge-num">MODULE 06</div>
+            <h4 class="curr-apple-title">Cell Cycle</h4>
+            <p class="curr-apple-desc">วัฏจักรเซลล์ Interphase, Mitosis และจุดตรวจ G1/S/G2-M Checkpoints</p>
           </div>
-          <a href="../topics/cell-cycle.html" class="curr-link">อ่านเนื้อหาแบบเต็ม ➔</a>
+          <a href="../topics/cell-cycle.html" class="apple-text-link">อ่านเนื้อหาบทเรียน ➔</a>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ===== Section: Comparison Table ===== -->
-    <section class="section-wrapper" id="comparison">
-      <div class="section-header">
-        <span class="section-eyebrow">FEATURE COMPARISON</span>
-        <h2 class="section-title">เปรียบเทียบจุดเด่นของแต่ละโหมด</h2>
-        <p class="section-subtitle">ระบบถูกออกแบบให้รองรับทุกอุปกรณ์ ทั้งคอมพิวเตอร์และมือถือ</p>
+  <!-- ===== 8. Apple Comparison Matrix ===== -->
+  <section class="section-apple" id="compare" style="background: #080808;">
+    <div class="apple-container">
+      <div class="apple-section-header">
+        <div class="apple-eyebrow">COMPARE EXPERIENCES</div>
+        <h2 class="apple-title-huge">
+          เปรียบเทียบ <span>คุณสมบัติแต่ละโหมด.</span>
+        </h2>
       </div>
 
-      <div class="matrix-table-container">
-        <table class="matrix-table">
+      <div class="apple-matrix-wrapper">
+        <table class="apple-table">
           <thead>
             <tr>
               <th>คุณสมบัติ</th>
               <th>🏝️ เกาะลอยฟ้า 3D</th>
-              <th>🔬 เกมแล็บ 2D RPG</th>
-              <th>🌐 พอร์ทัลเว็บล้ำยุค</th>
+              <th>🔬 สถาบันวิจัย 2D</th>
+              <th>🌐 พอร์ทัลเว็บ Apple Edition</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><strong>รูปแบบการแสดงผล</strong></td>
-              <td><span class="matrix-tag" style="background: rgba(0, 242, 254, 0.15); color: #00f2fe;">Three.js 3D WebGL</span></td>
-              <td><span class="matrix-tag" style="background: rgba(0, 245, 160, 0.15); color: #00f5a0;">HTML5 2D Canvas</span></td>
-              <td><span class="matrix-tag" style="background: rgba(157, 78, 221, 0.15); color: #c084fc;">Ultra-Modern Web UI</span></td>
+              <td><strong>เอนจินการแสดงผล</strong></td>
+              <td><span class="apple-pill-tag" style="background: rgba(41, 151, 255, 0.15); color: var(--apple-blue);">Three.js WebGL</span></td>
+              <td><span class="apple-pill-tag" style="background: rgba(48, 209, 88, 0.15); color: var(--apple-green);">HTML5 2D Canvas</span></td>
+              <td><span class="apple-pill-tag" style="background: rgba(191, 90, 242, 0.15); color: var(--apple-purple);">Cupertino Pro UI</span></td>
             </tr>
             <tr>
-              <td><strong>สไตล์การมีส่วนร่วม</strong></td>
-              <td>สำรวจโลกอิสระ (Open World)</td>
-              <td>จำลองสถานการณ์ & RPG เอาชีวิตรอด</td>
-              <td>อ่านค้นคว้า & ทดลองโมเลกุล</td>
+              <td><strong>รูปแบบประสบการณ์</strong></td>
+              <td>สำรวจโลกอิสระ 3D Open World</td>
+              <td>เกมเพลย์จำลอง & เอาชีวิตรอด</td>
+              <td>อ่านค้นคว้า & จำลองโมเลกุล</td>
             </tr>
             <tr>
-              <td><strong>ระบบการควบคุม</strong></td>
+              <td><strong>การควบคุม</strong></td>
               <td>WASD / Touch Joystick / ส่องกล้อง</td>
-              <td>คีย์บอร์ดลูกศร / สัมผัสปุ่มจำลอง</td>
+              <td>ปุ่มลูกศร / สัมผัสปุ่มจำลอง</td>
               <td>คลิก / สัมผัส / สนทนา AI</td>
             </tr>
             <tr>
-              <td><strong>AI ผู้ช่วยอัจฉริยะ</strong></td>
+              <td><strong>AI ผู้ช่วย</strong></td>
               <td>Avatar 3D บินตามตัวละคร</td>
               <td>NPC อัจฉริยะในห้องแล็บ</td>
-              <td>Chat Console & Instant Search</td>
+              <td>Cupertino Chat Console</td>
             </tr>
             <tr>
-              <td><strong>ความเหมาะสมในการเรียน</strong></td>
-              <td>เข้าใจมิติและโครงสร้างเชิงพื้นที่</td>
-              <td>สนุกกับการแก้ปริศนาและทดลอง</td>
-              <td>ทบทวน เตรียมสอบ และอ่านเจาะลึก</td>
+              <td><strong>ความเร็วการตอบสนอง</strong></td>
+              <td>60 FPS ลื่นไหลเต็มประสิทธิภาพ</td>
+              <td>60 FPS ลื่นไหลเต็มประสิทธิภาพ</td>
+              <td>โหลดเร็วทันใจระดับเสี้ยววินาที</td>
             </tr>
           </tbody>
         </table>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ===== Footer ===== -->
-    <footer class="site-footer">
-      <div class="footer-grid">
-        <div>
-          <div class="nav-brand" style="margin-bottom: 16px;">
-            <div class="brand-icon-box">🧬</div>
-            <div class="brand-text-wrapper">
-              <span class="brand-name">CYTOLIFE</span>
-              <span class="brand-tag">3D BIO PLATFORM</span>
-            </div>
-          </div>
-          <p style="color: var(--text-secondary); max-width: 320px; line-height: 1.6;">
-            ระบบสื่อการเรียนรู้ชีววิทยาเชิงลึก 3D & 2D สำหรับนักเรียน นักศึกษา และผู้สนใจวิทยาศาสตร์ชีวภาพ
-          </p>
-        </div>
+  <!-- ===== 9. Apple Cupertino Footer ===== -->
+  <footer class="apple-footer">
+    <div class="apple-container">
+      <div class="footer-footnotes">
+        <p>1. โลก 3 มิติ เกาะลอยฟ้า และเอนจินจำลอง 2D ทำงานบน WebGL 2.0 และ HTML5 Canvas รองรับเบราว์เซอร์ยุคใหม่ทั้งหมด</p>
+        <p>2. ผู้ช่วยอัจฉริยะ AI Guide ขับเคลื่อนด้วยโครงสร้างองค์ความรู้ชีววิทยาโมเลกุลมาตรฐานสากล</p>
+      </div>
 
+      <div class="apple-footer-grid">
         <div>
-          <div class="footer-col-title">โปรเจกต์</div>
-          <ul class="footer-links">
-            <li><a href="../island-3d/index.html">🏝️ เกาะลอยฟ้า 3D</a></li>
-            <li><a href="../game-2d/index.html">🔬 เกมสถาบันวิจัย 2D</a></li>
-            <li><a href="index.html">🌐 เว็บไซต์พอร์ทัลล้ำยุค</a></li>
-            <li><a href="../topics/quiz-hub.html">📚 คลังข้อสอบ 15 ข้อ</a></li>
+          <div class="footer-col-head">โปรเจกต์ในระบบ</div>
+          <ul class="footer-links-list">
+            <li><a href="../island-3d/index.html">เกาะลอยฟ้า 3D (Zelda Style)</a></li>
+            <li><a href="../game-2d/index.html">สถาบันวิจัยแล็บ 2D (RPG Game)</a></li>
+            <li><a href="index.html">เว็บไซต์พอร์ทัลหลัก</a></li>
+            <li><a href="../topics/quiz-hub.html">คลังข้อสอบ 15 ข้อ</a></li>
           </ul>
         </div>
 
         <div>
-          <div class="footer-col-title">ฐานความรู้ 6 ด้าน</div>
-          <ul class="footer-links">
+          <div class="footer-col-head">ฐานความรู้ 6 บท</div>
+          <ul class="footer-links-list">
             <li><a href="../topics/gene-expression.html">Gene Expression</a></li>
             <li><a href="../topics/gene-regulation.html">Gene Regulation</a></li>
             <li><a href="../topics/cell-signaling.html">Cell Signaling</a></li>
+            <li><a href="../topics/cell-response.html">Cellular Response</a></li>
             <li><a href="../topics/apoptosis.html">Apoptosis</a></li>
+            <li><a href="../topics/cell-cycle.html">Cell Cycle</a></li>
           </ul>
         </div>
 
         <div>
-          <div class="footer-col-title">เทคโนโลยี</div>
-          <ul class="footer-links">
+          <div class="footer-col-head">เทคโนโลยี</div>
+          <ul class="footer-links-list">
             <li><a href="#">Three.js WebGL</a></li>
             <li><a href="#">HTML5 Canvas Engine</a></li>
             <li><a href="#">NVIDIA Nemotron AI</a></li>
-            <li><a href="#">Vanilla Modern CSS</a></li>
+            <li><a href="#">Apple Cupertino CSS</a></li>
           </ul>
         </div>
-      </div>
 
-      <div class="footer-bottom">
-        <div>&copy; 2026 CYTOLIFE. ระบบควบคุมชีวิตของเซลล์. All rights reserved.</div>
-        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan);">
-          BUILT FOR ADVANCED CELLULAR EDUCATION
+        <div>
+          <div class="footer-col-head">เกี่ยวกับ CYTOLIFE</div>
+          <p style="color: var(--text-gray); line-height: 1.5;">
+            โครงการสื่อการสอนชีววิทยาโมเลกุลเชิงลึกที่ผสมผสานเกม 3D และ 2D เพื่อสร้างประสบการณ์การเรียนรู้ที่ดีที่สุด
+          </p>
         </div>
       </div>
-    </footer>
 
-  </div>
+      <div class="footer-bottom-bar">
+        <div>Copyright &copy; 2026 CYTOLIFE Inc. สงวนลิขสิทธิ์ทุกประการ.</div>
+        <div>ออกแบบในสไตล์ Apple Cupertino Pro</div>
+      </div>
+    </div>
+  </footer>
 
   <script src="js/dna-viewer.js"></script>
   <script src="js/main.js"></script>

@@ -1,34 +1,92 @@
-// Main Interactive Logic for Next-Gen Bio-Tech Portal
+// Apple Cupertino Interactive Features & Dynamics for CYTOLIFE
 document.addEventListener('DOMContentLoaded', () => {
-  // Tab Switching in Hero Preview
-  const tabs = document.querySelectorAll('.preview-tab');
-  const panels = document.querySelectorAll('.stage-panel');
+  // 1. Dynamic Island Expansion & Stats
+  const dynamicIsland = document.getElementById('dynamic-island');
+  const islandText = document.getElementById('island-text');
+  const islandBadge = document.getElementById('island-badge');
 
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const target = tab.getAttribute('data-stage');
-      
-      tabs.forEach(t => t.classList.remove('active'));
-      panels.forEach(p => p.classList.remove('active'));
+  const islandStates = [
+    { text: 'CELLULAR OS 18 PRO &bull; 60 FPS', badge: 'LIVE' },
+    { text: '6 MODULES READY &bull; NEMOTRON AI', badge: 'ONLINE' },
+    { text: 'ZELDA 3D ENGINE &bull; 7 TREASURES', badge: 'READY' }
+  ];
+  let stateIdx = 0;
 
-      tab.classList.add('active');
-      const targetPanel = document.getElementById(`stage-${target}`);
-      if (targetPanel) {
-        targetPanel.classList.add('active');
+  if (dynamicIsland) {
+    dynamicIsland.addEventListener('click', () => {
+      stateIdx = (stateIdx + 1) % islandStates.length;
+      dynamicIsland.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        islandText.innerHTML = islandStates[stateIdx].text;
+        islandBadge.innerText = islandStates[stateIdx].badge;
+        dynamicIsland.style.transform = 'scale(1.05)';
+        setTimeout(() => dynamicIsland.style.transform = 'scale(1)', 150);
+      }, 100);
+    });
+  }
+
+  // 2. Interactive Color / Reality Palette Switcher
+  const dots = document.querySelectorAll('.switcher-dot');
+  const captionTitle = document.getElementById('caption-title');
+  const captionSub = document.getElementById('caption-sub');
+  const captionBtn = document.getElementById('caption-btn');
+
+  const realityThemes = {
+    '3d': {
+      title: 'เกาะลอยฟ้าแฟนตาซี 3 มิติ (Titanium Edition)',
+      sub: 'Open-world spatial exploration rendered in full WebGL 60 FPS',
+      btnText: 'เปิดโลก 3D เต็มจอ ➔',
+      btnLink: '../island-3d/index.html',
+      color: '#2997ff'
+    },
+    '2d': {
+      title: 'สถาบันวิจัยชีววิทยา 2D Lab (Pixel Green)',
+      sub: 'Autonomous Stanford Agents sandbox & zombie cellular outbreak',
+      btnText: 'เข้าเล่นเกมแล็บ 2D ➔',
+      btnLink: '../game-2d/index.html',
+      color: '#30d158'
+    },
+    'ai': {
+      title: 'AI Neural Bio-Assistant (Purple Core)',
+      sub: 'Interactive NVIDIA Nemotron molecular question-answering',
+      btnText: 'สนทนากับ AI Guide ➔',
+      btnLink: '#ai-assistant',
+      color: '#bf5af2'
+    }
+  };
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      dots.forEach(d => d.classList.remove('active'));
+      dot.classList.add('active');
+      const mode = dot.getAttribute('data-mode');
+      const info = realityThemes[mode];
+      if (info && captionTitle && captionSub && captionBtn) {
+        captionTitle.innerText = info.title;
+        captionSub.innerText = info.sub;
+        captionBtn.innerText = info.btnText;
+        captionBtn.href = info.btnLink;
+        captionBtn.style.backgroundColor = info.color;
+
+        // Broadcast color event to 3D canvas if available
+        if (window.setDnaColor) {
+          window.setDnaColor(info.color);
+        }
       }
     });
   });
 
-  // Telemetry Number Counter Animation
-  const counters = document.querySelectorAll('.telemetry-val');
-  counters.forEach(counter => {
-    const text = counter.innerText;
+  // 3. Apple Spec Counter Animation
+  const specNumbers = document.querySelectorAll('.spec-number');
+  specNumbers.forEach(numEl => {
+    const text = numEl.innerText;
     const match = text.match(/\d+/);
     if (!match) return;
     const targetNum = parseInt(match[0], 10);
-    const suffix = text.replace(match[0], '');
+    const prefix = text.split(match[0])[0];
+    const suffix = text.split(match[0])[1] || '';
     let current = 0;
-    const step = Math.max(1, Math.ceil(targetNum / 30));
+    const step = Math.max(1, Math.ceil(targetNum / 25));
 
     const timer = setInterval(() => {
       current += step;
@@ -36,89 +94,76 @@ document.addEventListener('DOMContentLoaded', () => {
         current = targetNum;
         clearInterval(timer);
       }
-      counter.innerText = current + suffix;
-    }, 40);
+      numEl.innerText = prefix + current + suffix;
+    }, 45);
   });
 
-  // Mini AI Live Assistant Demo Box
-  const aiForm = document.getElementById('ai-mini-form');
-  const aiInput = document.getElementById('ai-mini-input');
-  const aiHistory = document.getElementById('ai-chat-history');
+  // 4. Apple-style Mini AI Chat Console
+  const aiForm = document.getElementById('ai-apple-form');
+  const aiInput = document.getElementById('ai-apple-input');
+  const aiThread = document.getElementById('ai-chat-thread');
 
   const knowledgeBase = {
-    'apoptosis': 'Apoptosis คือกระบวนการตายของเซลล์ที่ถูกโปรแกรมไว้ (Programmed Cell Death) ทำหน้าที่กำจัดเซลล์ที่ผิดปกติ แก่ตัว หรือติดเชื้อ เพื่อรักษาสมดุลและป้องกันมะเร็ง ผ่าน Caspase Cascade และ Cytochrome C.',
-    'ตาย': 'Apoptosis คือกระบวนการตายของเซลล์ตามโปรแกรม ช่วยรักษาสมดุลของร่างกายและกำจัดเซลล์ที่มี DNA เสียหาย',
-    'signaling': 'Cell Signaling คือระบบสื่อสารระดับเซลล์ เริ่มจาก Ligand จับกับ Receptor -> ส่งต่อสัญญาณผ่าน Kinase Cascades / Secondary Messengers -> เกิด Cellular Response เช่น การเปิด/ปิดยีน',
-    'ส่งสัญญาณ': 'Cell Signaling ประกอบด้วย 3 ขั้นตอนหลัก: 1. Reception (รับสัญญาณ) 2. Transduction (ถ่ายทอดสัญญาณ) 3. Response (การตอบสนอง)',
-    'expression': 'Gene Expression คือกระบวนการแสดงออกของยีน แปลงรหัส DNA เป็น mRNA (Transcription) และสังเคราะห์เป็นโปรตีน (Translation)',
-    'ยีน': 'Gene Expression ควบคุมโดย Transcription Factors และ Epigenetics เพื่อสร้างโปรตีนตามความต้องการของเซลล์',
-    'cycle': 'Cell Cycle คือวงจรชีวิตของเซลล์ แบ่งเป็น Interphase (G1, S, G2) และ M-Phase (Mitosis + Cytokinesis) โดยมี Checkpoints คอยตรวจสอบความสมบูรณ์ของ DNA',
-    'operon': 'Lac Operon คือระบบควบคุมการแสดงออกของยีนในแบคทีเรีย ทำงานเมื่อมี Lactose เข้ามาจับกับ Repressor ทำให้ RNA Polymerase สามารถถอดรหัสได้'
+    'apoptosis': 'Apoptosis คือกลไกการตายของเซลล์ที่ถูกโปรแกรมไว้ (Programmed Cell Death) เพื่อกำจัดเซลล์ที่ผิดปกติ รักษาดุลยภาพของเนื้อเยื่อ และป้องกันมะเร็ง ผ่าน Caspase Cascade และ Cytochrome C',
+    'ตาย': 'Apoptosis คือกระบวนการตายของเซลล์ตามโปรแกรมเพื่อความอยู่รอดของสิ่งมีชีวิต',
+    'signaling': 'Cell Signaling ทำงาน 3 ขั้นตอน: 1. Reception (จับตัวรับ) 2. Transduction (ส่งต่อสัญญาณ) 3. Response (การตอบสนอง เช่น เปิดยีนสร้างโปรตีน)',
+    'ส่งสัญญาณ': 'Cell Signaling คือการสื่อสารระหว่างเซลล์ผ่าน Ligand และ Receptor เช่น GPCR และ Tyrosine Kinase',
+    'expression': 'Gene Expression คือกระบวนการแสดงออกของยีน: ถอดรหัส DNA เป็น mRNA (Transcription) และแปลรหัสเป็นโปรตีน (Translation)',
+    'ยีน': 'Gene Regulation ถูกควบคุมอย่างประณีตด้วย Transcription Factors และ Epigenetics',
+    'cycle': 'Cell Cycle ควบคุมด้วยจุดตรวจ (Checkpoints: G1, G2/M, Spindle) โดยมีโปรตีน Cyclin, CDK และ p53 คอยตรวจสอบความปลอดภัยของสารพันธุกรรม'
   };
 
-  if (aiForm && aiInput && aiHistory) {
+  if (aiForm && aiInput && aiThread) {
     aiForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const query = aiInput.value.trim();
-      if (!query) return;
+      const q = aiInput.value.trim();
+      if (!q) return;
 
       // Append user msg
-      const userDiv = document.createElement('div');
-      userDiv.className = 'ai-msg';
-      userDiv.style.justifyContent = 'flex-end';
-      userDiv.innerHTML = `
-        <div class="ai-bubble" style="background: rgba(0, 242, 254, 0.15); border: 1px solid rgba(0, 242, 254, 0.3); color: #fff;">
-          ${escapeHtml(query)}
+      const userMsg = document.createElement('div');
+      userMsg.className = 'apple-ai-msg';
+      userMsg.style.justifyContent = 'flex-end';
+      userMsg.innerHTML = `
+        <div class="apple-ai-bubble" style="background: var(--apple-blue); color: #fff;">
+          ${escapeHtml(q)}
         </div>
       `;
-      aiHistory.appendChild(userDiv);
+      aiThread.appendChild(userMsg);
       aiInput.value = '';
-
-      // Scroll to bottom
-      aiHistory.scrollTop = aiHistory.scrollHeight;
+      aiThread.scrollTop = aiThread.scrollHeight;
 
       // Thinking indicator
-      const botDiv = document.createElement('div');
-      botDiv.className = 'ai-msg';
-      botDiv.innerHTML = `
-        <div class="ai-avatar-badge">🤖</div>
-        <div class="ai-bubble" style="color: var(--accent-cyan); font-style: italic;">
-          กำลังประมวลผลคำตอบชีวโมเลกุล...
+      const botMsg = document.createElement('div');
+      botMsg.className = 'apple-ai-msg';
+      botMsg.innerHTML = `
+        <div class="apple-ai-bubble" style="color: var(--apple-blue); font-style: italic;">
+          AI กำลังวิเคราะห์ข้อมูลชีวโมเลกุล...
         </div>
       `;
-      aiHistory.appendChild(botDiv);
-      aiHistory.scrollTop = aiHistory.scrollHeight;
+      aiThread.appendChild(botMsg);
+      aiThread.scrollTop = aiThread.scrollHeight;
 
-      // Find response
       setTimeout(() => {
-        let answer = 'ขออภัย ฉันกำลังค้นคว้าข้อมูลเพิ่มเติม คุณสามารถคลิกสำรวจเนื้อหาแบบละเอียดในโหมดเกาะลอยฟ้า 3D หรือบทความ 6 ฐานความรู้ด้านล่างได้ทันที!';
-        const lowerQ = query.toLowerCase();
+        let ans = 'คุณสามารถสำรวจโครงสร้าง 3D และเนื้อหาเจาะลึกได้ในหน้าโมดูลหลักด้านบน';
+        const lower = q.toLowerCase();
         for (const [k, v] of Object.entries(knowledgeBase)) {
-          if (lowerQ.includes(k)) {
-            answer = v;
+          if (lower.includes(k)) {
+            ans = v;
             break;
           }
         }
-
-        botDiv.innerHTML = `
-          <div class="ai-avatar-badge">🤖</div>
-          <div class="ai-bubble">
-            ${answer}
+        botMsg.innerHTML = `
+          <div class="apple-ai-bubble">
+            ${ans}
           </div>
         `;
-        aiHistory.scrollTop = aiHistory.scrollHeight;
-      }, 600);
+        aiThread.scrollTop = aiThread.scrollHeight;
+      }, 500);
     });
   }
 
   function escapeHtml(text) {
-    const map = {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#039;'
-    };
+    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
     return text.replace(/[&<>"']/g, m => map[m]);
   }
 });

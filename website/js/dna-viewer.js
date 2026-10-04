@@ -1,4 +1,4 @@
-// Interactive 3D Canvas Visualizer for Bio-Tech Website (DNA & Particle Core)
+// Apple-grade Interactive 3D DNA Canvas (Dynamic Theme & Touch Controls)
 (function() {
   const canvas = document.getElementById('canvas-dna-3d');
   if (!canvas) return;
@@ -17,6 +17,19 @@
   let mouseY = height / 2;
   let targetMouseX = mouseX;
   let targetMouseY = mouseY;
+  let currentColorA = '#2997ff';
+  let currentColorB = '#bf5af2';
+
+  window.setDnaColor = function(primaryHex) {
+    currentColorA = primaryHex;
+    if (primaryHex === '#30d158') {
+      currentColorB = '#64d2ff';
+    } else if (primaryHex === '#bf5af2') {
+      currentColorB = '#ff375f';
+    } else {
+      currentColorB = '#bf5af2';
+    }
+  };
 
   window.addEventListener('mousemove', (e) => {
     const rect = canvas.getBoundingClientRect();
@@ -26,49 +39,44 @@
     }
   });
 
-  // Base parameters for 3D DNA Helix Simulation
-  const numPairs = 50;
-  const radius = 120;
+  const numPairs = 48;
+  const radius = 110;
   const spacing = 18;
   let rotation = 0;
 
-  // Additional ambient particles
   const particles = [];
-  const particleCount = 70;
+  const particleCount = 60;
   for (let i = 0; i < particleCount; i++) {
     particles.push({
       x: (Math.random() - 0.5) * width * 1.5,
       y: (Math.random() - 0.5) * height * 1.5,
       z: Math.random() * 400 - 200,
-      size: Math.random() * 2.5 + 1,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      vz: (Math.random() - 0.5) * 0.4,
-      color: Math.random() > 0.5 ? '#00f2fe' : '#9d4edd'
+      size: Math.random() * 2 + 1,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      vz: (Math.random() - 0.5) * 0.3
     });
   }
 
   function render() {
     ctx.clearRect(0, 0, width, height);
 
-    // Smooth mouse lerp
     mouseX += (targetMouseX - mouseX) * 0.05;
     mouseY += (targetMouseY - mouseY) * 0.05;
 
-    const tiltX = (mouseY - height / 2) * 0.0015;
-    const tiltY = (mouseX - width / 2) * 0.002;
+    const tiltX = (mouseY - height / 2) * 0.0012;
+    const tiltY = (mouseX - width / 2) * 0.0018;
 
-    rotation += 0.015;
+    rotation += 0.018;
 
-    // Draw ambient bio-glow center
+    // Apple subtle central ambient vignette
     const grad = ctx.createRadialGradient(width / 2, height / 2, 10, width / 2, height / 2, 280);
-    grad.addColorStop(0, 'rgba(0, 242, 254, 0.12)');
-    grad.addColorStop(0.5, 'rgba(157, 78, 221, 0.06)');
+    grad.addColorStop(0, 'rgba(255, 255, 255, 0.03)');
     grad.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, width, height);
 
-    // Render Ambient floating particles
+    // Floating particles
     for (let p of particles) {
       p.x += p.vx;
       p.y += p.vy;
@@ -84,13 +92,13 @@
       if (px > 0 && px < width && py > 0 && py < height) {
         ctx.beginPath();
         ctx.arc(px, py, p.size * scale, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = Math.max(0.1, (scale - 0.5) * 0.8);
+        ctx.fillStyle = currentColorA;
+        ctx.globalAlpha = Math.max(0.08, (scale - 0.5) * 0.4);
         ctx.fill();
       }
     }
 
-    // Render 3D DNA Double Helix
+    // 3D DNA Double Helix
     const centerY = height / 2;
     const centerX = width / 2;
     const totalHeight = numPairs * spacing;
@@ -103,24 +111,20 @@
       const y = startY + i * spacing;
       const angle = i * 0.25 + rotation;
 
-      // 3D coordinates of strand A
       let x1 = Math.cos(angle) * radius;
       let z1 = Math.sin(angle) * radius;
       let y1 = y;
 
-      // Apply tilt
       let rx1 = x1 * Math.cos(tiltY) - z1 * Math.sin(tiltY);
       let rz1 = x1 * Math.sin(tiltY) + z1 * Math.cos(tiltY);
       let ry1 = y1 * Math.cos(tiltX) - rz1 * Math.sin(tiltX);
       rz1 = y1 * Math.sin(tiltX) + rz1 * Math.cos(tiltX);
 
-      // Perspective projection
       const fov = 500;
       const scale1 = fov / (fov + rz1 + 300);
       const px1 = centerX + rx1 * scale1;
       const py1 = centerY + ry1 * scale1;
 
-      // 3D coordinates of strand B (opposite phase)
       let x2 = Math.cos(angle + Math.PI) * radius;
       let z2 = Math.sin(angle + Math.PI) * radius;
       let y2 = y;
@@ -134,32 +138,30 @@
       const px2 = centerX + rx2 * scale2;
       const py2 = centerY + ry2 * scale2;
 
-      // Draw base pair rung (hydrogen bonds)
       const avgZ = (rz1 + rz2) / 2;
-      const alpha = Math.max(0.15, Math.min(1, (avgZ + 200) / 400));
+      const alpha = Math.max(0.12, Math.min(1, (avgZ + 200) / 400));
 
       ctx.beginPath();
       ctx.moveTo(px1, py1);
       ctx.lineTo(px2, py2);
-      ctx.strokeStyle = i % 2 === 0 ? `rgba(0, 242, 254, ${alpha * 0.4})` : `rgba(157, 78, 221, ${alpha * 0.4})`;
-      ctx.lineWidth = 2 * ((scale1 + scale2) / 2);
+      ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.2})`;
+      ctx.lineWidth = 1.5;
       ctx.stroke();
 
-      // Midpoint base pair indicator
       const midX = (px1 + px2) / 2;
       const midY = (py1 + py2) / 2;
       ctx.beginPath();
-      ctx.arc(midX, midY, 2.5 * scale1, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.6})`;
+      ctx.arc(midX, midY, 2 * scale1, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.7})`;
       ctx.fill();
 
       nodesA.push({ x: px1, y: py1, z: rz1, scale: scale1 });
       nodesB.push({ x: px2, y: py2, z: rz2, scale: scale2 });
     }
 
-    // Connect Strands Backbone
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = '#00f2fe';
+    // Connect Backbones
+    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = currentColorA;
     for (let i = 0; i < nodesA.length - 1; i++) {
       ctx.beginPath();
       ctx.moveTo(nodesA[i].x, nodesA[i].y);
@@ -168,7 +170,7 @@
       ctx.stroke();
     }
 
-    ctx.strokeStyle = '#c084fc';
+    ctx.strokeStyle = currentColorB;
     for (let i = 0; i < nodesB.length - 1; i++) {
       ctx.beginPath();
       ctx.moveTo(nodesB[i].x, nodesB[i].y);
@@ -177,14 +179,14 @@
       ctx.stroke();
     }
 
-    // Draw Strand Nodes (Phosphates)
+    // Draw Nodes
     for (let i = 0; i < nodesA.length; i++) {
       ctx.globalAlpha = Math.max(0.3, (nodesA[i].z + 200) / 400);
       ctx.beginPath();
-      ctx.arc(nodesA[i].x, nodesA[i].y, 5 * nodesA[i].scale, 0, Math.PI * 2);
-      ctx.fillStyle = '#00f2fe';
-      ctx.shadowColor = '#00f2fe';
-      ctx.shadowBlur = 10;
+      ctx.arc(nodesA[i].x, nodesA[i].y, 4.5 * nodesA[i].scale, 0, Math.PI * 2);
+      ctx.fillStyle = currentColorA;
+      ctx.shadowColor = currentColorA;
+      ctx.shadowBlur = 8;
       ctx.fill();
       ctx.shadowBlur = 0;
     }
@@ -192,10 +194,10 @@
     for (let i = 0; i < nodesB.length; i++) {
       ctx.globalAlpha = Math.max(0.3, (nodesB[i].z + 200) / 400);
       ctx.beginPath();
-      ctx.arc(nodesB[i].x, nodesB[i].y, 5 * nodesB[i].scale, 0, Math.PI * 2);
-      ctx.fillStyle = '#e879f9';
-      ctx.shadowColor = '#e879f9';
-      ctx.shadowBlur = 10;
+      ctx.arc(nodesB[i].x, nodesB[i].y, 4.5 * nodesB[i].scale, 0, Math.PI * 2);
+      ctx.fillStyle = currentColorB;
+      ctx.shadowColor = currentColorB;
+      ctx.shadowBlur = 8;
       ctx.fill();
       ctx.shadowBlur = 0;
     }
