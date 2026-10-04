@@ -25,11 +25,14 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <polyline points="15 18 9 12 15 6"/>
         </svg>
-        <span>หน้าหลัก CYTOLIFE</span>
+        <span>หน้าหลัก</span>
       </a>
       <div class="game-brand">
-        CYTOLIFE <span>3D CYBER ARENA</span>
+        CYTOLIFE <span>3D ARENA</span>
       </div>
+      <button class="cam-toggle-btn" id="camToggleBtn" onclick="window.bioCyber && window.bioCyber.toggleCameraMode()" title="สลับมุมมอง 1st Person (Minecraft) / 3rd Person / Iso">
+        🎥 <span>1st Person</span>
+      </button>
     </div>
 
     <div class="nav-right">
@@ -37,6 +40,9 @@
       <button class="back-btn" id="soundBtn" title="เปิด/ปิดเสียง">🔊</button>
     </div>
   </header>
+
+  <!-- Minecraft First Person Crosshair (Only visible in 1st person mode) -->
+  <div class="minecraft-crosshair" id="minecraftCrosshair"></div>
 
   <!-- 2. Atmosphere Theme Selector Dock (Top Right) -->
   <div class="top-controls-dock">
@@ -76,6 +82,31 @@
   <!-- 4. Three.js 3D WebGL Viewport Container (Full 3D Map) -->
   <div id="threeContainer"></div>
 
+  <!-- 5. Crystal-Clear 4-Choice Option HUD (Easy to Read + One-Tap Move) -->
+  <div class="choice-hud-bar" id="choiceHudBar">
+    <div class="choice-hud-header">
+      <span class="chh-title">🎯 เลือกคำตอบ (แตะเพื่อให้ตัวละครวิ่งไปแท่น 3D ทันที)</span>
+    </div>
+    <div class="choice-cards-grid" id="choiceCardsGrid">
+      <button class="choice-hud-card" id="choiceBtn-A" onclick="window.selectChoiceAndRun('A')">
+        <span class="choice-badge">A</span>
+        <span class="choice-text" id="choiceText-A">ตัวเลือก A</span>
+      </button>
+      <button class="choice-hud-card" id="choiceBtn-B" onclick="window.selectChoiceAndRun('B')">
+        <span class="choice-badge">B</span>
+        <span class="choice-text" id="choiceText-B">ตัวเลือก B</span>
+      </button>
+      <button class="choice-hud-card" id="choiceBtn-C" onclick="window.selectChoiceAndRun('C')">
+        <span class="choice-badge">C</span>
+        <span class="choice-text" id="choiceText-C">ตัวเลือก C</span>
+      </button>
+      <button class="choice-hud-card" id="choiceBtn-D" onclick="window.selectChoiceAndRun('D')">
+        <span class="choice-badge">D</span>
+        <span class="choice-text" id="choiceText-D">ตัวเลือก D</span>
+      </button>
+    </div>
+  </div>
+
   <!-- 6. Team Status HUD (Bottom Left) -->
   <div class="team-status-hud" id="teamStatusHud">
     <div class="team-title">
@@ -87,10 +118,32 @@
     </div>
   </div>
 
-  <!-- 7. Controls & Pull Action HUD (Bottom Right) -->
-  <div class="controls-hud-hint">
+  <!-- 7. Keyboard Hint (Desktop Only) -->
+  <div class="controls-hud-hint" id="desktopControlsHint">
     <div><span class="key-badge">W</span><span class="key-badge">A</span><span class="key-badge">S</span><span class="key-badge">D</span> เดินบนแมพกว้าง 3D</div>
     <div><span class="key-badge">SPACE</span> กระตุกเชือก 3D ดึงเพื่อน / แย่งแท่น</div>
+  </div>
+
+  <!-- 7.1 Mobile Virtual Touch Controls (D-Pad & Yank Button) -->
+  <div class="mobile-controls-layer" id="mobileControlsLayer">
+    <!-- Left: Virtual D-Pad -->
+    <div class="virtual-dpad" id="virtualDpad">
+      <button class="dpad-btn dpad-up" id="dpadUp" aria-label="Up">▲</button>
+      <div class="dpad-mid">
+        <button class="dpad-btn dpad-left" id="dpadLeft" aria-label="Left">◀</button>
+        <div class="dpad-center">●</div>
+        <button class="dpad-btn dpad-right" id="dpadRight" aria-label="Right">▶</button>
+      </div>
+      <button class="dpad-btn dpad-down" id="dpadDown" aria-label="Down">▼</button>
+    </div>
+
+    <!-- Right: Mobile Action Buttons -->
+    <div class="mobile-actions-dock">
+      <button class="mobile-action-btn yank-btn" id="mobileYankBtn" title="กระตุกเชือกดึงเพื่อน">
+        <span class="btn-icon">⚡</span>
+        <span class="btn-label">ดึงเชือก</span>
+      </button>
+    </div>
   </div>
 
   <!-- 8. Emergency Rescue QTE Overlay -->

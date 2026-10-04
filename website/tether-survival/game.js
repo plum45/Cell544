@@ -372,10 +372,17 @@ class BioCyberArena3D {
     this.currentTheme = 'sakura'; // Active theme
 
     // State
-    this.state = 'LOBBY';
+    this.state = 'PLAYING'; // Start immediately active
     this.playerName = 'CyberBot-01';
     this.roomCode = 'CYBER-774';
     this.teamMode = 'ai';
+
+    // Camera & Minecraft First-Person
+    this.cameraMode = 'fp'; // 'fp' (1st Person Minecraft), 'tp' (3rd Person), 'iso' (Overview)
+    this.yaw = 0;
+    this.pitch = -0.12;
+    this.isDraggingLook = false;
+    this.dragStart = { x: 0, y: 0 };
 
     this.score = 0;
     this.round = 1;
@@ -383,6 +390,10 @@ class BioCyberArena3D {
     this.currentQuestionIdx = 0;
     this.questionTimeMax = 18;
     this.questionTimer = this.questionTimeMax;
+
+    // Random Falling Block Mechanic (สุ่มบล็อคร่วงทีละ 1 บล็อก)
+    this.randomFallInterval = 1.8; // Seconds between random block drops
+    this.randomFallTimer = 1.0;
 
     // Map & Blocks (Wider 11x11 Cyber Island)
     this.gridSize = 11;
@@ -434,11 +445,10 @@ class BioCyberArena3D {
     this.scene.background = new THREE.Color(theme.bg);
     this.scene.fog = new THREE.FogExp2(theme.fog, theme.fogDensity);
 
-    // Wide Isometric Camera
+    // Camera (Supports 1st Person Minecraft perspective)
     const aspect = (window.innerWidth || 1200) / (window.innerHeight || 800);
-    this.camera = new THREE.PerspectiveCamera(40, aspect, 0.1, 1000);
-    this.camera.position.set(0, 36, 44);
-    this.camera.lookAt(0, 0, 0);
+    this.camera = new THREE.PerspectiveCamera(65, aspect, 0.1, 1000);
+    this.camera.position.set(0, 2.5, 0);
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -469,6 +479,60 @@ class BioCyberArena3D {
     this.scene.add(this.gridHelper);
 
     window.addEventListener('resize', () => this.onWindowResize());
+  }
+
+  toggleCameraMode() {
+    if (this.cameraMode === 'fp') {
+      this.cameraMode = 'tp';
+    } else if (this.cameraMode === 'tp') {
+      this.cameraMode = 'iso';
+    } else {
+      this.cameraMode = 'fp';
+    }
+
+    const btn = document.getElementById('camToggleBtn');
+    if (btn) {
+      const modeLabel = this.cameraMode === 'fp' ? '1st Person' : (this.cameraMode === 'tp' ? '3rd Person' : 'Overview (Iso)');
+      btn.innerHTML = `🎥 <span>${modeLabel}</span>`;
+    }
+
+    const crosshair = document.getElementById('minecraftCrosshair');
+    if (crosshair) {
+      crosshair.className = this.cameraMode === 'fp' ? 'minecraft-crosshair' : 'minecraft-crosshair hidden';
+    }
+
+    // Hide human player model mesh in 1st person mode so it doesn't block player's eyes
+    const human = this.players.find(p => p.isHuman);
+    if (human && human.group) {
+      human.group.traverse(child => {
+        if (child.isMesh) {
+          child.visible = this.cameraMode !== 'fp';
+        }
+      });
+    }
+  }
+
+  selectChoiceAndRun(choiceId) {
+    this.sfx.init();
+    const pad = this.answerPads.find(p => p.id === choiceId);
+    if (!pad) return;
+
+    // Highlight active card in bottom HUD
+    document.querySelectorAll('.choice-hud-card').forEach(c => c.classList.remove('active-target'));
+    const btn = document.getElementById(`choiceBtn-${choiceId}`);
+    if (btn) btn.classList.add('active-target');
+
+    // Command player to sprint to the pad
+    const human = this.players.find(p => p.isHuman);
+    if (human && human.status === 'SAFE') {
+      human.autoTarget = { x: pad.x, z: pad.z };
+    }
+  }
+
+  clearAutoRun() {
+    const human = this.players.find(p => p.isHuman);
+    if (human) human.autoTarget = null;
+    document.querySelectorAll('.choice-hud-card').forEach(c => c.classList.remove('active-target'));
   }
 
   applyTheme(themeKey) {
@@ -544,12 +608,13 @@ class BioCyberArena3D {
   }
 
   initInputs() {
+    // Keyboard WASD & Space
     window.addEventListener('keydown', (e) => {
       this.sfx.init();
-      if (e.code === 'KeyW' || e.code === 'ArrowUp') this.keys.up = true;
-      if (e.code === 'KeyS' || e.code === 'ArrowDown') this.keys.down = true;
-      if (e.code === 'KeyA' || e.code === 'ArrowLeft') this.keys.left = true;
-      if (e.code === 'KeyD' || e.code === 'ArrowRight') this.keys.right = true;
+      if (e.code === 'KeyW' || e.code === 'ArrowUp') { this.keys.up = true; this.clearAutoRun(); }
+      if (e.code === 'KeyS' || e.code === 'ArrowDown') { this.keys.down = true; this.clearAutoRun(); }
+      if (e.code === 'KeyA' || e.code === 'ArrowLeft') { this.keys.left = true; this.clearAutoRun(); }
+      if (e.code === 'KeyD' || e.code === 'ArrowRight') { this.keys.right = true; this.clearAutoRun(); }
       if (e.code === 'Space') {
         this.keys.space = true;
         if (this.state === 'RESCUE') {
@@ -557,6 +622,9 @@ class BioCyberArena3D {
         } else if (this.state === 'PLAYING') {
           this.performTetherYank(0);
         }
+      }
+      if (e.code === 'KeyF' || e.code === 'KeyV') {
+        this.toggleCameraMode();
       }
     });
 
@@ -567,6 +635,114 @@ class BioCyberArena3D {
       if (e.code === 'KeyD' || e.code === 'ArrowRight') this.keys.right = false;
       if (e.code === 'Space') this.keys.space = false;
     });
+
+    // Mouse Drag to Look Around (Minecraft style)
+    const dom = this.renderer.domElement;
+    dom.addEventListener('mousedown', (e) => {
+      if (e.button === 0) {
+        this.isDraggingLook = true;
+        this.dragStart = { x: e.clientX, y: e.clientY };
+      }
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (this.isDraggingLook) {
+        const dx = e.clientX - this.dragStart.x;
+        const dy = e.clientY - this.dragStart.y;
+        this.dragStart = { x: e.clientX, y: e.clientY };
+
+        const sens = 0.004;
+        this.yaw -= dx * sens;
+        this.pitch = Math.max(-0.85, Math.min(0.85, this.pitch - dy * sens));
+      }
+    });
+    window.addEventListener('mouseup', () => {
+      this.isDraggingLook = false;
+    });
+
+    // Touch Swipe to Look Around (Right half of screen for mobile)
+    let touchLookId = null;
+    let touchLookPos = { x: 0, y: 0 };
+
+    window.addEventListener('touchstart', (e) => {
+      this.sfx.init();
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const t = e.changedTouches[i];
+        if (t.clientX > window.innerWidth * 0.35 && !t.target.closest('button') && !t.target.closest('input') && !t.target.closest('.choice-hud-card')) {
+          touchLookId = t.identifier;
+          touchLookPos = { x: t.clientX, y: t.clientY };
+          break;
+        }
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const t = e.changedTouches[i];
+        if (t.identifier === touchLookId) {
+          const dx = t.clientX - touchLookPos.x;
+          const dy = t.clientY - touchLookPos.y;
+          touchLookPos = { x: t.clientX, y: t.clientY };
+
+          const sens = 0.005;
+          this.yaw -= dx * sens;
+          this.pitch = Math.max(-0.85, Math.min(0.85, this.pitch - dy * sens));
+          break;
+        }
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchend', (e) => {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        if (e.changedTouches[i].identifier === touchLookId) {
+          touchLookId = null;
+          break;
+        }
+      }
+    }, { passive: true });
+
+    // Virtual D-Pad Touch Buttons for Mobile
+    const bindDpad = (id, keyName) => {
+      const btn = document.getElementById(id);
+      if (!btn) return;
+      const start = (e) => {
+        e.preventDefault();
+        this.sfx.init();
+        this.keys[keyName] = true;
+        this.clearAutoRun();
+        btn.classList.add('pressed');
+      };
+      const end = (e) => {
+        e.preventDefault();
+        this.keys[keyName] = false;
+        btn.classList.remove('pressed');
+      };
+      btn.addEventListener('touchstart', start, { passive: false });
+      btn.addEventListener('touchend', end, { passive: false });
+      btn.addEventListener('mousedown', start);
+      btn.addEventListener('mouseup', end);
+      btn.addEventListener('mouseleave', end);
+    };
+
+    bindDpad('dpadUp', 'up');
+    bindDpad('dpadDown', 'down');
+    bindDpad('dpadLeft', 'left');
+    bindDpad('dpadRight', 'right');
+
+    // Mobile Yank Button
+    const mobileYankBtn = document.getElementById('mobileYankBtn');
+    if (mobileYankBtn) {
+      const handleYank = (e) => {
+        e.preventDefault();
+        this.sfx.init();
+        if (this.state === 'RESCUE') {
+          this.performRescuePull();
+        } else if (this.state === 'PLAYING') {
+          this.performTetherYank(0);
+        }
+      };
+      mobileYankBtn.addEventListener('touchstart', handleYank, { passive: false });
+      mobileYankBtn.addEventListener('click', handleYank);
+    }
 
     const pullBtn = document.getElementById('pullBtn');
     if (pullBtn) {
@@ -1054,7 +1230,7 @@ class BioCyberArena3D {
   }
 
   // ==========================================
-  // 5. 3D Answer Pads with Floating Billboards
+  // 5. 3D Answer Pads with High-Res Floating Billboards
   // ==========================================
   build3DAnswerPads() {
     this.answerPads.forEach(pad => {
@@ -1063,7 +1239,7 @@ class BioCyberArena3D {
     });
     this.answerPads = [];
 
-    const theme = ARENA_THEMES[this.currentTheme];
+    const theme = ARENA_THEMES[this.currentTheme] || ARENA_THEMES.sakura;
     const offset = this.blockSize * 3.4;
     const padPositions = [
       { id: 'A', x: 0, z: -offset, label: 'A' },
@@ -1077,30 +1253,37 @@ class BioCyberArena3D {
       group.position.set(pos.x, 0.8, pos.z);
 
       // Raised 3D Cyber Podium
-      const podiumGeo = new THREE.CylinderGeometry(2.4, 2.7, 0.8, 20);
+      const podiumGeo = new THREE.CylinderGeometry(2.5, 2.8, 0.8, 24);
       const podiumMat = new THREE.MeshStandardMaterial({ color: theme.padPodium, roughness: 0.2, metalness: 0.9 });
       const podium = new THREE.Mesh(podiumGeo, podiumMat);
       podium.receiveShadow = true;
       group.add(podium);
 
       // Glowing Outer Hologram Ring
-      const torusGeo = new THREE.TorusGeometry(2.6, 0.08, 8, 32);
+      const torusGeo = new THREE.TorusGeometry(2.7, 0.09, 8, 32);
       const torusMat = new THREE.MeshBasicMaterial({ color: theme.padRing });
       const torus = new THREE.Mesh(torusGeo, torusMat);
       torus.rotation.x = Math.PI / 2;
       torus.position.y = 0.45;
       group.add(torus);
 
-      // 3D In-World Floating Hologram Billboard (Canvas Texture with Full Choice Text)
+      // Light Beam Stem
+      const beamGeo = new THREE.CylinderGeometry(0.08, 0.08, 3.2, 8);
+      const beamMat = new THREE.MeshBasicMaterial({ color: theme.padRing, transparent: true, opacity: 0.65 });
+      const beam = new THREE.Mesh(beamGeo, beamMat);
+      beam.position.y = 2.0;
+      group.add(beam);
+
+      // 3D In-World Floating Hologram Billboard (1024x512 High-Res Canvas Texture)
       const canvas = document.createElement('canvas');
-      canvas.width = 512;
-      canvas.height = 256;
+      canvas.width = 1024;
+      canvas.height = 512;
       const texture = new THREE.CanvasTexture(canvas);
 
-      const billboardGeo = new THREE.PlaneGeometry(5.2, 2.6);
+      const billboardGeo = new THREE.PlaneGeometry(6.6, 3.3);
       const billboardMat = new THREE.MeshBasicMaterial({ map: texture, transparent: true, side: THREE.DoubleSide });
       const billboard = new THREE.Mesh(billboardGeo, billboardMat);
-      billboard.position.set(0, 3.2, 0);
+      billboard.position.set(0, 4.2, 0);
       group.add(billboard);
 
       this.scene.add(group);
@@ -1109,7 +1292,7 @@ class BioCyberArena3D {
         id: pos.id,
         x: pos.x,
         z: pos.z,
-        radius: 2.7,
+        radius: 2.8,
         group,
         podium,
         torus,
@@ -1124,48 +1307,58 @@ class BioCyberArena3D {
     if (!pad || !pad.canvas) return;
     const ctx = pad.canvas.getContext('2d');
     if (!ctx) return;
-    ctx.clearRect(0, 0, 512, 256);
+    ctx.clearRect(0, 0, 1024, 512);
     const theme = ARENA_THEMES[this.currentTheme] || ARENA_THEMES.sakura;
 
     // Theme Glass Gradient Background
-    ctx.fillStyle = theme.billboardBg || 'rgba(28, 12, 34, 0.92)';
+    ctx.fillStyle = theme.billboardBg || 'rgba(20, 10, 28, 0.94)';
     if (ctx.roundRect) {
       ctx.beginPath();
-      ctx.roundRect(10, 10, 492, 236, 24);
+      ctx.roundRect(16, 16, 992, 480, 36);
       ctx.fill();
       ctx.strokeStyle = theme.billboardBorder || '#ffffff';
-      ctx.lineWidth = 4;
+      ctx.lineWidth = 8;
       ctx.stroke();
     } else {
-      ctx.fillRect(10, 10, 492, 236);
+      ctx.fillRect(16, 16, 992, 480);
       ctx.strokeStyle = theme.billboardBorder || '#ffffff';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(10, 10, 492, 236);
+      ctx.lineWidth = 8;
+      ctx.strokeRect(16, 16, 992, 480);
     }
 
     // Choice Badge [A]
     ctx.fillStyle = theme.billboardBadge || '#ff70a6';
     ctx.beginPath();
-    ctx.arc(65, 80, 36, 0, Math.PI * 2);
+    ctx.arc(120, 160, 68, 0, Math.PI * 2);
     ctx.fill();
 
     ctx.fillStyle = theme.billboardBadgeText || '#ffffff';
-    ctx.font = '800 40px Prompt, sans-serif';
+    ctx.font = '800 76px Prompt, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(choiceLetter, 65, 82);
+    ctx.fillText(choiceLetter, 120, 164);
 
-    // Choice Text (Academic biological term)
+    // Choice Text (Large, High Contrast with Smart Wrap)
     ctx.fillStyle = theme.billboardText || '#ffffff';
-    ctx.font = '700 30px Prompt, sans-serif';
+    ctx.font = '700 56px Prompt, sans-serif';
     ctx.textAlign = 'left';
     const textStr = String(choiceText || '');
-    ctx.fillText(textStr.length > 22 ? textStr.substring(0, 22) + '...' : textStr, 115, 80);
+    if (textStr.length > 20) {
+      const mid = Math.ceil(textStr.length / 2);
+      ctx.fillText(textStr.substring(0, mid), 220, 130);
+      ctx.fillText(textStr.substring(mid), 220, 200);
+    } else {
+      ctx.fillText(textStr, 220, 160);
+    }
 
     // Sub-caption
-    ctx.fillStyle = '#d4d4d8';
-    ctx.font = '500 20px Prompt, sans-serif';
-    ctx.fillText('แท่นตัวเลือก 3 มิติ · วิ่งมาเหยียบ', 115, 150);
+    ctx.fillStyle = '#00f0ff';
+    ctx.font = '600 36px Prompt, sans-serif';
+    ctx.fillText('⚡ แท่นคำตอบ 3 มิติ · วิ่งมาเหยียบตรงนี้', 120, 320);
+
+    ctx.fillStyle = '#a1a1aa';
+    ctx.font = '500 28px Prompt, sans-serif';
+    ctx.fillText('กดที่ช้อยส์ด้านล่างเพื่อวิ่งมาอัตโนมัติ', 120, 380);
 
     if (pad.texture) {
       pad.texture.needsUpdate = true;
@@ -1237,6 +1430,13 @@ class BioCyberArena3D {
 
       this.scene.add(group);
 
+      // In 1st Person mode, hide player's own body so it doesn't block camera
+      if (isHuman && this.cameraMode === 'fp') {
+        group.traverse(child => {
+          if (child.isMesh) child.visible = false;
+        });
+      }
+
       return {
         name,
         isHuman,
@@ -1251,15 +1451,16 @@ class BioCyberArena3D {
         status: 'SAFE',
         slowTimer: 0,
         targetPad: null,
+        autoTarget: null,
         yankTimer: Math.random() * 5 + 3
       };
     };
 
-    this.players.push(createDetailedCyberBot(this.playerName, 0xffffff, true, new THREE.Vector3(-2, 0.8, 0)));
+    this.players.push(createDetailedCyberBot(this.playerName, 0xffffff, true, new THREE.Vector3(0, 0.8, 0)));
 
     if (this.teamMode === 'ai') {
       this.players.push(createDetailedCyberBot('Dr. Watson (AI)', 0xd4d4d8, false, new THREE.Vector3(2, 0.8, -1.8)));
-      this.players.push(createDetailedCyberBot('Prof. Rosalind (AI)', 0xa1a1aa, false, new THREE.Vector3(0, 0.8, 2.2)));
+      this.players.push(createDetailedCyberBot('Prof. Rosalind (AI)', 0xa1a1aa, false, new THREE.Vector3(-2, 0.8, 2.2)));
     }
 
     this.init3DTetherRopes();
@@ -1309,8 +1510,15 @@ class BioCyberArena3D {
         if (pad) {
           this.update3DBillboardText(pad, ch.id, ch.text);
         }
+        // Update Bottom HUD Choice Button Texts
+        const hudTextEl = document.getElementById(`choiceText-${ch.id}`);
+        if (hudTextEl) {
+          hudTextEl.innerText = ch.text;
+        }
       });
     }
+
+    this.clearAutoRun();
 
     // Who Am I Clue Cards Handling (Safe check)
     const clueBar = document.getElementById('clueCardsBar');
@@ -1383,7 +1591,10 @@ class BioCyberArena3D {
         }
       }
 
-      if (this.questionTimer <= 5) {
+      // Random single block falling mechanic throughout the round (สุ่มบล็อคร่วงทีละ 1 บล็อก)
+      this.triggerRandomBlockFall(dt);
+
+      if (this.questionTimer <= 4) {
         this.crumbleWideBlocks(dt);
       }
 
@@ -1440,7 +1651,6 @@ class BioCyberArena3D {
             p.mesh.position.z = (Math.random() - 0.5) * 40;
           }
         } else if (p.type === 'sky_lanterns') {
-          // Floating lanterns ascending gently to the sky
           p.mesh.position.y += p.riseSpeed * dt;
           p.mesh.position.x += Math.sin(time * 0.8 + p.phase) * dt * 0.6;
           p.mesh.position.z += Math.cos(time * 0.8 + p.phase) * dt * 0.6;
@@ -1476,12 +1686,35 @@ class BioCyberArena3D {
       });
     }
 
-    // Billboard orientation facing camera
+    // Billboard orientation facing camera in all views
     this.answerPads.forEach(pad => {
       if (pad.billboard) {
         pad.billboard.quaternion.copy(this.camera.quaternion);
       }
     });
+  }
+
+  // Random Single Block Falling Mechanic (สุ่มบล็อคร่วงทีละ 1 บล็อก)
+  triggerRandomBlockFall(dt) {
+    this.randomFallTimer -= dt;
+    if (this.randomFallTimer > 0) return;
+
+    this.randomFallTimer = this.randomFallInterval;
+
+    const eligible = this.blocks.filter(b => b.alive && !b.isFalling && b.shakeTimer === 0 && b.dist > 1.8);
+    if (eligible.length === 0) return;
+
+    const block = eligible[Math.floor(Math.random() * eligible.length)];
+    block.shakeTimer = 0.01; // Start warning shake phase
+    this.sfx.playCrumble();
+
+    if (block.mesh) {
+      const wire = block.mesh.children.find(c => c.isLineSegments);
+      if (wire) {
+        wire.material.color.setHex(0xff0055);
+        wire.material.opacity = 1.0;
+      }
+    }
   }
 
   performTetherYank(playerIdx) {
@@ -1506,26 +1739,65 @@ class BioCyberArena3D {
 
   update3DPlayersPhysics(dt) {
     const baseSpeed = 16;
+    const human = this.players.find(p => p.isHuman);
+
     this.players.forEach((p, idx) => {
       if (p.status === 'FALLING' || p.status === 'LOST') return;
 
       const speed = baseSpeed;
 
       if (p.isHuman) {
-        let moveX = 0;
-        let moveZ = 0;
-        if (this.keys.up) moveZ -= 1;
-        if (this.keys.down) moveZ += 1;
-        if (this.keys.left) moveX -= 1;
-        if (this.keys.right) moveX += 1;
+        let inputX = 0;
+        let inputZ = 0;
 
-        if (moveX !== 0 && moveZ !== 0) {
-          moveX *= 0.7071;
-          moveZ *= 0.7071;
+        if (this.keys.up) inputZ -= 1;
+        if (this.keys.down) inputZ += 1;
+        if (this.keys.left) inputX -= 1;
+        if (this.keys.right) inputX += 1;
+
+        if (inputX !== 0 || inputZ !== 0) {
+          if (inputX !== 0 && inputZ !== 0) {
+            inputX *= 0.7071;
+            inputZ *= 0.7071;
+          }
+
+          if (this.cameraMode === 'fp' || this.cameraMode === 'tp') {
+            // First Person Minecraft Direction (Relative to Look Yaw)
+            const forwardX = -Math.sin(this.yaw);
+            const forwardZ = -Math.cos(this.yaw);
+            const rightX = Math.cos(this.yaw);
+            const rightZ = -Math.sin(this.yaw);
+
+            const moveX = forwardX * (-inputZ) + rightX * inputX;
+            const moveZ = forwardZ * (-inputZ) + rightZ * inputX;
+
+            p.vx += moveX * speed * dt * 5;
+            p.vz += moveZ * speed * dt * 5;
+          } else {
+            // Isometric world axes
+            p.vx += inputX * speed * dt * 5;
+            p.vz += inputZ * speed * dt * 5;
+          }
+        } else if (p.autoTarget) {
+          // One-tap Auto-Run to Pad
+          const dx = p.autoTarget.x - p.group.position.x;
+          const dz = p.autoTarget.z - p.group.position.z;
+          const dist = Math.hypot(dx, dz);
+          if (dist > 0.6) {
+            p.vx += (dx / dist) * speed * dt * 4;
+            p.vz += (dz / dist) * speed * dt * 4;
+            if (this.cameraMode === 'fp') {
+              // Smoothly look towards destination
+              const targetYaw = Math.atan2(-dx, -dz);
+              let diff = targetYaw - this.yaw;
+              while (diff < -Math.PI) diff += Math.PI * 2;
+              while (diff > Math.PI) diff -= Math.PI * 2;
+              this.yaw += diff * dt * 4;
+            }
+          } else {
+            p.autoTarget = null;
+          }
         }
-
-        p.vx += moveX * speed * dt * 5;
-        p.vz += moveZ * speed * dt * 5;
       } else {
         if (p.targetPad) {
           const dx = p.targetPad.x - p.group.position.x;
@@ -1566,6 +1838,27 @@ class BioCyberArena3D {
         p.rightArm.rotation.x = 0;
       }
     });
+
+    // Update Camera position based on Camera Mode (First Person / 3rd Person / Iso)
+    if (human && human.group) {
+      if (this.cameraMode === 'fp') {
+        // First Person Minecraft Eye-Level Camera
+        this.camera.position.set(human.group.position.x, human.group.position.y + 1.8, human.group.position.z);
+        this.camera.rotation.set(this.pitch, this.yaw, 0, 'YXZ');
+      } else if (this.cameraMode === 'tp') {
+        // Third Person Over-Shoulder Follow
+        const dist = 9;
+        const camX = human.group.position.x + Math.sin(this.yaw) * dist;
+        const camZ = human.group.position.z + Math.cos(this.yaw) * dist;
+        const camY = human.group.position.y + 4.5 - this.pitch * 6;
+        this.camera.position.set(camX, camY, camZ);
+        this.camera.lookAt(human.group.position.x, human.group.position.y + 1.5, human.group.position.z);
+      } else {
+        // Isometric High Overview
+        this.camera.position.set(0, 36, 44);
+        this.camera.lookAt(0, 0, 0);
+      }
+    }
   }
 
   apply3DTetherSpringForces() {
@@ -1617,15 +1910,24 @@ class BioCyberArena3D {
 
   crumbleWideBlocks(dt) {
     this.blocks.forEach(b => {
-      if (b.alive && b.dist > 3.2) {
-        b.shakeTimer += dt;
-        b.mesh.position.x = b.x + Math.sin(b.shakeTimer * 25) * 0.14;
-        b.mesh.position.z = b.z + Math.cos(b.shakeTimer * 25) * 0.14;
+      if (b.alive && b.dist > 3.2 && b.shakeTimer === 0) {
+        b.shakeTimer = 0.01;
+      }
+    });
+  }
 
-        if (b.shakeTimer > 3.0) {
+  update3DFallingBlocks(dt) {
+    this.blocks.forEach(b => {
+      // Shaking warning phase before drop
+      if (b.alive && b.shakeTimer > 0) {
+        b.shakeTimer += dt;
+        b.mesh.position.x = b.x + Math.sin(b.shakeTimer * 28) * 0.14;
+        b.mesh.position.z = b.z + Math.cos(b.shakeTimer * 28) * 0.14;
+
+        if (b.shakeTimer > 1.8) {
           b.alive = false;
           b.isFalling = true;
-          b.fallVelocity = 3;
+          b.fallVelocity = 3.5;
           b.rotSpeed = {
             x: (Math.random() - 0.5) * 4,
             y: (Math.random() - 0.5) * 4,
@@ -1634,11 +1936,8 @@ class BioCyberArena3D {
           this.sfx.playCrumble();
         }
       }
-    });
-  }
 
-  update3DFallingBlocks(dt) {
-    this.blocks.forEach(b => {
+      // Falling into the abyss phase
       if (b.isFalling) {
         b.fallVelocity += dt * 32;
         b.mesh.position.y -= b.fallVelocity * dt;
@@ -1877,6 +2176,12 @@ window.selectLobbyTheme = function(themeKey) {
   if (card) card.classList.add('selected');
   if (window.bioCyber) {
     window.bioCyber.applyTheme(themeKey);
+  }
+};
+
+window.selectChoiceAndRun = function(choiceId) {
+  if (window.bioCyber) {
+    window.bioCyber.selectChoiceAndRun(choiceId);
   }
 };
 
