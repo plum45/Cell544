@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>CYTOLIFE — Bio-Tether Survival Arena | ศึกพิทักษ์เซลล์เชือกผูกพัน</title>
+  <meta name="description" content="เกมเอาชีวิตรอดบนแผ่นดินที่กำลังพังทลาย พร้อมระบบเชือกผูกติดกัน ดีบัพตกจากฟ้า แย่งกันตอบคำถามชีววิทยา และช่วยเพื่อนตกเหว">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css?v=20261004v2">
+</head>
+<body>
+
+  <!-- Atmospheric Background -->
+  <div class="grid-bg-overlay"></div>
+
+  <!-- 1. Top Bar Navigation -->
+  <header class="game-top-nav">
+    <div class="nav-left">
+      <a href="../index.html" class="back-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        <span>หน้าหลัก CYTOLIFE</span>
+      </a>
+      <div class="game-brand">
+        CYTOLIFE <span>TETHER ARENA</span>
+      </div>
+    </div>
+
+    <div class="nav-right">
+      <span class="room-badge" id="roomBadge">ROOM-774</span>
+      <button class="sound-toggle-btn" id="soundBtn" title="เปิด/ปิดเสียง">🔊</button>
+    </div>
+  </header>
+
+  <!-- 2. Game Canvas Viewport -->
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- 3. Top In-Game HUD (Question & Choices) -->
+  <div class="game-hud" id="gameHud">
+    <div class="hud-panel">
+      <div class="hud-meta-row">
+        <span class="hud-topic-tag" id="hudTopic">GENE EXPRESSION · ข้อที่ 1/8</span>
+        <div class="hud-timer-wrap">
+          <div class="timer-bar-bg">
+            <div class="timer-bar-fill" id="timerBarFill"></div>
+          </div>
+          <span class="timer-pill" id="timerPill">18s</span>
+        </div>
+      </div>
+      
+      <div class="hud-question-text" id="hudQuestion">
+        กำลังโหลดคำถามชีววิทยาโมเลกุล...
+      </div>
+
+      <!-- 4 Choices Legend -->
+      <div class="choices-legend-grid">
+        <div class="choice-legend-item">
+          <span class="choice-badge">A</span>
+          <span id="choiceTextA">ตัวเลือก A</span>
+        </div>
+        <div class="choice-legend-item">
+          <span class="choice-badge">B</span>
+          <span id="choiceTextB">ตัวเลือก B</span>
+        </div>
+        <div class="choice-legend-item">
+          <span class="choice-badge">C</span>
+          <span id="choiceTextC">ตัวเลือก C</span>
+        </div>
+        <div class="choice-legend-item">
+          <span class="choice-badge">D</span>
+          <span id="choiceTextD">ตัวเลือก D</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Team Status HUD (Bottom Left) -->
+  <div class="team-status-hud" id="teamStatusHud">
+    <div class="team-title">
+      <span>สมาชิกในทีม (TETHERED)</span>
+      <span style="color: #fff;">3/3</span>
+    </div>
+    <div id="teamMemberList">
+      <!-- Populated dynamically by game.js -->
+    </div>
+  </div>
+
+  <!-- 5. Controls & Pull Action HUD (Bottom Right) -->
+  <div class="controls-hud-hint">
+    <div><span class="key-badge">W</span><span class="key-badge">A</span><span class="key-badge">S</span><span class="key-badge">D</span> เดิน</div>
+    <div><span class="key-badge">SPACE</span> กระตุกเชือกดึงเพื่อน / แย่งตำแหน่ง</div>
+  </div>
+
+  <!-- 6. Mobile On-Screen Controls -->
+  <div class="mobile-touch-controls">
+    <div class="touch-dpad">
+      <div></div>
+      <button class="touch-btn" id="btnUp">▲</button>
+      <div></div>
+      <button class="touch-btn" id="btnLeft">◀</button>
+      <button class="touch-btn" id="btnAction" style="font-weight: 800; font-size: 13px;">PULL</button>
+      <button class="touch-btn" id="btnRight">▶</button>
+      <div></div>
+      <button class="touch-btn" id="btnDown">▼</button>
+      <div></div>
+    </div>
+  </div>
+
+  <!-- 7. Emergency Rescue QTE Overlay -->
+  <div class="rescue-overlay" id="rescueOverlay">
+    <div class="rescue-title" id="rescueTitle">⚠️ สมาชิกในทีมกำลังจะร่วงตกเหว!</div>
+    <div class="rescue-sub" id="rescueSub">ทุกคนต้องช่วยกันกดปุ่มดึงเชือกกู้ชีพขึ้นมาด่วน ก่อนจะตกลงไปทั้งหมด!</div>
+    <div class="rescue-progress-wrap">
+      <div class="rescue-progress-fill" id="rescueProgressFill"></div>
+    </div>
+    <button class="pull-btn" id="pullBtn">⚡ กดรัวๆ ดึงเชือกช่วยเพื่อน (SPACEBAR)!</button>
+    <div class="pull-hint">กดปุ่ม Spacebar หรือคลิกปุ่มด้านบนรัวๆ เพื่อดึงเชือก</div>
+  </div>
+
+  <!-- 8. Lobby & Room Creation Modal -->
+  <div class="screen-overlay" id="lobbyOverlay">
+    <div class="lobby-modal">
+      <div class="lobby-header">
+        <span class="lobby-kicker">CYTOLIFE MULTIPLAYER ARENA</span>
+        <h2 class="lobby-title">ศึกพิทักษ์เซลล์เชือกผูกพัน</h2>
+        <p class="lobby-desc">
+          คุณและเพื่อนร่วมทีมจะถูกผูกเชือกติดกันบนแผ่นดินที่กำลังพังทลาย วิ่งไปยังแท่นคำตอบที่ถูกต้อง ระวังดีบัพตกจากฟ้า และกระตุกเชือกดึงเพื่อนเพื่อแย่งตำแหน่งหรือช่วยชีวิต!
+        </p>
+      </div>
+
+      <div class="lobby-form-group">
+        <label class="lobby-label">ชื่อผู้เล่น (Player Name)</label>
+        <input type="text" id="playerNameInput" class="lobby-input" placeholder="ใส่ชื่อของคุณ เช่น BioResearcher" value="Player 1" maxlength="15">
+      </div>
+
+      <div class="lobby-form-group">
+        <label class="lobby-label">รหัสห้องเฉพาะกลุ่ม (Room Code)</label>
+        <input type="text" id="roomCodeInput" class="lobby-input" placeholder="ใส่รหัสห้อง เช่น BIO-888" value="BIO-774" maxlength="12">
+      </div>
+
+      <div class="lobby-form-group">
+        <label class="lobby-label">โหมดการเล่น (Game Mode)</label>
+        <div class="team-mode-selector">
+          <div class="mode-card selected" data-mode="ai">
+            <div class="mode-name">👥 ทีม AI Bio-Researchers</div>
+            <div class="mode-sub">เล่นคนเดียวร่วมกับเพื่อนร่วมทีม AI อัจฉริยะ 2 คน</div>
+          </div>
+          <div class="mode-card" data-mode="solo">
+            <div class="mode-name">🎯 ตะลุยเดี่ยว Solo Survivor</div>
+            <div class="mode-sub">ทดสอบปฏิกิริยาและความแม่นยำทางชีววิทยาแบบคนเดียว</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="start-btn" id="startArenaBtn">เข้าสู่ห้องประลอง (Enter Arena) ➔</button>
+    </div>
+  </div>
+
+  <!-- 9. Game Over Modal -->
+  <div class="screen-overlay hidden" id="gameOverOverlay">
+    <div class="lobby-modal" style="text-align: center;">
+      <div class="lobby-header">
+        <span class="lobby-kicker">MISSION FAILED</span>
+        <h2 class="lobby-title" style="color: #ffffff;">แผ่นดินพังทลาย!</h2>
+        <p class="lobby-desc" id="gameOverReason">สมาชิกในทีมทุกคนร่วงหล่นลงสู่อเวจี</p>
+      </div>
+
+      <div style="font-size: 36px; font-weight: 800; color: #ffffff; margin: 12px 0;" id="gameOverScore">
+        0 PTS
+      </div>
+
+      <div style="display: flex; gap: 12px;">
+        <button class="start-btn" style="flex: 1;" onclick="location.reload()">เล่นใหม่อีกครั้ง ➔</button>
+        <a href="../index.html" class="start-btn" style="flex: 1; background: transparent; color: #fff; border: 1px solid #fff; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;">กลับหน้าแรก</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. Victory Modal -->
+  <div class="screen-overlay hidden" id="victoryOverlay">
+    <div class="lobby-modal" style="text-align: center;">
+      <div class="lobby-header">
+        <span class="lobby-kicker" style="color: #fff;">CHAMPION SURVIVOR</span>
+        <h2 class="lobby-title" style="color: #ffffff;">รอดชีวิตสำเร็จทุกบททดสอบ!</h2>
+        <p class="lobby-desc">คุณและทีมตอบคำถามชีววิทยาได้อย่างแม่นยำและเอาชีวิตรอดบนเกาะที่พังทลายได้สำเร็จ</p>
+      </div>
+
+      <div style="font-size: 36px; font-weight: 800; color: #ffffff; margin: 12px 0;" id="victoryScore">
+        800 PTS
+      </div>
+
+      <div style="display: flex; gap: 12px;">
+        <button class="start-btn" style="flex: 1;" onclick="location.reload()">เล่นอีกครั้ง ➔</button>
+        <a href="../topics/quiz-hub.html" class="start-btn" style="flex: 1; background: transparent; color: #fff; border: 1px solid #fff; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;">ไปคลังข้อสอบ</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="game.js?v=20261004v2"></script>
+</body>
+</html>
