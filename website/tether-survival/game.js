@@ -414,28 +414,43 @@ class BioCyberArena3D {
     this.initThreeJS();
     this.initInputs();
     this.initLobbyUI();
+
+    // Build the 3D scene immediately on page load so it is NEVER a black screen!
+    this.buildWidePlatformGrid();
+    this.build3DAnswerPads();
+    this.build3DDecorations();
+    this.build3DPlayers();
+    this.loadQuestion(0);
+
+    this.lastTime = performance.now();
+    requestAnimationFrame((t) => this.gameLoop(t));
   }
 
   initThreeJS() {
     const container = document.getElementById('threeContainer');
     this.scene = new THREE.Scene();
     
-    const theme = ARENA_THEMES[this.currentTheme];
+    const theme = ARENA_THEMES[this.currentTheme] || ARENA_THEMES.sakura;
     this.scene.background = new THREE.Color(theme.bg);
     this.scene.fog = new THREE.FogExp2(theme.fog, theme.fogDensity);
 
     // Wide Isometric Camera
-    const aspect = window.innerWidth / window.innerHeight;
+    const aspect = (window.innerWidth || 1200) / (window.innerHeight || 800);
     this.camera = new THREE.PerspectiveCamera(40, aspect, 0.1, 1000);
     this.camera.position.set(0, 36, 44);
     this.camera.lookAt(0, 0, 0);
 
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    this.renderer.setClearColor(theme.bg, 1);
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    container.appendChild(this.renderer.domElement);
+    if (container) {
+      container.appendChild(this.renderer.domElement);
+    } else {
+      document.body.appendChild(this.renderer.domElement);
+    }
 
     // Dynamic Lights
     this.ambientLight = new THREE.AmbientLight(theme.ambientLight, theme.ambientIntensity);
@@ -1106,43 +1121,55 @@ class BioCyberArena3D {
   }
 
   update3DBillboardText(pad, choiceLetter, choiceText) {
+    if (!pad || !pad.canvas) return;
     const ctx = pad.canvas.getContext('2d');
+    if (!ctx) return;
     ctx.clearRect(0, 0, 512, 256);
-    const theme = ARENA_THEMES[this.currentTheme];
+    const theme = ARENA_THEMES[this.currentTheme] || ARENA_THEMES.sakura;
 
     // Theme Glass Gradient Background
-    ctx.fillStyle = theme.billboardBg;
-    ctx.roundRect(10, 10, 492, 236, 24);
-    ctx.fill();
-
-    ctx.strokeStyle = theme.billboardBorder;
-    ctx.lineWidth = 4;
-    ctx.stroke();
+    ctx.fillStyle = theme.billboardBg || 'rgba(28, 12, 34, 0.92)';
+    if (ctx.roundRect) {
+      ctx.beginPath();
+      ctx.roundRect(10, 10, 492, 236, 24);
+      ctx.fill();
+      ctx.strokeStyle = theme.billboardBorder || '#ffffff';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+    } else {
+      ctx.fillRect(10, 10, 492, 236);
+      ctx.strokeStyle = theme.billboardBorder || '#ffffff';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(10, 10, 492, 236);
+    }
 
     // Choice Badge [A]
-    ctx.fillStyle = theme.billboardBadge;
+    ctx.fillStyle = theme.billboardBadge || '#ff70a6';
     ctx.beginPath();
     ctx.arc(65, 80, 36, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = theme.billboardBadgeText;
-    ctx.font = '800 40px Prompt';
+    ctx.fillStyle = theme.billboardBadgeText || '#ffffff';
+    ctx.font = '800 40px Prompt, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(choiceLetter, 65, 82);
 
     // Choice Text (Academic biological term)
-    ctx.fillStyle = theme.billboardText;
-    ctx.font = '700 32px Prompt';
+    ctx.fillStyle = theme.billboardText || '#ffffff';
+    ctx.font = '700 30px Prompt, sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillText(choiceText.length > 20 ? choiceText.substring(0, 20) + '...' : choiceText, 120, 80);
+    const textStr = String(choiceText || '');
+    ctx.fillText(textStr.length > 22 ? textStr.substring(0, 22) + '...' : textStr, 115, 80);
 
     // Sub-caption
     ctx.fillStyle = '#d4d4d8';
-    ctx.font = '500 22px Prompt';
-    ctx.fillText('แท่นตัวเลือก 3 มิติ · วิ่งมาเหยียบ', 120, 150);
+    ctx.font = '500 20px Prompt, sans-serif';
+    ctx.fillText('แท่นตัวเลือก 3 มิติ · วิ่งมาเหยียบ', 115, 150);
 
-    pad.texture.needsUpdate = true;
+    if (pad.texture) {
+      pad.texture.needsUpdate = true;
+    }
   }
 
   // ==========================================
@@ -1262,41 +1289,54 @@ class BioCyberArena3D {
   }
 
   loadQuestion(idx) {
-    const questionList = this.gameType === 'whoami' ? WHO_AM_I_ROUNDS : STANDARD_QUESTIONS;
+    const questionList = (this.gameType === 'whoami' && typeof WHO_AM_I_ROUNDS !== 'undefined') ? WHO_AM_I_ROUNDS : STANDARD_QUESTIONS;
     this.currentQuestionIdx = idx % questionList.length;
     const q = questionList[this.currentQuestionIdx];
+    if (!q) return;
     this.questionTimer = this.questionTimeMax;
 
-    document.getElementById('ribbonTopic').innerText = q.topic;
-    document.getElementById('ribbonRound').innerText = `ข้อที่ ${this.round}/${this.totalRounds}`;
-    document.getElementById('ribbonQuestion').innerText = q.question;
+    const topicEl = document.getElementById('ribbonTopic');
+    if (topicEl) topicEl.innerText = q.topic;
+    const roundEl = document.getElementById('ribbonRound');
+    if (roundEl) roundEl.innerText = `ข้อที่ ${this.round}/${this.totalRounds}`;
+    const questionEl = document.getElementById('ribbonQuestion');
+    if (questionEl) questionEl.innerText = q.question;
 
     // Update 3D In-World Floating Billboards for each pad!
-    q.choices.forEach(ch => {
-      const pad = this.answerPads.find(p => p.id === ch.id);
-      if (pad) {
-        this.update3DBillboardText(pad, ch.id, ch.text);
-      }
-    });
+    if (q.choices && Array.isArray(q.choices)) {
+      q.choices.forEach(ch => {
+        const pad = this.answerPads.find(p => p.id === ch.id);
+        if (pad) {
+          this.update3DBillboardText(pad, ch.id, ch.text);
+        }
+      });
+    }
 
-    // Who Am I Clue Cards Handling
+    // Who Am I Clue Cards Handling (Safe check)
     const clueBar = document.getElementById('clueCardsBar');
-    if (this.gameType === 'whoami' && q.clues) {
-      clueBar.style.display = 'flex';
-      document.getElementById('clueText1').innerText = q.clues[0];
-      document.getElementById('clueText2').innerText = 'ปลดล็อกใน 12s';
-      document.getElementById('clueText3').innerText = 'ปลดล็อกใน 6s';
-      document.getElementById('clue2').className = 'clue-pill';
-      document.getElementById('clue3').className = 'clue-pill';
-    } else {
-      clueBar.style.display = 'none';
+    if (clueBar) {
+      if (this.gameType === 'whoami' && q.clues) {
+        clueBar.style.display = 'flex';
+        const ct1 = document.getElementById('clueText1');
+        if (ct1) ct1.innerText = q.clues[0];
+        const ct2 = document.getElementById('clueText2');
+        if (ct2) ct2.innerText = 'ปลดล็อกใน 12s';
+        const ct3 = document.getElementById('clueText3');
+        if (ct3) ct3.innerText = 'ปลดล็อกใน 6s';
+        const c2 = document.getElementById('clue2');
+        if (c2) c2.className = 'clue-pill';
+        const c3 = document.getElementById('clue3');
+        if (c3) c3.className = 'clue-pill';
+      } else {
+        clueBar.style.display = 'none';
+      }
     }
 
     // AI Teammates logic
     this.players.forEach(p => {
-      if (!p.isHuman) {
+      if (!p.isHuman && q.choices) {
         const isSmart = Math.random() < 0.85;
-        const correctChoice = q.choices.find(c => c.correct).id;
+        const correctChoice = (q.choices.find(c => c.correct) || q.choices[0]).id;
         const targetId = isSmart ? correctChoice : q.choices[Math.floor(Math.random() * q.choices.length)].id;
         p.targetPad = this.answerPads.find(pad => pad.id === targetId);
       }
@@ -1325,15 +1365,21 @@ class BioCyberArena3D {
       if (timerPill) timerPill.innerText = Math.ceil(this.questionTimer) + 's';
 
       // Progressive Who Am I clues reveal
-      if (this.gameType === 'whoami') {
+      if (this.gameType === 'whoami' && typeof WHO_AM_I_ROUNDS !== 'undefined') {
         const q = WHO_AM_I_ROUNDS[this.currentQuestionIdx];
-        if (this.questionTimer <= 12 && q.clues[1]) {
-          document.getElementById('clueText2').innerText = q.clues[1];
-          document.getElementById('clue2').className = 'clue-pill revealed';
-        }
-        if (this.questionTimer <= 6 && q.clues[2]) {
-          document.getElementById('clueText3').innerText = q.clues[2];
-          document.getElementById('clue3').className = 'clue-pill revealed';
+        if (q && q.clues) {
+          if (this.questionTimer <= 12 && q.clues[1]) {
+            const ct2 = document.getElementById('clueText2');
+            if (ct2) ct2.innerText = q.clues[1];
+            const c2 = document.getElementById('clue2');
+            if (c2) c2.className = 'clue-pill revealed';
+          }
+          if (this.questionTimer <= 6 && q.clues[2]) {
+            const ct3 = document.getElementById('clueText3');
+            if (ct3) ct3.innerText = q.clues[2];
+            const c3 = document.getElementById('clue3');
+            if (c3) c3.className = 'clue-pill revealed';
+          }
         }
       }
 
@@ -1810,8 +1856,10 @@ class BioCyberArena3D {
 window.switchGameType = function(type) {
   if (window.bioCyber) {
     window.bioCyber.gameType = type;
-    document.getElementById('tabSurvival').className = type === 'survival' ? 'mode-tab-btn active' : 'mode-tab-btn';
-    document.getElementById('tabWhoAmI').className = type === 'whoami' ? 'mode-tab-btn active' : 'mode-tab-btn';
+    const tabSurv = document.getElementById('tabSurvival');
+    if (tabSurv) tabSurv.className = type === 'survival' ? 'mode-tab-btn active' : 'mode-tab-btn';
+    const tabWho = document.getElementById('tabWhoAmI');
+    if (tabWho) tabWho.className = type === 'whoami' ? 'mode-tab-btn active' : 'mode-tab-btn';
     window.bioCyber.loadQuestion(0);
   }
 };
