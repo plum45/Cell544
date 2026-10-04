@@ -75,53 +75,7 @@ const STANDARD_QUESTIONS = [
   }
 ];
 
-const WHO_AM_I_ROUNDS = [
-  {
-    topic: 'Organelle Identity',
-    question: 'ทายซิว่าฉันคือออร์แกเนลล์ใด? (สังเกตคำใบ้ที่ปลดล็อกตามเวลา)',
-    clues: [
-      'ฉันมีเยื่อหุ้ม 2 ชั้น (Double Membrane)',
-      'ฉันมีสารพันธุกรรมและไรโบโซม 70S เป็นของตัวเอง',
-      'ฉันคือโรงไฟฟ้าสร้าง ATP ผ่าน Chemiosmosis'
-    ],
-    choices: [
-      { id: 'A', text: 'Mitochondria', correct: true },
-      { id: 'B', text: 'Ribosome 80S', correct: false },
-      { id: 'C', text: 'Golgi Apparatus', correct: false },
-      { id: 'D', text: 'Lysosome', correct: false }
-    ]
-  },
-  {
-    topic: 'Molecular Identity',
-    question: 'ทายซิว่าฉันคือชีวโมเลกุลใด?',
-    clues: [
-      'ฉันเป็นตัวรับสัญญาณบนเยื่อหุ้มเซลล์ (Transmembrane)',
-      'โครงสร้างของฉันพาดผ่านเยื่อหุ้มเซลล์ 7 ครั้ง (7-TM Spans)',
-      'ฉันส่งต่อสัญญาณผ่าน Heterotrimeric G-Protein'
-    ],
-    choices: [
-      { id: 'A', text: 'GPCR Receptor', correct: true },
-      { id: 'B', text: 'RNA Polymerase', correct: false },
-      { id: 'C', text: 'DNA Polymerase', correct: false },
-      { id: 'D', text: 'Sodium Pump', correct: false }
-    ]
-  },
-  {
-    topic: 'Guardian Identity',
-    question: 'ทายซิว่าฉันคือโปรตีนใดในเซลล์?',
-    clues: [
-      'ฉันถูกขนานนามว่า "ผู้พิทักษ์จีโนม" (Guardian of Genome)',
-      'ฉันทำหน้าที่เป็น Transcription Factor สั่งเปิดยีน p21',
-      'หาก DNA เสียหายหนัก ฉันจะสั่งกระตุ้น Apoptosis'
-    ],
-    choices: [
-      { id: 'A', text: 'Cyclin D', correct: false },
-      { id: 'B', text: 'p53 Protein', correct: true },
-      { id: 'C', text: 'Histone H1', correct: false },
-      { id: 'D', text: 'Telomerase', correct: false }
-    ]
-  }
-];
+
 
 // ==========================================
 // 1.5 Atmospheric & Cultural Arena Themes

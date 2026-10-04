@@ -38,11 +38,10 @@
     </div>
   </header>
 
-  <!-- 2. Mode & Theme Selector Dock (Top Right) -->
+  <!-- 2. Atmosphere Theme Selector Dock (Top Right) -->
   <div class="top-controls-dock">
-    <div class="mode-toggle-dock">
-      <button class="mode-tab-btn active" id="tabSurvival" onclick="switchGameType('survival')">⚔️ 3D Cyber Arena</button>
-      <button class="mode-tab-btn" id="tabWhoAmI" onclick="switchGameType('whoami')">🃏 Who Am I? (คู่ปริศนา)</button>
+    <div class="game-switch-dock">
+      <a href="../who-am-i/index.html" class="mode-tab-btn" title="ไปเล่นเกมคู่หูปริศนา 3D Who Am I?">🃏 ไปเกม Who Am I? (การ์ด 3D) ➔</a>
     </div>
     <div class="theme-select-dock">
       <button class="theme-btn active" id="themeBtn-sakura" onclick="switchTheme('sakura')" title="🌸 ฤดูใบไม้ผลิซากุระญี่ปุ่น">🌸 ซากุระ</button>
@@ -74,23 +73,7 @@
     </div>
   </div>
 
-  <!-- 4. Floating 3D Clue Cards for "WHO AM I?" mode -->
-  <div class="clue-cards-bar" id="clueCardsBar" style="display: none;">
-    <div class="clue-pill revealed" id="clue1">
-      <span class="clue-num">คำใบ้ 1</span>
-      <span id="clueText1">กำลังวิเคราะห์...</span>
-    </div>
-    <div class="clue-pill" id="clue2">
-      <span class="clue-num">คำใบ้ 2</span>
-      <span id="clueText2">ปลดล็อกใน 12s</span>
-    </div>
-    <div class="clue-pill" id="clue3">
-      <span class="clue-num">คำใบ้ 3</span>
-      <span id="clueText3">ปลดล็อกใน 6s</span>
-    </div>
-  </div>
-
-  <!-- 5. Three.js 3D WebGL Viewport Container (Full 3D Map) -->
+  <!-- 4. Three.js 3D WebGL Viewport Container (Full 3D Map) -->
   <div id="threeContainer"></div>
 
   <!-- 6. Team Status HUD (Bottom Left) -->
