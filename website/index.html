@@ -68,7 +68,7 @@
     </div>
   </div>
 
-  <!-- 4. HERO SECTION: 3D Fibonacci Sphere Showcase -->
+  <!-- 4. HERO SECTION: Cinematic Lore & Grand English Title -->
   <section class="sphere-hero-section" id="sphere-hero">
     <!-- Cinematic DNA Molecular Crystal Video Background -->
     <video class="hero-bg-video" autoplay loop muted playsinline webkit-playsinline preload="auto" poster="video/hero-poster.png">
@@ -76,46 +76,80 @@
     </video>
     <div class="hero-video-overlay"></div>
 
-    <!-- 3D Viewport -->
-    <div class="stage-hero-viewport" id="stage-hero">
-      <div id="world">
-        <!-- 3D Fibonacci Orb Sphere (Cards populated by sphere-hero.js) -->
-        <div id="orb"></div>
-        
-        <!-- Centered Counter-Rotated Title -->
-        <div id="headline">
-          <div class="inner">
-            <span class="hero-kicker">CELLULAR & MOLECULAR BIOLOGY</span>
-            <h1 class="hero-main-title">สถาปัตยกรรมแห่งชีวิต</h1>
-            <p class="hero-desc">สำรวจกลไกควบคุมชีวิตระดับเซลล์ผ่านแบบจำลองชีวโมเลกุล 3 มิติเชิงลึก</p>
-          </div>
+    <!-- Centered Hero Story Content -->
+    <div class="hero-center-content">
+      <div class="hero-lore-badge">
+        <span class="lore-pulse-dot"></span>
+        <span>THE CELLULAR LORE · CHAPTER 01: ORIGIN</span>
+        <span class="lore-tag-divider">|</span>
+        <span>สถาปัตยกรรมแห่งชีวิต</span>
+      </div>
+
+      <h1 class="hero-grand-title">
+        <span class="hero-title-en-big">ARCHITECTS OF LIFE</span>
+        <span class="hero-title-en-sub">THE CELLULAR ODYSSEY</span>
+      </h1>
+
+      <p class="hero-story-thai-desc">
+        มหากาพย์การเดินทางสู่แกนกลางแห่งสิ่งมีชีวิต — เมื่อรหัสพันธุกรรมโบราณและกลไกระดับโมเลกุลถูกปลุกขึ้น เพื่อเปิดเผยความลับแห่งการควบคุมชีวิต การสื่อสารข้ามเซลล์ และสถาปัตยกรรมชีวภาพเหนือกาลเวลา
+      </p>
+
+      <!-- Hero Controls Dock -->
+      <div class="hero-controls-dock">
+        <div class="hero-action-row">
+          <a href="tether-survival/index.html" class="apple-btn-large primary">
+            <span>⚡ 3D Cyber Tether Arena</span>
+            <span>➔</span>
+          </a>
+          <a href="who-am-i/index.html" class="apple-btn-large primary" style="background: linear-gradient(135deg, #a855f7, #00f0ff); color: #000; border-color: #a855f7;">
+            <span>🃏 3D Who Am I? (การ์ด & แฟ้มลับ)</span>
+            <span>➔</span>
+          </a>
+          <button type="button" class="apple-btn-large secondary btn-open-rules" data-rule-tab="all">
+            <span>📖 กติกาวิธีเล่นทุกเกม</span>
+          </button>
+          <a href="curriculum.html" class="apple-btn-large secondary">
+            <span>ศูนย์รวมบทเรียน</span>
+          </a>
+          <a href="island-3d/index.html" class="apple-btn-large secondary">
+            <span>แบบจำลอง 3D</span>
+          </a>
         </div>
+
+        <a href="#bio-archives" class="hero-scroll-indicator">
+          <span>สำรวจแฟ้มข้อมูลชีวโมเลกุล 16 หัวข้อวิจัยด้านล่าง</span>
+          <span class="scroll-chevron">↓</span>
+        </a>
       </div>
     </div>
+  </section>
 
-    <!-- Hero Controls Dock -->
-    <div class="hero-controls-dock">
-      <div class="hero-action-row">
-        <a href="tether-survival/index.html" class="apple-btn-large primary">
-          <span>⚡ 3D Cyber Tether Arena</span>
-          <span>➔</span>
-        </a>
-        <a href="who-am-i/index.html" class="apple-btn-large primary" style="background: linear-gradient(135deg, #a855f7, #00f0ff); color: #000; border-color: #a855f7;">
-          <span>🃏 3D Who Am I? (การ์ด & แฟ้มลับ)</span>
-          <span>➔</span>
-        </a>
-        <button type="button" class="apple-btn-large secondary btn-open-rules" data-rule-tab="all">
-          <span>📖 กติกาวิธีเล่นทุกเกม</span>
-        </button>
-        <a href="curriculum.html" class="apple-btn-large secondary">
-          <span>ศูนย์รวมบทเรียน</span>
-        </a>
-        <a href="island-3d/index.html" class="apple-btn-large secondary">
-          <span>แบบจำลอง 3D</span>
-        </a>
+  <!-- 4.1 Bio-Specimen Files Section: แฟ้มชีวโมเลกุล 16 หัวข้อ (ย้ายมาจากหมุนๆ บนหน้า Hero) -->
+  <section class="bio-files-section" id="bio-archives">
+    <div class="apple-container">
+      <div class="section-header-apple">
+        <div class="section-eyebrow-badge">
+          <span class="badge-icon">📂</span>
+          <span>RESEARCH ARCHIVES · 16 CLASSIFIED SPECIMEN FILES</span>
+        </div>
+        <h2 class="title-apple">แฟ้มข้อมูลชีวโมเลกุล 16 หัวข้อวิจัย</h2>
+        <p class="desc-apple">
+          คลังข้อมูลชีวโมเลกุลและออร์แกเนลล์สำคัญ รวบรวมตามหลักสูตร สสวท. และ Campbell Biology คลิกการ์ดเพื่อเปิดดูโครงสร้างจำลอง 3D หรือเข้าสู่เนื้อหาบทเรียนเชิงลึก
+        </p>
+
+        <!-- Category Filters -->
+        <div class="bio-files-filter-bar">
+          <button type="button" class="bio-filter-btn active" data-filter="all">ทั้งหมด (16 แฟ้ม)</button>
+          <button type="button" class="bio-filter-btn" data-filter="genetics">🧬 รหัสพันธุกรรม & ควบคุม</button>
+          <button type="button" class="bio-filter-btn" data-filter="signaling">📡 การสื่อสาร & ตอบสนอง</button>
+          <button type="button" class="bio-filter-btn" data-filter="energy">⚡ พลังงาน & ออร์แกเนลล์</button>
+          <button type="button" class="bio-filter-btn" data-filter="worlds">🎮 โลกเสมือน & AI</button>
+        </div>
       </div>
-      <div class="hero-hint">
-        <span>✦ ลากเมาส์หมุน 3D</span> &bull; <span>ชี้เพื่อหยุดดู</span> &bull; <span>คลิกการ์ดเพื่ออ่านข้อมูลบทเรียน</span>
+
+      <!-- Specimen Files Grid (Rendered by js/sphere-hero.js) -->
+      <div class="bio-files-grid" id="bio-files-grid">
+        <!-- Injected dynamically by initBioSpecimenFiles() -->
       </div>
     </div>
   </section>
