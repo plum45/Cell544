@@ -649,35 +649,33 @@ class BioCyberArena3D {
     this.questionTimeMax = 18;
     this.questionTimer = this.questionTimeMax;
 
-    // Random Falling Block Mechanic (สุ่มบล็อคร่วงทีละ 1 บล็อก)
+    // Random Falling Block Mechanic (สุ่มบล็อคร่วงทีละ 1 บล็อก — อุปสรรคหลักเพียงอย่างเดียว!)
     this.randomFallInterval = 1.6; // Seconds between random block drops
     this.randomFallTimer = 1.0;
 
-    // Map & Blocks (Wider 15x15 Expansive Cyber Island)
-    this.gridSize = 15;
-    this.blockSize = 3.8;
+    // Map & Blocks (พื้นที่เดินกว้างขวางเป็นพิเศษ 21x21 บล็อก กว้างกว่า 88 เมตร!)
+    this.gridSize = 21; // Expanded from 15 to 21
+    this.blockSize = 4.2; // Expanded from 3.8 to 4.2
     this.blocks = [];
 
     // 4 Answer Pads & 3D Holographic Billboards
     this.answerPads = [];
+    this.floorDirectionGroup = null;
 
     // Players & 3D Voxel Models
     this.players = [];
     this.tetherRopes = [];
-    this.tetherRestLength = 6.5;
-    this.tetherStiffness = 0.07;
+    this.tetherRestLength = 8.5;
+    this.tetherStiffness = 0.06;
     this.yankCooldown = 0;
 
-    // Power-Up Skills & Hazards Mechanics (ลูกเล่นใหม่สุดแจ่ม!)
+    // Power-Up Skills (เน้นความสนุกบริสุทธิ์ ไม่มีเลเซอร์กวนใจ เหลือเพียงบล็อกร่วงให้ลุ้นระทึก!)
     this.skills = { hack: 1, speed: 2, shield: 1 };
     this.speedBoostTimer = 0;
     this.shieldActive = false;
     this.shieldMesh = null;
-    this.bouncePads = [];
     this.cyberOrbs = [];
     this.orbSpawnTimer = 4.0;
-    this.laserSweeperGroup = null;
-    this.laserSweeperAngle = 0;
     this.comboStreak = 0;
 
     // Rescue QTE
@@ -699,8 +697,7 @@ class BioCyberArena3D {
     // Build the 3D scene immediately on page load so it is NEVER a black screen!
     this.buildWidePlatformGrid();
     this.build3DAnswerPads();
-    this.buildBouncePads();
-    this.buildLaserSweeper();
+    this.buildFloorDirectionArrows();
     this.build3DDecorations();
     this.build3DPlayers();
     this.updateSkillsUI();
@@ -1122,8 +1119,7 @@ class BioCyberArena3D {
 
     this.buildWidePlatformGrid();
     this.build3DAnswerPads();
-    this.buildBouncePads();
-    this.buildLaserSweeper();
+    this.buildFloorDirectionArrows();
     this.build3DDecorations();
     this.build3DPlayers();
     this.updateSkillsUI();
@@ -1565,12 +1561,12 @@ class BioCyberArena3D {
     this.answerPads = [];
 
     const theme = ARENA_THEMES[this.currentTheme] || ARENA_THEMES.sakura;
-    const offset = this.blockSize * 3.4;
+    const offset = this.blockSize * 5.2; // 21.8m from center
     const padPositions = [
-      { id: 'A', x: 0, z: -offset, label: 'A' },
-      { id: 'B', x: offset, z: 0, label: 'B' },
-      { id: 'C', x: 0, z: offset, label: 'C' },
-      { id: 'D', x: -offset, z: 0, label: 'D' }
+      { id: 'A', x: 0, z: -offset, label: 'A', direction: 'NORTH (เหนือ)', color: 0x38bdf8 },
+      { id: 'B', x: offset, z: 0, label: 'B', direction: 'EAST (ออก)', color: 0xfb923c },
+      { id: 'C', x: 0, z: offset, label: 'C', direction: 'SOUTH (ใต้)', color: 0x4ade80 },
+      { id: 'D', x: -offset, z: 0, label: 'D', direction: 'WEST (ตก)', color: 0xf472b6 }
     ];
 
     padPositions.forEach(pos => {
@@ -1578,26 +1574,26 @@ class BioCyberArena3D {
       group.position.set(pos.x, 0.8, pos.z);
 
       // Raised 3D Cyber Podium
-      const podiumGeo = new THREE.CylinderGeometry(2.5, 2.8, 0.8, 24);
+      const podiumGeo = new THREE.CylinderGeometry(2.8, 3.2, 0.8, 24);
       const podiumMat = new THREE.MeshStandardMaterial({ color: theme.padPodium, roughness: 0.2, metalness: 0.9 });
       const podium = new THREE.Mesh(podiumGeo, podiumMat);
       podium.receiveShadow = true;
       group.add(podium);
 
-      // Glowing Outer Hologram Ring
-      const torusGeo = new THREE.TorusGeometry(2.7, 0.09, 8, 32);
-      const torusMat = new THREE.MeshBasicMaterial({ color: theme.padRing });
+      // Glowing Outer Hologram Ring with Cardinal Color
+      const torusGeo = new THREE.TorusGeometry(3.0, 0.12, 8, 32);
+      const torusMat = new THREE.MeshBasicMaterial({ color: pos.color });
       const torus = new THREE.Mesh(torusGeo, torusMat);
       torus.rotation.x = Math.PI / 2;
       torus.position.y = 0.45;
       group.add(torus);
 
-      // Light Beam Stem
-      const beamGeo = new THREE.CylinderGeometry(0.08, 0.08, 3.2, 8);
-      const beamMat = new THREE.MeshBasicMaterial({ color: theme.padRing, transparent: true, opacity: 0.65 });
-      const beam = new THREE.Mesh(beamGeo, beamMat);
-      beam.position.y = 2.0;
-      group.add(beam);
+      // Radiant Sky Beacon Light Pillar (พุ่งขึ้นฟ้า 50 เมตร มองเห็นชัดเจนจากทุกทิศทาง!)
+      const skyBeamGeo = new THREE.CylinderGeometry(0.22, 0.45, 52, 16);
+      const skyBeamMat = new THREE.MeshBasicMaterial({ color: pos.color, transparent: true, opacity: 0.5 });
+      const skyBeam = new THREE.Mesh(skyBeamGeo, skyBeamMat);
+      skyBeam.position.y = 26.0;
+      group.add(skyBeam);
 
       // 3D In-World Floating Hologram Billboard (1024x512 High-Res Canvas Texture)
       const canvas = document.createElement('canvas');
@@ -1605,10 +1601,10 @@ class BioCyberArena3D {
       canvas.height = 512;
       const texture = new THREE.CanvasTexture(canvas);
 
-      const billboardGeo = new THREE.PlaneGeometry(6.6, 3.3);
+      const billboardGeo = new THREE.PlaneGeometry(7.2, 3.6);
       const billboardMat = new THREE.MeshBasicMaterial({ map: texture, transparent: true, side: THREE.DoubleSide });
       const billboard = new THREE.Mesh(billboardGeo, billboardMat);
-      billboard.position.set(0, 4.2, 0);
+      billboard.position.set(0, 4.6, 0);
       group.add(billboard);
 
       this.scene.add(group);
@@ -1617,7 +1613,9 @@ class BioCyberArena3D {
         id: pos.id,
         x: pos.x,
         z: pos.z,
-        radius: 2.8,
+        direction: pos.direction,
+        color: pos.color,
+        radius: 3.2,
         group,
         podium,
         torus,
@@ -2017,17 +2015,6 @@ class BioCyberArena3D {
     this.updateCyberOrbs(dt);
 
     // Rotate Central Hazard Laser Sweeper
-    if (this.laserSweeperGroup) {
-      this.laserSweeperAngle += dt * 0.95;
-      this.laserSweeperGroup.rotation.y = this.laserSweeperAngle;
-    }
-
-    // Pulse 3D Bounce Pads
-    this.bouncePads.forEach(bp => {
-      bp.pulse += dt * 4;
-      if (bp.ringMesh) bp.ringMesh.scale.setScalar(1 + Math.sin(bp.pulse) * 0.08);
-    });
-
     // Billboard orientation facing camera in all views
     this.answerPads.forEach(pad => {
       if (pad.billboard) {
@@ -2037,67 +2024,55 @@ class BioCyberArena3D {
   }
 
   // ==========================================
-  // 5.1 3D Bounce / Spring Launch Pads
+  // 5.1 3D Directional Runway Indicators & Floor Compass Rose
   // ==========================================
-  buildBouncePads() {
-    this.bouncePads.forEach(bp => this.scene.remove(bp.group));
-    this.bouncePads = [];
+  buildFloorDirectionArrows() {
+    if (this.floorDirectionGroup) this.scene.remove(this.floorDirectionGroup);
+    this.floorDirectionGroup = new THREE.Group();
 
-    const coords = [
-      { x: 13.5, z: 13.5 },
-      { x: -13.5, z: 13.5 },
-      { x: 13.5, z: -13.5 },
-      { x: -13.5, z: -13.5 }
+    // 1. Central Compass Rose Outer Ring on Floor (y = 0.74)
+    const ringGeo = new THREE.RingGeometry(3.6, 4.0, 32);
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, side: THREE.DoubleSide, transparent: true, opacity: 0.85 });
+    const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+    ringMesh.rotation.x = -Math.PI / 2;
+    ringMesh.position.y = 0.74;
+    this.floorDirectionGroup.add(ringMesh);
+
+    // 2. Cardinal Runway Laser Strips and Chevron Arrows pointing to Pads A, B, C, D
+    const directions = [
+      { id: 'A', dir: 'N', angle: 0, color: 0x38bdf8 },
+      { id: 'B', dir: 'E', angle: Math.PI / 2, color: 0xfb923c },
+      { id: 'C', dir: 'S', angle: Math.PI, color: 0x4ade80 },
+      { id: 'D', dir: 'W', angle: -Math.PI / 2, color: 0xf472b6 }
     ];
 
-    coords.forEach(pos => {
-      const group = new THREE.Group();
-      group.position.set(pos.x, 0.4, pos.z);
+    directions.forEach(d => {
+      const stripGroup = new THREE.Group();
+      stripGroup.rotation.y = d.angle;
 
-      const baseGeo = new THREE.CylinderGeometry(1.6, 1.8, 0.3, 16);
-      const baseMat = new THREE.MeshStandardMaterial({ color: 0x22222a, roughness: 0.3, metalness: 0.8 });
-      const baseMesh = new THREE.Mesh(baseGeo, baseMat);
-      group.add(baseMesh);
+      // 4 Glowing Chevron Arrows along the floor toward each pad
+      for (let i = 1; i <= 4; i++) {
+        const dist = 4.4 * i;
+        const arrowGeo = new THREE.ConeGeometry(0.7, 1.4, 3);
+        const arrowMat = new THREE.MeshBasicMaterial({ color: d.color, transparent: true, opacity: 0.9 });
+        const arrow = new THREE.Mesh(arrowGeo, arrowMat);
+        arrow.rotation.x = -Math.PI / 2;
+        arrow.position.set(0, 0.74, -dist);
+        stripGroup.add(arrow);
+      }
 
-      const ringGeo = new THREE.TorusGeometry(1.4, 0.12, 8, 24);
-      const ringMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
-      const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-      ringMesh.rotation.x = Math.PI / 2;
-      ringMesh.position.y = 0.2;
-      group.add(ringMesh);
+      // Connecting Floor Light Strip
+      const lineGeo = new THREE.PlaneGeometry(0.28, 19);
+      const lineMat = new THREE.MeshBasicMaterial({ color: d.color, transparent: true, opacity: 0.55, side: THREE.DoubleSide });
+      const line = new THREE.Mesh(lineGeo, lineMat);
+      line.rotation.x = -Math.PI / 2;
+      line.position.set(0, 0.73, -11.5);
+      stripGroup.add(line);
 
-      const springGeo = new THREE.CylinderGeometry(0.5, 0.5, 0.4, 12);
-      const springMat = new THREE.MeshBasicMaterial({ color: 0xff007f });
-      const springMesh = new THREE.Mesh(springGeo, springMat);
-      springMesh.position.y = 0.25;
-      group.add(springMesh);
-
-      this.scene.add(group);
-      this.bouncePads.push({ x: pos.x, z: pos.z, radius: 1.9, group, ringMesh, springMesh, pulse: Math.random() * Math.PI });
+      this.floorDirectionGroup.add(stripGroup);
     });
-  }
 
-  // ==========================================
-  // 5.2 Central Rotating Hazard Laser Sweeper
-  // ==========================================
-  buildLaserSweeper() {
-    if (this.laserSweeperGroup) this.scene.remove(this.laserSweeperGroup);
-    this.laserSweeperGroup = new THREE.Group();
-    this.laserSweeperGroup.position.set(0, 0.5, 0);
-
-    const emitterGeo = new THREE.CylinderGeometry(0.6, 0.7, 0.8, 16);
-    const emitterMat = new THREE.MeshStandardMaterial({ color: 0x111118, metalness: 0.9, roughness: 0.2 });
-    const emitter = new THREE.Mesh(emitterGeo, emitterMat);
-    this.laserSweeperGroup.add(emitter);
-
-    const beamGeo = new THREE.CylinderGeometry(0.08, 0.08, 38, 8);
-    beamGeo.rotateZ(Math.PI / 2);
-    const beamMat = new THREE.MeshBasicMaterial({ color: 0xff0055, transparent: true, opacity: 0.85 });
-    const beamMesh = new THREE.Mesh(beamGeo, beamMat);
-    beamMesh.position.y = 0.2;
-    this.laserSweeperGroup.add(beamMesh);
-
-    this.scene.add(this.laserSweeperGroup);
+    this.scene.add(this.floorDirectionGroup);
   }
 
   // ==========================================
@@ -2442,41 +2417,7 @@ class BioCyberArena3D {
         p.isGrounded = true;
       }
 
-      // Check Stepping on 3D Bounce / Spring Pads
-      this.bouncePads.forEach(bp => {
-        const dist = Math.hypot(p.group.position.x - bp.x, p.group.position.z - bp.z);
-        if (dist <= bp.radius && p.group.position.y <= 1.2) {
-          p.vy = 24;
-          p.isGrounded = false;
-          this.sfx.playBouncePad();
-          this.addCameraShake(0.35);
-          if (p.isHuman) {
-            this.showFloatingToast('🚀 SUPER BOUNCE PAD! เด้งสปริงสูงเสียดฟ้า', '#ff007f');
-          }
-        }
-      });
-
-      // Check Hazard Laser Sweeper Collision (if on ground)
-      if (this.laserSweeperGroup && p.group.position.y <= 1.4 && p.status === 'SAFE') {
-        const px = p.group.position.x;
-        const pz = p.group.position.z;
-        const distCenter = Math.hypot(px, pz);
-        if (distCenter > 1.0 && distCenter < 19.0) {
-          const playerAngle = Math.atan2(pz, px);
-          let angleDiff = Math.abs(((playerAngle - this.laserSweeperAngle) % Math.PI + Math.PI) % Math.PI);
-          if (angleDiff > Math.PI / 2) angleDiff = Math.PI - angleDiff;
-          if (angleDiff < 0.14) {
-            const pushDir = Math.atan2(pz, px);
-            p.vx += Math.cos(pushDir) * 16;
-            p.vz += Math.sin(pushDir) * 16;
-            this.sfx.playLaserZap();
-            this.addCameraShake(0.3);
-            if (p.isHuman) {
-              this.showFloatingToast('⚡ โดนลำแสงเลเซอร์กวาด! (กระโดด SPACE ข้ามได้)', '#ff0055');
-            }
-          }
-        }
-      }
+      // Pure Survival: No collision hazards, only falling blocks!
 
       // Leg & Arm swing animations
       const isMoving = Math.hypot(p.vx, p.vz) > 0.5;
@@ -2816,6 +2757,171 @@ class BioCyberArena3D {
 
   render() {
     this.renderer.render(this.scene, this.camera);
+    this.updateCompassAndNavigationHUD();
+  }
+
+  updateCompassAndNavigationHUD() {
+    const human = this.players.find(p => p.isHuman);
+    if (!human || !human.group) return;
+
+    const px = human.group.position.x;
+    const pz = human.group.position.z;
+
+    // 1. Update Compass Tape (Top HUD)
+    const compassTape = document.getElementById('compassTape');
+    if (compassTape) {
+      const deg = Math.round((((-this.yaw * 180 / Math.PI) % 360) + 360) % 360);
+      const cardinals = [
+        { deg: 0, label: 'N' },
+        { deg: 45, label: 'NE' },
+        { deg: 90, label: 'E' },
+        { deg: 135, label: 'SE' },
+        { deg: 180, label: 'S' },
+        { deg: 225, label: 'SW' },
+        { deg: 270, label: 'W' },
+        { deg: 315, label: 'NW' }
+      ];
+
+      let closestCard = cardinals[0];
+      let minDiff = 999;
+      cardinals.forEach(c => {
+        let diff = Math.abs(c.deg - deg);
+        if (diff > 180) diff = 360 - diff;
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestCard = c;
+        }
+      });
+
+      compassTape.innerHTML = `
+        <span style="color:#00f0ff; margin-right:8px;">${deg}° ${closestCard.label}</span>
+        <span class="compass-pad-badge a">A:N</span>
+        <span class="compass-pad-badge b">B:E</span>
+        <span class="compass-pad-badge c">C:S</span>
+        <span class="compass-pad-badge d">D:W</span>
+      `;
+    }
+
+    // 2. Update Waypoint Pills (Directions & Live Distance)
+    const arrows = ['⬆️', '↗️', '➡️', '↘️', '⬇️', '↙️', '⬅️', '↖️'];
+    const padDirections = [
+      { id: 'A', name: 'N (เหนือ)', elDir: 'wpDir-A', elDist: 'wpDist-A', elPill: 'wpPill-A' },
+      { id: 'B', name: 'E (ออก)', elDir: 'wpDir-B', elDist: 'wpDist-B', elPill: 'wpPill-B' },
+      { id: 'C', name: 'S (ใต้)', elDir: 'wpDir-C', elDist: 'wpDist-C', elPill: 'wpPill-C' },
+      { id: 'D', name: 'W (ตก)', elDir: 'wpDir-D', elDist: 'wpDist-D', elPill: 'wpPill-D' }
+    ];
+
+    padDirections.forEach(pd => {
+      const pad = this.answerPads.find(p => p.id === pd.id);
+      if (!pad) return;
+
+      const dx = pad.x - px;
+      const dz = pad.z - pz;
+      const dist = Math.hypot(dx, dz);
+
+      // Angle from player to pad in world coordinates
+      const worldAngle = Math.atan2(dx, -dz);
+      // Angle relative to player's camera look direction
+      let relAngle = worldAngle - this.yaw;
+      while (relAngle < -Math.PI) relAngle += Math.PI * 2;
+      while (relAngle > Math.PI) relAngle -= Math.PI * 2;
+
+      // Map relative angle [-PI, PI] to 8 arrow sectors
+      const sector = Math.round((relAngle / (Math.PI / 4)) + 8) % 8;
+      const arrow = arrows[sector];
+
+      const dirEl = document.getElementById(pd.elDir);
+      if (dirEl) dirEl.innerText = `${arrow} ${pd.name}`;
+
+      const distEl = document.getElementById(pd.elDist);
+      if (distEl) distEl.innerText = `${dist.toFixed(0)}m`;
+    });
+
+    // 3. Render Circular Mini Radar (Bottom Right)
+    const radarCanvas = document.getElementById('radarCanvas');
+    if (radarCanvas) {
+      const ctx = radarCanvas.getContext('2d');
+      if (ctx) {
+        const w = radarCanvas.width;
+        const h = radarCanvas.height;
+        const cx = w / 2;
+        const cy = h / 2;
+        const radarRadius = w / 2 - 4;
+
+        ctx.clearRect(0, 0, w, h);
+
+        // Background circle
+        ctx.fillStyle = 'rgba(8, 14, 28, 0.9)';
+        ctx.beginPath();
+        ctx.arc(cx, cy, radarRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(0, 240, 255, 0.4)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Range rings
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(cx, cy, radarRadius * 0.5, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // North Tick
+        ctx.fillStyle = '#00f0ff';
+        ctx.font = 'bold 9px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('N', cx, 12);
+
+        // Scale factor: platform radius ~44m -> radarRadius ~44px
+        const scale = radarRadius / 44;
+
+        // Draw Pads A, B, C, D
+        const padColors = { A: '#38bdf8', B: '#fb923c', C: '#4ade80', D: '#f472b6' };
+        this.answerPads.forEach(pad => {
+          const rx = cx + pad.x * scale;
+          const ry = cy + pad.z * scale;
+          ctx.fillStyle = padColors[pad.id] || '#ffffff';
+          ctx.beginPath();
+          ctx.arc(rx, ry, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 8px monospace';
+          ctx.fillText(pad.id, rx, ry - 5);
+        });
+
+        // Draw Teammates
+        this.players.forEach(p => {
+          if (!p.isHuman && p.status === 'SAFE') {
+            const rx = cx + p.group.position.x * scale;
+            const ry = cy + p.group.position.z * scale;
+            ctx.fillStyle = '#a1a1aa';
+            ctx.beginPath();
+            ctx.arc(rx, ry, 2.5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        });
+
+        // Draw Player with heading cone
+        const prx = cx + px * scale;
+        const pry = cy + pz * scale;
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(prx, pry, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Player look direction indicator
+        const dirLen = 8;
+        const forwardX = prx + Math.sin(this.yaw) * dirLen;
+        const forwardY = pry - Math.cos(this.yaw) * dirLen;
+        ctx.strokeStyle = '#00f0ff';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(prx, pry);
+        ctx.lineTo(forwardX, forwardY);
+        ctx.stroke();
+      }
+    }
   }
 
   showVictoryModal() {

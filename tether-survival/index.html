@@ -47,10 +47,19 @@
   <!-- Minecraft First Person Crosshair (Only visible in 1st person mode) -->
   <div class="minecraft-crosshair" id="minecraftCrosshair"></div>
 
+  <!-- Dynamic 3D Cyber Compass & Heading Ribbon -->
+  <div class="cyber-compass-bar" id="cyberCompassBar">
+    <div class="compass-tape-wrap">
+      <div class="compass-tape" id="compassTape"></div>
+      <div class="compass-pointer">▼</div>
+    </div>
+  </div>
+
   <!-- 2. Atmosphere Theme Selector Dock (Top Right) -->
   <div class="top-controls-dock">
     <div class="game-switch-dock">
       <a href="../who-am-i/index.html" class="mode-tab-btn" title="ไปเล่นเกมคู่หูปริศนา 3D Who Am I?">🃏 ไปเกม Who Am I? (การ์ด 3D) ➔</a>
+      <a href="./test.html" class="mode-tab-btn" style="color: #00f2fe; border-color: rgba(0, 242, 254, 0.4);" title="หน้าทดสอบเสียง & ระบบเกม">🧪 หน้าเทสระบบ</a>
     </div>
     <div class="theme-select-dock">
       <button class="theme-btn active" id="themeBtn-sakura" onclick="switchTheme('sakura')" title="🌸 ฤดูใบไม้ผลิซากุระญี่ปุ่น">🌸 ซากุระ</button>
@@ -85,8 +94,37 @@
   <!-- 4. Three.js 3D WebGL Viewport Container (Full 3D Map) -->
   <div id="threeContainer"></div>
 
+  <!-- Circular Mini Radar HUD (Bottom Right) -->
+  <div class="mini-radar-hud" id="miniRadarHud">
+    <canvas class="mini-radar-canvas" id="radarCanvas" width="100" height="100"></canvas>
+  </div>
+
   <!-- 5. Crystal-Clear 4-Choice Option HUD (Easy to Read + One-Tap Move) -->
   <div class="choice-hud-bar" id="choiceHudBar">
+    <!-- Real-Time Direction Waypoints to Answer Pads A, B, C, D -->
+    <div class="pad-waypoints-bar" id="padWaypointsBar">
+      <div class="waypoint-pill pad-a" id="wpPill-A" onclick="window.selectChoiceAndRun('A')" title="แท่น A (ทิศเหนือ)">
+        <span class="wp-badge">A</span>
+        <span class="wp-dir" id="wpDir-A">⬆️ N (เหนือ)</span>
+        <span class="wp-dist" id="wpDist-A">--m</span>
+      </div>
+      <div class="waypoint-pill pad-b" id="wpPill-B" onclick="window.selectChoiceAndRun('B')" title="แท่น B (ทิศตะวันออก)">
+        <span class="wp-badge">B</span>
+        <span class="wp-dir" id="wpDir-B">➡️ E (ออก)</span>
+        <span class="wp-dist" id="wpDist-B">--m</span>
+      </div>
+      <div class="waypoint-pill pad-c" id="wpPill-C" onclick="window.selectChoiceAndRun('C')" title="แท่น C (ทิศใต้)">
+        <span class="wp-badge">C</span>
+        <span class="wp-dir" id="wpDir-C">⬇️ S (ใต้)</span>
+        <span class="wp-dist" id="wpDist-C">--m</span>
+      </div>
+      <div class="waypoint-pill pad-d" id="wpPill-D" onclick="window.selectChoiceAndRun('D')" title="แท่น D (ทิศตะวันตก)">
+        <span class="wp-badge">D</span>
+        <span class="wp-dir" id="wpDir-D">⬅️ W (ตก)</span>
+        <span class="wp-dist" id="wpDist-D">--m</span>
+      </div>
+    </div>
+
     <div class="choice-hud-header">
       <span class="chh-title">🎯 เลือกคำตอบ (แตะเพื่อให้ตัวละครวิ่งไปแท่น 3D ทันที)</span>
     </div>

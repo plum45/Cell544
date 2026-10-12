@@ -1411,3 +1411,167 @@ body {
   }
 }
 
+/* =========================================================================
+   Directional Navigation System (Compass Bar, Waypoints & Mini Radar)
+   ========================================================================= */
+.cyber-compass-bar {
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 320px;
+  max-width: 85vw;
+  height: 28px;
+  background: rgba(10, 14, 28, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: 9999px;
+  z-index: 55;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+}
+
+.compass-tape-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.compass-tape {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 1px;
+  transition: transform 0.05s ease-out;
+}
+
+.compass-pointer {
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #00f0ff;
+  font-size: 10px;
+  pointer-events: none;
+  filter: drop-shadow(0 0 4px #00f0ff);
+}
+
+.compass-pad-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #000;
+  margin: 0 4px;
+}
+.compass-pad-badge.a { background: #38bdf8; }
+.compass-pad-badge.b { background: #fb923c; }
+.compass-pad-badge.c { background: #4ade80; }
+.compass-pad-badge.d { background: #f472b6; }
+
+/* Waypoint Pills Row above Choice HUD */
+.pad-waypoints-bar {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.waypoint-pill {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  padding: 4px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.waypoint-pill:hover {
+  background: rgba(30, 41, 59, 0.95);
+  transform: translateY(-2px);
+}
+
+.waypoint-pill.pad-a { border-color: rgba(56, 189, 248, 0.5); }
+.waypoint-pill.pad-b { border-color: rgba(251, 146, 60, 0.5); }
+.waypoint-pill.pad-c { border-color: rgba(74, 222, 128, 0.5); }
+.waypoint-pill.pad-d { border-color: rgba(244, 114, 182, 0.5); }
+
+.waypoint-pill.active-target {
+  box-shadow: 0 0 14px currentColor;
+  transform: scale(1.05);
+}
+
+.wp-badge {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #000;
+}
+.pad-a .wp-badge { background: #38bdf8; }
+.pad-b .wp-badge { background: #fb923c; }
+.pad-c .wp-badge { background: #4ade80; }
+.pad-d .wp-badge { background: #f472b6; }
+
+.wp-dir {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.wp-dist {
+  font-size: 10px;
+  font-weight: 600;
+  color: #94a3b8;
+  font-family: monospace;
+}
+
+/* Mini Radar HUD */
+.mini-radar-hud {
+  position: fixed;
+  bottom: 125px;
+  right: 18px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(8, 12, 24, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(0, 240, 255, 0.35);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 240, 255, 0.1);
+  z-index: 40;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.mini-radar-canvas {
+  width: 100%;
+  height: 100%;
+}
+

@@ -63,7 +63,9 @@ export function initControls() {
       case 'interact':
         return code === 'KeyE' || key === 'e' || key === 'ำ' || keyCode === 69;
       case 'aerial':
-        return code === 'KeyM' || code === 'KeyV' || key === 'm' || key === 'v' || key === 'ม' || key === 'อ' || keyCode === 77 || keyCode === 86;
+        return code === 'KeyM' || key === 'm' || key === 'ม' || keyCode === 77;
+      case 'pov':
+        return code === 'KeyV' || key === 'v' || key === 'อ' || keyCode === 86;
       case 'treasure':
         return code === 'KeyT' || key === 't' || key === 'ะ' || keyCode === 84;
       case 'tutorial':
@@ -107,6 +109,8 @@ export function initControls() {
       window.dispatchEvent(new CustomEvent('player-interact'));
     } else if (matchKey(e, 'aerial')) {
       window.dispatchEvent(new CustomEvent('toggle-aerial-view'));
+    } else if (matchKey(e, 'pov')) {
+      window.dispatchEvent(new CustomEvent('toggle-pov-view'));
     } else if (matchKey(e, 'treasure')) {
       window.dispatchEvent(new CustomEvent('toggle-treasure-map'));
     } else if (matchKey(e, 'tutorial')) {

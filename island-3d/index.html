@@ -122,8 +122,11 @@
 
   <!-- ===== HUD Controls Hint ===== -->
   <div class="hud-hint" id="hud-hint">
-    🎮 <strong>W A S D</strong> เดิน &nbsp;|&nbsp; <strong>Shift</strong> วิ่ง &nbsp;|&nbsp; <strong>Space</strong> กระโดด &nbsp;|&nbsp; <strong>E</strong> สำรวจ &nbsp;|&nbsp; <strong>T</strong> แผนที่สมบัติ
+    🎮 <strong>W A S D</strong> เดิน &nbsp;|&nbsp; <strong>Shift</strong> วิ่ง &nbsp;|&nbsp; <strong>V</strong> มุมมองบุคคลที่ 1 &nbsp;|&nbsp; <strong>Space</strong> กระโดด &nbsp;|&nbsp; <strong>E</strong> สำรวจ &nbsp;|&nbsp; <strong>M</strong> แผนที่
   </div>
+  
+  <!-- ===== First-Person Subtle Reticle ===== -->
+  <div id="fp-crosshair" class="fp-crosshair" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.85); box-shadow: 0 0 10px rgba(0, 240, 255, 0.8), 0 0 2px rgba(0, 0, 0, 0.8); pointer-events: none; z-index: 150;"></div>
 
   <!-- ===== Floating Help & Controls Buttons ===== -->
   <div class="floating-hud-tools">
@@ -266,6 +269,10 @@
 
   <!-- ===== Minimap & Aerial View ===== -->
   <div id="minimap-wrapper" class="minimap-wrapper">
+    <button id="btn-toggle-pov" class="btn-aerial-view" title="สลับมุมมองบุคคลที่ 1 / มุมมองบุคคลที่ 3 [กด V]" style="margin-bottom: 6px;">
+      <span class="pov-icon">👁️</span>
+      <span class="pov-text">บุคคลที่ 1 [V]</span>
+    </button>
     <button id="btn-toggle-aerial" class="btn-aerial-view" title="ดูแมพจากด้านบน (Bird's-Eye View) [กด M]">
       <span class="aerial-icon">🦅</span>
       <span class="aerial-text">ดูแมพมุมบน</span>

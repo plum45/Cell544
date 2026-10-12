@@ -1,37 +1,37 @@
 /* ==========================================================================
-   CYTOLIFE PRO // 100% PURE MONOCHROME BLACK & WHITE TITANIUM
-   Zero Blue / Zero Navy Tints // Font: Prompt
+   CYTOLIFE PRO // PURE APPLE WHITE LUXURY THEME
+   Crisp Light Mode / Obsidian & Charcoal Typography / Font: Prompt
    ========================================================================== */
 
 :root {
-  /* 100% Pure Monochrome Black, Carbon & White Palette */
-  --bg: #000000;
-  --apple-black: #000000;
-  --apple-bg-secondary: #0a0a0a;
-  --apple-bg-card: rgba(18, 18, 18, 0.82);
-  --apple-bg-card-hover: rgba(28, 28, 28, 0.95);
-  --apple-card-border: rgba(255, 255, 255, 0.14);
-  --apple-card-border-glow: rgba(255, 255, 255, 0.5);
+  /* Pure White & Clean Minimalist Palette */
+  --bg: #ffffff;
+  --apple-black: #09090b;
+  --apple-bg-secondary: #f8fafc;
+  --apple-bg-card: rgba(255, 255, 255, 0.92);
+  --apple-bg-card-hover: #ffffff;
+  --apple-card-border: rgba(0, 0, 0, 0.08);
+  --apple-card-border-glow: rgba(0, 0, 0, 0.16);
 
-  --ink: #ffffff;
-  --dim: #a1a1aa;
-  --line: rgba(255, 255, 255, 0.1);
+  --ink: #09090b;
+  --dim: #52525b;
+  --line: rgba(0, 0, 0, 0.08);
   --pad: clamp(16px, 3vw, 36px);
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
   --persp: 1200px;
   
   /* Monochromatic White & Chrome Accents */
-  --accent-cyan: #ffffff;
-  --accent-cyan-light: #ffffff;
-  --accent-cyan-glow: rgba(255, 255, 255, 0.9);
-  --accent-azure: #27272a;
-  --accent-azure-hover: #3f3f46;
-  --accent-ice: #e4e4e7;
+  --accent-cyan: #09090b;
+  --accent-cyan-light: #27272a;
+  --accent-cyan-glow: rgba(0, 0, 0, 0.08);
+  --accent-azure: #f4f4f5;
+  --accent-azure-hover: #e4e4e7;
+  --accent-ice: #18181b;
 
-  --text-white: #ffffff;
-  --text-silver: #e4e4e7;
-  --text-gray: #a1a1aa;
+  --text-white: #09090b;
+  --text-silver: #27272a;
+  --text-gray: #52525b;
   --text-dim: #71717a;
 
   --r-pill: 980px;
@@ -49,27 +49,27 @@
 }
 
 html {
-  background: #000000 !important;
+  background: #ffffff !important;
   scrollbar-gutter: stable;
   font-family: var(--font-sans);
-  color: #ffffff;
+  color: #09090b !important;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: #000000 !important;
-  color: #ffffff !important;
+  background: #ffffff !important;
+  color: #09090b !important;
   overflow-x: hidden;
   min-height: 100vh;
   line-height: 1.5;
-  font-weight: 300;
+  font-weight: 400;
   position: relative;
   font-family: var(--font-sans) !important;
 }
 
-/* Monochromatic Silver Ambient Glow - Zero Blue */
+/* Subtle Silver Ambient Radial Tint */
 body::before {
   content: '';
   position: fixed;
@@ -78,7 +78,7 @@ body::before {
   transform: translateX(-50%);
   width: 100vw;
   height: 750px;
-  background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.01) 45%, transparent 75%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.005) 45%, transparent 75%);
   pointer-events: none;
   z-index: 0;
 }
@@ -114,16 +114,16 @@ a {
 }
 
 /* ==========================================================================
-   1. Apple Global Navigation Bar (Pure Black)
+   1. Apple Global Navigation Bar (Pure White)
    ========================================================================== */
 .apple-global-nav {
   position: sticky;
   top: 0;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.9) !important;
+  background: rgba(255, 255, 255, 0.88) !important;
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   height: 48px;
 }
 
@@ -138,7 +138,7 @@ a {
 }
 
 .apple-logo-link {
-  color: #fff !important;
+  color: #09090b !important;
   font-size: 15px;
   font-weight: 700;
   display: flex;
@@ -149,11 +149,11 @@ a {
 }
 
 .apple-logo-link svg {
-  color: #ffffff;
+  color: #09090b;
 }
 
 .apple-logo-link:hover {
-  opacity: 0.8;
+  opacity: 0.75;
 }
 
 .nav-links-desktop {
@@ -164,45 +164,45 @@ a {
 }
 
 .nav-links-desktop a {
-  color: #a1a1aa !important;
+  color: #52525b !important;
   font-size: 12.5px;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0.01em;
   transition: color 0.2s;
 }
 
 .nav-links-desktop a:hover {
-  color: #ffffff !important;
+  color: #09090b !important;
 }
 
 .nav-cta-btn {
-  background: #ffffff !important;
-  color: #000000 !important;
+  background: #09090b !important;
+  color: #ffffff !important;
   padding: 5px 15px;
   border-radius: var(--r-pill);
   font-size: 12px;
   font-weight: 600;
-  box-shadow: 0 2px 12px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
   transition: all 0.2s var(--ease);
 }
 
 .nav-cta-btn:hover {
-  background: #e4e4e7 !important;
+  background: #27272a !important;
   transform: scale(1.03);
-  box-shadow: 0 4px 18px rgba(255, 255, 255, 0.35);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 
 /* ==========================================================================
-   2. Apple Local Sub-Header (Pure Black)
+   2. Apple Local Sub-Header (Pure White)
    ========================================================================== */
 .apple-local-nav {
   position: sticky;
   top: 48px;
   z-index: 998;
-  background: rgba(8, 8, 8, 0.9) !important;
+  background: rgba(255, 255, 255, 0.94) !important;
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   height: 50px;
 }
 
@@ -219,7 +219,7 @@ a {
 .local-title {
   font-size: 15.5px;
   font-weight: 600;
-  color: #ffffff !important;
+  color: #09090b !important;
   display: flex;
   align-items: center;
 }
@@ -229,7 +229,7 @@ a {
   font-size: 12px;
   font-weight: 400;
   margin-left: 10px;
-  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 1px solid rgba(0, 0, 0, 0.12);
   padding-left: 10px;
 }
 
@@ -240,18 +240,19 @@ a {
 }
 
 .local-link {
-  color: #a1a1aa !important;
+  color: #52525b !important;
   font-size: 12px;
+  font-weight: 500;
   transition: color 0.2s;
 }
 
 .local-link:hover {
-  color: #ffffff !important;
+  color: #09090b !important;
 }
 
 .local-btn-primary {
-  background: #ffffff !important;
-  color: #000000 !important;
+  background: #09090b !important;
+  color: #ffffff !important;
   padding: 6px 16px;
   border-radius: var(--r-pill);
   font-size: 12px;
@@ -260,13 +261,13 @@ a {
 }
 
 .local-btn-primary:hover {
-  background: #e4e4e7 !important;
+  background: #27272a !important;
   transform: scale(1.03);
-  box-shadow: 0 2px 14px rgba(255, 255, 255, 0.25);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* ==========================================================================
-   3. Dynamic Island Widget (Pure Black & White)
+   3. Dynamic Island Widget (Clean White Light Theme)
    ========================================================================== */
 .dynamic-island-wrapper {
   display: flex;
@@ -280,33 +281,33 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: rgba(18, 18, 18, 0.95) !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
   padding: 7px 20px;
   border-radius: var(--r-pill);
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
   transition: all 0.3s var(--ease-spring);
   user-select: none;
   backdrop-filter: blur(16px);
 }
 
 .dynamic-island:hover {
-  border-color: rgba(255, 255, 255, 0.45) !important;
+  border-color: rgba(0, 0, 0, 0.25) !important;
   transform: scale(1.03);
-  box-shadow: 0 12px 35px rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
 }
 
 .island-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #ffffff !important;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
-  animation: pulseWhite 2s infinite;
+  background: #09090b !important;
+  box-shadow: 0 0 10px rgba(9, 9, 11, 0.4);
+  animation: pulseDark 2s infinite;
 }
 
-@keyframes pulseWhite {
+@keyframes pulseDark {
   0% { transform: scale(0.9); opacity: 0.8; }
   50% { transform: scale(1.3); opacity: 1; }
   100% { transform: scale(0.9); opacity: 0.8; }
@@ -314,24 +315,24 @@ a {
 
 .island-text {
   font-size: 11.5px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: #e4e4e7 !important;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: #18181b !important;
 }
 
 .island-badge {
   font-size: 10px;
   padding: 2px 8px;
   border-radius: var(--r-pill);
-  background: rgba(255, 255, 255, 0.12) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: #09090b !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
   font-weight: 600;
   letter-spacing: 0.04em;
 }
 
 /* ==========================================================================
-   4. 3D FIBONACCI SPHERE HERO SECTION
+   4. 3D FIBONACCI SPHERE HERO SECTION (Pure White)
    ========================================================================== */
 .sphere-hero-section {
   position: relative;
@@ -345,7 +346,7 @@ a {
   align-items: center;
   justify-content: flex-end;
   padding-bottom: 28px;
-  background: #000000 !important;
+  background: #ffffff !important;
 }
 
 .stage-hero-viewport {
@@ -414,9 +415,9 @@ a {
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #ffffff !important;
-  background: rgba(255, 255, 255, 0.1) !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #09090b !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
   padding: 4px 14px;
   border-radius: var(--r-pill);
   backdrop-filter: blur(8px);
@@ -427,18 +428,18 @@ a {
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.02em;
-  background: linear-gradient(180deg, #ffffff 40%, #a1a1aa 100%) !important;
+  background: linear-gradient(180deg, #09090b 40%, #52525b 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
+  text-shadow: none;
 }
 
 #headline .hero-desc {
   font-size: clamp(13px, 1.4vw, 15px);
-  color: #a1a1aa !important;
+  color: #52525b !important;
   max-width: 440px;
   line-height: 1.55;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
+  text-shadow: none;
 }
 
 /* 3D Sphere Card Elements */
@@ -465,9 +466,9 @@ a {
   position: relative;
   border-radius: 12px;
   overflow: hidden;
-  background: #0d0d0d !important;
-  border: 1px solid rgba(255, 255, 255, 0.16) !important;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   transition: all 0.25s var(--ease-spring);
 }
 
@@ -484,12 +485,12 @@ a {
   left: 6px;
   z-index: 3;
   font-size: 8.5px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #ffffff !important;
-  background: rgba(0, 0, 0, 0.85) !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: #09090b !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
   padding: 2px 7px;
   border-radius: var(--r-pill);
   backdrop-filter: blur(4px);
@@ -501,7 +502,7 @@ a {
   left: 0;
   right: 0;
   padding: 20px 8px 6px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 60%, transparent 100%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 60%, transparent 100%);
   z-index: 3;
   display: flex;
   flex-direction: column;
@@ -518,7 +519,7 @@ a {
 
 .sphere-card-label .sub {
   font-size: 8.5px;
-  color: #a1a1aa !important;
+  color: #e4e4e7 !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -532,8 +533,8 @@ a {
 
 .sphere-card:hover .sphere-card-inner,
 .sphere-card.is-hovered .sphere-card-inner {
-  border-color: #ffffff !important;
-  box-shadow: 0 16px 36px rgba(255, 255, 255, 0.35), 0 0 0 1.5px rgba(255, 255, 255, 0.9) !important;
+  border-color: #09090b !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.2), 0 0 0 1.5px #09090b !important;
   transform: scale(1.08);
 }
 
@@ -570,51 +571,53 @@ a {
 }
 
 .apple-btn-large.primary {
-  background: #ffffff !important;
-  color: #000000 !important;
-  box-shadow: 0 4px 22px rgba(255, 255, 255, 0.25);
+  background: #09090b !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
 }
 
 .apple-btn-large.primary:hover {
-  background: #e4e4e7 !important;
+  background: #27272a !important;
   transform: scale(1.03);
-  box-shadow: 0 6px 28px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
 }
 
 .apple-btn-large.secondary {
-  background: rgba(24, 24, 24, 0.8) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #09090b !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
   backdrop-filter: blur(12px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .apple-btn-large.secondary:hover {
-  background: rgba(38, 38, 38, 0.9) !important;
-  border-color: rgba(255, 255, 255, 0.4) !important;
+  background: #f4f4f5 !important;
+  border-color: rgba(0, 0, 0, 0.3) !important;
   transform: scale(1.03);
 }
 
 .hero-hint {
   font-size: 11.5px;
-  color: #a1a1aa !important;
-  background: rgba(18, 18, 18, 0.8) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #52525b !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
   padding: 6px 16px;
   border-radius: var(--r-pill);
   backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   gap: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 }
 
 /* ==========================================================================
-   5. Apple Big Spec Numbers Bar (100% Monochrome)
+   5. Apple Big Spec Numbers Bar (Clean White)
    ========================================================================== */
 .apple-specs-bar {
   padding: 50px 0 70px;
   position: relative;
   z-index: 10;
-  background: #000000 !important;
+  background: #f8fafc !important;
 }
 
 .specs-grid {
@@ -622,11 +625,10 @@ a {
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
   padding: 36px 32px;
-  background: var(--apple-bg-card) !important;
-  border: 1px solid var(--apple-card-border) !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
   border-radius: var(--r-card);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 .spec-col {
@@ -638,7 +640,7 @@ a {
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
-  background: linear-gradient(180deg, #ffffff 40%, #71717a 100%) !important;
+  background: linear-gradient(180deg, #09090b 40%, #52525b 100%) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   margin-bottom: 8px;
@@ -647,22 +649,22 @@ a {
 .spec-label {
   font-size: 14.5px;
   font-weight: 600;
-  color: #ffffff !important;
+  color: #09090b !important;
   margin-bottom: 6px;
 }
 
 .spec-sub {
   font-size: 12px;
-  color: #a1a1aa !important;
+  color: #71717a !important;
   line-height: 1.45;
 }
 
 /* ==========================================================================
-   6. Explore the Lineup (100% Monochrome Bento Grid)
+   6. Explore the Lineup (Pure White Bento Grid)
    ========================================================================== */
 .apple-lineup-section {
   padding: 60px 0 100px;
-  background: #000000 !important;
+  background: #ffffff !important;
 }
 
 .section-header-apple {
@@ -677,7 +679,7 @@ a {
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #a1a1aa !important;
+  color: #71717a !important;
   margin-bottom: 10px;
 }
 
@@ -686,13 +688,13 @@ a {
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.15;
-  color: #fff !important;
+  color: #09090b !important;
   margin-bottom: 14px;
 }
 
 .desc-apple {
   font-size: 15px;
-  color: #a1a1aa !important;
+  color: #52525b !important;
   line-height: 1.55;
 }
 
@@ -711,23 +713,22 @@ a {
 .bento-span-4  { grid-column: span 4; }
 
 .apple-bento-card {
-  background: var(--apple-bg-card) !important;
-  border: 1px solid var(--apple-card-border) !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
   border-radius: var(--r-card);
   padding: 34px;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(24px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   transition: all 0.3s var(--ease);
   display: flex;
   flex-direction: column;
 }
 
 .apple-bento-card:hover {
-  border-color: var(--apple-card-border-glow) !important;
+  border-color: rgba(0, 0, 0, 0.2) !important;
   transform: translateY(-4px);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(255, 255, 255, 0.15);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
 }
 
 /* Bento Split Layout (Horizontal) */
@@ -736,7 +737,7 @@ a {
   grid-template-columns: 1.15fr 0.85fr;
   align-items: center;
   gap: 32px;
-  background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(10, 10, 10, 0.95) 100%) !important;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
 }
 
 /* Bento Media Top Layout (Vertical card with photo on top) */
@@ -749,7 +750,7 @@ a {
   aspect-ratio: 16/9;
   position: relative;
   overflow: hidden;
-  background: #0a0a0a !important;
+  background: #f4f4f5 !important;
 }
 
 .apple-bento-card.bento-vertical .bento-media-header img {
@@ -770,33 +771,25 @@ a {
   flex-grow: 1;
 }
 
-/* 100% Monochrome Bento Tags */
 .bento-tag {
   display: inline-block;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #ffffff !important;
-  background: rgba(255, 255, 255, 0.08) !important;
-  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  color: #09090b !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
   padding: 4px 12px;
   border-radius: var(--r-pill);
   margin-bottom: 14px;
   align-self: flex-start;
 }
 
-.bento-tag.green,
-.bento-tag.purple {
-  color: #ffffff !important;
-  background: rgba(255, 255, 255, 0.08) !important;
-  border-color: rgba(255, 255, 255, 0.22) !important;
-}
-
 .bento-title {
   font-size: clamp(20px, 2.2vw, 26px);
   font-weight: 600;
-  color: #fff !important;
+  color: #09090b !important;
   letter-spacing: -0.015em;
   margin-bottom: 10px;
   line-height: 1.25;
@@ -804,7 +797,7 @@ a {
 
 .bento-desc {
   font-size: 14px;
-  color: #a1a1aa !important;
+  color: #52525b !important;
   line-height: 1.6;
   margin-bottom: 20px;
   flex-grow: 1;
@@ -819,9 +812,10 @@ a {
 
 .bento-features-list span {
   font-size: 11px;
-  color: #e4e4e7 !important;
-  background: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  font-weight: 500;
+  color: #27272a !important;
+  background: #f4f4f5 !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
   padding: 4px 12px;
   border-radius: var(--r-pill);
 }
@@ -838,25 +832,25 @@ a {
 }
 
 .apple-btn.primary {
-  background: #ffffff !important;
-  color: #000000 !important;
+  background: #09090b !important;
+  color: #ffffff !important;
 }
 
 .apple-btn.primary:hover {
-  background: #e4e4e7 !important;
+  background: #27272a !important;
   transform: scale(1.03);
-  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .apple-btn.secondary {
-  background: rgba(255, 255, 255, 0.08) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: #09090b !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
 }
 
 .apple-btn.secondary:hover {
-  background: rgba(255, 255, 255, 0.16) !important;
-  border-color: rgba(255, 255, 255, 0.4) !important;
+  background: rgba(0, 0, 0, 0.09) !important;
+  border-color: rgba(0, 0, 0, 0.25) !important;
   transform: scale(1.03);
 }
 
@@ -866,8 +860,8 @@ a {
   aspect-ratio: 16/10;
   border-radius: 18px;
   overflow: hidden;
-  background: radial-gradient(circle at center, #181818 0%, #000000 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  background: #f4f4f5 !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
   position: relative;
   display: flex;
   align-items: center;
@@ -889,9 +883,9 @@ a {
   position: absolute;
   top: 14px;
   right: 14px;
-  background: rgba(0, 0, 0, 0.88) !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
-  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  color: #09090b !important;
   font-size: 11px;
   font-weight: 600;
   padding: 4px 12px;
@@ -900,11 +894,11 @@ a {
 }
 
 /* ==========================================================================
-   7. Core Curriculum (100% Monochrome Bento Grid)
-   ========================================================================== */
+   7. Core Curriculum (Pure White Section)
+   ========================================================================= */
 .apple-curriculum-section {
   padding: 60px 0 100px;
-  background: linear-gradient(180deg, #000000 0%, #0d0d0d 50%, #000000 100%) !important;
+  background: #f8fafc !important;
 }
 
 .curriculum-bento-grid {
@@ -916,9 +910,9 @@ a {
 .curr-icon {
   font-size: 12px;
   font-weight: 700;
-  color: #ffffff !important;
-  background: rgba(255, 255, 255, 0.08) !important;
-  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  color: #09090b !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -931,20 +925,20 @@ a {
 .curr-title {
   font-size: 19px;
   font-weight: 600;
-  color: #fff !important;
+  color: #09090b !important;
   margin-bottom: 4px;
 }
 
 .curr-subtitle {
   font-size: 13px;
-  color: #e4e4e7 !important;
-  font-weight: 400;
+  color: #27272a !important;
+  font-weight: 500;
   margin-bottom: 12px;
 }
 
 .curr-desc {
   font-size: 13.5px;
-  color: #a1a1aa !important;
+  color: #52525b !important;
   line-height: 1.6;
   margin-bottom: 20px;
   flex-grow: 1;
@@ -953,7 +947,7 @@ a {
 .curr-link {
   font-size: 13px;
   font-weight: 600;
-  color: #fff !important;
+  color: #09090b !important;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -962,27 +956,26 @@ a {
 }
 
 .curr-link:hover {
-  color: #ffffff !important;
+  color: #2563eb !important;
   gap: 10px;
 }
 
 /* ==========================================================================
-   8. AI Assistant Section (100% Monochrome)
+   8. AI Assistant Section (Clean White)
    ========================================================================== */
 .apple-ai-section {
   padding: 60px 0 100px;
-  background: #000000 !important;
+  background: #ffffff !important;
 }
 
 .apple-ai-card {
   max-width: 860px;
   margin: 0 auto;
-  background: var(--apple-bg-card) !important;
-  border: 1px solid var(--apple-card-border) !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
   border-radius: var(--r-card);
   padding: 32px;
-  backdrop-filter: blur(24px);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
 }
 
 .ai-card-header {
@@ -990,7 +983,7 @@ a {
   align-items: center;
   gap: 12px;
   padding-bottom: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   margin-bottom: 24px;
 }
 
@@ -998,22 +991,22 @@ a {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #ffffff !important;
-  box-shadow: 0 0 10px #ffffff;
+  background: #22c55e !important;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
 }
 
 .ai-title {
   font-size: 16px;
   font-weight: 600;
-  color: #fff !important;
+  color: #09090b !important;
 }
 
 .ai-model-tag {
   margin-left: auto;
   font-size: 11px;
-  color: #ffffff !important;
-  background: rgba(255, 255, 255, 0.08) !important;
-  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  color: #09090b !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
   padding: 3px 12px;
   border-radius: var(--r-pill);
   font-weight: 600;
@@ -1036,13 +1029,13 @@ a {
 }
 
 .apple-ai-bubble {
-  background: rgba(255, 255, 255, 0.06) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: #f4f4f5 !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
   padding: 14px 18px;
   border-radius: 18px 18px 18px 4px;
   font-size: 13.5px;
   line-height: 1.6;
-  color: #e4e4e7 !important;
+  color: #18181b !important;
   max-width: 85%;
 }
 
@@ -1051,8 +1044,8 @@ a {
 }
 
 .apple-ai-msg.user .apple-ai-bubble {
-  background: #ffffff !important;
-  color: #000000 !important;
+  background: #09090b !important;
+  color: #ffffff !important;
   font-weight: 500;
   border-color: transparent !important;
   border-radius: 18px 18px 4px 18px;
@@ -1065,11 +1058,11 @@ a {
 
 .apple-input {
   flex-grow: 1;
-  background: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  background: #f8fafc !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
   padding: 12px 18px;
   border-radius: var(--r-pill);
-  color: #fff !important;
+  color: #09090b !important;
   font-size: 13.5px;
   outline: none;
   transition: border-color 0.2s;
@@ -1077,7 +1070,7 @@ a {
 }
 
 .apple-input:focus {
-  border-color: #ffffff !important;
+  border-color: #09090b !important;
 }
 
 /* ==========================================================================
@@ -1104,9 +1097,9 @@ body.lit #lit {
 #lit .scrim {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.92) !important;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(0, 0, 0, 0.45) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   cursor: pointer;
 }
 
@@ -1116,10 +1109,10 @@ body.lit #lit {
   width: min(92vw, 760px);
   max-height: 90vh;
   overflow-y: auto;
-  background: #0d0d0d !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
   border-radius: var(--r-card);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 40px rgba(255, 255, 255, 0.15);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.18);
   transform: scale(0.95);
   transition: transform 0.35s var(--ease-spring);
 }
@@ -1132,7 +1125,7 @@ body.lit .apple-modal-card {
   position: relative;
   width: 100%;
   aspect-ratio: 16/9;
-  background: #000000;
+  background: #f4f4f5;
   overflow: hidden;
 }
 
@@ -1149,9 +1142,9 @@ body.lit .apple-modal-card {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: #09090b;
   font-size: 14px;
   display: flex;
   align-items: center;
@@ -1161,8 +1154,8 @@ body.lit .apple-modal-card {
 }
 
 .modal-close-btn:hover {
-  background: #000000;
-  border-color: #ffffff;
+  background: #09090b;
+  color: #ffffff;
   transform: scale(1.08);
 }
 
@@ -1175,26 +1168,26 @@ body.lit .apple-modal-card {
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #ffffff !important;
+  color: #71717a !important;
   margin-bottom: 8px;
 }
 
 .modal-title {
   font-size: clamp(22px, 2.5vw, 30px);
   font-weight: 600;
-  color: #fff !important;
+  color: #09090b !important;
   margin-bottom: 4px;
 }
 
 .modal-subtitle {
   font-size: 13.5px;
-  color: #e4e4e7 !important;
+  color: #27272a !important;
   margin-bottom: 16px;
 }
 
 .modal-desc {
   font-size: 14.5px;
-  color: #a1a1aa !important;
+  color: #52525b !important;
   line-height: 1.65;
   margin-bottom: 26px;
 }
@@ -1206,14 +1199,14 @@ body.lit .apple-modal-card {
 }
 
 /* ==========================================================================
-   10. Apple Cupertino Footer (100% Monochrome)
+   10. Apple Cupertino Footer (Pure White Light Theme)
    ========================================================================== */
 .apple-footer {
-  background: #000000 !important;
-  color: #a1a1aa !important;
+  background: #f8fafc !important;
+  color: #52525b !important;
   font-size: 12px;
   padding: 48px 0 36px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
   position: relative;
   z-index: 10;
 }
@@ -1224,11 +1217,11 @@ body.lit .apple-modal-card {
 }
 
 .footer-breadcrumb a {
-  color: #a1a1aa !important;
+  color: #52525b !important;
 }
 
 .footer-breadcrumb a:hover {
-  color: #ffffff !important;
+  color: #09090b !important;
 }
 
 .footer-columns {
@@ -1240,7 +1233,7 @@ body.lit .apple-modal-card {
 
 .footer-heading {
   font-weight: 600;
-  color: #ffffff !important;
+  color: #09090b !important;
   margin-bottom: 14px;
 }
 
@@ -1252,12 +1245,12 @@ body.lit .apple-modal-card {
 }
 
 .footer-links a {
-  color: #a1a1aa !important;
+  color: #71717a !important;
   transition: color 0.2s;
 }
 
 .footer-links a:hover {
-  color: #ffffff !important;
+  color: #09090b !important;
 }
 
 .footer-bottom {
@@ -1265,18 +1258,18 @@ body.lit .apple-modal-card {
   align-items: center;
   justify-content: space-between;
   padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
   flex-wrap: wrap;
   gap: 14px;
 }
 
 .footer-privacy a {
-  color: #a1a1aa !important;
+  color: #71717a !important;
   margin: 0 4px;
 }
 
 .footer-privacy a:hover {
-  color: #ffffff !important;
+  color: #09090b !important;
 }
 
 /* ==========================================================================

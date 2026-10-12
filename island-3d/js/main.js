@@ -33,6 +33,7 @@ let isNearNPC = false;
 let currentContent = null;
 let toastTimer = null;
 let isTopView = false;
+let isFirstPerson = false;
 
 // ===== Mobile Performance Detection =====
 const isMobileDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
@@ -183,6 +184,10 @@ function init() {
   document.getElementById('btn-exit-aerial')?.addEventListener('click', () => { if (isTopView) toggleTopView(); });
   document.getElementById('btn-touch-aerial')?.addEventListener('click', toggleTopView);
   window.addEventListener('toggle-aerial-view', toggleTopView);
+
+  // First-Person (1st Person POV) View Toggle Events
+  document.getElementById('btn-toggle-pov')?.addEventListener('click', toggleFirstPersonView);
+  window.addEventListener('toggle-pov-view', toggleFirstPersonView);
 
   // Treasure System Events
   document.getElementById('treasure-counter-btn')?.addEventListener('click', toggleTreasureMap);
@@ -916,6 +921,60 @@ function toggleTopView() {
 }
 window.toggleTopView = toggleTopView;
 
+// ===== First-Person Perspective (1st Person POV) =====
+function toggleFirstPersonView() {
+  if (state !== 'world') return;
+  if (isTopView) toggleTopView();
+
+  isFirstPerson = !isFirstPerson;
+  const btn = document.getElementById('btn-toggle-pov');
+  const crosshair = document.getElementById('fp-crosshair');
+
+  if (isFirstPerson) {
+    if (player.mesh) player.mesh.visible = false;
+    if (crosshair) crosshair.style.display = 'block';
+    if (btn) {
+      btn.classList.add('active');
+      btn.innerHTML = '<span class="pov-icon">🦊</span><span class="pov-text">มุมมองบุคคลที่ 3 [V]</span>';
+      btn.title = 'กลับสู่มุมมองบุคคลที่ 3 [กด V]';
+    }
+    controls.minDistance = 0.01;
+    controls.maxDistance = 0.2;
+    controls.maxPolarAngle = Math.PI - 0.05;
+    controls.minPolarAngle = 0.05;
+
+    const eyeHeight = player.currentAvatar === 'fox' ? 0.95 : (player.currentAvatar === 'slime' ? 0.65 : 1.15);
+    const eyePos = new THREE.Vector3(player.position.x, player.position.y + eyeHeight, player.position.z);
+    controls.target.copy(eyePos);
+
+    const lookDir = new THREE.Vector3(
+      Math.sin(player.rotationY),
+      0,
+      Math.cos(player.rotationY)
+    );
+    camera.position.copy(eyePos).sub(lookDir.multiplyScalar(0.05));
+    showPastelToast('👁️ มุมมองบุคคลที่ 1 (1st Person POV)! หมุนจอเพื่อมองรอบตัว หรือกด V เพื่อสลับกลับ');
+  } else {
+    if (player.mesh) player.mesh.visible = true;
+    if (crosshair) crosshair.style.display = 'none';
+    if (btn) {
+      btn.classList.remove('active');
+      btn.innerHTML = '<span class="pov-icon">👁️</span><span class="pov-text">มุมมองบุคคลที่ 1 [V]</span>';
+      btn.title = 'สลับสู่มุมมองบุคคลที่ 1 [กด V]';
+    }
+    controls.minDistance = 3.5;
+    controls.maxDistance = 45;
+    controls.maxPolarAngle = Math.PI / 2.1;
+    controls.minPolarAngle = 0;
+
+    const returnPos = new THREE.Vector3(player.position.x, player.position.y + 3.8, player.position.z + 8.5);
+    const returnTarget = new THREE.Vector3(player.position.x, player.position.y + 1.2, player.position.z);
+    animateCameraTo(returnPos, returnTarget, 800);
+    showPastelToast('🦊 กลับสู่มุมมองบุคคลที่ 3 (3rd Person View)');
+  }
+}
+window.toggleFirstPersonView = toggleFirstPersonView;
+
 // ===== Labels =====
 function updateLabels() {
   if (state !== 'world') {
@@ -1125,21 +1184,34 @@ function animate() {
   const time = clock.getElapsedTime();
   frameCount++;
 
-  // Third-person smooth follow (when not in top-down aerial map mode)
+  // Camera follow (First-Person POV or Third-Person Follow)
   if (state === 'world' && player.mesh && !cameraAnimation && !isTopView) {
-    const targetY = player.position.y + 1.2;
-    const lerpSpeed = 0.08;
+    if (isFirstPerson) {
+      if (player.mesh.visible) player.mesh.visible = false;
+      const eyeHeight = player.currentAvatar === 'fox' ? 0.95 : (player.currentAvatar === 'slime' ? 0.65 : 1.15);
+      const bobY = player.isMoving ? Math.sin(time * 12) * 0.04 : 0;
+      const eyeY = player.position.y + eyeHeight + bobY;
 
-    const dx = player.position.x - controls.target.x;
-    const dz = player.position.z - controls.target.z;
+      const camOffset = camera.position.clone().sub(controls.target);
+      controls.target.set(player.position.x, eyeY, player.position.z);
+      if (camOffset.lengthSq() < 0.0001) camOffset.set(0, 0, 0.05);
+      camera.position.copy(controls.target).add(camOffset.normalize().multiplyScalar(0.05));
+    } else {
+      if (!player.mesh.visible) player.mesh.visible = true;
+      const targetY = player.position.y + 1.2;
+      const lerpSpeed = 0.08;
 
-    controls.target.x += dx * lerpSpeed;
-    controls.target.y += (targetY - controls.target.y) * lerpSpeed;
-    controls.target.z += dz * lerpSpeed;
+      const dx = player.position.x - controls.target.x;
+      const dz = player.position.z - controls.target.z;
 
-    if (player.isMoving) {
-      camera.position.x += dx * lerpSpeed;
-      camera.position.z += dz * lerpSpeed;
+      controls.target.x += dx * lerpSpeed;
+      controls.target.y += (targetY - controls.target.y) * lerpSpeed;
+      controls.target.z += dz * lerpSpeed;
+
+      if (player.isMoving) {
+        camera.position.x += dx * lerpSpeed;
+        camera.position.z += dz * lerpSpeed;
+      }
     }
   }
 

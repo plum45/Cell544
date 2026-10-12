@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>CYTOLIFE — หน้าทดสอบเสียง & ระบบเกม (Audio & Mechanics Test Lab)</title>
+  <meta name="description" content="ห้องทดสอบเสียงเอฟเฟกต์ SFX ดนตรี BGM และระบบเกม 3D CYTOLIFE">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #070913;
+      --card-bg: rgba(18, 22, 38, 0.85);
+      --border: rgba(255, 255, 255, 0.12);
+      --accent-cyan: #00f2fe;
+      --accent-pink: #ff007f;
+      --accent-yellow: #ffd166;
+      --accent-green: #06d6a0;
+      --accent-purple: #9d4edd;
+      --text: #f0f3f8;
+      --text-muted: #8a99ad;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Prompt', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 10%, #151b33 0%, var(--bg) 80%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 60px;
+    }
+
+    header {
+      max-width: 960px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-test {
+      background: rgba(0, 242, 254, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(0, 242, 254, 0.4);
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-action {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      text-decoration: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-action:hover {
+      background: rgba(255, 255, 255, 0.16);
+      transform: translateY(-1px);
+    }
+
+    .btn-action.primary {
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      border: none;
+      box-shadow: 0 4px 14px rgba(0, 114, 255, 0.4);
+      font-weight: 600;
+    }
+
+    .main-container {
+      max-width: 960px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+    }
+
+    @media (max-width: 820px) {
+      .main-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+    }
+
+    .sound-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .sound-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sound-btn:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: var(--accent-cyan);
+      transform: translateY(-2px);
+    }
+
+    .sound-btn:active {
+      transform: scale(0.97);
+    }
+
+    .sound-icon {
+      font-size: 1.4rem;
+    }
+
+    .sound-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .sound-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    /* Sound categories tint */
+    .sound-btn.cat-action { border-left: 3px solid var(--accent-cyan); }
+    .sound-btn.cat-skill { border-left: 3px solid var(--accent-purple); }
+    .sound-btn.cat-quiz { border-left: 3px solid var(--accent-green); }
+    .sound-btn.cat-hazard { border-left: 3px solid var(--accent-pink); }
+
+    /* Audio visualizer bar */
+    .visualizer-canvas {
+      width: 100%;
+      height: 70px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      margin-bottom: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .bgm-controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    input[type=range] {
+      accent-color: var(--accent-cyan);
+      height: 6px;
+      cursor: pointer;
+    }
+
+    /* 3D Mini Viewport */
+    #mini3DContainer {
+      width: 100%;
+      height: 220px;
+      background: #0b0e1b;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .camera-shake-screen {
+      transition: transform 0.05s ease-out;
+    }
+
+    .toast-log {
+      max-height: 160px;
+      overflow-y: auto;
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-family: monospace;
+    }
+
+    .toast-item {
+      display: flex;
+      justify-content: space-between;
+      color: #9cb2cc;
+    }
+    .toast-item.active {
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body id="shakeWrapper" class="camera-shake-screen">
+
+  <header>
+    <div class="brand">
+      <h1>CYTOLIFE LAB</h1>
+      <span class="badge-test">หน้าทดสอบระบบ & เสียง SFX</span>
+    </div>
+    <div class="nav-actions">
+      <a href="./index.html" class="btn-action primary">🎮 เข้าเล่น 3D Arena</a>
+      <a href="../index.html" class="btn-action">🏠 หน้าแรก</a>
+    </div>
+  </header>
+
+  <div class="main-container">
+    <!-- Left Column: Soundboard -->
+    <div>
+      <!-- 1. Soundboard -->
+      <div class="card">
+        <div class="card-title">🔊 แผงทดสอบเสียงเอฟเฟกต์ (Sound FX Soundboard)</div>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 16px;">
+          คลิกเพื่อฟังเสียงเอฟเฟกต์แต่ละแบบในเกม ที่ได้รับการปรับแต่งเป็นคลื่น Sine นุ่มนวล สดใส ไม่แสบหู ไม่น่ากลัว
+        </p>
+
+        <div class="sound-grid">
+          <!-- Action Sounds -->
+          <button class="sound-btn cat-action" onclick="testSFX('jump')">
+            <span class="sound-icon">🚀</span>
+            <span class="sound-name">Super Jump</span>
+            <span class="sound-desc">เสียงกระโดดเด้งดึ๋งนุ่มนวล (Sine Chirp 360-720Hz)</span>
+          </button>
+
+          <button class="sound-btn cat-action" onclick="testSFX('bounce')">
+            <span class="sound-icon">🌀</span>
+            <span class="sound-name">Bounce Pad</span>
+            <span class="sound-desc">สปริงเด้งส่งตัวลอยสูง (Whoosh Boing 320-960Hz)</span>
+          </button>
+
+          <button class="sound-btn cat-action" onclick="testSFX('yank')">
+            <span class="sound-icon">🪢</span>
+            <span class="sound-name">Tether Yank</span>
+            <span class="sound-desc">กระตุกเชือกไซเบอร์ช่วยเพื่อน (Elastic Pull)</span>
+          </button>
+
+          <button class="sound-btn cat-action" onclick="testSFX('click')">
+            <span class="sound-icon">👆</span>
+            <span class="sound-name">UI Tap / Click</span>
+            <span class="sound-desc">เสียงแตะเลือกช้อยส์ / เมนู (Gentle Blip)</span>
+          </button>
+
+          <!-- Skills -->
+          <button class="sound-btn cat-skill" onclick="testSFX('emp')">
+            <span class="sound-icon">💡</span>
+            <span class="sound-name">EMP Hack</span>
+            <span class="sound-desc">ประกายแสงตัดช้อยส์ (Cyber Sparkle Chime)</span>
+          </button>
+
+          <button class="sound-btn cat-skill" onclick="testSFX('turbo')">
+            <span class="sound-icon">💨</span>
+            <span class="sound-name">Turbo Nitro</span>
+            <span class="sound-desc">ติดสปีดพุ่งทะยาน 2.2 เท่า (Futuristic Zoom)</span>
+          </button>
+
+          <button class="sound-btn cat-skill" onclick="testSFX('shield')">
+            <span class="sound-icon">🛡️</span>
+            <span class="sound-name">Nano Shield</span>
+            <span class="sound-desc">กางเกราะบาเรียป้องกันตก (Crystal Shimmer)</span>
+          </button>
+
+          <button class="sound-btn cat-skill" onclick="testSFX('shieldPop')">
+            <span class="sound-icon">💥</span>
+            <span class="sound-name">Shield Saved / Pop</span>
+            <span class="sound-desc">เกราะดูดซับดาเมจ / ฟองบาเรียแตก (Bubble Pop)</span>
+          </button>
+
+          <button class="sound-btn cat-skill" onclick="testSFX('orb')">
+            <span class="sound-icon">💎</span>
+            <span class="sound-name">Cyber Orb Gem</span>
+            <span class="sound-desc">เก็บเพชร/เหรียญบนแมพ (Coin Ping E6-B6)</span>
+          </button>
+
+          <!-- Quiz Feedback -->
+          <button class="sound-btn cat-quiz" onclick="testSFX('correct')">
+            <span class="sound-icon">✨</span>
+            <span class="sound-name">Correct Answer</span>
+            <span class="sound-desc">ตอบถูกฉลองชัยชนะ (C Major Chime คอร์ดใส)</span>
+          </button>
+
+          <button class="sound-btn cat-quiz" onclick="testSFX('wrong')">
+            <span class="sound-icon">❌</span>
+            <span class="sound-name">Wrong Answer</span>
+            <span class="sound-desc">ตอบผิดนุ่มนวล (Soft Double Oops ไม่น่ากลัว)</span>
+          </button>
+
+          <button class="sound-btn cat-quiz" onclick="testSFX('rescue')">
+            <span class="sound-icon">🤝</span>
+            <span class="sound-name">Rescue Victory</span>
+            <span class="sound-desc">ดึงเพื่อนตกแมพสำเร็จ (Heroic Arpeggio)</span>
+          </button>
+
+          <!-- Hazard / Physics -->
+          <button class="sound-btn cat-hazard" onclick="testSFX('crumble')">
+            <span class="sound-icon">☁️</span>
+            <span class="sound-name">Block Dissolve</span>
+            <span class="sound-desc">บล็อกร่วงสลายตัว (Soft airy puff ไม่สั่นกระแทก)</span>
+          </button>
+
+          <button class="sound-btn cat-hazard" onclick="testSFX('laser')">
+            <span class="sound-icon">⚡</span>
+            <span class="sound-name">Laser Sweeper</span>
+            <span class="sound-desc">เฉียดลำแสงเลเซอร์หมุน (Soft Retro Zap)</span>
+          </button>
+
+          <button class="sound-btn cat-hazard" onclick="testCameraShake()">
+            <span class="sound-icon">📳</span>
+            <span class="sound-name">Camera Shake</span>
+            <span class="sound-desc">ทดสอบความนุ่มของการสั่นจอ (Gentle Shake Test)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Visualizer, BGM & 3D Mini Viewport -->
+    <div>
+      <!-- 2. BGM & Audio Visualizer -->
+      <div class="card">
+        <div class="card-title">🎵 ดนตรีประกอบ (Synth-Pop BGM)</div>
+        <canvas id="vizCanvas" class="visualizer-canvas"></canvas>
+
+        <div class="bgm-controls">
+          <button id="bgmToggleBtn" class="btn-action primary" onclick="toggleBGM()">▶️ เล่นดนตรี BGM</button>
+          <button class="btn-action" onclick="triggerTempoShift()">⚡ เร่งจังหวะ</button>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <span>ระดับความดัง SFX</span>
+            <span id="volLabel">80%</span>
+          </div>
+          <input type="range" id="volSlider" min="0" max="100" value="80" oninput="updateVolume(this.value)">
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <span>จังหวะ Tempo (BPM)</span>
+            <span id="tempoLabel">120 BPM</span>
+          </div>
+          <input type="range" id="tempoSlider" min="90" max="160" value="120" oninput="updateTempo(this.value)">
+        </div>
+      </div>
+
+      <!-- 3. Mini 3D Preview -->
+      <div class="card">
+        <div class="card-title">🤖 3D Avatar & Physics Preview</div>
+        <div id="mini3DContainer"></div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-action" style="flex: 1; justify-content: center;" onclick="animateAvatarJump()">🚀 กระโดด 3D</button>
+          <button class="btn-action" style="flex: 1; justify-content: center;" onclick="toggleAvatarShield()">🛡️ สลับเกราะ 3D</button>
+        </div>
+      </div>
+
+      <!-- 4. Real-time Event Log -->
+      <div class="card">
+        <div class="card-title">📋 Real-Time SFX Trigger Log</div>
+        <div class="toast-log" id="logContainer">
+          <div class="toast-item active"><span>[SYSTEM]</span> <span>Audio Engine Ready 🟢</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // 1. Web Audio Synthesizer Engine
+    // ==========================================
+    class LabSoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.masterGain = null;
+        this.volume = 0.8;
+        this.bgmRunning = false;
+        this.bgmTimer = null;
+        this.tempo = 120;
+        this.step = 0;
+        this.analyser = null;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+          this.masterGain = this.ctx.createGain();
+          this.masterGain.gain.setValueAtTime(this.volume, this.ctx.currentTime);
+          this.analyser = this.ctx.createAnalyser();
+          this.analyser.fftSize = 64;
+          this.masterGain.connect(this.analyser);
+          this.analyser.connect(this.ctx.destination);
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      setVolume(val) {
+        this.volume = val;
+        if (this.masterGain && this.ctx) {
+          this.masterGain.gain.setValueAtTime(val, this.ctx.currentTime);
+        }
+      }
+
+      startBGM() {
+        this.init();
+        if (this.bgmRunning) return;
+        this.bgmRunning = true;
+        this.step = 0;
+        this.scheduleBGM();
+      }
+
+      stopBGM() {
+        this.bgmRunning = false;
+        if (this.bgmTimer) clearTimeout(this.bgmTimer);
+      }
+
+      scheduleBGM() {
+        if (!this.bgmRunning || !this.ctx) return;
+
+        const now = this.ctx.currentTime;
+        const beatDur = 60 / this.tempo;
+        const stepDur = beatDur / 4;
+
+        const bassNotes = [130.81, 130.81, 146.83, 164.81, 174.61, 174.61, 196.00, 146.83];
+        const melodyNotes = [523.25, 659.25, 783.99, 880.00, 1046.50, 783.99, 659.25, 587.33];
+
+        // 1. Kick
+        if (this.step % 4 === 0) {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(120, now);
+          osc.frequency.exponentialRampToValueAtTime(45, now + 0.09);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(now);
+          osc.stop(now + 0.09);
+        }
+
+        // 2. Warm Bassline
+        if (this.step % 2 === 0) {
+          const bassFreq = bassNotes[Math.floor(this.step / 2) % bassNotes.length];
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(bassFreq, now);
+          gain.gain.setValueAtTime(0.06, now);
+          gain.gain.linearRampToValueAtTime(0.005, now + stepDur * 1.6);
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(now);
+          osc.stop(now + stepDur * 1.6);
+        }
+
+        // 3. Shaker
+        if (this.step % 2 === 1) {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(3200, now);
+          gain.gain.setValueAtTime(0.015, now);
+          gain.gain.exponentialRampToValueAtTime(0.0005, now + 0.03);
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(now);
+          osc.stop(now + 0.03);
+        }
+
+        // 4. Arpeggio Chime
+        if (this.step % 4 === 2 || this.step % 8 === 7) {
+          const melFreq = melodyNotes[this.step % melodyNotes.length];
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(melFreq, now);
+          gain.gain.setValueAtTime(0.045, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + stepDur * 2.2);
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start(now);
+          osc.stop(now + stepDur * 2.2);
+        }
+
+        this.step = (this.step + 1) % 16;
+        const interval = (60 / this.tempo / 4) * 1000;
+        this.bgmTimer = setTimeout(() => this.scheduleBGM(), interval);
+      }
+
+      play(type) {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+
+        switch (type) {
+          case 'click': {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(600, now);
+            osc.frequency.exponentialRampToValueAtTime(900, now + 0.05);
+            gain.gain.setValueAtTime(0.08, now);
+            gain.gain.linearRampToValueAtTime(0.001, now + 0.05);
+            osc.connect(gain);
+            gain.connect(this.masterGain);
+            osc.start(now);
+            osc.stop(now + 0.05);
+            break;
+          }
+          case 'jump': {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(360, now);
+            osc.frequency.exponentialRampToValueAtTime(720, now + 0.11);
+            gain.gain.setValueAtTime(0.12, now);
+            gain.gain.linearRampToValueAtTime(0.001, now + 0.11);
+            osc.connect(gain);
+            gain.connect(this.masterGain);
+            osc.start(now);
+            osc.stop(now + 0.11);
+            break;
+          }
+          case 'bounce': {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(320, now);
+            osc.frequency.exponentialRampToValueAtTime(960, now + 0.18);
+            gain.gain.setValueAtTime(0.14, now);
+            gain.gain.linearRampToValueAtTime(0.001, now + 0.18);
+            osc.connect(gain);
+            gain.connect(this.masterGain);
+            osc.start(now);
+            osc.stop(now + 0.18);
+            break;
+          }
+          case 'yank': {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(520, now);
+            osc.frequency.exponentialRampToValueAtTime(300, now + 0.12);
+            gain.gain.setValueAtTime(0.09, now);
+            gain.gain.linearRampToValueAtTime(0.001, now + 0.12);
+            osc.connect(gain);
+            gain.connect(this.masterGain);
+            osc.start(now);
+            osc.stop(now + 0.12);
+            break;
+          }
+          case 'emp': {
+            [523.25, 659.25, 880, 1174.66].forEach((freq, i) => {
+              const osc = this.ctx.createOscillator();
+              const gain = this.ctx.createGain();
+              osc.type = 'sine';
+              osc.frequency.value = freq;
+              gain.gain.setValueAtTime(0.09, now + i * 0.04);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.04 + 0.22);
+              osc.connect(gain);
+              gain.connect(this.masterGain);
+              osc.start(now + i * 0.04);
+              osc.stop(now + i * 0.04 + 0.22);
+            });
+            break;
+          }
+          case 'turbo': {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(320, now);
+            osc.frequency.exponentialRampToValueAtTime(750, now + 0.2);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.linearRampToValueAtTime(0.001, now + 0.2);
+            osc.connect(gain);
+            gain.connect(this.masterGain);
+            osc.start(now);
+            osc.stop(now + 0.2);
+            break;
+          }
+          case 'shield': {
+            [659.25, 830.61, 1046.50].forEach((freq, i) => {
+              const osc = this.ctx.createOscillator();
+              const gain = this.ctx.createGain();
+              osc.type = 'sine';
+              osc.frequency.value = freq;
+              gain.gain.setValueAtTime(0.09, now + i * 0.05);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.05 + 0.3);
+              osc.connect(gain);
+              gain.connect(this.masterGain);
+              osc.start(now + i * 0.05);
+              osc.stop(now + i * 0.05 + 0.3);
+            });
+            break;
+          }
+          case 'shieldPop': {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(520, now);
+            osc.frequency.exponentialRampToValueAtTime(260, now + 0.12);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+            osc.connect(gain);
+            gain.connect(this.masterGain);
+            osc.start(now);
+            osc.stop(now + 0.12);
+            break;
+          }
+          case 'orb': {
+            [783.99, 1174.66].forEach((freq, i) => {
+              const osc = this.ctx.createOscillator();
+              const gain = this.ctx.createGain();
+              osc.type = 'sine';
+              osc.frequency.value = freq;
+              gain.gain.setValueAtTime(0.1, now + i * 0.04);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.04 + 0.18);
+              osc.connect(gain);
+              gain.connect(this.masterGain);
+              osc.start(now + i * 0.04);
+              osc.stop(now + i * 0.04 + 0.18);
+            });
+            break;
+          }
+          case 'correct': {
+            [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+              const osc = this.ctx.createOscillator();
+              const gain = this.ctx.createGain();
+              osc.type = 'sine';
+              osc.frequency.value = freq;
+              gain.gain.setValueAtTime(0.11, now + i * 0.06);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.06 + 0.24);
+              osc.connect(gain);
+              gain.connect(this.masterGain);
+              osc.start(now + i * 0.06);
+              osc.stop(now + i * 0.06 + 0.24);
+            });
+            break;
+          }
+          case 'wrong': {
+            [320, 240].forEach((freq, i) => {
+              const osc = this.ctx.createOscillator();
+              const gain = this.ctx.createGain();
+              osc.type = 'sine';
+              osc.frequency.value = freq;
+              gain.gain.setValueAtTime(0.08, now + i * 0.09);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.09 + 0.16);
+              osc.connect(gain);
+              gain.connect(this.masterGain);
+              osc.start(now + i * 0.09);
+              osc.stop(now + i * 0.09 + 0.16);
+            });
+            break;
+          }
+          case 'rescue': {
+            [440, 554.37, 659.25, 880].forEach((freq, i) => {
+              const osc = this.ctx.createOscillator();
+              const gain = this.ctx.createGain();
+              osc.type = 'sine';
+              osc.frequency.value = freq;
+              gain.gain.setValueAtTime(0.12, now + i * 0.06);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.06 + 0.28);
+              osc.connect(gain);
+              gain.connect(this.masterGain);
+              osc.start(now + i * 0.06);
+              osc.stop(now + i * 0.06 + 0.28);
+            });
+            break;
+          }
+          case 'crumble': {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(110, now);
+            osc.frequency.exponentialRampToValueAtTime(45, now + 0.18);
+            gain.gain.setValueAtTime(0.04, now);
+            gain.gain.linearRampToValueAtTime(0.001, now + 0.18);
+            osc.connect(gain);
+            gain.connect(this.masterGain);
+            osc.start(now);
+            osc.stop(now + 0.18);
+            break;
+          }
+          case 'laser': {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(650, now);
+            osc.frequency.linearRampToValueAtTime(320, now + 0.08);
+            gain.gain.setValueAtTime(0.06, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+            osc.connect(gain);
+            gain.connect(this.masterGain);
+            osc.start(now);
+            osc.stop(now + 0.08);
+            break;
+          }
+        }
+      }
+    }
+
+    const soundLab = new LabSoundEngine();
+
+    // ==========================================
+    // 2. UI Actions & Visualizer
+    // ==========================================
+    function logEvent(title, detail) {
+      const container = document.getElementById('logContainer');
+      const item = document.createElement('div');
+      item.className = 'toast-item';
+      const time = new Date().toLocaleTimeString('th-TH');
+      item.innerHTML = `<span>[${time}] ${title}</span> <span>${detail}</span>`;
+      container.prepend(item);
+      while (container.children.length > 20) {
+        container.removeChild(container.lastChild);
+      }
+    }
+
+    function testSFX(type) {
+      soundLab.play(type);
+      logEvent(`SFX: ${type.toUpperCase()}`, 'Triggered 🔊');
+      if (type === 'jump' || type === 'bounce') animateAvatarJump();
+      if (type === 'shield') toggleAvatarShield(true);
+      if (type === 'shieldPop') toggleAvatarShield(false);
+    }
+
+    function toggleBGM() {
+      const btn = document.getElementById('bgmToggleBtn');
+      if (soundLab.bgmRunning) {
+        soundLab.stopBGM();
+        btn.innerText = '▶️ เล่นดนตรี BGM';
+        btn.classList.remove('primary');
+        logEvent('BGM', 'Paused ⏸️');
+      } else {
+        soundLab.startBGM();
+        btn.innerText = '⏸️ หยุดดนตรี BGM';
+        btn.classList.add('primary');
+        logEvent('BGM', 'Playing 🎵');
+      }
+    }
+
+    function triggerTempoShift() {
+      soundLab.tempo = soundLab.tempo === 120 ? 138 : 120;
+      document.getElementById('tempoSlider').value = soundLab.tempo;
+      document.getElementById('tempoLabel').innerText = `${soundLab.tempo} BPM`;
+      logEvent('TEMPO', `${soundLab.tempo} BPM ⚡`);
+    }
+
+    function updateVolume(val) {
+      soundLab.setVolume(val / 100);
+      document.getElementById('volLabel').innerText = `${val}%`;
+    }
+
+    function updateTempo(val) {
+      soundLab.tempo = parseInt(val, 10);
+      document.getElementById('tempoLabel').innerText = `${val} BPM`;
+    }
+
+    function testCameraShake() {
+      const wrapper = document.getElementById('shakeWrapper');
+      soundLab.play('crumble');
+      logEvent('CAMERA SHAKE', 'Intensity 0.12 Softened 📳');
+      
+      let count = 0;
+      const shakeInterval = setInterval(() => {
+        const dx = (Math.random() - 0.5) * 6;
+        const dy = (Math.random() - 0.5) * 6;
+        wrapper.style.transform = `translate(${dx}px, ${dy}px)`;
+        count++;
+        if (count > 6) {
+          clearInterval(shakeInterval);
+          wrapper.style.transform = 'translate(0px, 0px)';
+        }
+      }, 40);
+    }
+
+    // Audio Visualizer Canvas
+    const canvas = document.getElementById('vizCanvas');
+    const ctx2d = canvas.getContext('2d');
+    canvas.width = canvas.clientWidth * window.devicePixelRatio;
+    canvas.height = canvas.clientHeight * window.devicePixelRatio;
+
+    function renderVisualizer() {
+      requestAnimationFrame(renderVisualizer);
+      ctx2d.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (!soundLab.analyser) {
+        // Idle animation
+        const t = performance.now() * 0.003;
+        ctx2d.fillStyle = 'rgba(0, 242, 254, 0.2)';
+        for (let i = 0; i < 24; i++) {
+          const h = (Math.sin(t + i * 0.3) * 0.5 + 0.5) * (canvas.height * 0.35) + 4;
+          const w = canvas.width / 24 - 4;
+          ctx2d.fillRect(i * (w + 4) + 2, canvas.height - h, w, h);
+        }
+        return;
+      }
+
+      const bufferLength = soundLab.analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+      soundLab.analyser.getByteFrequencyData(dataArray);
+
+      const barWidth = (canvas.width / bufferLength) * 2;
+      let x = 0;
+
+      for (let i = 0; i < bufferLength; i++) {
+        const barHeight = (dataArray[i] / 255) * canvas.height;
+        const grad = ctx2d.createLinearGradient(0, canvas.height, 0, 0);
+        grad.addColorStop(0, '#00f2fe');
+        grad.addColorStop(1, '#ff007f');
+        ctx2d.fillStyle = grad;
+        ctx2d.fillRect(x, canvas.height - barHeight, barWidth - 2, barHeight);
+        x += barWidth;
+      }
+    }
+    renderVisualizer();
+
+    // ==========================================
+    // 3. Mini 3D Avatar & Physics Preview
+    // ==========================================
+    let miniScene, miniCamera, miniRenderer, avatarGroup, shieldMesh;
+    let avatarVY = 0;
+    let isShieldOn = false;
+
+    function initMini3D() {
+      const container = document.getElementById('mini3DContainer');
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+
+      miniScene = new THREE.Scene();
+      miniScene.background = new THREE.Color(0x0a0d1a);
+
+      miniCamera = new THREE.PerspectiveCamera(45, w / h, 0.1, 100);
+      miniCamera.position.set(0, 2.5, 6);
+      miniCamera.lookAt(0, 1.2, 0);
+
+      miniRenderer = new THREE.WebGLRenderer({ antialias: true });
+      miniRenderer.setSize(w, h);
+      miniRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(miniRenderer.domElement);
+
+      // Lights
+      const ambLight = new THREE.AmbientLight(0xffffff, 0.7);
+      miniScene.add(ambLight);
+      const dirLight = new THREE.DirectionalLight(0x00f2fe, 0.9);
+      dirLight.position.set(5, 10, 7);
+      miniScene.add(dirLight);
+
+      // Floor Grid
+      const grid = new THREE.GridHelper(10, 10, 0x00f2fe, 0x1f2b45);
+      grid.position.y = 0;
+      miniScene.add(grid);
+
+      // Build Cute Cyber Bot Avatar
+      avatarGroup = new THREE.Group();
+
+      // Body
+      const bodyMat = new THREE.MeshStandardMaterial({ color: 0x1c2438, metalness: 0.7, roughness: 0.3 });
+      const bodyGeo = new THREE.BoxGeometry(0.8, 0.9, 0.5);
+      const bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
+      bodyMesh.position.y = 1.1;
+      avatarGroup.add(bodyMesh);
+
+      // Head
+      const headMat = new THREE.MeshStandardMaterial({ color: 0x242d47, metalness: 0.8, roughness: 0.2 });
+      const headGeo = new THREE.BoxGeometry(0.6, 0.6, 0.6);
+      const headMesh = new THREE.Mesh(headGeo, headMat);
+      headMesh.position.y = 1.95;
+      avatarGroup.add(headMesh);
+
+      // Neon Glowing Visor
+      const visorMat = new THREE.MeshBasicMaterial({ color: 0x00f2fe });
+      const visorGeo = new THREE.BoxGeometry(0.5, 0.18, 0.15);
+      const visorMesh = new THREE.Mesh(visorGeo, visorMat);
+      visorMesh.position.set(0, 1.95, 0.28);
+      avatarGroup.add(visorMesh);
+
+      // Legs
+      const legMat = new THREE.MeshStandardMaterial({ color: 0x101524 });
+      const legGeo = new THREE.BoxGeometry(0.25, 0.65, 0.3);
+      const legL = new THREE.Mesh(legGeo, legMat);
+      legL.position.set(-0.25, 0.35, 0);
+      avatarGroup.add(legL);
+      const legR = legL.clone();
+      legR.position.x = 0.25;
+      avatarGroup.add(legR);
+
+      // Shield (spherical wireframe)
+      const shieldGeo = new THREE.SphereGeometry(1.4, 16, 16);
+      const shieldMat = new THREE.MeshBasicMaterial({ color: 0x00f2fe, wireframe: true, transparent: true, opacity: 0 });
+      shieldMesh = new THREE.Mesh(shieldGeo, shieldMat);
+      shieldMesh.position.y = 1.2;
+      avatarGroup.add(shieldMesh);
+
+      miniScene.add(avatarGroup);
+
+      // Animation Loop
+      function animate3D() {
+        requestAnimationFrame(animate3D);
+
+        // Gentle idle rotation & hover
+        avatarGroup.rotation.y += 0.01;
+
+        // Physics jump update
+        if (avatarGroup.position.y > 0 || avatarVY > 0) {
+          avatarGroup.position.y += avatarVY;
+          avatarVY -= 0.02; // Gravity
+          if (avatarGroup.position.y <= 0) {
+            avatarGroup.position.y = 0;
+            avatarVY = 0;
+          }
+        }
+
+        // Shield pulse
+        if (isShieldOn) {
+          shieldMesh.rotation.y += 0.02;
+          shieldMesh.rotation.x += 0.01;
+        }
+
+        miniRenderer.render(miniScene, miniCamera);
+      }
+      animate3D();
+    }
+
+    function animateAvatarJump() {
+      avatarVY = 0.28;
+    }
+
+    function toggleAvatarShield(force) {
+      isShieldOn = typeof force === 'boolean' ? force : !isShieldOn;
+      shieldMesh.material.opacity = isShieldOn ? 0.65 : 0;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initMini3D();
+    });
+  </script>
+</body>
+</html>

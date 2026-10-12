@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="css/style.css?v=20261004puremono">
   
   <style>
-    /* Curriculum Directory Specific Styles (100% Monochrome Black & White) */
+    /* Curriculum Directory Specific Styles (Apple Pure White) */
     .dir-hero {
       padding: 70px 0 40px;
       text-align: center;
@@ -36,9 +36,9 @@
     .filter-btn {
       padding: 8px 18px;
       border-radius: var(--r-pill);
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      color: #a1a1aa;
+      background: #f8fafc;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      color: #52525b;
       font-size: 13px;
       font-weight: 500;
       transition: all 0.2s var(--ease);
@@ -47,12 +47,12 @@
     
     .filter-btn:hover,
     .filter-btn.active {
-      background: #ffffff;
-      color: #000000;
-      border-color: #ffffff;
+      background: #09090b;
+      color: #ffffff;
+      border-color: #09090b;
       font-weight: 600;
       transform: translateY(-2px);
-      box-shadow: 0 4px 16px rgba(255, 255, 255, 0.25);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     }
     
     .search-box-wrapper {
@@ -63,21 +63,22 @@
     
     .search-box {
       width: 100%;
-      background: rgba(20, 20, 20, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.12);
       border-radius: var(--r-pill);
       padding: 14px 24px 14px 48px;
-      color: #ffffff;
+      color: #09090b;
       font-size: 14px;
       outline: none;
       transition: all 0.25s var(--ease);
       font-family: var(--font-sans);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
     }
     
     .search-box:focus {
-      border-color: #ffffff;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-      background: rgba(30, 30, 30, 0.95);
+      border-color: #09090b;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      background: #ffffff;
     }
     
     .search-icon {
@@ -97,7 +98,7 @@
       display: flex;
       align-items: baseline;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
       padding-bottom: 14px;
       margin-bottom: 28px;
       flex-wrap: wrap;
@@ -107,7 +108,7 @@
     .sector-title {
       font-size: 24px;
       font-weight: 700;
-      color: #ffffff;
+      color: #09090b;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -120,9 +121,9 @@
       text-transform: uppercase;
       padding: 3px 10px;
       border-radius: var(--r-pill);
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: #ffffff;
+      background: rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      color: #09090b;
     }
     
     .topic-card-link {
@@ -134,9 +135,9 @@
     }
     
     .topic-card-link:hover .apple-bento-card {
-      border-color: #ffffff !important;
+      border-color: rgba(0, 0, 0, 0.25) !important;
       transform: translateY(-6px);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(255, 255, 255, 0.2) !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
     }
   </style>
 </head>
