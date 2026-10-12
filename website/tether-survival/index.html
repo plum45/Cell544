@@ -14,7 +14,7 @@
   <!-- Three.js 3D WebGL Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-  <link rel="stylesheet" href="/tether-survival/style.css?v=20261004v5">
+  <link rel="stylesheet" href="style.css?v=20261004v5">
 </head>
 <body>
 
@@ -415,7 +415,7 @@
 
       <!-- Lobby Launch Button -->
       <div class="lobby-bottom-bar">
-        <button class="start-arena-btn-glow" id="startArenaBtn">
+        <button class="start-arena-btn-glow" id="startArenaBtn" onclick="window.startArenaGame && window.startArenaGame()">
           <span>🚀 เข้าสู่สนามประลอง 3D (ENTER 3D ARENA)</span>
           <span class="btn-arrow">➔</span>
         </button>
@@ -465,6 +465,6 @@
   </div>
 
   <!-- Scripts -->
-  <script src="/tether-survival/game.js?v=20261004v5"></script>
+  <script src="game.js?v=20261004v6"></script>
 </body>
 </html>

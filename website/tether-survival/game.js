@@ -416,6 +416,10 @@ class SoundFX {
     osc.stop(now + 0.18);
   }
 
+  playBounce() {
+    this.playBouncePad();
+  }
+
   playYank() {
     if (!this.enabled || !this.ctx) return;
     const now = this.ctx.currentTime;
@@ -1111,9 +1115,23 @@ class BioCyberArena3D {
       }
     });
 
+    const rescueOverlay = document.getElementById('rescueOverlay');
+    if (rescueOverlay) {
+      rescueOverlay.addEventListener('touchstart', (e) => {
+        if (e.cancelable) e.preventDefault();
+        this.sfx.init();
+        if (this.state === 'RESCUE') this.performRescuePull();
+      }, { passive: false });
+      rescueOverlay.addEventListener('mousedown', () => {
+        this.sfx.init();
+        if (this.state === 'RESCUE') this.performRescuePull();
+      });
+    }
+
     const pullBtn = document.getElementById('pullBtn');
     if (pullBtn) {
-      pullBtn.addEventListener('click', () => {
+      pullBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         this.sfx.init();
         if (this.state === 'RESCUE') this.performRescuePull();
       });
@@ -1853,24 +1871,39 @@ class BioCyberArena3D {
   }
 
   init3DTetherRopes() {
-    this.tetherRopes.forEach(r => this.scene.remove(r.line));
+    this.tetherRopes.forEach(r => {
+      this.scene.remove(r.line);
+      if (r.line.geometry) r.line.geometry.dispose();
+      if (r.line.material) r.line.material.dispose();
+    });
     this.tetherRopes = [];
 
+    if (this.teamMode === 'solo') return;
     const active = this.players.filter(p => p.status !== 'LOST');
     if (active.length < 2) return;
 
+    const segmentCount = 16;
     for (let i = 0; i < active.length; i++) {
       const p1 = active[i];
       const p2 = active[(i + 1) % active.length];
 
-      const points = [p1.group.position, p2.group.position];
-      const curve = new THREE.CatmullRomCurve3(points);
-      const tubeGeo = new THREE.TubeGeometry(curve, 14, 0.08, 6, false);
-      const tubeMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.85 });
-      const line = new THREE.Mesh(tubeGeo, tubeMat);
+      // Pre-allocate fixed Float32Array for 16 points (48 floats)
+      const positions = new Float32Array(segmentCount * 3);
+      const geom = new THREE.BufferGeometry();
+      geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+      // Glowing Neon Cyber Line Material
+      const lineMat = new THREE.LineBasicMaterial({
+        color: 0x00f0ff,
+        linewidth: 3,
+        transparent: true,
+        opacity: 0.9
+      });
+      const line = new THREE.Line(geom, lineMat);
+      line.frustumCulled = false;
 
       this.scene.add(line);
-      this.tetherRopes.push({ p1, p2, line });
+      this.tetherRopes.push({ p1, p2, line, segmentCount });
     }
   }
 
@@ -2740,13 +2773,15 @@ class BioCyberArena3D {
     for (let i = 0; i < active.length; i++) {
       const p1 = active[i];
       const p2 = active[(i + 1) % active.length];
+      if (!p1.group || !p2.group) continue;
 
       const dx = p2.group.position.x - p1.group.position.x;
       const dz = p2.group.position.z - p1.group.position.z;
       const dist = Math.hypot(dx, dz) || 0.1;
 
       if (dist > this.tetherRestLength) {
-        const force = (dist - this.tetherRestLength) * this.tetherStiffness;
+        let force = (dist - this.tetherRestLength) * this.tetherStiffness;
+        force = Math.min(16, Math.max(0, force));
         const fx = (dx / dist) * force;
         const fz = (dz / dist) * force;
 
@@ -2764,19 +2799,42 @@ class BioCyberArena3D {
 
   update3DTetherRopeGeometry() {
     this.tetherRopes.forEach(rope => {
-      if (rope.p1.status === 'LOST' || rope.p2.status === 'LOST') {
+      if (!rope.p1.group || !rope.p2.group || rope.p1.status === 'LOST' || rope.p2.status === 'LOST') {
         rope.line.visible = false;
         return;
       }
       rope.line.visible = true;
 
-      const p1Pos = rope.p1.group.position.clone().add(new THREE.Vector3(0, 1.2, 0));
-      const p2Pos = rope.p2.group.position.clone().add(new THREE.Vector3(0, 1.2, 0));
-      const midPos = p1Pos.clone().lerp(p2Pos, 0.5).add(new THREE.Vector3(0, -0.4, 0));
+      const posAttr = rope.line.geometry && rope.line.geometry.attributes.position;
+      if (!posAttr) return;
+      const arr = posAttr.array;
+      const count = rope.segmentCount || 16;
 
-      const curve = new THREE.CatmullRomCurve3([p1Pos, midPos, p2Pos]);
-      rope.line.geometry.dispose();
-      rope.line.geometry = new THREE.TubeGeometry(curve, 12, 0.08, 6, false);
+      const p1x = rope.p1.group.position.x;
+      const p1y = rope.p1.group.position.y + 1.1;
+      const p1z = rope.p1.group.position.z;
+
+      const p2x = rope.p2.group.position.x;
+      const p2y = rope.p2.group.position.y + 1.1;
+      const p2z = rope.p2.group.position.z;
+
+      // Natural slack droop calculation
+      const midX = (p1x + p2x) * 0.5;
+      const dist = Math.hypot(p2x - p1x, p2z - p1z);
+      const sag = Math.max(0.12, Math.min(1.4, 2.8 - dist * 0.18));
+      const midY = (p1y + p2y) * 0.5 - sag;
+      const midZ = (p1z + p2z) * 0.5;
+
+      // In-place Quadratic Bezier interpolation (0 allocations per frame)
+      for (let i = 0; i < count; i++) {
+        const t = i / (count - 1);
+        const invT = 1 - t;
+        const idx = i * 3;
+        arr[idx] = invT * invT * p1x + 2 * invT * t * midX + t * t * p2x;
+        arr[idx + 1] = invT * invT * p1y + 2 * invT * t * midY + t * t * p2y;
+        arr[idx + 2] = invT * invT * p1z + 2 * invT * t * midZ + t * t * p2z;
+      }
+      posAttr.needsUpdate = true;
     });
   }
 
@@ -3296,8 +3354,30 @@ window.performJump = function() {
   if (window.bioCyber) window.bioCyber.performJump();
 };
 
-// Start on DOM ready
-document.addEventListener('DOMContentLoaded', () => {
-  window.bioCyber = new BioCyberArena3D();
-});
+window.startArenaGame = function() {
+  const lobbyOverlay = document.getElementById('lobbyOverlay');
+  if (lobbyOverlay) lobbyOverlay.classList.add('hidden');
+  if (window.bioCyber) {
+    const nameInput = document.getElementById('playerNameInput');
+    if (nameInput) window.bioCyber.playerName = nameInput.value.trim() || 'CyberBot-01';
+    const roomInput = document.getElementById('roomCodeInput');
+    if (roomInput) window.bioCyber.roomCode = roomInput.value.trim() || 'CYBER-774';
+    const roomBadge = document.getElementById('roomBadge');
+    if (roomBadge) roomBadge.innerText = window.bioCyber.roomCode;
+    window.bioCyber.startNewGame();
+  }
+};
+
+// Start immediately or on DOM ready
+function initBioCyber() {
+  if (!window.bioCyber) {
+    window.bioCyber = new BioCyberArena3D();
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initBioCyber);
+} else {
+  initBioCyber();
+}
 
