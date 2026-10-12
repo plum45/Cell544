@@ -1892,3 +1892,22 @@ body.lit .apple-modal-card {
   color: #71717a;
 }
 
+/* Dedicated Zone Stylings: Games Zone vs Lessons Zone */
+.games-zone-section {
+  padding: 80px 0 90px;
+  background: radial-gradient(circle at 50% 0%, rgba(2, 132, 199, 0.04) 0%, transparent 60%), #ffffff;
+  position: relative;
+}
+
+.lessons-zone-section {
+  padding: 80px 0 90px;
+  background: #fbfbfc;
+  position: relative;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.lessons-zone-section .apple-bento-card {
+  background: #ffffff !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
