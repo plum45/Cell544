@@ -268,11 +268,11 @@
 
   function getCategoryLabel(cat) {
     switch (cat) {
-      case 'genetics': return '🧬 รหัสพันธุกรรม';
-      case 'signaling': return '📡 สัญญาณเซลล์';
-      case 'energy': return '⚡ พลังงาน & ออร์แกเนลล์';
-      case 'worlds': return '🎮 โลกเสมือน & AI';
-      default: return '🔬 โมเลกุล';
+      case 'genetics': return '🧬 DNA & การสร้างโปรตีน';
+      case 'signaling': return '📡 การสื่อสารของเซลล์';
+      case 'energy': return '⚡ พลังงาน & โครงสร้างเซลล์';
+      case 'worlds': return '🎮 โหมดเกม & โลกจำลอง 3D';
+      default: return '🔬 โมเลกุลของเซลล์';
     }
   }
 
