@@ -1345,6 +1345,22 @@ body {
   }
 }
 
+@media (max-width: 1024px), (pointer: coarse) {
+  .mobile-controls-layer {
+    display: block;
+  }
+  .controls-hud-hint#desktopControlsHint {
+    display: none;
+  }
+}
+
+body.touch-device .mobile-controls-layer {
+  display: block !important;
+}
+body.touch-device .controls-hud-hint#desktopControlsHint {
+  display: none !important;
+}
+
 @media (max-width: 768px), (pointer: coarse) {
   .mobile-controls-layer {
     display: block;

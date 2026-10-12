@@ -956,4 +956,452 @@ body, html {
   transform: translateY(-1px);
 }
 
+/* ===== Room PIN & Map Sector HUD Pills ===== */
+.room-pill-2d {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4px 8px;
+  border-radius: 9999px;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.room-input-2d {
+  width: 72px;
+  background: rgba(243, 244, 246, 0.9);
+  border: 1px solid #CBD5E1;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: center;
+  color: #0F172A;
+  padding: 3px 4px;
+  outline: none;
+  text-transform: uppercase;
+}
+
+.btn-room-join {
+  background: #8B5CF6;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font-main);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-room-join:hover {
+  background: #7C3AED;
+}
+
+.map-select-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4px 8px;
+  border-radius: 9999px;
+  border: 1px solid rgba(2, 132, 199, 0.3);
+}
+
+.map-dropdown-2d {
+  background: transparent;
+  border: none;
+  font-family: var(--font-main);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0F172A;
+  outline: none;
+  cursor: pointer;
+}
+
+.btn-quest-hud {
+  background: linear-gradient(135deg, #F59E0B, #EA580C) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+}
+
+/* ===== Floating Quest Status Banner ===== */
+.quest-status-banner {
+  position: fixed;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  border-radius: 14px;
+  padding: 8px 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 90vw;
+  width: 540px;
+  color: #FFFFFF;
+}
+
+.quest-banner-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quest-tag {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #FBBF24;
+}
+
+.quest-timer-hud {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  font-weight: 800;
+  background: rgba(245, 158, 11, 0.2);
+  color: #FDE68A;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  border: 1px solid rgba(245, 158, 11, 0.5);
+}
+
+.quest-timer-hud.urgent {
+  background: rgba(239, 68, 68, 0.3);
+  color: #FCA5A5;
+  border-color: #EF4444;
+  animation: pulseUrgent 0.8s infinite alternate;
+}
+
+@keyframes pulseUrgent {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+
+.quest-desc-text {
+  font-size: 0.8rem;
+  color: #E2E8F0;
+  line-height: 1.4;
+}
+
+.quest-steps-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: #94A3B8;
+  margin-top: 2px;
+  overflow-x: auto;
+}
+
+.quest-step-item {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  white-space: nowrap;
+}
+
+.quest-step-item.active {
+  background: rgba(245, 158, 11, 0.35);
+  color: #FDE68A;
+  font-weight: 700;
+  border: 1px solid #F59E0B;
+}
+
+.quest-step-item.done {
+  background: rgba(16, 185, 129, 0.25);
+  color: #6EE7B7;
+  text-decoration: line-through;
+}
+
+.step-arrow {
+  color: #64748B;
+  font-size: 0.68rem;
+}
+
+/* ===== Quest Selection Modal & Cards ===== */
+.quest-modal-panel {
+  max-width: 680px !important;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.quest-modal-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #EA580C;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+.quest-rules-box {
+  background: rgba(248, 250, 252, 0.95);
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.rules-header {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #0F172A;
+  margin-bottom: 6px;
+}
+
+.rules-list {
+  padding-left: 18px;
+  margin: 0;
+  font-size: 0.82rem;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.quest-cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quest-card {
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.quest-card:hover {
+  border-color: #F59E0B;
+  box-shadow: 0 6px 18px rgba(245, 158, 11, 0.15);
+  transform: translateY(-2px);
+}
+
+.qc-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.qc-icon {
+  font-size: 1.6rem;
+}
+
+.qc-title-wrap {
+  flex: 1;
+}
+
+.qc-title-wrap h3 {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+}
+
+.qc-tag {
+  font-size: 0.72rem;
+  color: #64748B;
+  font-weight: 600;
+}
+
+.qc-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #EA580C;
+  background: rgba(234, 88, 12, 0.1);
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.qc-desc {
+  font-size: 0.82rem;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0 0 10px 0;
+}
+
+.qc-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #F1F5F9;
+  padding-top: 8px;
+}
+
+.qc-xp {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #059669;
+}
+
+.btn-start-quest {
+  background: linear-gradient(135deg, #F59E0B, #EA580C);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-main);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-start-quest:hover {
+  filter: brightness(1.1);
+  transform: scale(1.03);
+}
+
+/* ===== Quest Victory Modal ===== */
+.quest-victory-panel {
+  max-width: 460px !important;
+  text-align: center;
+}
+
+.qv-icon {
+  font-size: 3rem;
+  margin-bottom: 6px;
+}
+
+.qv-speech {
+  background: rgba(243, 244, 246, 0.9);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.88rem;
+  color: #1E293B;
+  line-height: 1.6;
+  margin: 12px 0 16px 0;
+  border-left: 4px solid #10B981;
+  text-align: left;
+}
+
+.qv-stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.qv-stat-box {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 8px 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.qv-stat-label {
+  font-size: 0.72rem;
+  color: #64748B;
+}
+
+.qv-stat-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.qv-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ===== Timeout Screen ===== */
+.timeout-card {
+  border-color: rgba(239, 68, 68, 0.6) !important;
+  box-shadow: 0 0 50px rgba(239, 68, 68, 0.4) !important;
+}
+
+/* ===== Mobile & iPad Action Buttons Polish ===== */
+.touch-actions-2d {
+  position: fixed;
+  bottom: 28px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 50;
+  touch-action: none;
+}
+
+.touch-action-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 0.1s, background 0.1s;
+}
+
+.touch-action-btn:active,
+.touch-action-btn.active {
+  transform: scale(0.92);
+  background: rgba(243, 244, 246, 0.98);
+}
+
+.btn-action-interact {
+  border-color: #8B5CF6;
+}
+.btn-action-dash {
+  border-color: #0284C7;
+}
+.btn-action-skill {
+  border-color: #EF4444;
+}
+.btn-action-quest {
+  border-color: #F59E0B;
+}
+
+body.touch-device .mobile-controls {
+  display: block !important;
+}
+body.touch-device .controls-hint {
+  display: none !important;
+}
+
+@media (max-width: 1024px) {
+  .top-hud {
+    padding: 6px 12px;
+    gap: 6px;
+  }
+  .hud-title-badge span:last-child {
+    display: none;
+  }
+  .quest-status-banner {
+    width: calc(100% - 24px);
+    top: 58px;
+  }
+  .mobile-controls {
+    display: block !important;
+  }
+  .controls-hint {
+    display: none !important;
+  }
+}
+
+
 

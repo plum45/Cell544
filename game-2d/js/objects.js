@@ -1,7 +1,7 @@
-// ===== Interactive Objects, Furniture & Bio-Defense Terminals =====
 import { TILE_SIZE, unlockGate } from './world.js';
 import { playPianoNote, playBrewSound, playSuccessChime, playClickSound, playNote } from './audio.js';
 import { triggerTerminalQuiz } from './quiz.js';
+import { questManager } from './quest.js';
 
 export const OBJECTS = [
   // ===== 1. Bio-Defense Security Terminals (Obstacles & Gate Quizzes) =====
@@ -17,6 +17,20 @@ export const OBJECTS = [
     actionText: 'ตอบคำถามชีววิทยาเพื่อเปิดประตูกักกันโรค 🔓',
     isQuizTerminal: true,
     onInteract: (onSuccess, onFailure) => {
+      if (questManager.activeQuest) {
+        if (questManager.stage === 'OUTBOUND_GATE') {
+          questManager.triggerOutboundGate(onSuccess, onFailure);
+          return null;
+        } else if (questManager.stage === 'INBOUND_GATE' || questManager.hasItem) {
+          questManager.triggerInboundGate(onSuccess, onFailure);
+          return null;
+        } else if (questManager.outboundGateUnlocked) {
+          if (onSuccess) onSuccess('🔓 ประตูเปิดอยู่แล้ว! รีบออกไปเก็บไอเทมเควส');
+          return null;
+        }
+      }
+
+      // Default Outbound Fallback
       triggerTerminalQuiz('airlock_gate', () => {
         unlockGate('airlock');
         playSuccessChime();
@@ -333,9 +347,62 @@ export function renderObjects(ctx, camera) {
         break;
     }
   });
+
+  // Render Glowing Quest Target Item (if quest is active and not yet collected)
+  if (questManager.activeQuest && !questManager.hasItem) {
+    const item = questManager.activeQuest.item;
+    const ix = item.tileX * TILE_SIZE;
+    const iy = item.tileY * TILE_SIZE;
+    const now = performance.now() * 0.003;
+    const bounce = Math.sin(now) * 4;
+
+    // Glowing Halo
+    ctx.save();
+    const grad = ctx.createRadialGradient(ix + 16, iy + 16, 4, ix + 16, iy + 16, 28);
+    grad.addColorStop(0, item.color || '#F59E0B');
+    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(ix + 16, iy + 16, 28, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Floating Icon & Crate
+    ctx.fillStyle = '#FFFFFF';
+    ctx.shadowColor = item.color || '#F59E0B';
+    ctx.shadowBlur = 12;
+    ctx.font = '24px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(item.icon || '📦', ix + 16, iy + 22 + bounce);
+
+    // Indicator Marker Arrow
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = 'bold 12px "Prompt", sans-serif';
+    ctx.fillText('▼ เก็บที่นี่', ix + 16, iy - 4 + bounce);
+    ctx.restore();
+  }
 }
 
 export function getNearbyObject(playerX, playerY, maxDist = 52) {
+  // Check Quest Item Pickup First
+  if (questManager.activeQuest && !questManager.hasItem) {
+    const item = questManager.activeQuest.item;
+    const cx = (item.tileX + 0.5) * TILE_SIZE;
+    const cy = (item.tileY + 0.5) * TILE_SIZE;
+    const dist = Math.hypot(playerX - cx, playerY - cy);
+    if (dist < maxDist) {
+      return {
+        id: 'quest_target_item',
+        name: item.name,
+        actionText: `กด E เพื่อเก็บ ${item.name} 📦`,
+        onInteract: () => {
+          questManager.collectItem();
+          return `🎉 เก็บ ${item.name} สำเร็จ! รีบเดินทางกลับสู่ห้องล็อบบี้ปลอดภัย!`;
+        }
+      };
+    }
+  }
+
+  // Standard Objects
   for (const obj of OBJECTS) {
     const cx = (obj.tileX + obj.w / 2) * TILE_SIZE;
     const cy = (obj.tileY + obj.h / 2) * TILE_SIZE;

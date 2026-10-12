@@ -1101,3 +1101,72 @@ body {
   line-height: 1.45;
 }
 
+/* Touch Mode Button */
+.touch-mode-btn {
+  background: rgba(0, 240, 255, 0.15) !important;
+  border: 1px solid rgba(0, 240, 255, 0.5) !important;
+  color: #00f0ff !important;
+  font-weight: 700 !important;
+  transition: all 0.2s ease;
+}
+
+.touch-mode-btn.mode-elim {
+  background: rgba(239, 68, 68, 0.25) !important;
+  border-color: rgba(239, 68, 68, 0.7) !important;
+  color: #fca5a5 !important;
+}
+
+@media (max-width: 1024px) {
+  .top-nav {
+    padding: 6px 12px;
+  }
+  .brand-title {
+    font-size: 1rem;
+  }
+  .dossier-panel {
+    width: 290px;
+    padding: 12px;
+  }
+  .card-inspect-hud {
+    width: 90vw;
+    left: 5vw;
+    transform: none;
+    bottom: 90px;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-nav {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .nav-center-stats {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .dossier-panel {
+    position: fixed;
+    top: auto;
+    bottom: 84px;
+    left: 10px;
+    right: 10px;
+    width: auto;
+    max-height: 38vh;
+    overflow-y: auto;
+    z-index: 45;
+  }
+  .bottom-guidance {
+    bottom: 6px;
+    padding: 0 8px;
+  }
+  .guidance-card {
+    padding: 8px 10px;
+  }
+  .deck-actions {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+}
+
+

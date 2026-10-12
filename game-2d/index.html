@@ -50,7 +50,30 @@
       </div>
     </div>
 
-    <div class="hud-group">
+      <!-- Room Code Input & Join Pill -->
+      <div class="hud-pill room-pill-2d" title="รหัสห้องเล่นด้วยกัน (Multiplayer Room PIN)">
+        <span>🏷️</span>
+        <input type="text" id="room-code-input" class="room-input-2d" value="ROOM-101" placeholder="รหัสห้อง" maxlength="10" spellcheck="false">
+        <button class="btn-room-join" id="btn-room-join" title="เข้าห้อง / สลับห้อง">เข้าห้อง</button>
+      </div>
+
+      <!-- Map Sector Selector -->
+      <div class="hud-pill map-select-pill" title="เลือกแผนที่และโซนทดลอง">
+        <span>🗺️</span>
+        <select id="map-sector-select" class="map-dropdown-2d">
+          <option value="main">1. ศูนย์วิจัยหลัก (Main Lab)</option>
+          <option value="mitochondria">2. โรงงานไมโทคอนเดรีย (Power Plant)</option>
+          <option value="spore">3. ป่าสปอร์ชีวภาพ (Spore Jungle)</option>
+          <option value="cryo">4. คลังแอนติเจนใต้ดิน (Cryo Depot)</option>
+        </select>
+      </div>
+
+      <!-- Biology Quests Menu Button -->
+      <button class="hud-btn btn-quest-hud" id="btn-quest-hud" title="เปิดเมนูเควสชีววิทยา 5 ภารกิจ">
+        <span>📋</span>
+        <span>เควส (5 ภารกิจ)</span>
+      </button>
+
       <!-- Zoom Controls -->
       <button class="hud-btn" id="btn-zoom-in" title="ซูมเข้า">🔍+</button>
       <button class="hud-btn" id="btn-zoom-out" title="ซูมออก">🔍-</button>
@@ -84,6 +107,26 @@
   <!-- Notification Toast -->
   <div class="hud-toast" id="hud-toast">ข้อความแจ้งเตือน</div>
 
+  <!-- Dynamic Quest Status HUD Banner -->
+  <div class="quest-status-banner" id="quest-status-banner" style="display: none;">
+    <div class="quest-banner-top">
+      <span class="quest-tag" id="quest-tag">🍞 ภารกิจส่งเสบียงอาหารชีวภาพ</span>
+      <span class="quest-timer-hud" id="quest-timer-hud">⏱️ 120s</span>
+    </div>
+    <div class="quest-desc-text" id="quest-desc-text">
+      🚪 ไปที่ประตูกักกันโรค (Airlock) แล้วตอบคำถามชีววิทยาเพื่อเปิดประตูออกไปข้างนอก!
+    </div>
+    <div class="quest-steps-row">
+      <span class="quest-step-item active" id="step-gate">1. เปิดประตู</span>
+      <span class="step-arrow">➔</span>
+      <span class="quest-step-item" id="step-item">2. เก็บเสบียง/ชิ้นส่วน</span>
+      <span class="step-arrow">➔</span>
+      <span class="quest-step-item" id="step-return">3. คำถามใหม่ขากลับ</span>
+      <span class="step-arrow">➔</span>
+      <span class="quest-step-item" id="step-deliver">4. ส่งเพื่อนในล็อบบี้</span>
+    </div>
+  </div>
+
   <!-- Game Canvas -->
   <canvas id="game-canvas"></canvas>
 
@@ -106,7 +149,7 @@
   <!-- Bottom HUD / Controls Preview -->
   <footer class="bottom-hud">
     <div class="controls-hint">
-      🎮 <strong>W A S D / ลูกศร (แป้นไทย: ไ ฟ ห ก)</strong> เดิน &nbsp;|&nbsp; <strong>Shift</strong> วิ่ง &nbsp;|&nbsp; <strong>E</strong> คุย/สำรวจ &nbsp;|&nbsp; <strong>คลิกเมาส์</strong> เพื่อเดินหรือตรวจข้อมูลเอเจนต์
+      🎮 <strong>W A S D / ลูกศร</strong> เดิน &nbsp;|&nbsp; <strong>Shift</strong> วิ่งสปีด &nbsp;|&nbsp; <strong>E</strong> คุย/สำรวจ/ส่งของ &nbsp;|&nbsp; <strong>คลิกจอ</strong> เดิน
     </div>
 
     <!-- Mobile Virtual Joystick & Touch Buttons -->
@@ -115,9 +158,21 @@
         <div class="joystick-knob-2d" id="joystick-knob-2d"></div>
       </div>
       <div class="touch-actions-2d">
-        <button class="touch-action-btn" id="btn-interact-hud" aria-label="สำรวจหรือคุย">
+        <button class="touch-action-btn btn-action-interact" id="btn-interact-hud" aria-label="สำรวจ คุย หรือส่งของ">
           <span>💬</span>
           <span class="btn-sub">คุย/สำรวจ</span>
+        </button>
+        <button class="touch-action-btn btn-action-dash" id="btn-dash-hud" aria-label="วิ่งสปีด">
+          <span>💨</span>
+          <span class="btn-sub">วิ่งเร็ว</span>
+        </button>
+        <button class="touch-action-btn btn-action-skill" id="btn-skill-hud" aria-label="เลเซอร์ Caspase">
+          <span>⚡</span>
+          <span class="btn-sub">เลเซอร์</span>
+        </button>
+        <button class="touch-action-btn btn-action-quest" id="btn-quest-hud-mobile" aria-label="เลือกเควส">
+          <span>📋</span>
+          <span class="btn-sub">เควส</span>
         </button>
       </div>
     </div>
@@ -219,6 +274,155 @@
       <div class="quiz-options-grid" id="quiz-options-grid">
         <!-- Buttons injected dynamically -->
       </div>
+    </div>
+  </div>
+
+  <!-- ===== Quest Selection & Rules Modal ===== -->
+  <div class="modal-overlay" id="quest-selection-modal">
+    <div class="modal-panel quest-modal-panel">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="quest-modal-badge">📋 MISSION BOARD & BIO-SURVIVAL</div>
+          <h2>เลือกภารกิจชีววิทยา & กติกาการเอาชีวิตรอด</h2>
+          <div class="modal-subtitle">รวบรวมเสบียงและชิ้นส่วนชีวโมเลกุล ฝ่าฝูงซอมบี้มาส่งให้เพื่อนๆ ในล็อบบี้</div>
+        </div>
+        <button class="modal-close-btn" id="btn-close-quest-modal">✕</button>
+      </div>
+
+      <!-- Rules Box -->
+      <div class="quest-rules-box">
+        <div class="rules-header">📜 กติกาและขั้นตอนการทำภารกิจ:</div>
+        <ol class="rules-list">
+          <li><strong>1. รับเควส:</strong> เลือก 1 ใน 5 ภารกิจด้านล่าง แล้วเดินไปที่ <em>ประตูกักกันโรค (Airlock)</em></li>
+          <li><strong>2. ประตูขาออก:</strong> ตอบข้อสอบชีววิทยาเพื่อเปิดประตูฝ่าออกไปยังโซนอันตราย</li>
+          <li><strong>3. หลบหลีกซอมบี้:</strong> วิ่งหลบซอมบี้กลายพันธุ์และกับดัก เพื่อไปเก็บ <em>เสบียงหรือชิ้นส่วนชีวโมเลกุล</em></li>
+          <li><strong>4. ประตูขากลับ (คำถามใหม่):</strong> เมื่อเก็บของแล้ว ประตูจะล็อก ต้องตอบ <em>ข้อสอบชีววิทยาข้อใหม่</em> เพื่อเปิดประตูกลับเข้าล็อบบี้</li>
+          <li><strong>5. ส่งให้เพื่อนในล็อบบี้:</strong> วิ่งนำของมาส่งให้เพื่อนๆ (ดร.เอด้า / วัตสัน) ก่อนเวลาหมด!</li>
+        </ol>
+      </div>
+
+      <!-- 5 Quest Cards Grid -->
+      <div class="quest-cards-grid">
+        <!-- Quest 1 -->
+        <div class="quest-card" data-quest="bio_food">
+          <div class="qc-header">
+            <span class="qc-icon">🍱</span>
+            <div class="qc-title-wrap">
+              <h3>🍞 ส่งเสบียงอาหารชีวภาพ</h3>
+              <span class="qc-tag">เมแทบอลิซึม & การลำเลียงสาร</span>
+            </div>
+            <span class="qc-time">⏱️ 120s</span>
+          </div>
+          <p class="qc-desc">เพื่อนๆ ในล็อบบี้กำลังหิวโหย! ออกไปเก็บลังเสบียงกลูโคสและกรดอะมิโนนอกศูนย์วิจัย นำกลับมาแจกจ่ายให้เพื่อนๆ</p>
+          <div class="qc-footer">
+            <span class="qc-xp">+500 XP</span>
+            <button class="btn-start-quest" data-quest="bio_food">▶️ เริ่มภารกิจนี้</button>
+          </div>
+        </div>
+
+        <!-- Quest 2 -->
+        <div class="quest-card" data-quest="gene_expression">
+          <div class="qc-header">
+            <span class="qc-icon">🧬</span>
+            <div class="qc-title-wrap">
+              <h3>🧬 องค์ประกอบการแสดงออกของยีน</h3>
+              <span class="qc-tag">Transcription & Translation</span>
+            </div>
+            <span class="qc-time">⏱️ 150s</span>
+          </div>
+          <p class="qc-desc">รวบรวม Promoter, RNA Polymerase II, และ mRNA Transcript จากศูนย์วิจัยชั้นสูง นำกลับมาเริ่มแปลรหัสโปรตีนในแล็บ</p>
+          <div class="qc-footer">
+            <span class="qc-xp">+600 XP</span>
+            <button class="btn-start-quest" data-quest="gene_expression">▶️ เริ่มภารกิจนี้</button>
+          </div>
+        </div>
+
+        <!-- Quest 3 -->
+        <div class="quest-card" data-quest="cell_signaling">
+          <div class="qc-header">
+            <span class="qc-icon">📡</span>
+            <div class="qc-title-wrap">
+              <h3>📡 ต่อวงจรการสื่อสารของเซลล์</h3>
+              <span class="qc-tag">GPCR & Secondary Messenger</span>
+            </div>
+            <span class="qc-time">⏱️ 150s</span>
+          </div>
+          <p class="qc-desc">ระบบสัญญาณเตือนภัยขัดข้อง! ออกไปกู้คืนตัวรับ GPCR, โมเลกุล Ligand, และ Second Messenger (cAMP) เพื่อเปิดสัญญาณเตือนภัย</p>
+          <div class="qc-footer">
+            <span class="qc-xp">+600 XP</span>
+            <button class="btn-start-quest" data-quest="cell_signaling">▶️ เริ่มภารกิจนี้</button>
+          </div>
+        </div>
+
+        <!-- Quest 4 -->
+        <div class="quest-card" data-quest="antibody_defense">
+          <div class="qc-header">
+            <span class="qc-icon">💉</span>
+            <div class="qc-title-wrap">
+              <h3>🛡️ สังเคราะห์แอนติบอดี & วัคซีน</h3>
+              <span class="qc-tag">Immunology & Antibody</span>
+            </div>
+            <span class="qc-time">⏱️ 140s</span>
+          </div>
+          <p class="qc-desc">ฝ่าฝูงซอมบี้ไปเก็บตัวอย่าง Spike Protein Antigen และ Adjuvant นำกลับมาสังเคราะห์ Monoclonal Antibody กู้ชีพในล็อบบี้</p>
+          <div class="qc-footer">
+            <span class="qc-xp">+550 XP</span>
+            <button class="btn-start-quest" data-quest="antibody_defense">▶️ เริ่มภารกิจนี้</button>
+          </div>
+        </div>
+
+        <!-- Quest 5 -->
+        <div class="quest-card" data-quest="atp_power">
+          <div class="qc-header">
+            <span class="qc-icon">🔋</span>
+            <div class="qc-title-wrap">
+              <h3>⚡ ซ่อมแซมไมโทคอนเดรียผลิต ATP</h3>
+              <span class="qc-tag">Cellular Respiration & ATP</span>
+            </div>
+            <span class="qc-time">⏱️ 130s</span>
+          </div>
+          <p class="qc-desc">เครื่องปฏิกรณ์ไมโทคอนเดรียขัดข้อง! กู้คืนแท่งพลังงาน ATP Synthase & Complex I-IV นำกลับมาจ่ายไฟฟ้าให้ล็อบบี้ปลอดภัย</p>
+          <div class="qc-footer">
+            <span class="qc-xp">+550 XP</span>
+            <button class="btn-start-quest" data-quest="atp_power">▶️ เริ่มภารกิจนี้</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Quest Victory Modal ===== -->
+  <div class="modal-overlay" id="quest-victory-modal">
+    <div class="modal-panel quest-victory-panel">
+      <div class="qv-icon">🏆✨🎉</div>
+      <h2 id="qv-title">🎉 ภารกิจสำเร็จ!</h2>
+      <div class="qv-speech" id="qv-friend-msg">
+        "สุดยอดมากคุณนักวิจัย! คุณนำไอเทมกลับมาส่งได้ทันเวลา ทุกคนในศูนย์วิจัยรอดปลอดภัยแล้ว!"
+      </div>
+      <div class="qv-stats-row">
+        <div class="qv-stat-box">
+          <span class="qv-stat-label">รางวัลคะแนน</span>
+          <strong class="qv-stat-val text-green" id="qv-reward-xp">+500 XP</strong>
+        </div>
+        <div class="qv-stat-box">
+          <span class="qv-stat-label">เวลาที่เหลือ</span>
+          <strong class="qv-stat-val text-cyan" id="qv-time-left">45s</strong>
+        </div>
+      </div>
+      <div class="qv-actions">
+        <button class="overlay-action-btn btn-win" id="btn-qv-next-quest">🌟 เลือกทำเควสถัดไป</button>
+        <button class="overlay-action-btn btn-retry" id="btn-qv-explore">🚶 สำรวจสถาบันต่อ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Quest Timeout Failure Screen ===== -->
+  <div class="game-overlay-screen" id="quest-timeout-screen">
+    <div class="game-overlay-card timeout-card">
+      <div class="overlay-icon">⏳🚨</div>
+      <h2>เวลาจัดส่งเสบียงหมดลง!</h2>
+      <p>คุณไม่สามารถนำส่งไอเทมกลับสู่ห้องล็อบบี้ได้ทันเวลา ซอมบี้ปิดล้อมเส้นทางลำเลียง แต่ระบบพยาบาลชีวภาพยังพาคุณกลับสู่จุดเริ่มต้นได้อย่างปลอดภัย!</p>
+      <button class="overlay-action-btn btn-retry" id="btn-quest-retry">🔄 เริ่มต้นทำเควสใหม่</button>
     </div>
   </div>
 

@@ -50,6 +50,13 @@ export const GATES = {
   bunker: { locked: true, row: 11, colStart: 37, colEnd: 38 },
 };
 
+export let currentMapTheme = 'main'; // 'main' | 'mitochondria' | 'spore' | 'cryo'
+
+export function setMapTheme(theme) {
+  currentMapTheme = theme;
+  initWorld();
+}
+
 export function unlockGate(gateKey) {
   if (GATES[gateKey]) {
     GATES[gateKey].locked = false;
@@ -303,16 +310,38 @@ export function renderWorld(ctx, camera) {
 }
 
 function drawTile(ctx, type, x, y, r, c) {
+  let grassColor = (r + c) % 2 === 0 ? '#86EFAC' : '#4ADE80';
+  let pathColor = '#FEF08A';
+  let hazardColor = '#1E293B';
+  let wallColor = '#94A3B8';
+
+  if (currentMapTheme === 'mitochondria') {
+    grassColor = (r + c) % 2 === 0 ? '#1E1B4B' : '#0F172A';
+    pathColor = '#FB923C';
+    hazardColor = '#431407';
+    wallColor = '#312E81';
+  } else if (currentMapTheme === 'spore') {
+    grassColor = (r + c) % 2 === 0 ? '#064E3B' : '#047857';
+    pathColor = '#C084FC';
+    hazardColor = '#3B0764';
+    wallColor = '#14532D';
+  } else if (currentMapTheme === 'cryo') {
+    grassColor = (r + c) % 2 === 0 ? '#E0F2FE' : '#BAE6FD';
+    pathColor = '#38BDF8';
+    hazardColor = '#0C4A6E';
+    wallColor = '#475569';
+  }
+
   switch (type) {
     case TILE.GRASS:
-      ctx.fillStyle = (r + c) % 2 === 0 ? '#86EFAC' : '#4ADE80';
+      ctx.fillStyle = grassColor;
       ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
       break;
 
     case TILE.PATH:
-      ctx.fillStyle = '#FEF08A';
+      ctx.fillStyle = pathColor;
       ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
-      ctx.fillStyle = '#FDE047';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
       ctx.fillRect(x + 4, y + 4, 8, 8);
       break;
 
@@ -342,7 +371,7 @@ function drawTile(ctx, type, x, y, r, c) {
 
     case TILE.HAZARD_FLOOR:
       // Dark high-tech hazard steel floor with yellow caution stripes
-      ctx.fillStyle = '#1E293B';
+      ctx.fillStyle = hazardColor;
       ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
       if ((r + c) % 3 === 0) {
         ctx.fillStyle = '#EAB308';
@@ -356,20 +385,20 @@ function drawTile(ctx, type, x, y, r, c) {
 
     case TILE.DIRT_RUINS:
       // Mutated overgrown earth
-      ctx.fillStyle = '#422006';
+      ctx.fillStyle = (currentMapTheme === 'spore') ? '#2E1065' : '#422006';
       ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
       if ((r * 3 + c * 7) % 5 === 0) {
-        ctx.fillStyle = '#15803D';
+        ctx.fillStyle = '#10B981';
         ctx.fillRect(x + 6, y + 6, 8, 4);
       }
       break;
 
     case TILE.WALL:
-      ctx.fillStyle = '#94A3B8';
+      ctx.fillStyle = wallColor;
       ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
-      ctx.fillStyle = '#F8FAFC';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
       ctx.fillRect(x + 3, y + 3, TILE_SIZE - 6, TILE_SIZE - 6);
-      ctx.strokeStyle = '#475569';
+      ctx.strokeStyle = '#334155';
       ctx.lineWidth = 1.5;
       ctx.strokeRect(x + 1, y + 1, TILE_SIZE - 2, TILE_SIZE - 2);
       break;

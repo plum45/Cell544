@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>สถาบันวิจัยชีววิทยา 2D | Cell Biology Lab & Dorm Sim</title>
+  <meta name="description" content="เกมจำลองชีวิตนักวิจัยชีววิทยาโมเลกุล 2D Pixel Art สไตล์ Stanford Generative Agents — AI Autonomous Sandbox">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top HUD Bar -->
+  <header class="top-hud">
+    <div class="hud-group">
+      <!-- Title Badge -->
+      <div class="hud-pill hud-title-badge">
+        <span class="logo-emoji">🧬</span>
+        <span>สถาบันวิจัยชีววิทยา 2D</span>
+      </div>
+
+      <!-- Time Display -->
+      <div class="hud-pill time-badge" id="time-display">
+        ☀️ 09:30
+      </div>
+
+      <!-- Player HP Bar -->
+      <div class="hud-pill hp-badge" id="hp-badge" title="พลังชีวิตของผู้เล่น">
+        <span>❤️</span>
+        <div class="hp-bar-track">
+          <div class="hp-bar-fill" id="player-hp-fill" style="width: 100%;"></div>
+        </div>
+        <span id="player-hp-text">100/100</span>
+      </div>
+
+      <!-- Mode Toggle -->
+      <button class="hud-btn btn-mode-toggle" id="btn-mode-toggle" title="สลับโหมดซอมบี้ / พักผ่อน">
+        <span id="mode-icon">🚨</span>
+        <span id="mode-name">โหมดซอมบี้</span>
+      </button>
+
+      <!-- Simulation Speed Controls -->
+      <div class="speed-control-group">
+        <button class="btn-speed" data-speed="0" title="หยุดเวลาชั่วคราว">⏸️</button>
+        <button class="btn-speed active" data-speed="1" title="ความเร็วปกติ 1x">1x</button>
+        <button class="btn-speed" data-speed="2" title="ความเร็ว 2x">2x</button>
+        <button class="btn-speed" data-speed="5" title="ความเร็วเร่งด่วน 5x">5x</button>
+      </div>
+    </div>
+
+      <!-- Room Code Input & Join Pill -->
+      <div class="hud-pill room-pill-2d" title="รหัสห้องเล่นด้วยกัน (Multiplayer Room PIN)">
+        <span>🏷️</span>
+        <input type="text" id="room-code-input" class="room-input-2d" value="ROOM-101" placeholder="รหัสห้อง" maxlength="10" spellcheck="false">
+        <button class="btn-room-join" id="btn-room-join" title="เข้าห้อง / สลับห้อง">เข้าห้อง</button>
+      </div>
+
+      <!-- Map Sector Selector -->
+      <div class="hud-pill map-select-pill" title="เลือกแผนที่และโซนทดลอง">
+        <span>🗺️</span>
+        <select id="map-sector-select" class="map-dropdown-2d">
+          <option value="main">1. ศูนย์วิจัยหลัก (Main Lab)</option>
+          <option value="mitochondria">2. โรงงานไมโทคอนเดรีย (Power Plant)</option>
+          <option value="spore">3. ป่าสปอร์ชีวภาพ (Spore Jungle)</option>
+          <option value="cryo">4. คลังแอนติเจนใต้ดิน (Cryo Depot)</option>
+        </select>
+      </div>
+
+      <!-- Biology Quests Menu Button -->
+      <button class="hud-btn btn-quest-hud" id="btn-quest-hud" title="เปิดเมนูเควสชีววิทยา 5 ภารกิจ">
+        <span>📋</span>
+        <span>เควส (5 ภารกิจ)</span>
+      </button>
+
+      <!-- Zoom Controls -->
+      <button class="hud-btn" id="btn-zoom-in" title="ซูมเข้า">🔍+</button>
+      <button class="hud-btn" id="btn-zoom-out" title="ซูมออก">🔍-</button>
+
+      <!-- Map Button -->
+      <button class="hud-btn btn-map" id="btn-map-hud" title="เปิดแผนที่ศูนย์วิจัย (กด M)">🗺️ แผนที่</button>
+
+      <!-- Knowledge Topics Hub Button -->
+      <button class="hud-btn btn-topics" id="btn-topics-2d" title="เปิดหน้าความรู้ชีววิทยา 6 บทเรียน" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: #047857; font-weight: 700;">
+        <span>📚</span>
+        <span>หน้าความรู้</span>
+      </button>
+
+      <!-- Guide Button -->
+      <button class="hud-btn" id="btn-help-2d" title="คู่มือการเล่น">📖 คู่มือ</button>
+
+      <!-- Switch to 3D Island Mode Button -->
+      <a href="../island-3d/index.html" class="hud-btn btn-3d" title="สลับสู่โหมด 3D เกาะลอยฟ้า">
+        <span>🏝️</span>
+        <span>โหมด 3D</span>
+      </a>
+
+      <!-- Switch to Futuristic Website Portal -->
+      <a href="../index.html" class="hud-btn btn-web" title="กลับหน้าเว็บไซต์หลัก">
+        <span>🏠</span>
+        <span>หน้าเว็บหลัก</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Notification Toast -->
+  <div class="hud-toast" id="hud-toast">ข้อความแจ้งเตือน</div>
+
+  <!-- Dynamic Quest Status HUD Banner -->
+  <div class="quest-status-banner" id="quest-status-banner" style="display: none;">
+    <div class="quest-banner-top">
+      <span class="quest-tag" id="quest-tag">🍞 ภารกิจส่งเสบียงอาหารชีวภาพ</span>
+      <span class="quest-timer-hud" id="quest-timer-hud">⏱️ 120s</span>
+    </div>
+    <div class="quest-desc-text" id="quest-desc-text">
+      🚪 ไปที่ประตูกักกันโรค (Airlock) แล้วตอบคำถามชีววิทยาเพื่อเปิดประตูออกไปข้างนอก!
+    </div>
+    <div class="quest-steps-row">
+      <span class="quest-step-item active" id="step-gate">1. เปิดประตู</span>
+      <span class="step-arrow">➔</span>
+      <span class="quest-step-item" id="step-item">2. เก็บเสบียง/ชิ้นส่วน</span>
+      <span class="step-arrow">➔</span>
+      <span class="quest-step-item" id="step-return">3. คำถามใหม่ขากลับ</span>
+      <span class="step-arrow">➔</span>
+      <span class="quest-step-item" id="step-deliver">4. ส่งเพื่อนในล็อบบี้</span>
+    </div>
+  </div>
+
+  <!-- Game Canvas -->
+  <canvas id="game-canvas"></canvas>
+
+  <!-- Mini-Map Corner Radar Widget -->
+  <div class="minimap-container" id="minimap-container" title="คลิกเพื่อขยายแผนที่ฉบับเต็ม (หรือกด M)">
+    <div class="minimap-header">
+      <span class="radar-dot"></span>
+      <span>RADAR</span>
+      <span class="minimap-hint">กด M</span>
+    </div>
+    <canvas id="minimap-canvas" width="132" height="84"></canvas>
+  </div>
+
+  <!-- Floating Interaction Prompt Badge -->
+  <div class="interact-prompt" id="interact-prompt">
+    <span class="prompt-key-badge">E</span>
+    <span id="prompt-text">สำรวจ</span>
+  </div>
+
+  <!-- Bottom HUD / Controls Preview -->
+  <footer class="bottom-hud">
+    <div class="controls-hint">
+      🎮 <strong>W A S D / ลูกศร</strong> เดิน &nbsp;|&nbsp; <strong>Shift</strong> วิ่งสปีด &nbsp;|&nbsp; <strong>E</strong> คุย/สำรวจ/ส่งของ &nbsp;|&nbsp; <strong>คลิกจอ</strong> เดิน
+    </div>
+
+    <!-- Mobile Virtual Joystick & Touch Buttons -->
+    <div class="mobile-controls">
+      <div class="joystick-zone-2d" id="joystick-zone-2d">
+        <div class="joystick-knob-2d" id="joystick-knob-2d"></div>
+      </div>
+      <div class="touch-actions-2d">
+        <button class="touch-action-btn btn-action-interact" id="btn-interact-hud" aria-label="สำรวจ คุย หรือส่งของ">
+          <span>💬</span>
+          <span class="btn-sub">คุย/สำรวจ</span>
+        </button>
+        <button class="touch-action-btn btn-action-dash" id="btn-dash-hud" aria-label="วิ่งสปีด">
+          <span>💨</span>
+          <span class="btn-sub">วิ่งเร็ว</span>
+        </button>
+        <button class="touch-action-btn btn-action-skill" id="btn-skill-hud" aria-label="เลเซอร์ Caspase">
+          <span>⚡</span>
+          <span class="btn-sub">เลเซอร์</span>
+        </button>
+        <button class="touch-action-btn btn-action-quest" id="btn-quest-hud-mobile" aria-label="เลือกเควส">
+          <span>📋</span>
+          <span class="btn-sub">เควส</span>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== Agent Profile & Memory Modal (Inspector) ===== -->
+  <div class="modal-overlay" id="agent-modal">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2 id="agent-modal-name">ดร. เอด้า (Dr. Ada)</h2>
+          <div class="modal-subtitle" id="agent-modal-role">หัวหน้าทีมพันธุศาสตร์โมเลกุล</div>
+        </div>
+        <button class="modal-close-btn" id="btn-close-agent">✕</button>
+      </div>
+
+      <!-- Dialogue Speech Box (if talking to player) -->
+      <div class="agent-speech-box" id="agent-modal-speech">
+        "สวัสดีคุณนักวิจัย! ยินดีต้อนรับสู่สถาบันวิจัยชีววิทยาโมเลกุลของเรา"
+      </div>
+
+      <!-- Status & Vital Signs -->
+      <div class="agent-stats-grid">
+        <div class="stat-box">
+          <div class="stat-val" id="agent-modal-energy">95%</div>
+          <div class="stat-label">⚡ พลังงาน (Energy)</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="agent-modal-hunger">30%</div>
+          <div class="stat-label">🍔 ความหิว (Hunger)</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="agent-modal-focus">90%</div>
+          <div class="stat-label">🧠 สมาธิ (Focus)</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 16px;">
+        <div style="font-size: 0.85rem; color: #64748B; font-weight: 600; margin-bottom: 4px;">📍 ตำแหน่งและกิจกรรมปัจจุบัน:</div>
+        <div style="font-size: 0.95rem; font-weight: 700; color: #0F172A;" id="agent-modal-activity">วิเคราะห์ผลตรวจ DNA Sequencer</div>
+        <div style="font-size: 0.82rem; color: #8B5CF6;" id="agent-modal-room">ห้องทดลองและห้องเปียโน</div>
+      </div>
+
+      <!-- Memory Stream -->
+      <div>
+        <div class="section-title">
+          <span>🧠 กระแสความทรงจำและบทสนทนาล่าสุด (Memory Stream):</span>
+        </div>
+        <ul class="memory-list" id="agent-modal-memories">
+          <li>[08:00] เริ่มต้นวันใหม่ที่สถาบันวิจัย</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Equipment / Action Modal ===== -->
+  <div class="modal-overlay" id="action-modal">
+    <div class="modal-panel" style="max-width: 460px;">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2 id="action-title">เครื่องวิเคราะห์ผล</h2>
+          <div class="modal-subtitle">ข้อมูลการทดลองและผลการมีปฏิสัมพันธ์</div>
+        </div>
+        <button class="modal-close-btn" id="btn-close-action">✕</button>
+      </div>
+
+      <div id="action-body" style="font-size: 0.98rem; color: #1E293B; line-height: 1.7; margin-bottom: 20px; white-space: pre-wrap;">
+        ...
+      </div>
+
+      <button onclick="document.getElementById('action-modal').classList.remove('visible');" class="hud-btn" style="width: 100%; justify-content: center; background: #8B5CF6; color: #FFFFFF;">
+        เข้าใจแล้ว ✨
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== Timed Biology Survival Quiz Modal ===== -->
+  <div class="modal-overlay" id="quiz-terminal-modal">
+    <div class="modal-panel quiz-modal-panel">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="quiz-hazard-badge">🚨 ข้อสอบชีววิทยาฝ่าวิกฤต (TIMED BIOLOGY QUIZ)</div>
+          <h2 id="quiz-sector-name">ประตูกักกันโรค (Quarantine Airlock Gate)</h2>
+        </div>
+        <div class="quiz-timer-pill" id="quiz-timer-pill">
+          <span>⏱️</span>
+          <strong id="quiz-timer-text">18s</strong>
+        </div>
+      </div>
+
+      <div class="quiz-progress-track">
+        <div class="quiz-progress-fill" id="quiz-timer-bar"></div>
+      </div>
+
+      <div class="quiz-question-box">
+        <p id="quiz-question-text">กำลังโหลดข้อสอบชีววิทยา...</p>
+      </div>
+
+      <div class="quiz-options-grid" id="quiz-options-grid">
+        <!-- Buttons injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Quest Selection & Rules Modal ===== -->
+  <div class="modal-overlay" id="quest-selection-modal">
+    <div class="modal-panel quest-modal-panel">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="quest-modal-badge">📋 MISSION BOARD & BIO-SURVIVAL</div>
+          <h2>เลือกภารกิจชีววิทยา & กติกาการเอาชีวิตรอด</h2>
+          <div class="modal-subtitle">รวบรวมเสบียงและชิ้นส่วนชีวโมเลกุล ฝ่าฝูงซอมบี้มาส่งให้เพื่อนๆ ในล็อบบี้</div>
+        </div>
+        <button class="modal-close-btn" id="btn-close-quest-modal">✕</button>
+      </div>
+
+      <!-- Rules Box -->
+      <div class="quest-rules-box">
+        <div class="rules-header">📜 กติกาและขั้นตอนการทำภารกิจ:</div>
+        <ol class="rules-list">
+          <li><strong>1. รับเควส:</strong> เลือก 1 ใน 5 ภารกิจด้านล่าง แล้วเดินไปที่ <em>ประตูกักกันโรค (Airlock)</em></li>
+          <li><strong>2. ประตูขาออก:</strong> ตอบข้อสอบชีววิทยาเพื่อเปิดประตูฝ่าออกไปยังโซนอันตราย</li>
+          <li><strong>3. หลบหลีกซอมบี้:</strong> วิ่งหลบซอมบี้กลายพันธุ์และกับดัก เพื่อไปเก็บ <em>เสบียงหรือชิ้นส่วนชีวโมเลกุล</em></li>
+          <li><strong>4. ประตูขากลับ (คำถามใหม่):</strong> เมื่อเก็บของแล้ว ประตูจะล็อก ต้องตอบ <em>ข้อสอบชีววิทยาข้อใหม่</em> เพื่อเปิดประตูกลับเข้าล็อบบี้</li>
+          <li><strong>5. ส่งให้เพื่อนในล็อบบี้:</strong> วิ่งนำของมาส่งให้เพื่อนๆ (ดร.เอด้า / วัตสัน) ก่อนเวลาหมด!</li>
+        </ol>
+      </div>
+
+      <!-- 5 Quest Cards Grid -->
+      <div class="quest-cards-grid">
+        <!-- Quest 1 -->
+        <div class="quest-card" data-quest="bio_food">
+          <div class="qc-header">
+            <span class="qc-icon">🍱</span>
+            <div class="qc-title-wrap">
+              <h3>🍞 ส่งเสบียงอาหารชีวภาพ</h3>
+              <span class="qc-tag">เมแทบอลิซึม & การลำเลียงสาร</span>
+            </div>
+            <span class="qc-time">⏱️ 120s</span>
+          </div>
+          <p class="qc-desc">เพื่อนๆ ในล็อบบี้กำลังหิวโหย! ออกไปเก็บลังเสบียงกลูโคสและกรดอะมิโนนอกศูนย์วิจัย นำกลับมาแจกจ่ายให้เพื่อนๆ</p>
+          <div class="qc-footer">
+            <span class="qc-xp">+500 XP</span>
+            <button class="btn-start-quest" data-quest="bio_food">▶️ เริ่มภารกิจนี้</button>
+          </div>
+        </div>
+
+        <!-- Quest 2 -->
+        <div class="quest-card" data-quest="gene_expression">
+          <div class="qc-header">
+            <span class="qc-icon">🧬</span>
+            <div class="qc-title-wrap">
+              <h3>🧬 องค์ประกอบการแสดงออกของยีน</h3>
+              <span class="qc-tag">Transcription & Translation</span>
+            </div>
+            <span class="qc-time">⏱️ 150s</span>
+          </div>
+          <p class="qc-desc">รวบรวม Promoter, RNA Polymerase II, และ mRNA Transcript จากศูนย์วิจัยชั้นสูง นำกลับมาเริ่มแปลรหัสโปรตีนในแล็บ</p>
+          <div class="qc-footer">
+            <span class="qc-xp">+600 XP</span>
+            <button class="btn-start-quest" data-quest="gene_expression">▶️ เริ่มภารกิจนี้</button>
+          </div>
+        </div>
+
+        <!-- Quest 3 -->
+        <div class="quest-card" data-quest="cell_signaling">
+          <div class="qc-header">
+            <span class="qc-icon">📡</span>
+            <div class="qc-title-wrap">
+              <h3>📡 ต่อวงจรการสื่อสารของเซลล์</h3>
+              <span class="qc-tag">GPCR & Secondary Messenger</span>
+            </div>
+            <span class="qc-time">⏱️ 150s</span>
+          </div>
+          <p class="qc-desc">ระบบสัญญาณเตือนภัยขัดข้อง! ออกไปกู้คืนตัวรับ GPCR, โมเลกุล Ligand, และ Second Messenger (cAMP) เพื่อเปิดสัญญาณเตือนภัย</p>
+          <div class="qc-footer">
+            <span class="qc-xp">+600 XP</span>
+            <button class="btn-start-quest" data-quest="cell_signaling">▶️ เริ่มภารกิจนี้</button>
+          </div>
+        </div>
+
+        <!-- Quest 4 -->
+        <div class="quest-card" data-quest="antibody_defense">
+          <div class="qc-header">
+            <span class="qc-icon">💉</span>
+            <div class="qc-title-wrap">
+              <h3>🛡️ สังเคราะห์แอนติบอดี & วัคซีน</h3>
+              <span class="qc-tag">Immunology & Antibody</span>
+            </div>
+            <span class="qc-time">⏱️ 140s</span>
+          </div>
+          <p class="qc-desc">ฝ่าฝูงซอมบี้ไปเก็บตัวอย่าง Spike Protein Antigen และ Adjuvant นำกลับมาสังเคราะห์ Monoclonal Antibody กู้ชีพในล็อบบี้</p>
+          <div class="qc-footer">
+            <span class="qc-xp">+550 XP</span>
+            <button class="btn-start-quest" data-quest="antibody_defense">▶️ เริ่มภารกิจนี้</button>
+          </div>
+        </div>
+
+        <!-- Quest 5 -->
+        <div class="quest-card" data-quest="atp_power">
+          <div class="qc-header">
+            <span class="qc-icon">🔋</span>
+            <div class="qc-title-wrap">
+              <h3>⚡ ซ่อมแซมไมโทคอนเดรียผลิต ATP</h3>
+              <span class="qc-tag">Cellular Respiration & ATP</span>
+            </div>
+            <span class="qc-time">⏱️ 130s</span>
+          </div>
+          <p class="qc-desc">เครื่องปฏิกรณ์ไมโทคอนเดรียขัดข้อง! กู้คืนแท่งพลังงาน ATP Synthase & Complex I-IV นำกลับมาจ่ายไฟฟ้าให้ล็อบบี้ปลอดภัย</p>
+          <div class="qc-footer">
+            <span class="qc-xp">+550 XP</span>
+            <button class="btn-start-quest" data-quest="atp_power">▶️ เริ่มภารกิจนี้</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Quest Victory Modal ===== -->
+  <div class="modal-overlay" id="quest-victory-modal">
+    <div class="modal-panel quest-victory-panel">
+      <div class="qv-icon">🏆✨🎉</div>
+      <h2 id="qv-title">🎉 ภารกิจสำเร็จ!</h2>
+      <div class="qv-speech" id="qv-friend-msg">
+        "สุดยอดมากคุณนักวิจัย! คุณนำไอเทมกลับมาส่งได้ทันเวลา ทุกคนในศูนย์วิจัยรอดปลอดภัยแล้ว!"
+      </div>
+      <div class="qv-stats-row">
+        <div class="qv-stat-box">
+          <span class="qv-stat-label">รางวัลคะแนน</span>
+          <strong class="qv-stat-val text-green" id="qv-reward-xp">+500 XP</strong>
+        </div>
+        <div class="qv-stat-box">
+          <span class="qv-stat-label">เวลาที่เหลือ</span>
+          <strong class="qv-stat-val text-cyan" id="qv-time-left">45s</strong>
+        </div>
+      </div>
+      <div class="qv-actions">
+        <button class="overlay-action-btn btn-win" id="btn-qv-next-quest">🌟 เลือกทำเควสถัดไป</button>
+        <button class="overlay-action-btn btn-retry" id="btn-qv-explore">🚶 สำรวจสถาบันต่อ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Quest Timeout Failure Screen ===== -->
+  <div class="game-overlay-screen" id="quest-timeout-screen">
+    <div class="game-overlay-card timeout-card">
+      <div class="overlay-icon">⏳🚨</div>
+      <h2>เวลาจัดส่งเสบียงหมดลง!</h2>
+      <p>คุณไม่สามารถนำส่งไอเทมกลับสู่ห้องล็อบบี้ได้ทันเวลา ซอมบี้ปิดล้อมเส้นทางลำเลียง แต่ระบบพยาบาลชีวภาพยังพาคุณกลับสู่จุดเริ่มต้นได้อย่างปลอดภัย!</p>
+      <button class="overlay-action-btn btn-retry" id="btn-quest-retry">🔄 เริ่มต้นทำเควสใหม่</button>
+    </div>
+  </div>
+
+  <!-- ===== Game Over Screen ===== -->
+  <div class="game-overlay-screen" id="game-over-screen">
+    <div class="game-overlay-card death-card">
+      <div class="overlay-icon">🧟💀</div>
+      <h2>คุณถูกซอมบี้กลายพันธุ์ล้อมจับ!</h2>
+      <p>พลังชีวิตของคุณหมดลง ไวรัสแพร่กระจายเข้าสู่ร่างกาย แต่ระบบพยาบาลชีวภาพยังสามารถฟื้นฟูคุณได้!</p>
+      <button class="overlay-action-btn btn-retry" id="btn-respawn">🔄 เกิดใหม่ที่แล็บปลอดภัย</button>
+    </div>
+  </div>
+
+  <!-- ===== Victory Screen ===== -->
+  <div class="game-overlay-screen" id="victory-screen">
+    <div class="game-overlay-card victory-card">
+      <div class="overlay-icon">🎉💉🏆</div>
+      <h2>สังเคราะห์วัคซีนกู้โลกสำเร็จ!</h2>
+      <p>ละอองวัคซีนต้านไวรัสแพร่กระจายไปทั่วสถาบัน กำจัดเชื้อไวรัสและฟื้นฟูซอมบี้กลายพันธุ์ให้กลับสู่สภาพปกติ คุณได้กอบกู้ศูนย์วิจัยชีววิทยาไว้ได้สำเร็จ!</p>
+      <button class="overlay-action-btn btn-win" id="btn-victory-continue">🌟 เล่นต่อในโหมดเสรี</button>
+    </div>
+  </div>
+
+  <!-- ===== How to Play Guide Modal ===== -->
+  <div class="modal-overlay" id="guide-modal">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2>📖 คู่มือสถาบันวิจัยชีววิทยา & ภารกิจเอาชีวิตรอด</h2>
+          <div class="modal-subtitle">Stanford Generative Agents Simulation & Bio-Survival Quiz</div>
+        </div>
+        <button class="modal-close-btn" id="btn-close-guide">✕</button>
+      </div>
+
+      <div style="font-size: 0.92rem; line-height: 1.7; color: #334155; margin-bottom: 16px;">
+        <p style="margin-bottom: 12px;">
+          ยินดีต้อนรับสู่ <strong>สถาบันวิจัยชีววิทยาโมเลกุล 2D</strong> สถาบันวิจัยที่เต็มไปด้วยตัวละคร AI นักวิจัยที่มีชีวิตจริง พร้อมทั้งเผชิญหน้ากับเหตุการณ์ไวรัสชีวภาพรั่วไหลในโซนนอกแล็บ!
+        </p>
+
+        <h4 style="color: #0F172A; margin: 12px 0 6px;">🎮 การควบคุม</h4>
+        <ul style="padding-left: 20px; margin-bottom: 14px;">
+          <li><strong>W A S D / ลูกศร (แป้นไทย ไ ฟ ห ก)</strong>: บังคับตัวละครเดินสำรวจ</li>
+          <li><strong>Shift</strong>: วิ่งเร็วเพื่อหนีซอมบี้</li>
+          <li><strong>ปุ่ม E หรือปุ่ม [💬 คุย/สำรวจ]</strong>: คุยกับนักวิจัย หรือใช้งานเทอร์มินัลตอบคำถาม</li>
+          <li><strong>คลิกเมาส์ / แตะหน้าจอ</strong>: สั่งเดิน หรือคลิกตัวละครเพื่อเปิดดู Memory Stream</li>
+        </ul>
+
+        <h4 style="color: #DC2626; margin: 12px 0 6px;">🧟 ภารกิจตอบคำถามเอาชีวิตรอดจากซอมบี้</h4>
+        <ul style="padding-left: 20px; margin-bottom: 14px;">
+          <li><strong>1. ประตูกักกันโรค (Quarantine Airlock Gate)</strong>: ตอบคำถาม Active Transport ภายในเวลาเพื่อเปิดประตูสู่โซนนอกแล็บ</li>
+          <li><strong>2. ป้อมปืนเลเซอร์ Caspase</strong>: ตอบคำถาม Apoptosis / p53 ภายในเวลาเพื่อยิงลำแสงเลเซอร์ทำลายซอมบี้รอบข้าง</li>
+          <li><strong>3. สถานีสังเคราะห์วัคซีนกู้โลก</strong>: ตอบคำถาม Start Codon / Translation ที่ลานดาดฟ้าเพื่อชนะเกม!</li>
+        </ul>
+
+        <h4 style="color: #0F172A; margin: 12px 0 6px;">🌿 โหมดพักผ่อน / โหมดซอมบี้</h4>
+        <p>
+          สามารถกดปุ่ม <strong>[🚨 โหมดซอมบี้]</strong> ที่แถบด้านบน เพื่อสลับไปมาระหว่างโหมดเอาชีวิตรอดสุดระทึก กับโหมดพักผ่อนชิลล์ๆ ได้ตลอดเวลา!
+        </p>
+      </div>
+
+      <button onclick="document.getElementById('guide-modal').classList.remove('visible');" class="hud-btn" style="width: 100%; justify-content: center; background: #0284C7; color: #FFFFFF;">
+        เริ่มภารกิจชีววิทยา 🚀
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== Interactive Campus World Map Modal ===== -->
+  <div class="modal-overlay" id="map-modal">
+    <div class="modal-panel map-modal-panel">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="quiz-hazard-badge" style="background: #E0F2FE; color: #0284C7; border: 1px solid #BAE6FD;">
+            🗺️ แผนที่ศูนย์วิจัยชีววิทยา & เส้นทางกู้ภัย (CAMPUS MISSION MAP)
+          </div>
+          <h2>สถาบันวิจัยชีววิทยาโมเลกุล (Cell Biology Facility Map)</h2>
+        </div>
+        <button class="modal-close-btn" id="btn-close-map">✕</button>
+      </div>
+
+      <!-- Full Map Canvas -->
+      <div class="world-map-canvas-wrapper">
+        <canvas id="world-map-canvas" width="660" height="420"></canvas>
+      </div>
+
+      <!-- Route Guide & Legend -->
+      <div class="map-guide-container">
+        <div class="map-legend-row">
+          <span class="legend-item"><span class="legend-dot" style="background: #EA580C;"></span> 📍 คุณ (You)</span>
+          <span class="legend-item"><span class="legend-dot" style="background: #38BDF8;"></span> 🔵 นักวิจัย AI</span>
+          <span class="legend-item"><span class="legend-dot" style="background: #EF4444;"></span> 🔴 ซอมบี้กลายพันธุ์</span>
+          <span class="legend-item"><span class="legend-dot" style="background: #F59E0B;"></span> 🌀 เขาวงกต</span>
+          <span class="legend-item"><span class="legend-dot" style="background: #10B981;"></span> 🚪 ทางออก & แท่นวัคซีน</span>
+        </div>
+
+        <div class="mission-route-box">
+          <div class="mission-route-title">🧭 เส้นทางแนะนำสำหรับผู้เล่น & ผู้ชม (Mission Walkthrough):</div>
+          <ol class="mission-steps-list">
+            <li><strong>1. ออกจากแล็บปลอดภัย</strong>: เดินลงมาที่ <span class="badge-sub">โถงทางเดินหลัก</span> ไปยัง <span class="badge-sub">ประตูกักกันโรค</span> (Airlock Gate)</li>
+            <li><strong>2. ปลดล็อกประตูกักกันโรค</strong>: โต้ตอบเทอร์มินัล ตอบคำถาม Active Transport ภายในเวลาเพื่อเปิดประตู</li>
+            <li><strong>3. ฝ่าเขาวงกตชีวภาพ (Bio-Labyrinth)</strong>: ลัดเลาะตามทางเดินในเขาวงกต หลบการโจมตีของซอมบี้ มุ่งหน้าสู่ทางออกฝั่งขวา</li>
+            <li><strong>4. ป้อมปืนเลเซอร์ Caspase</strong>: ตอบคำถามยีน p53 เพื่อยิงลำแสงเลเซอร์สลายซอมบี้ในพื้นที่</li>
+            <li><strong>5. ลานอพยพดาดฟ้าสังเคราะห์วัคซีน</strong>: ตอบคำถาม Start Codon เพื่อสังเคราะห์วัคซีนต้านไวรัส กอบกู้สถาบันวิจัย!</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 6 Biology Topics Hub Modal ===== -->
+  <div class="modal-overlay" id="topics-modal-2d">
+    <div class="modal-panel" style="max-width: 680px;">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2>📚 ฐานความรู้ชีววิทยาโมเลกุล 6 บทเรียนหลัก</h2>
+          <div class="modal-subtitle">คลิกเพื่อเปิดอ่านบทเรียนเจาะลึกพร้อมภาพประกอบและแบบทดสอบ</div>
+        </div>
+        <button class="modal-close-btn" id="btn-close-topics-2d">✕</button>
+      </div>
+
+      <div class="modal-body" style="padding: 18px 24px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+        <a href="../topics/gene-expression.html" class="hud-btn" style="justify-content: flex-start; padding: 12px 14px; text-decoration: none; border: 1px solid #8b5cf6;" target="_blank">
+          <span style="font-size: 24px; margin-right: 10px;">🧬</span>
+          <div style="text-align: left;">
+            <strong style="display: block; font-size: 14px; color: #1e1b4b;">1. Gene Expression</strong>
+            <span style="font-size: 11px; color: #64748b;">การแสดงออกของยีน (DNA → Protein)</span>
+          </div>
+        </a>
+
+        <a href="../topics/gene-regulation.html" class="hud-btn" style="justify-content: flex-start; padding: 12px 14px; text-decoration: none; border: 1px solid #10b981;" target="_blank">
+          <span style="font-size: 24px; margin-right: 10px;">🎛️</span>
+          <div style="text-align: left;">
+            <strong style="display: block; font-size: 14px; color: #1e1b4b;">2. Gene Regulation</strong>
+            <span style="font-size: 11px; color: #64748b;">การควบคุมยีน (Operon & Epigenetics)</span>
+          </div>
+        </a>
+
+        <a href="../topics/cell-signaling.html" class="hud-btn" style="justify-content: flex-start; padding: 12px 14px; text-decoration: none; border: 1px solid #f59e0b;" target="_blank">
+          <span style="font-size: 24px; margin-right: 10px;">📡</span>
+          <div style="text-align: left;">
+            <strong style="display: block; font-size: 14px; color: #1e1b4b;">3. Cell Signaling</strong>
+            <span style="font-size: 11px; color: #64748b;">การสื่อสารระหว่างเซลล์ (Receptor)</span>
+          </div>
+        </a>
+
+        <a href="../topics/cell-response.html" class="hud-btn" style="justify-content: flex-start; padding: 12px 14px; text-decoration: none; border: 1px solid #3b82f6;" target="_blank">
+          <span style="font-size: 24px; margin-right: 10px;">⚡</span>
+          <div style="text-align: left;">
+            <strong style="display: block; font-size: 14px; color: #1e1b4b;">4. Cell Response</strong>
+            <span style="font-size: 11px; color: #64748b;">การตอบสนองของเซลล์ต่อสิ่งเร้า</span>
+          </div>
+        </a>
+
+        <a href="../topics/cell-cycle.html" class="hud-btn" style="justify-content: flex-start; padding: 12px 14px; text-decoration: none; border: 1px solid #f43f5e;" target="_blank">
+          <span style="font-size: 24px; margin-right: 10px;">🔄</span>
+          <div style="text-align: left;">
+            <strong style="display: block; font-size: 14px; color: #1e1b4b;">5. Cell Cycle</strong>
+            <span style="font-size: 11px; color: #64748b;">วัฏจักรเซลล์ & p53 Checkpoints</span>
+          </div>
+        </a>
+
+        <a href="../topics/apoptosis.html" class="hud-btn" style="justify-content: flex-start; padding: 12px 14px; text-decoration: none; border: 1px solid #6366f1;" target="_blank">
+          <span style="font-size: 24px; margin-right: 10px;">💀</span>
+          <div style="text-align: left;">
+            <strong style="display: block; font-size: 14px; color: #1e1b4b;">6. Apoptosis</strong>
+            <span style="font-size: 11px; color: #64748b;">การตายแบบมีแบบแผน (Caspase)</span>
+          </div>
+        </a>
+
+        <a href="../topics/quiz-hub.html" class="hud-btn" style="grid-column: 1 / -1; justify-content: center; padding: 12px; background: linear-gradient(135deg, #0284c7, #2563eb); color: #fff; text-decoration: none;" target="_blank">
+          <span>📝 เปิดคลังข้อสอบประมวลความรู้ (15 ข้อ) ➔</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+  <script>
+    document.getElementById('btn-topics-2d')?.addEventListener('click', () => {
+      document.getElementById('topics-modal-2d')?.classList.add('visible');
+    });
+    document.getElementById('btn-close-topics-2d')?.addEventListener('click', () => {
+      document.getElementById('topics-modal-2d')?.classList.remove('visible');
+    });
+  </script>
+</body>
+</html>

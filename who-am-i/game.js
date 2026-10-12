@@ -501,6 +501,10 @@ MASTER_CARD_POOL.forEach(card => {
   }
 });
 
+// Custom Detective Card Art Back Cover
+const CUSTOM_CARD_BACK_IMG = new Image();
+CUSTOM_CARD_BACK_IMG.src = 'card_art_custom.jpg';
+
 // --- 4. Main Multi-Card & Room Matchmaking Engine ---
 class WhoAmIGame {
   constructor() {
@@ -514,6 +518,13 @@ class WhoAmIGame {
     this.isTransitioning = false;
     this.myRole = 'guesser'; // 'host', 'guesser', 'spectator'
     this.roomCode = 'CYTO-' + Math.floor(100 + Math.random() * 900);
+
+    // Touch Mode for Mobile/iPad: 'guess' | 'eliminate'
+    this.touchMode = 'guess';
+    this.touchStartX = 0;
+    this.touchStartY = 0;
+    this.touchStartTime = 0;
+    this.isTouchDevice = ('ontouchstart' in window || navigator.maxTouchPoints > 0);
 
     // Three.js State
     this.container = document.getElementById('canvas-container');
@@ -662,6 +673,8 @@ class WhoAmIGame {
     window.addEventListener('mousemove', (e) => this.onMouseMove(e));
     window.addEventListener('click', (e) => this.onMouseClick(e));
     window.addEventListener('contextmenu', (e) => this.onRightClick(e));
+    window.addEventListener('touchstart', (e) => this.onTouchStart(e), { passive: true });
+    window.addEventListener('touchend', (e) => this.onTouchEnd(e), { passive: false });
   }
 
   createDesk() {
@@ -721,56 +734,90 @@ class WhoAmIGame {
     const ctx = canvas.getContext('2d');
 
     if (isBack) {
-      // 3D Card Back: Crisp Pure White & Cyan Shield Hologram
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, 1024, 1536);
+      if (CUSTOM_CARD_BACK_IMG.complete && CUSTOM_CARD_BACK_IMG.naturalWidth > 0) {
+        // Render Custom Detective Card Art Back Cover
+        ctx.fillStyle = '#0a0f1d';
+        ctx.fillRect(0, 0, 1024, 1536);
 
-      // Cyber Neon Frame
-      ctx.strokeStyle = '#0284c7';
-      ctx.lineWidth = 24;
-      ctx.strokeRect(28, 28, 968, 1480);
+        // Draw Custom Detective Art in center frame
+        ctx.save();
+        ctx.drawImage(CUSTOM_CARD_BACK_IMG, 32, 32, 960, 1472);
+        ctx.restore();
 
-      ctx.strokeStyle = 'rgba(14, 165, 233, 0.4)';
-      ctx.lineWidth = 6;
-      ctx.strokeRect(52, 52, 920, 1432);
+        // Sleek Cyber Gold Outer Border
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 14;
+        ctx.strokeRect(26, 26, 972, 1484);
 
-      // Central Bio-Hazard Holographic Seal
-      ctx.save();
-      ctx.translate(512, 660);
-      ctx.beginPath();
-      for (let i = 0; i < 6; i++) {
-        const angle = (i * Math.PI) / 3;
-        const x = 230 * Math.cos(angle);
-        const y = 230 * Math.sin(angle);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
+        ctx.strokeStyle = '#00f0ff';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(44, 44, 936, 1448);
+
+        // Bottom Dossier Badge
+        ctx.fillStyle = 'rgba(10, 15, 29, 0.88)';
+        ctx.beginPath();
+        ctx.roundRect ? ctx.roundRect(160, 1370, 704, 76, 20) : ctx.rect(160, 1370, 704, 76);
+        ctx.fill();
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 32px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('CYTO-DETECTIVE // DOSSIER #24', 512, 1420);
+      } else {
+        // Fallback: Crisp Pure White & Cyan Shield Hologram
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, 1024, 1536);
+
+        // Cyber Neon Frame
+        ctx.strokeStyle = '#0284c7';
+        ctx.lineWidth = 24;
+        ctx.strokeRect(28, 28, 968, 1480);
+
+        ctx.strokeStyle = 'rgba(14, 165, 233, 0.4)';
+        ctx.lineWidth = 6;
+        ctx.strokeRect(52, 52, 920, 1432);
+
+        // Central Bio-Hazard Holographic Seal
+        ctx.save();
+        ctx.translate(512, 660);
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (i * Math.PI) / 3;
+          const x = 230 * Math.cos(angle);
+          const y = 230 * Math.sin(angle);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = '#0284c7';
+        ctx.lineWidth = 12;
+        ctx.stroke();
+
+        ctx.fillStyle = 'rgba(2, 132, 199, 0.08)';
+        ctx.fill();
+        ctx.restore();
+
+        ctx.fillStyle = '#0284c7';
+        ctx.font = 'bold 180px "Prompt", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('?', 512, 730);
+
+        // Labels
+        ctx.fillStyle = '#0f172a';
+        ctx.font = 'bold 44px "JetBrains Mono", monospace';
+        ctx.fillText('CYTO-ARCHIVE // SPECIMEN', 512, 1020);
+
+        ctx.fillStyle = '#f59e0b';
+        ctx.font = 'bold 36px "JetBrains Mono", monospace';
+        ctx.fillText('24+ UNIFIED MASTER DECK', 512, 1090);
+
+        ctx.fillStyle = '#64748b';
+        ctx.font = '32px "Prompt", sans-serif';
+        ctx.fillText('TOP SECRET BIOLOGICAL DOSSIER', 512, 1350);
       }
-      ctx.closePath();
-      ctx.strokeStyle = '#0284c7';
-      ctx.lineWidth = 12;
-      ctx.stroke();
-
-      ctx.fillStyle = 'rgba(2, 132, 199, 0.08)';
-      ctx.fill();
-      ctx.restore();
-
-      ctx.fillStyle = '#0284c7';
-      ctx.font = 'bold 180px "Prompt", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('?', 512, 730);
-
-      // Labels
-      ctx.fillStyle = '#0f172a';
-      ctx.font = 'bold 44px "JetBrains Mono", monospace';
-      ctx.fillText('CYTO-ARCHIVE // SPECIMEN', 512, 1020);
-
-      ctx.fillStyle = '#f59e0b';
-      ctx.font = 'bold 36px "JetBrains Mono", monospace';
-      ctx.fillText('24+ UNIFIED MASTER DECK', 512, 1090);
-
-      ctx.fillStyle = '#64748b';
-      ctx.font = '32px "Prompt", sans-serif';
-      ctx.fillText('TOP SECRET BIOLOGICAL DOSSIER', 512, 1350);
 
     } else {
       // 3D Card Front: CRISP PURE WHITE LUXURY BACKGROUND WITH REAL HIGH-CONTRAST PHOTOGRAPHY
@@ -1245,6 +1292,27 @@ class WhoAmIGame {
       }
     });
 
+    // Touch Mode Toggle (for Mobile & iPad: Guess vs Eliminate)
+    const touchModeBtn = document.getElementById('touch-mode-btn');
+    if (touchModeBtn) {
+      touchModeBtn.addEventListener('click', () => {
+        this.touchMode = this.touchMode === 'guess' ? 'eliminate' : 'guess';
+        const iconEl = document.getElementById('touch-mode-icon');
+        const textEl = document.getElementById('touch-mode-text');
+        if (this.touchMode === 'eliminate') {
+          touchModeBtn.classList.add('mode-elim');
+          if (iconEl) iconEl.innerText = '✂️';
+          if (textEl) textEl.innerText = 'โหมดคว่ำช้อยส์';
+          this.triggerHoloSignal('✂️ แตะการ์ดเพื่อคว่ำตัดช้อยส์');
+        } else {
+          touchModeBtn.classList.remove('mode-elim');
+          if (iconEl) iconEl.innerText = '🎯';
+          if (textEl) textEl.innerText = 'โหมดทายคำตอบ';
+          this.triggerHoloSignal('🎯 แตะการ์ดเพื่อทายคำตอบสุดท้าย');
+        }
+      });
+    }
+
     // Chat Form Submit
     document.getElementById('chat-form').addEventListener('submit', (e) => {
       e.preventDefault();
@@ -1339,13 +1407,16 @@ class WhoAmIGame {
     this.renderer.setSize(width, height);
   }
 
-  onMouseMove(event) {
-    this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  updatePointerFromEvent(event) {
+    const clientX = event.clientX !== undefined ? event.clientX : (event.touches && event.touches[0] ? event.touches[0].clientX : (event.changedTouches && event.changedTouches[0] ? event.changedTouches[0].clientX : 0));
+    const clientY = event.clientY !== undefined ? event.clientY : (event.touches && event.touches[0] ? event.touches[0].clientY : (event.changedTouches && event.changedTouches[0] ? event.changedTouches[0].clientY : 0));
+    this.mouse.x = (clientX / window.innerWidth) * 2 - 1;
+    this.mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+  }
 
+  checkHoverRaycast() {
     this.raycaster.setFromCamera(this.mouse, this.camera);
     const intersects = this.raycaster.intersectObjects(this.cardMeshes);
-
     if (intersects.length > 0) {
       const hitCard = intersects[0].object;
       if (this.hoveredCard !== hitCard) {
@@ -1358,6 +1429,49 @@ class WhoAmIGame {
       if (this.hoveredCard) {
         this.resetCardHover(this.hoveredCard);
         this.hoveredCard = null;
+      }
+    }
+  }
+
+  onMouseMove(event) {
+    this.updatePointerFromEvent(event);
+    this.checkHoverRaycast();
+  }
+
+  onTouchStart(e) {
+    if (e.target.closest('.dossier-panel') || e.target.closest('.top-nav') || e.target.closest('.live-chat-panel') || e.target.closest('.modal-card') || e.target.closest('.guidance-card') || e.target.closest('.deck-actions')) {
+      return;
+    }
+    const touch = e.touches[0];
+    this.touchStartX = touch.clientX;
+    this.touchStartY = touch.clientY;
+    this.touchStartTime = performance.now();
+    this.updatePointerFromEvent(touch);
+    this.checkHoverRaycast();
+  }
+
+  onTouchEnd(e) {
+    if (e.target.closest('.dossier-panel') || e.target.closest('.top-nav') || e.target.closest('.live-chat-panel') || e.target.closest('.modal-card') || e.target.closest('.guidance-card') || e.target.closest('.deck-actions')) {
+      return;
+    }
+    const touch = e.changedTouches[0];
+    const dx = Math.abs(touch.clientX - this.touchStartX);
+    const dy = Math.abs(touch.clientY - this.touchStartY);
+    const duration = performance.now() - this.touchStartTime;
+
+    // Mobile / iPad Tap Detection
+    if (dx < 18 && dy < 18 && duration < 650) {
+      this.updatePointerFromEvent(touch);
+      this.raycaster.setFromCamera(this.mouse, this.camera);
+      const intersects = this.raycaster.intersectObjects(this.cardMeshes);
+      if (intersects.length > 0) {
+        if (e.cancelable) e.preventDefault();
+        const clickedCard = intersects[0].object;
+        if (this.touchMode === 'eliminate') {
+          this.eliminateCard(clickedCard);
+        } else {
+          this.guessCard(clickedCard);
+        }
       }
     }
   }
@@ -1412,16 +1526,17 @@ class WhoAmIGame {
   }
 
   onMouseClick(event) {
-    if (event.target.closest('.dossier-panel') || event.target.closest('.top-nav') || event.target.closest('.live-chat-panel') || event.target.closest('.modal-card') || event.target.closest('.guidance-card')) {
+    if (event.target.closest('.dossier-panel') || event.target.closest('.top-nav') || event.target.closest('.live-chat-panel') || event.target.closest('.modal-card') || event.target.closest('.guidance-card') || event.target.closest('.deck-actions')) {
       return;
     }
 
+    this.updatePointerFromEvent(event);
     this.raycaster.setFromCamera(this.mouse, this.camera);
     const intersects = this.raycaster.intersectObjects(this.cardMeshes);
 
     if (intersects.length > 0) {
       const clickedCard = intersects[0].object;
-      if (event.shiftKey) {
+      if (event.shiftKey || this.touchMode === 'eliminate') {
         this.eliminateCard(clickedCard);
       } else {
         this.guessCard(clickedCard);
@@ -1431,6 +1546,7 @@ class WhoAmIGame {
 
   onRightClick(event) {
     event.preventDefault();
+    this.updatePointerFromEvent(event);
     this.raycaster.setFromCamera(this.mouse, this.camera);
     const intersects = this.raycaster.intersectObjects(this.cardMeshes);
     if (intersects.length > 0) {

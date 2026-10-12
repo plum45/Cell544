@@ -80,8 +80,13 @@ export let activeQuiz = null;
 let quizTimer = null;
 let remainingSeconds = 0;
 
-export function triggerTerminalQuiz(terminalId, onSuccess, onFailure) {
-  const questionData = QUIZ_QUESTIONS.find(q => q.id === terminalId) || QUIZ_QUESTIONS[0];
+export function triggerTerminalQuiz(param, onSuccess, onFailure) {
+  let questionData;
+  if (param && typeof param === 'object' && param.q) {
+    questionData = param;
+  } else {
+    questionData = QUIZ_QUESTIONS.find(q => q.id === param) || QUIZ_QUESTIONS[0];
+  }
   activeQuiz = {
     ...questionData,
     onSuccess,

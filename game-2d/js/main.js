@@ -1,5 +1,5 @@
 // ===== Main Game Loop & Simulation Engine =====
-import { initWorld, renderWorld, TILE_SIZE, MAP_COLS, MAP_ROWS } from './world.js';
+import { initWorld, renderWorld, TILE_SIZE, MAP_COLS, MAP_ROWS, setMapTheme } from './world.js';
 import { OBJECTS, renderObjects, getNearbyObject } from './objects.js';
 import { createAgents } from './agents.js';
 import { Player } from './player.js';
@@ -7,9 +7,12 @@ import { talkToPlayer } from './dialogue.js';
 import { playClickSound, playSuccessChime } from './audio.js';
 import { createZombieHorde, ParticleEmitter } from './zombies.js';
 import { initMapSystem, updateMiniMap } from './map.js';
+import { questManager } from './quest.js';
+import { RoomManager } from './multiplayer.js';
 
 let canvas, ctx;
 let player, agents, zombies, particleEmitter;
+let roomManager = null;
 let camera = { x: 0, y: 0, width: 800, height: 600, zoom: 1.25 };
 let lastTime = performance.now();
 let isSurvivalMode = true; // Obstacle / Zombie survival mode toggle
@@ -28,6 +31,11 @@ function init() {
   canvas = document.getElementById('game-canvas');
   ctx = canvas.getContext('2d');
 
+  // Detect Touch / Tablet
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+    document.body.classList.add('touch-device');
+  }
+
   // Pixel crisp rendering
   ctx.imageSmoothingEnabled = false;
 
@@ -37,6 +45,7 @@ function init() {
   zombies = createZombieHorde();
   particleEmitter = new ParticleEmitter();
   player = new Player(19, 13);
+  roomManager = new RoomManager(player);
 
   // Resize canvas
   onResize();
@@ -51,11 +60,17 @@ function init() {
   initTouchControls();
   initSurvivalEvents();
   initMapSystem(player, agents, zombies);
+  initQuestEvents();
 
   // Start Animation Loop
   requestAnimationFrame(gameLoop);
 
-  showToast('🚨 โหมดเอาชีวิตรอดชีววิทยา: ตอบคำถามปลดล็อกประตู ยิงเลเซอร์ และสังเคราะห์วัคซีนเพื่อกำจัดซอมบี้!');
+  showToast('🚨 สถาบันวิจัยชีววิทยา 2D: ทำเควสส่งเสบียง ตอบคำถามเปิดประตู และเอาชีวิตรอดจากซอมบี้!');
+
+  // Show Quest Selection & Rules modal shortly after start
+  setTimeout(() => {
+    document.getElementById('quest-selection-modal')?.classList.add('visible');
+  }, 800);
 }
 
 function onResize() {
@@ -144,7 +159,12 @@ function render() {
     particleEmitter.render(ctx, camera);
   }
 
-  // 5. Day / Night Ambient Lighting Overlay
+  // 5. Render Remote Multiplayer Players in the same Room
+  if (roomManager) {
+    roomManager.renderRemotePlayers(ctx, camera);
+  }
+
+  // 6. Day / Night Ambient Lighting Overlay
   renderDayNightLighting(ctx, camera);
 
   ctx.restore();
@@ -179,7 +199,7 @@ function checkProximityPrompt() {
 
   // 1. Check nearby agent
   let nearestAgent = null;
-  let minDist = 40;
+  let minDist = 44;
   agents.forEach(a => {
     const d = Math.hypot(player.x - a.x, player.y - a.y);
     if (d < minDist) {
@@ -189,13 +209,17 @@ function checkProximityPrompt() {
   });
 
   if (nearestAgent) {
-    promptText.innerHTML = `💬 คุยกับ <strong>${nearestAgent.name}</strong> [กด E]`;
+    if (questManager.hasItem) {
+      promptText.innerHTML = `🎁 ส่งมอบ <strong>${questManager.activeQuest.item.name}</strong> ให้ <strong>${nearestAgent.name}</strong> [กด E]`;
+    } else {
+      promptText.innerHTML = `💬 คุยกับ <strong>${nearestAgent.name}</strong> [กด E]`;
+    }
     promptEl.classList.add('visible');
     return;
   }
 
   // 2. Check nearby object
-  const nearbyObj = getNearbyObject(player.x, player.y, 44);
+  const nearbyObj = getNearbyObject(player.x, player.y, 48);
   if (nearbyObj) {
     promptText.innerHTML = `${nearbyObj.actionText} [กด E]`;
     promptEl.classList.add('visible');
@@ -211,7 +235,7 @@ function handleInteraction() {
 
   // 1. Check agent
   let nearestAgent = null;
-  let minDist = 45;
+  let minDist = 48;
   agents.forEach(a => {
     const d = Math.hypot(player.x - a.x, player.y - a.y);
     if (d < minDist) {
@@ -221,6 +245,19 @@ function handleInteraction() {
   });
 
   if (nearestAgent) {
+    // Deliver quest item to friends in lobby!
+    if (questManager.hasItem) {
+      const delivered = questManager.deliverToLobby(nearestAgent.name);
+      if (delivered) {
+        player.showBubble('นำเสบียงมาส่งแล้วครับ!', '🍱');
+        nearestAgent.showBubble('ขอบคุณมาก! ทุกคนในล็อบบี้ปลอดภัยแล้ว!', 5);
+        if (roomManager && questManager.activeQuest) {
+          roomManager.broadcastQuestCompleted(questManager.activeQuest.name);
+        }
+        return;
+      }
+    }
+
     const speech = talkToPlayer(nearestAgent, player);
     player.showBubble('สวัสดีครับ!', '🦊');
     nearestAgent.showBubble(speech.slice(0, 16) + '...', 4.5);
@@ -229,7 +266,7 @@ function handleInteraction() {
   }
 
   // 2. Check object
-  const nearbyObj = getNearbyObject(player.x, player.y, 48);
+  const nearbyObj = getNearbyObject(player.x, player.y, 52);
   if (nearbyObj) {
     const resultMsg = nearbyObj.onInteract(
       (succ) => showActionToast(nearbyObj.name, succ),
@@ -408,63 +445,164 @@ function initUIEvents() {
 function initTouchControls() {
   const joyZone = document.getElementById('joystick-zone-2d');
   const joyKnob = document.getElementById('joystick-knob-2d');
-  if (!joyZone || !joyKnob) return;
+  if (joyZone && joyKnob) {
+    let touchId = null;
+    let startX = 0, startY = 0;
+    const maxR = 38;
 
-  let touchId = null;
-  let startX = 0, startY = 0;
-  const maxR = 36;
+    joyZone.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      if (touchId !== null) return;
+      const t = e.changedTouches[0];
+      touchId = t.identifier;
+      const rect = joyZone.getBoundingClientRect();
+      startX = rect.left + rect.width / 2;
+      startY = rect.top + rect.height / 2;
+      updateJoy(t.clientX, t.clientY);
+    }, { passive: false });
 
-  joyZone.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    if (touchId !== null) return;
-    const t = e.changedTouches[0];
-    touchId = t.identifier;
-    const rect = joyZone.getBoundingClientRect();
-    startX = rect.left + rect.width / 2;
-    startY = rect.top + rect.height / 2;
-    updateJoy(t.clientX, t.clientY);
-  }, { passive: false });
+    window.addEventListener('touchmove', (e) => {
+      if (touchId === null) return;
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const t = e.changedTouches[i];
+        if (t.identifier === touchId) {
+          updateJoy(t.clientX, t.clientY);
+          break;
+        }
+      }
+    }, { passive: false });
 
-  window.addEventListener('touchmove', (e) => {
-    if (touchId === null) return;
-    for (let i = 0; i < e.changedTouches.length; i++) {
-      const t = e.changedTouches[i];
-      if (t.identifier === touchId) {
-        updateJoy(t.clientX, t.clientY);
-        break;
+    function endJoy(e) {
+      if (touchId === null) return;
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        if (e.changedTouches[i].identifier === touchId) {
+          touchId = null;
+          joyKnob.style.transform = 'translate(0px, 0px)';
+          player.joystick.x = 0;
+          player.joystick.y = 0;
+          break;
+        }
       }
     }
-  }, { passive: false });
 
-  function endJoy(e) {
-    if (touchId === null) return;
-    for (let i = 0; i < e.changedTouches.length; i++) {
-      if (e.changedTouches[i].identifier === touchId) {
-        touchId = null;
-        joyKnob.style.transform = 'translate(0px, 0px)';
-        player.joystick.x = 0;
-        player.joystick.y = 0;
-        break;
-      }
+    window.addEventListener('touchend', endJoy);
+    window.addEventListener('touchcancel', endJoy);
+
+    function updateJoy(cx, cy) {
+      const dx = cx - startX;
+      const dy = cy - startY;
+      const dist = Math.hypot(dx, dy);
+      const clamped = Math.min(dist, maxR);
+      const angle = Math.atan2(dy, dx);
+      const kx = Math.cos(angle) * clamped;
+      const ky = Math.sin(angle) * clamped;
+
+      joyKnob.style.transform = `translate(${kx}px, ${ky}px)`;
+      player.joystick.x = kx / maxR;
+      player.joystick.y = ky / maxR;
     }
   }
 
-  window.addEventListener('touchend', endJoy);
-  window.addEventListener('touchcancel', endJoy);
-
-  function updateJoy(cx, cy) {
-    const dx = cx - startX;
-    const dy = cy - startY;
-    const dist = Math.hypot(dx, dy);
-    const clamped = Math.min(dist, maxR);
-    const angle = Math.atan2(dy, dx);
-    const kx = Math.cos(angle) * clamped;
-    const ky = Math.sin(angle) * clamped;
-
-    joyKnob.style.transform = `translate(${kx}px, ${ky}px)`;
-    player.joystick.x = kx / maxR;
-    player.joystick.y = ky / maxR;
+  // Mobile Action Buttons
+  const btnDash = document.getElementById('btn-dash-hud');
+  if (btnDash) {
+    btnDash.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      player.isSprinting = true;
+      btnDash.classList.add('active');
+    }, { passive: false });
+    const endDash = () => {
+      player.isSprinting = false;
+      btnDash.classList.remove('active');
+    };
+    btnDash.addEventListener('touchend', endDash);
+    btnDash.addEventListener('touchcancel', endDash);
   }
+
+  const btnSkill = document.getElementById('btn-skill-hud');
+  if (btnSkill) {
+    btnSkill.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      window.dispatchEvent(new CustomEvent('laser-blast-triggered', { detail: { x: player.x, y: player.y } }));
+    }, { passive: false });
+    btnSkill.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('laser-blast-triggered', { detail: { x: player.x, y: player.y } }));
+    });
+  }
+
+  const btnQuestMobile = document.getElementById('btn-quest-hud-mobile');
+  if (btnQuestMobile) {
+    btnQuestMobile.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('quest-selection-modal')?.classList.add('visible');
+    });
+  }
+}
+
+// ===== Quest Management & Sector Switching Events =====
+function initQuestEvents() {
+  // Open Quest Modal
+  document.getElementById('btn-quest-hud')?.addEventListener('click', () => {
+    document.getElementById('quest-selection-modal')?.classList.add('visible');
+  });
+  document.getElementById('btn-close-quest-modal')?.addEventListener('click', () => {
+    document.getElementById('quest-selection-modal')?.classList.remove('visible');
+  });
+
+  // Start Quest buttons
+  document.querySelectorAll('.btn-start-quest').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const qId = e.currentTarget.getAttribute('data-quest');
+      questManager.startQuest(qId);
+      document.getElementById('quest-selection-modal')?.classList.remove('visible');
+    });
+  });
+
+  // Victory modal buttons
+  document.getElementById('btn-qv-next-quest')?.addEventListener('click', () => {
+    document.getElementById('quest-victory-modal')?.classList.remove('visible');
+    document.getElementById('quest-selection-modal')?.classList.add('visible');
+  });
+  document.getElementById('btn-qv-explore')?.addEventListener('click', () => {
+    document.getElementById('quest-victory-modal')?.classList.remove('visible');
+  });
+
+  // Timeout retry button
+  document.getElementById('btn-quest-retry')?.addEventListener('click', () => {
+    document.getElementById('quest-timeout-screen')?.classList.remove('visible');
+    // Respawn at safe lab
+    player.x = 19 * TILE_SIZE;
+    player.y = 13 * TILE_SIZE;
+    player.hp = 100;
+    centerCameraOn(player.x, player.y);
+    if (questManager.activeQuest) {
+      questManager.startQuest(questManager.activeQuest.id);
+    } else {
+      document.getElementById('quest-selection-modal')?.classList.add('visible');
+    }
+  });
+
+  // Map Sector Selector
+  document.getElementById('map-sector-select')?.addEventListener('change', (e) => {
+    const val = e.target.value;
+    setMapTheme(val);
+    const mapNames = {
+      main: 'ศูนย์วิจัยหลัก (Main Lab)',
+      mitochondria: 'โรงงานไมโทคอนเดรีย (Power Plant)',
+      spore: 'ป่าสปอร์ชีวภาพ (Spore Jungle)',
+      cryo: 'คลังแอนติเจนใต้ดิน (Cryo Depot)'
+    };
+    showToast(`🗺️ เปลี่ยนแผนที่เป็น: ${mapNames[val] || val}`);
+  });
+
+  // Room PIN input & join button
+  const roomInput = document.getElementById('room-code-input');
+  document.getElementById('btn-room-join')?.addEventListener('click', () => {
+    if (roomManager && roomInput) {
+      roomManager.setRoomCode(roomInput.value);
+      showToast(`🏷️ เข้าร่วมห้องเล่นด้วยกัน: ${roomManager.roomCode}`);
+    }
+  });
 }
 
 // ===== Survival Events, Combat, Quizzes & Game Over/Victory =====

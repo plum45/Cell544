@@ -1000,19 +1000,20 @@ class BioCyberArena3D {
       const btn = document.getElementById(id);
       if (!btn) return;
       const start = (e) => {
-        e.preventDefault();
+        if (e.cancelable) e.preventDefault();
         this.sfx.init();
         this.keys[keyName] = true;
         this.clearAutoRun();
         btn.classList.add('pressed');
       };
       const end = (e) => {
-        e.preventDefault();
+        if (e.cancelable) e.preventDefault();
         this.keys[keyName] = false;
         btn.classList.remove('pressed');
       };
       btn.addEventListener('touchstart', start, { passive: false });
       btn.addEventListener('touchend', end, { passive: false });
+      btn.addEventListener('touchcancel', end, { passive: false });
       btn.addEventListener('mousedown', start);
       btn.addEventListener('mouseup', end);
       btn.addEventListener('mouseleave', end);
@@ -1023,49 +1024,53 @@ class BioCyberArena3D {
     bindDpad('dpadLeft', 'left');
     bindDpad('dpadRight', 'right');
 
-    // Mobile Jump Button
-    const mobileJumpBtn = document.getElementById('mobileJumpBtn');
-    if (mobileJumpBtn) {
-      const handleJump = (e) => {
-        e.preventDefault();
-        this.sfx.init();
-        if (this.state === 'RESCUE') {
-          this.performRescuePull();
-        } else if (this.state === 'PLAYING') {
-          this.performJump();
-        }
-      };
-      mobileJumpBtn.addEventListener('touchstart', handleJump, { passive: false });
-      mobileJumpBtn.addEventListener('click', handleJump);
+    // Auto-detect Mobile/iPad Touch device and ensure controls are visible
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      document.body.classList.add('touch-device');
+      const mobileLayer = document.getElementById('mobileControlsLayer');
+      if (mobileLayer) mobileLayer.style.display = 'block';
     }
+
+    // Helper to bind action button preventing double firing
+    const bindTouchAction = (btnId, callback) => {
+      const btn = document.getElementById(btnId);
+      if (!btn) return;
+      let lastTouch = 0;
+      btn.addEventListener('touchstart', (e) => {
+        if (e.cancelable) e.preventDefault();
+        lastTouch = performance.now();
+        this.sfx.init();
+        callback();
+      }, { passive: false });
+      btn.addEventListener('click', (e) => {
+        if (performance.now() - lastTouch < 500) return; // Prevent ghost click
+        this.sfx.init();
+        callback();
+      });
+    };
+
+    // Mobile Jump Button
+    bindTouchAction('mobileJumpBtn', () => {
+      if (this.state === 'RESCUE') {
+        this.performRescuePull();
+      } else if (this.state === 'PLAYING') {
+        this.performJump();
+      }
+    });
 
     // Mobile Dash Button
-    const mobileDashBtn = document.getElementById('mobileDashBtn');
-    if (mobileDashBtn) {
-      const handleDash = (e) => {
-        e.preventDefault();
-        this.sfx.init();
-        this.useSkill('speed');
-      };
-      mobileDashBtn.addEventListener('touchstart', handleDash, { passive: false });
-      mobileDashBtn.addEventListener('click', handleDash);
-    }
+    bindTouchAction('mobileDashBtn', () => {
+      this.useSkill('speed');
+    });
 
     // Mobile Yank Button
-    const mobileYankBtn = document.getElementById('mobileYankBtn');
-    if (mobileYankBtn) {
-      const handleYank = (e) => {
-        e.preventDefault();
-        this.sfx.init();
-        if (this.state === 'RESCUE') {
-          this.performRescuePull();
-        } else if (this.state === 'PLAYING') {
-          this.performTetherYank(0);
-        }
-      };
-      mobileYankBtn.addEventListener('touchstart', handleYank, { passive: false });
-      mobileYankBtn.addEventListener('click', handleYank);
-    }
+    bindTouchAction('mobileYankBtn', () => {
+      if (this.state === 'RESCUE') {
+        this.performRescuePull();
+      } else if (this.state === 'PLAYING') {
+        this.performTetherYank(0);
+      }
+    });
 
     const pullBtn = document.getElementById('pullBtn');
     if (pullBtn) {
