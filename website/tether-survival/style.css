@@ -1673,3 +1673,176 @@ body.touch-device .controls-hud-hint#desktopControlsHint {
   height: 100%;
 }
 
+/* Rules Modal Styles */
+.rules-modal-box {
+  max-width: 760px;
+  width: 95%;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 24px;
+  text-align: left;
+}
+
+.modal-close-icon {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.modal-close-icon:hover {
+  background: rgba(255, 68, 68, 0.4);
+  transform: rotate(90deg);
+}
+
+.rules-modal-content {
+  overflow-y: auto;
+  padding-right: 8px;
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.rules-modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+.rules-modal-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 240, 255, 0.3);
+  border-radius: 3px;
+}
+
+.rule-card {
+  display: flex;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 14px 16px;
+  text-align: left;
+}
+
+.rule-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(0, 240, 255, 0.25);
+}
+
+.rule-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.rule-body h4 {
+  margin: 0 0 6px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #00f0ff;
+}
+
+.rule-body p {
+  margin: 0;
+  font-size: 12.5px;
+  color: #cbd5e1;
+  line-height: 1.5;
+}
+
+.rule-body ul {
+  margin: 4px 0 0 0;
+  padding-left: 18px;
+  font-size: 12px;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+.key-tag {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-family: monospace;
+  font-size: 11px;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* Game Type Selector in Lobby */
+.game-type-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.game-type-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-apple);
+  text-align: left;
+}
+
+.game-type-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.game-type-card.selected {
+  background: rgba(0, 240, 255, 0.12);
+  border: 2px solid #00f0ff;
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.3);
+}
+
+.game-type-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.game-type-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.mode-standalone-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(0, 240, 255, 0.15));
+  border: 1px solid #a855f7;
+  border-radius: 12px;
+  padding: 10px 14px;
+  color: #e9d5ff;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 8px;
+  transition: all 0.2s;
+}
+
+.mode-standalone-link:hover {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(0, 240, 255, 0.25));
+  transform: translateY(-1px);
+  color: #ffffff;
+}
+

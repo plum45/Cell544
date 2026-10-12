@@ -33,6 +33,9 @@
       <button class="cam-toggle-btn" id="camToggleBtn" onclick="window.bioCyber && window.bioCyber.toggleCameraMode()" title="สลับมุมมอง 1st Person (Minecraft) / 3rd Person / Iso">
         🎥 <span>1st Person</span>
       </button>
+      <button class="back-btn rules-btn" id="openRulesNavBtn" onclick="window.openRulesModal && window.openRulesModal()" title="อ่านกติกาและวิธีการเล่นทั้งหมด">
+        📖 <span>วิธีเล่น</span>
+      </button>
       <button class="back-btn" id="openLobbyBtn" onclick="window.bioCyber && window.bioCyber.openLobby()" title="เปิดหน้าล็อบบี้เพื่อเปลี่ยนห้องหรือปรับแต่ง">
         ⚙️ <span>ล็อบบี้</span>
       </button>
@@ -58,8 +61,10 @@
   <!-- 2. Atmosphere Theme Selector Dock (Top Right) -->
   <div class="top-controls-dock">
     <div class="game-switch-dock">
-      <a href="../who-am-i/index.html" class="mode-tab-btn" title="ไปเล่นเกมคู่หูปริศนา 3D Who Am I?">🃏 ไปเกม Who Am I? (การ์ด 3D) ➔</a>
-      <a href="./test.html" class="mode-tab-btn" style="color: #00f2fe; border-color: rgba(0, 242, 254, 0.4);" title="หน้าทดสอบเสียง & ระบบเกม">🧪 หน้าเทสระบบ</a>
+      <button class="mode-tab-btn active" id="tabSurvival" onclick="window.switchGameType && window.switchGameType('survival')" title="โหมดประลองควิซชีววิทยามาตรฐาน">⚡ 3D Arena</button>
+      <button class="mode-tab-btn" id="tabWhoAmI" onclick="window.switchGameType && window.switchGameType('whoami')" title="โหมดทายฉันสิ Who Am I ในสมรภูมิ 3D">🃏 3D Who Am I</button>
+      <a href="../who-am-i/index.html" class="mode-tab-btn" style="background: rgba(168, 85, 247, 0.2); border-color: #a855f7; color: #d8b4fe;" title="เปิดเกมการ์ดแฟ้มลับ 24 ใบ Who Am I? (Co-op & Solo)">🎴 แฟ้มการ์ด 24 ใบ ➔</a>
+      <button class="mode-tab-btn" style="color: #00f0ff; border-color: rgba(0, 240, 255, 0.4);" onclick="window.openRulesModal && window.openRulesModal()" title="คู่มือ & กติกาการเล่น">📖 กติกา</button>
     </div>
     <div class="theme-select-dock">
       <button class="theme-btn active" id="themeBtn-sakura" onclick="switchTheme('sakura')" title="🌸 ฤดูใบไม้ผลิซากุระญี่ปุ่น">🌸 ซากุระ</button>
@@ -88,6 +93,22 @@
       <div class="timer-bar-mini">
         <div class="timer-bar-fill-mini" id="timerBarFill"></div>
       </div>
+    </div>
+  </div>
+
+  <!-- Progressive Who Am I Clue Cards Bar (Displayed in Who Am I Mode) -->
+  <div class="clue-cards-bar" id="clueCardsBar" style="display: none;">
+    <div class="clue-pill revealed" id="clue1">
+      <span class="clue-num" style="font-weight: 800; color: #00f0ff;">1</span>
+      <span class="clue-txt" id="clueText1">กำลังโหลดคำใบ้...</span>
+    </div>
+    <div class="clue-pill" id="clue2">
+      <span class="clue-num" style="font-weight: 800; color: #a855f7;">2</span>
+      <span class="clue-txt" id="clueText2">ปลดล็อกใน 12s</span>
+    </div>
+    <div class="clue-pill" id="clue3">
+      <span class="clue-num" style="font-weight: 800; color: #f43f5e;">3</span>
+      <span class="clue-txt" id="clueText3">ปลดล็อกใน 6s</span>
     </div>
   </div>
 
@@ -277,9 +298,36 @@
             </div>
           </div>
 
+          <!-- Game Type Selector (Survival Arena vs Who Am I) -->
+          <div class="lobby-card-box">
+            <div class="card-box-title">🕹️ รูปแบบภารกิจ (Mission / Question Type)</div>
+            <div class="game-type-selector">
+              <div class="game-type-card selected" data-gametype="survival" onclick="window.switchGameType && window.switchGameType('survival')">
+                <div class="game-type-name">⚡ 3D Arena Quiz</div>
+                <div class="game-type-sub">ควิซชีววิทยามาตรฐาน 8 ข้อ</div>
+              </div>
+              <div class="game-type-card" data-gametype="whoami" onclick="window.switchGameType && window.switchGameType('whoami')">
+                <div class="game-type-name">🃏 3D Who Am I?</div>
+                <div class="game-type-sub">ทายฉันสิ ปลดล็อกคำใบ้ 3 ขั้น</div>
+              </div>
+            </div>
+            <a href="../who-am-i/index.html" class="mode-standalone-link" title="เปิดเกมการ์ดแฟ้มลับ 24 ใบ Who Am I?">
+              <span>🎴 หรือเล่น Who Am I? แฟ้มการ์ด 24 ใบ (Co-op & Solo)</span>
+              <span>➔</span>
+            </a>
+          </div>
+
+          <!-- Rules Button in Lobby -->
+          <div class="lobby-card-box" style="padding: 10px 14px;">
+            <button type="button" class="rules-lobby-btn" onclick="window.openRulesModal && window.openRulesModal()" style="width: 100%; background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.35); border-radius: 8px; color: #00f0ff; font-weight: 700; font-size: 13px; padding: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <span>📖</span>
+              <span>อ่านกติกาและวิธีการเล่นทั้งหมด (HOW TO PLAY)</span>
+            </button>
+          </div>
+
           <!-- Game Mode Selector -->
           <div class="lobby-card-box">
-            <div class="card-box-title">🎮 เลือกโหมดการเล่น (Game Mode)</div>
+            <div class="card-box-title">🎮 เลือกรูปแบบทีม (Team Mode)</div>
             <div class="team-mode-selector">
               <div class="mode-card selected" data-mode="ai" onclick="window.selectGameMode('ai')">
                 <div class="mode-name">👥 ทีม 3D Cyber Bots</div>
@@ -460,6 +508,104 @@
       <div style="display: flex; gap: 10px;">
         <button class="start-btn" style="flex: 1;" onclick="location.reload()">เล่นอีกครั้ง ➔</button>
         <a href="../topics/quiz-hub.html" class="start-btn" style="flex: 1; background: transparent; color: #fff; border: 1px solid #fff; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;">ไปคลังข้อสอบ</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12. Complete How-To-Play & Game Rules Modal -->
+  <div class="screen-overlay hidden" id="rulesModal">
+    <div class="lobby-modal rules-modal-box">
+      <div class="modal-close-icon" onclick="window.closeRulesModal()">✕</div>
+      <div class="rules-modal-header">
+        <span class="lobby-kicker">GAME GUIDE & OFFICIAL RULES</span>
+        <h2 class="lobby-title" style="color: #00f0ff;">📖 กติกาและวิธีการเล่น 3D Cyber Tether Arena & Who Am I</h2>
+        <p class="lobby-desc">คู่มือสมรภูมิชีวภาพ 3 มิติ เพื่อการเอาชีวิตรอดและตอบคำถามอย่างมีประสิทธิภาพ</p>
+      </div>
+
+      <div class="rules-modal-content">
+        <!-- Rule 1: Goal -->
+        <div class="rule-card">
+          <div class="rule-icon">🎯</div>
+          <div class="rule-body">
+            <h4>1. เป้าหมายของเกม (Objective)</h4>
+            <p>เอาชีวิตรอดบนบล็อก 3 มิติขนาดใหญ่ (21x21 บล็อก กว้างกว่า 88 เมตร) พร้อมตอบคำถามชีววิทยา 8 ข้อให้ถูกต้อง โดยต้องวิ่งไปเหยียบแท่นคำตอบ A, B, C หรือ D ก่อนเวลานับถอยหลังหมด</p>
+          </div>
+        </div>
+
+        <!-- Rule 2: Tether Physics -->
+        <div class="rule-card">
+          <div class="rule-icon">🪢</div>
+          <div class="rule-body">
+            <h4>2. ฟิสิกส์เชือกเลเซอร์ 3D (Tether Physics)</h4>
+            <p>ในโหมดทีม สมาชิก 3 คนจะถูกผูกโยงด้วยเชือกไซเบอร์ที่มีแรงดึงสปริง หากเพื่อนร่วมทีมถูกแรงกระแทกจากลูกบอลหรือกระโดดห่างกันเกินไป เชือกจะดึงรั้งผู้เล่นคนอื่นเข้ามา สามารถกด <strong>E หรือปุ่มดึงเชือก</strong> เพื่อดึงเพื่อนร่วมทีมเข้ามาหาได้</p>
+          </div>
+        </div>
+
+        <!-- Rule 3: Controls -->
+        <div class="rule-card">
+          <div class="rule-icon">🎮</div>
+          <div class="rule-body">
+            <h4>3. การควบคุมตัวละคร (Controls)</h4>
+            <ul>
+              <li><strong>เดิน (PC):</strong> กดปุ่ม <span class="key-tag">W</span> <span class="key-tag">A</span> <span class="key-tag">S</span> <span class="key-tag">D</span> หรือปุ่มลูกศร (รองรับแป้นพิมพ์ภาษาไทย <span class="key-tag">ไ</span> <span class="key-tag">ฟ</span> <span class="key-tag">ห</span> <span class="key-tag">ก</span>)</li>
+              <li><strong>เดิน (มือถือ/iPad):</strong> ใช้ Virtual D-Pad ฝั่งซ้าย หรือ<strong>แตะที่การ์ดตัวเลือก A, B, C, D ด้านล่าง ตัวละครจะวิ่งไปแท่นคำตอบเองโดยอัตโนมัติ!</strong></li>
+              <li><strong>กระโดด Super Jump:</strong> กด <span class="key-tag">SPACEBAR</span> หรือปุ่ม 🚀 เพื่อกระโดดข้ามบล็อกที่พังหรือกระโดดหลบลูกบอล</li>
+              <li><strong>มุมมองกล้อง:</strong> ลากเมาส์ / ปัดหน้าจอด้านขวาเพื่อหมุนมุมมองรอบทิศทาง 360° (กด <span class="key-tag">F</span> เพื่อสลับ 1st Person Minecraft / 3rd Person / Overview)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Rule 4: Hazards -->
+        <div class="rule-card">
+          <div class="rule-icon">💥</div>
+          <div class="rule-body">
+            <h4>4. อุปสรรคในสนามประลอง (Hazards)</h4>
+            <ul>
+              <li><strong>ลูกบอล Bio-Hazard กลิ้งชน:</strong> ลูกบอลพลังงานจะกลิ้งพุ่งผ่านสนาม หากชนจะกระเด็นถอยหลังและเสีย 20 แต้ม <em>(สามารถกระโดดข้าม หรือใช้โล่ปัดกระเด็นได้)</em></li>
+              <li><strong>บล็อกร่วงหล่น (Falling Blocks):</strong> ขอบสนามจะสั่นเตือนและร่วงหล่นลงสู่อเวจี ระวังอย่าเดินออกไปนอกขอบที่พังทลาย</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Rule 5: Active Skills -->
+        <div class="rule-card">
+          <div class="rule-icon">⚡</div>
+          <div class="rule-body">
+            <h4>5. สกิลไอเทมช่วยเหลือ (Power-Up Skills)</h4>
+            <ul>
+              <li><strong>💡 EMP Hack (กด 1):</strong> ตัด 2 ช้อยส์ที่ผิดทิ้งทันที เหลือเพียง 2 ช้อยส์ให้ตัดสินใจ</li>
+              <li><strong>💨 Turbo Nitro (กด 2):</strong> เร่งสปีดวิ่งเร็วติดจรวด 2 เท่า นาน 6 วินาที วิ่งไปแท่นคำตอบทันเวลา</li>
+              <li><strong>🛡️ Nano Shield (กด 3):</strong> สร้างโล่เซฟตี้คุ้มกัน หากพลาดก้าวตกเหว โล่จะสลายตัวและวาร์ปคุณกลับมาบนแท่นอย่างปลอดภัยทันที</li>
+              <li><strong>💎 เก็บ Cyber Orbs:</strong> ลูกแก้วคริสตัลที่สุ่มเกิดบนบล็อก จะเติมจำนวนสกิลและให้โบนัส +200 แต้ม</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Rule 6: Rescue QTE -->
+        <div class="rule-card">
+          <div class="rule-icon">🆘</div>
+          <div class="rule-body">
+            <h4>6. ระบบกู้ชีพดึงเชือกฉุกเฉิน (Rescue QTE Event)</h4>
+            <p>เมื่อเพื่อนร่วมทีมหรือผู้เล่นก้าวพลาดตกขอบเหว จะมีเวลา 8.5 วินาที ให้ทุกคน<strong>กดรัวๆ ที่ปุ่มดึงเชือก / กด SPACEBAR รัวๆ / แตะหน้าจอมือถือรัวๆ</strong> เพื่อดึงเชือกกู้ชีพกลับขึ้นมาให้ครบ 100% ก่อนจะร่วงหล่นไปถาวร</p>
+          </div>
+        </div>
+
+        <!-- Rule 7: Game Types -->
+        <div class="rule-card">
+          <div class="rule-icon">🃏</div>
+          <div class="rule-body">
+            <h4>7. โหมดเกม: 3D Arena Quiz vs Who Am I?</h4>
+            <ul>
+              <li><strong>⚡ 3D Arena Quiz:</strong> ประลองความรู้คำถามชีววิทยาเชิงลึกมาตรฐาน 8 ข้อ</li>
+              <li><strong>🃏 3D Who Am I?:</strong> ถอดรหัสปริศนาอัตลักษณ์ ปลดล็อกคำใบ้ 3 ขั้น (Clue 1 เริ่มต้น, Clue 2 ใน 12 วิ, Clue 3 ใน 6 วิ)</li>
+              <li><strong>🎴 เกม Who Am I การ์ด 24 ใบ:</strong> สำหรับประสบการณ์สืบสวนคดี 24 ใบเต็มรูปแบบ สามารถคลิกปุ่ม "ไปเกม Who Am I?" เพื่อเข้าสู่ห้องโต๊ะการ์ด 3D ได้ทันที</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="rules-modal-footer">
+        <button class="start-btn" onclick="window.closeRulesModal()" style="width: 100%; max-width: 280px; margin: 0 auto; display: block;">เข้าใจแล้ว เข้าสู่เกม ➔</button>
       </div>
     </div>
   </div>

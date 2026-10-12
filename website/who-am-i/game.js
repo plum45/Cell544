@@ -1387,6 +1387,29 @@ class WhoAmIGame {
         this.triggerHoloSignal(`เข้าร่วมห้อง ${this.roomCode} แล้ว!`);
       }
     });
+
+    // Rules Modal
+    const rulesModal = document.getElementById('whoami-rules-modal');
+    const openRulesBtn = document.getElementById('open-rules-btn');
+    const closeRulesModal = document.getElementById('close-rules-modal');
+    const closeRulesBtnBottom = document.getElementById('close-rules-btn-bottom');
+    if (openRulesBtn && rulesModal) {
+      openRulesBtn.addEventListener('click', () => rulesModal.classList.add('show'));
+    }
+    if (closeRulesModal && rulesModal) {
+      closeRulesModal.addEventListener('click', () => rulesModal.classList.remove('show'));
+    }
+    if (closeRulesBtnBottom && rulesModal) {
+      closeRulesBtnBottom.addEventListener('click', () => rulesModal.classList.remove('show'));
+    }
+
+    const openRulesFromLobby = document.getElementById('open-rules-from-lobby');
+    if (openRulesFromLobby && rulesModal && lobbyModal) {
+      openRulesFromLobby.addEventListener('click', () => {
+        lobbyModal.classList.remove('show');
+        rulesModal.classList.add('show');
+      });
+    }
   }
 
   triggerHoloSignal(text) {

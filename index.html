@@ -35,6 +35,7 @@
           <li><a href="tether-survival/index.html">เอาชีวิตรอด 3D</a></li>
           <li><a href="island-3d/index.html">เกาะลอยฟ้า 3D</a></li>
           <li><a href="topics/quiz-hub.html">คลังข้อสอบ</a></li>
+          <li><button type="button" class="btn-open-rules" data-rule-tab="all" style="background:none; border:none; color:inherit; font-weight:600; cursor:pointer; font-size:inherit;">📖 กติกาทุกเกม</button></li>
           <li><a href="#ai-assistant">AI Mentor</a></li>
         </ul>
       </nav>
@@ -53,6 +54,7 @@
         <a href="flashcards.html" class="local-btn-primary" style="background: #059669; border-color: #059669;">📇 แฟลชการ์ด 42 บท</a>
         <a href="who-am-i/index.html" class="local-link">ใครคือฉัน? 3D</a>
         <a href="tether-survival/index.html" class="local-link">เอาชีวิตรอด 3D</a>
+        <button type="button" class="local-link btn-open-rules" data-rule-tab="all" style="background:none; border:none; cursor:pointer; font-weight:600;">📖 กติกา</button>
       </div>
     </div>
   </div>
@@ -102,6 +104,9 @@
           <span>🃏 3D Who Am I? (การ์ด & แฟ้มลับ)</span>
           <span>➔</span>
         </a>
+        <button type="button" class="apple-btn-large secondary btn-open-rules" data-rule-tab="all">
+          <span>📖 กติกาวิธีเล่นทุกเกม</span>
+        </button>
         <a href="curriculum.html" class="apple-btn-large secondary">
           <span>ศูนย์รวมบทเรียน</span>
         </a>
@@ -173,6 +178,7 @@
             </div>
             <div class="bento-btn-group">
               <a href="tether-survival/index.html" class="apple-btn primary">เข้าสู่ Cyber Arena ➔</a>
+              <button type="button" class="apple-btn secondary btn-open-rules" data-rule-tab="tether">📖 กติกา Arena</button>
             </div>
           </div>
         </div>
@@ -197,6 +203,7 @@
             </div>
             <div class="bento-btn-group">
               <a href="who-am-i/index.html" class="apple-btn primary" style="background: linear-gradient(135deg, #a855f7, #00f0ff); color: #000;">เปิดแฟ้มลับ Who Am I? ➔</a>
+              <button type="button" class="apple-btn secondary btn-open-rules" data-rule-tab="whoami">📖 กติกา Who Am I</button>
             </div>
           </div>
         </div>
@@ -217,6 +224,7 @@
             </div>
             <div class="bento-btn-group">
               <a href="island-3d/index.html" class="apple-btn primary">เปิดแบบจำลอง 3D ➔</a>
+              <button type="button" class="apple-btn secondary btn-open-rules" data-rule-tab="island">📖 กติกาเกาะ 3D</button>
             </div>
           </div>
           <a href="island-3d/index.html" class="bento-preview-box" title="เปิดแบบจำลอง 3D">
@@ -244,6 +252,7 @@
             </div>
             <div class="bento-btn-group">
               <a href="game-2d/index.html" class="apple-btn secondary">เข้าสู่ห้องแล็บ 2D ➔</a>
+              <button type="button" class="apple-btn secondary btn-open-rules" data-rule-tab="game2d">📖 กติกาแล็บ 2D</button>
             </div>
           </div>
         </div>
@@ -572,10 +581,336 @@
     </div>
   </footer>
 
+  <!-- =========================================================================
+       Master All Games Rulebook Modal (คู่มือ & กติกาทุกเกมใน CYTOLIFE)
+       ========================================================================= -->
+  <div class="master-rules-modal-backdrop" id="masterAllGamesRulesModal" role="dialog" aria-modal="true" aria-labelledby="allRulesTitle">
+    <div class="master-rules-dialog">
+      <div class="master-rules-header">
+        <div>
+          <div class="mrh-badge">📖 OFFICIAL RULEBOOK & HOW TO PLAY</div>
+          <h2 class="mrh-title" id="allRulesTitle">กติกา & วิธีการเล่นทุกเกม</h2>
+          <p class="mrh-subtitle">คู่มือการเล่น กฎกติกา การคิดคะแนน และการควบคุมเกมทั้งหมดใน CYTOLIFE</p>
+        </div>
+        <button class="mrh-close-btn" id="closeMasterRulesBtn" title="ปิดหน้าต่างกติกา">✕</button>
+      </div>
+
+      <!-- Nav Tabs -->
+      <div class="master-rules-nav-tabs">
+        <button type="button" class="mrt-btn active" data-tab-target="tab-rules-tether">
+          <span>⚡</span>
+          <span>3D Cyber Tether Arena</span>
+        </button>
+        <button type="button" class="mrt-btn" data-tab-target="tab-rules-whoami">
+          <span>🃏</span>
+          <span>3D Who Am I? แฟ้มลับ</span>
+        </button>
+        <button type="button" class="mrt-btn" data-tab-target="tab-rules-island">
+          <span>🌿</span>
+          <span>เกาะลอยฟ้า 3D</span>
+        </button>
+        <button type="button" class="mrt-btn" data-tab-target="tab-rules-game2d">
+          <span>🧬</span>
+          <span>สถาบันวิจัย 2D</span>
+        </button>
+        <button type="button" class="mrt-btn" data-tab-target="tab-rules-flashcards">
+          <span>📇</span>
+          <span>แฟลชการ์ด & ข้อสอบ</span>
+        </button>
+      </div>
+
+      <!-- Scrollable Tab Content Body -->
+      <div class="master-rules-scrollable-body">
+        
+        <!-- Tab 1: 3D Cyber Tether Arena -->
+        <div class="rule-tab-panel active" id="tab-rules-tether">
+          <div class="rule-hero-badge-row">
+            <span class="rule-game-pill">⚡ 3D TETHER SURVIVAL ARENA</span>
+            <a href="tether-survival/index.html" class="rule-play-cta">เข้าเล่น Cyber Arena ➔</a>
+          </div>
+
+          <div class="rule-card-grid">
+            <div class="rule-detail-card">
+              <h4>🎯 วัตถุประสงค์ & ธีมเกม</h4>
+              <p>ผู้เล่น 2 คน (P1 & P2 หรือระบบ AI บอทคู่หู) ถูกผูกติดกันด้วยเชือกเลเซอร์ชีวภาพ (Physical Tether Rope) ต้องร่วมมือกันตอบคำถามชีววิทยาเซลล์ วิ่งเหยียบแท่นคำตอบที่ถูกต้อง และเอาชีวิตรอดจากเวทีถล่ม!</p>
+            </div>
+            <div class="rule-detail-card">
+              <h4>🕹️ โหมดการเล่น 2 โหมด</h4>
+              <ul>
+                <li><strong>⚡ 3D Arena Quiz:</strong> คำถามปรนัย 4 ช้อยส์ (A, B, C, D) เวลานับถอยหลัง 15 วินาที/ข้อ ต้องเหยียบแท่นที่ถูกก่อนเวทีรอบนอกยุบตัว</li>
+                <li><strong>🃏 3D Who Am I?:</strong> คำใบ้ 3 ระดับจะค่อยๆ เปิดออก ต้องวิเคราะห์ว่าคือชีวโมเลกุลใดแล้วเหยียบแท่นยืนยัน</li>
+              </ul>
+            </div>
+            <div class="rule-detail-card">
+              <h4>🎮 การควบคุม (Controls)</h4>
+              <div class="controls-key-grid">
+                <div class="key-cap-item">
+                  <span class="key-cap">W A S D</span>
+                  <div class="key-desc">P1 เดิน / เคลื่อนที่</div>
+                </div>
+                <div class="key-cap-item">
+                  <span class="key-cap">Space / Shift</span>
+                  <div class="key-desc">P1 กระโดด / แดช</div>
+                </div>
+                <div class="key-cap-item">
+                  <span class="key-cap">↑ ↓ ← →</span>
+                  <div class="key-desc">P2 เดิน / เคลื่อนที่</div>
+                </div>
+                <div class="key-cap-item">
+                  <span class="key-cap">Enter / Num 0</span>
+                  <div class="key-desc">P2 กระโดด / แดช</div>
+                </div>
+              </div>
+              <p style="margin-top: 8px; font-size: 0.8rem; color: #71717a;">📱 มือถือ/แท็บเล็ต: สัมผัสปุ่มจำลองบนหน้าจอ หรือเชื่อมต่อ Gamepad คอนโทรลเลอร์</p>
+            </div>
+            <div class="rule-detail-card">
+              <h4>🌧️ สภาพอากาศ & อุปสรรค (Debuffs)</h4>
+              <ul>
+                <li><strong>🌸 ดอกซากุระ:</strong> ทัศนวิสัยจำกัด ลมพัดเบา</li>
+                <li><strong>⚡ พายุไซเบอร์:</strong> ฟ้าผ่าสุ่มตำแหน่ง ดีดตัวผู้เล่นกระเด็น</li>
+                <li><strong>❄️ พายุหิมะ:</strong> พื้นสนามลื่น ลื่นไถลตามแรงเฉื่อย</li>
+                <li><strong>💊 แคปซูลพลัง:</strong> เก็บเกราะป้องกัน หรือเพิ่มพลังชีวิต +1</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Who Am I? 3D -->
+        <div class="rule-tab-panel" id="tab-rules-whoami">
+          <div class="rule-hero-badge-row">
+            <span class="rule-game-pill" style="background: linear-gradient(135deg, #a855f7, #00f0ff); color: #000;">🃏 3D WHO AM I? BIO-DOSSIER</span>
+            <a href="who-am-i/index.html" class="rule-play-cta" style="background: linear-gradient(135deg, #a855f7, #00f0ff); color: #000;">เข้าเล่น Who Am I? ➔</a>
+          </div>
+
+          <div class="rule-card-grid">
+            <div class="rule-detail-card">
+              <h4>🎯 วัตถุประสงค์ & รูปแบบเกม</h4>
+              <p>เกมสืบสวนอัตลักษณ์ชีวโมเลกุลด้วยการ์ด 3 มิติ 24 ใบวางบนโต๊ะทดลอง ระบบจะสุ่ม "ชีวโมเลกุลเป้าหมายลับ" 1 ชิ้น ผู้เล่นต้องสืบสวนด้วยเบาะแสเพื่อตัดตัวเลือกและทายให้ถูกต้อง</p>
+            </div>
+            <div class="rule-detail-card">
+              <h4>👥 ระบบ 2 บทบาท (Co-op Duo Roleplay)</h4>
+              <ul>
+                <li><strong>👑 Host (ผู้ถือคำตอบลับ):</strong> รู้ว่าชีวโมเลกุลเป้าหมายคืออะไร มีแถบตอบด่วน "ใช่ / ไม่ใช่ / เป็นไปได้" และพิมพ์แชทคำใบ้</li>
+                <li><strong>🕵️ Guesser (นักสืบผู้ทาย):</strong> ใช้ปุ่มส่งคำถามด่วน (Inquiry Probes) เช่น "มี DNA ตัวเองไหม?", "สร้าง ATP ไหม?" แล้วคลิกคว่ำการ์ดบนโต๊ะ 3D</li>
+              </ul>
+            </div>
+            <div class="rule-detail-card">
+              <h4>🔍 คำใบ้ 3 ระดับ & คะแนน</h4>
+              <ul>
+                <li><strong>เบาะแสที่ 1 (หน้าที่หลัก):</strong> หน้าที่ชีวภาพทั่วไป</li>
+                <li><strong>เบาะแสที่ 2 (โครงสร้างชีวเคมี):</strong> เยื่อหุ้ม รูปร่าง โครงสร้าง</li>
+                <li><strong>เบาะแสที่ 3 (การกลายพันธุ์/การเกิดโรค):</strong> ข้อมูลเจาะลึกขั้นสูง</li>
+                <li><strong>การคิดคะแนน:</strong> ทายถูกได้ +500 แต้ม | ขอคำใบ้หัก 50 แต้ม | ทายผิดหัก 100 แต้ม</li>
+              </ul>
+            </div>
+            <div class="rule-detail-card">
+              <h4>🕹️ การควบคุมโต๊ะทดลอง 3D</h4>
+              <ul>
+                <li><strong>คลิกซ้ายที่การ์ด:</strong> คว่ำ / พลิกการ์ด 3D เพื่อตัดตัวเลือกที่ไม่ใช่ออก</li>
+                <li><strong>ดับเบิลคลิกที่การ์ด:</strong> ล็อกเป้าและส่งคำตอบสุดท้าย (Final Guess)</li>
+                <li><strong>ลากเมาส์คลิกขวา / หมุน:</strong> หมุนมุมกล้อง 360 องศาเพื่อมองรอบโต๊ะ</li>
+                <li><strong>ปุ่มสลับมุมมอง (📷):</strong> สลับมุมมองเปอร์สเปกทีฟกับมุมมองท็อปดาวน์จากด้านบน</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Island 3D -->
+        <div class="rule-tab-panel" id="tab-rules-island">
+          <div class="rule-hero-badge-row">
+            <span class="rule-game-pill">🌿 3D OPEN WORLD CELL ISLAND</span>
+            <a href="island-3d/index.html" class="rule-play-cta">ออกผจญภัยเกาะ 3D ➔</a>
+          </div>
+
+          <div class="rule-card-grid">
+            <div class="rule-detail-card">
+              <h4>🎯 วัตถุประสงค์การสำรวจ</h4>
+              <p>ผจญภัยในเกาะลอยฟ้าชีววิทยาเซลล์ 3 มิติ สไตล์ Zelda Forest Temple สำรวจ 6 ศาลเจ้าชีวโมเลกุล เก็บสมบัติลับ 7 ชิ้น และสนทนากับศาสตราจารย์บันนี่เพื่อเรียนรู้เชิงลึก</p>
+            </div>
+            <div class="rule-detail-card">
+              <h4>🏛️ 6 ศาลเจ้า & คลังสมบัติ</h4>
+              <ul>
+                <li><strong>ศาลเจ้านิวเคลียส:</strong> ถอดรหัส DNA Replication & Transcription</li>
+                <li><strong>ศาลเจ้าไมโทคอนเดรีย:</strong> กลไกการสังเคราะห์พลังงาน ATP</li>
+                <li><strong>ศาลเจ้าคลอโรพลาสต์:</strong> การสังเคราะห์ด้วยแสง Light & Dark Reaction</li>
+                <li><strong>ศาลเจ้าไรโบโซม & โกลจิบอดี:</strong> การแปลรหัสและการคัดแยกโปรตีน</li>
+                <li><strong>แท่นคลังข้อสอบ:</strong> ทำแบบทดสอบ 15 ข้อเพื่อรับสมบัติชิ้นเอก</li>
+              </ul>
+            </div>
+            <div class="rule-detail-card">
+              <h4>🎮 การควบคุม (Controls)</h4>
+              <div class="controls-key-grid">
+                <div class="key-cap-item">
+                  <span class="key-cap">W A S D</span>
+                  <div class="key-desc">เดินสำรวจ</div>
+                </div>
+                <div class="key-cap-item">
+                  <span class="key-cap">Shift</span>
+                  <div class="key-desc">วิ่งเร่งสปีด</div>
+                </div>
+                <div class="key-cap-item">
+                  <span class="key-cap">Space</span>
+                  <div class="key-desc">กระโดดขึ้นที่สูง</div>
+                </div>
+                <div class="key-cap-item">
+                  <span class="key-cap">E</span>
+                  <div class="key-desc">คุย / สำรวจ / เปิดกล่อง</div>
+                </div>
+                <div class="key-cap-item">
+                  <span class="key-cap">M</span>
+                  <div class="key-desc">แผนที่มุมสูง (Map)</div>
+                </div>
+                <div class="key-cap-item">
+                  <span class="key-cap">1 2 3</span>
+                  <div class="key-desc">สลับจิ้งจอก/สไลม์/ภูติ</div>
+                </div>
+              </div>
+            </div>
+            <div class="rule-detail-card">
+              <h4>💡 เคล็ดลับการพิชิตเกาะ</h4>
+              <ul>
+                <li>กดปุ่ม <strong>[H]</strong> ในเกมเพื่อเปิดดูคู่มือและตำแหน่งเควสได้ตลอดเวลา</li>
+                <li>ทักทายสัตว์น้อยรอบเกาะเพื่อฟังเบาะแสที่ซ่อนของสมบัติลับ</li>
+                <li>สามารถสลับไปมุมมองบุคคลที่หนึ่ง (กด <strong>V</strong>) เพื่อส่องดูโมเลกุลอย่างใกล้ชิด</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: 2D Game Simulation -->
+        <div class="rule-tab-panel" id="tab-rules-game2d">
+          <div class="rule-hero-badge-row">
+            <span class="rule-game-pill">🧬 2D CELL LAB SIMULATOR</span>
+            <a href="game-2d/index.html" class="rule-play-cta">เข้าสู่ศูนย์วิจัย 2D ➔</a>
+          </div>
+
+          <div class="rule-card-grid">
+            <div class="rule-detail-card">
+              <h4>🎯 วัตถุประสงค์ & รูปแบบเกม</h4>
+              <p>เกมจำลองชีวิตนักวิจัยชีววิทยาโมเลกุล 2D Pixel Art สไตล์ Stanford Generative Agents สัมผัสชีวิตในห้องแล็บชีววิทยา พร้อมภารกิจเอาชีวิตรอดจากเหตุการณ์เชื้อไวรัสกลายพันธุ์รั่วไหล!</p>
+            </div>
+            <div class="rule-detail-card">
+              <h4>🚨 2 โหมดการเล่น (Mode Switching)</h4>
+              <ul>
+                <li><strong>🌿 โหมดพักผ่อน (Chill Lab Life):</strong> พูดคุยกับนักวิจัย AI สำรวจเอกสารวิจัย ส่องกล้องจุลทรรศน์ และอ่าน Memory Stream</li>
+                <li><strong>🧟 โหมดเอาชีวิตรอดซอมบี้ (Zombie Survival):</strong> วิ่งหลบซอมบี้ที่ติดเชื้อไวรัส ชีววิทยาเซลล์คืออาวุธเดียวของคุณ!</li>
+              </ul>
+            </div>
+            <div class="rule-detail-card">
+              <h4>🎮 การควบคุม & การเอาชีวิตรอด</h4>
+              <ul>
+                <li><strong>W A S D / ปุ่มลูกศร:</strong> บังคับตัวละครเดินสำรวจ</li>
+                <li><strong>Shift:</strong> วิ่งเร็วเพื่อหนีการไล่ล่าของซอมบี้</li>
+                <li><strong>ปุ่ม E / ปุ่มสำรวจ:</strong> ตอบคำถามชีววิทยาเพื่อเปิดประตูกักกันโรค (Quarantine Gate), สั่งยิงป้อมปืน Caspase Laser ทำลายซอมบี้, และสังเคราะห์วัคซีนบนดาดฟ้า</li>
+              </ul>
+            </div>
+            <div class="rule-detail-card">
+              <h4>🗺️ แผนที่ 4 โซนวิจัย</h4>
+              <ul>
+                <li><strong>1. ศูนย์วิจัยหลัก (Main Lab):</strong> โต๊ะทำงานและเทอร์มินัลสื่อสาร</li>
+                <li><strong>2. โรงงานไมโทคอนเดรีย (Power Plant):</strong> แหล่งพลังงานไฟฟ้าของศูนย์</li>
+                <li><strong>3. ป่าสปอร์ชีวภาพ (Spore Jungle):</strong> ดงพืชทดลองและเชื้อกลายพันธุ์</li>
+                <li><strong>4. คลังแอนติเจนใต้ดิน (Cryo Depot):</strong> ห้องเก็บวัคซีนและสารพันธุกรรม</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 5: Flashcards & Quiz -->
+        <div class="rule-tab-panel" id="tab-rules-flashcards">
+          <div class="rule-hero-badge-row">
+            <span class="rule-game-pill">📇 FLASHCARDS & QUIZ ASSESSMENT</span>
+            <a href="flashcards.html" class="rule-play-cta">เริ่มทบทวนแฟลชการ์ด ➔</a>
+          </div>
+
+          <div class="rule-card-grid">
+            <div class="rule-detail-card">
+              <h4>📇 ระบบแฟลชการ์ด 42 บทเรียน</h4>
+              <ul>
+                <li>คลิกที่การ์ดเพื่อพลิกดูคำอธิบายและความหมายเชิงลึก</li>
+                <li>จัดหมวดหมู่ตาม 6 หัวข้อหลักตามหลักสูตร สสวท. และ Campbell Biology</li>
+                <li>มีระบบกรองคำศัพท์ ค้นหาด่วน และสถิติด้านการจดจำ</li>
+              </ul>
+            </div>
+            <div class="rule-detail-card">
+              <h4>📝 คลังข้อสอบประเมินผล 15 ข้อ</h4>
+              <ul>
+                <li>ข้อสอบ 4 ตัวเลือก วิเคราะห์โจทย์เชิงลึกระดับแข่งขัน</li>
+                <li>ระบบตรวจคำตอบทันทีพร้อมแสดงเฉลยละเอียดและแหล่งอ้างอิง</li>
+                <li>คำนวณเปอร์เซ็นต์คะแนนและระดับความเชี่ยวชาญแบบเรียลไทม์</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- Core JavaScript Modules -->
   <script src="js/sphere-hero.js"></script>
   <script src="js/main.js"></script>
   <script>
+    // Master Rules Modal Controller
+    (function initMasterRulesModal() {
+      const modal = document.getElementById('masterAllGamesRulesModal');
+      const closeBtn = document.getElementById('closeMasterRulesBtn');
+      const tabBtns = document.querySelectorAll('.master-rules-nav-tabs .mrt-btn');
+      const panels = document.querySelectorAll('.rule-tab-panel');
+
+      function switchTab(targetId) {
+        tabBtns.forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('data-tab-target') === targetId);
+        });
+        panels.forEach(panel => {
+          panel.classList.toggle('active', panel.id === targetId);
+        });
+      }
+
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = btn.getAttribute('data-tab-target');
+          if (target) switchTab(target);
+        });
+      });
+
+      function openModal(defaultTab) {
+        if (!modal) return;
+        if (defaultTab) {
+          const map = {
+            'tether': 'tab-rules-tether',
+            'whoami': 'tab-rules-whoami',
+            'island': 'tab-rules-island',
+            'game2d': 'tab-rules-game2d',
+            'flashcards': 'tab-rules-flashcards'
+          };
+          if (map[defaultTab]) switchTab(map[defaultTab]);
+        }
+        modal.classList.add('active');
+      }
+
+      function closeModal() {
+        if (modal) modal.classList.remove('active');
+      }
+
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeModal();
+        });
+      }
+
+      document.querySelectorAll('.btn-open-rules').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const tabKey = btn.getAttribute('data-rule-tab');
+          openModal(tabKey);
+        });
+      });
+
+      window.openAllGamesRules = openModal;
+    })();
+
     // Ensure hero video autoplays smoothly across all platforms
     (function() {
       const v = document.querySelector('.hero-bg-video');

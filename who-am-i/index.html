@@ -52,6 +52,10 @@
     </div>
 
     <div class="nav-actions">
+      <button class="nav-btn btn-rules" id="open-rules-btn" title="กติกาและวิธีการเล่น Who Am I?">
+        <span class="btn-icon">📖</span>
+        <span class="btn-txt">กติกา & วิธีเล่น</span>
+      </button>
       <button class="nav-btn btn-lobby" id="open-lobby-btn">
         <span class="btn-icon">🌐</span>
         <span class="btn-txt">จับคู่เลขห้อง</span>
@@ -231,6 +235,11 @@
 
       <div class="lobby-footer">
         <span>💡 ระบบรองรับการเล่นข้ามอุปกรณ์ (มือถือ, แท็บเล็ต, PC) ผ่าน WebRTC P2P เครือข่ายเดียวกันหรือออนไลน์</span>
+        <div style="margin-top: 10px;">
+          <button type="button" id="open-rules-from-lobby" style="background: rgba(0, 240, 255, 0.15); border: 1px solid rgba(0, 240, 255, 0.4); color: #00f0ff; padding: 7px 16px; border-radius: 999px; font-size: 0.84rem; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+            📖 อ่านกติกาและวิธีการเล่น Who Am I? ละเอียด
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -273,6 +282,90 @@
         </button>
         <button class="modal-btn btn-replay" id="modal-replay-btn">
           <span>เล่นซ้ำคดีนี้</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Complete How-To-Play & Rules Modal for Who Am I -->
+  <div class="modal-backdrop" id="whoami-rules-modal">
+    <div class="modal-card rules-card" style="max-width: 740px; max-height: 88vh; overflow-y: auto; text-align: left; padding: 24px;">
+      <div class="modal-close-btn" id="close-rules-modal">✕</div>
+      <div class="lobby-header" style="text-align: left; margin-bottom: 18px;">
+        <div class="brand-badge">DETECTIVE DOSSIER RULES</div>
+        <h2 style="color: #a855f7; margin: 6px 0;">📖 กติกาและวิธีการเล่น Who Am I? (ทายฉันสิ 3D)</h2>
+        <p style="color: #94a3b8; font-size: 13px;">เกมสืบสวนอัตลักษณ์ชีวโมเลกุล 24 ใบ สไตล์ Guess Who? ผสมคดีสืบสวนวิทยาศาสตร์ Campbell</p>
+      </div>
+
+      <div class="rules-modal-content" style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="rule-card" style="display: flex; gap: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px 16px;">
+          <div style="font-size: 28px; flex-shrink: 0;">🎯</div>
+          <div>
+            <h4 style="margin: 0 0 4px 0; color: #00f0ff; font-size: 14px;">1. เป้าหมายของเกม (Objective)</h4>
+            <p style="margin: 0; font-size: 12.5px; color: #cbd5e1; line-height: 1.5;">ฝ่ายนักสืบต้องตัดช้อยส์การ์ดชีวโมเลกุล 24 ใบบนโต๊ะ 3 มิติ เพื่อค้นหาว่า <strong>"การ์ดลับเป้าหมาย 1 เดียวของคดีนี้คือใคร?"</strong> โดยอ่านคำใบ้ ถามคำถาม หรือใช้ไหวพริบทางชีววิทยา</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; gap: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px 16px;">
+          <div style="font-size: 28px; flex-shrink: 0;">👥</div>
+          <div>
+            <h4 style="margin: 0 0 4px 0; color: #00f0ff; font-size: 14px;">2. บทบาทการเล่น (2 Roles)</h4>
+            <p style="margin: 0; font-size: 12.5px; color: #cbd5e1; line-height: 1.5;">
+              • <strong>ฝ่ายผู้ถือคำตอบลับ (Host / Informant):</strong> สุ่มได้การ์ดชีวโมเลกุลลับ 1 ใบ (เช่น ไมโทคอนเดรีย, ไรโบโซม, DNA Polymerase) มีหน้าที่ตอบคำถาม "ใช่ ✅ / ไม่ใช่ ❌ / บางกรณี ⚠️" หรือบอกใบ้<br>
+              • <strong>ฝ่ายนักสืบ (Detective / Guesser):</strong> ถามคำถาม และคลิกคว่ำการ์ดที่ไม่ใช่ออกไปทีละใบ จนเหลือการ์ดคำตอบสุดท้าย
+            </p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; gap: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px 16px;">
+          <div style="font-size: 28px; flex-shrink: 0;">🎴</div>
+          <div>
+            <h4 style="margin: 0 0 4px 0; color: #00f0ff; font-size: 14px;">3. การควบคุมการ์ด 3D (Card Controls)</h4>
+            <p style="margin: 0; font-size: 12.5px; color: #cbd5e1; line-height: 1.5;">
+              • <strong>คลิกซ้าย หรือ แตะการ์ด (โหมดทาย):</strong> เลือกการ์ดเพื่อส่งคำตอบตัดสินคดี (+คะแนนหากถูก)<br>
+              • <strong>คลิกขวา หรือ แตะการ์ด (โหมดคว่ำ):</strong> คว่ำการ์ดลงบนโต๊ะ 3D เพื่อตัดช้อยส์ทิ้ง<br>
+              • <strong>มือถือ / iPad:</strong> แตะปุ่ม <em>"🎯 โหมดทาย"</em> ด้านล่างเพื่อสลับเป็น <em>"🎴 โหมดคว่ำ"</em> ได้สะดวกสะบาย
+            </p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; gap: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px 16px;">
+          <div style="font-size: 28px; flex-shrink: 0;">🔍</div>
+          <div>
+            <h4 style="margin: 0 0 4px 0; color: #00f0ff; font-size: 14px;">4. ระบบคำใบ้ 3 ระดับ (Progressive Clues)</h4>
+            <p style="margin: 0; font-size: 12.5px; color: #cbd5e1; line-height: 1.5;">
+              • <strong>คำใบ้ที่ 1 (กว้าง):</strong> โครงสร้างพื้นฐาน รูปร่าง และตำแหน่งที่พบในเซลล์<br>
+              • <strong>คำใบ้ที่ 2 (ปานกลาง):</strong> กระบวนการชีวเคมี และสารโมเลกุลที่เกี่ยวข้อง<br>
+              • <strong>คำใบ้ที่ 3 (เฉพาะเจาะจง):</strong> บทบาทหน้าที่เอกลักษณ์ และรหัสพยาธิสภาพสำคัญ (-50 แต้ม)
+            </p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; gap: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px 16px;">
+          <div style="font-size: 28px; flex-shrink: 0;">📡</div>
+          <div>
+            <h4 style="margin: 0 0 4px 0; color: #00f0ff; font-size: 14px;">5. ปุ่มถามด่วน & แชทสด (Quick Inquiries & Chat)</h4>
+            <p style="margin: 0; font-size: 12.5px; color: #cbd5e1; line-height: 1.5;">
+              สามารถกดปุ่มถามด่วน เช่น <em>"🛡️ มีเยื่อหุ้ม 2 ชั้น?", "🌿 พบในพืช?", "⚡ สร้าง ATP?"</em> หรือพิมพ์แชทถามได้ทันที ฝ่ายถือคำตอบสามารถกดปุ่ม "ใช่ / ไม่ใช่ / บางกรณี" เพื่อตอบโต้ได้อย่างรวดเร็ว
+            </p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="display: flex; gap: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px 16px;">
+          <div style="font-size: 28px; flex-shrink: 0;">🌐</div>
+          <div>
+            <h4 style="margin: 0 0 4px 0; color: #00f0ff; font-size: 14px;">6. เล่นคนเดียว (Solo) หรือเล่นคู่ (Multiplayer)</h4>
+            <p style="margin: 0; font-size: 12.5px; color: #cbd5e1; line-height: 1.5;">
+              • <strong>Solo Detective:</strong> ระบบจะสุ่มการ์ดลับและเปิดคำใบ้ให้คุณทายและตัดช้อยส์ด้วยตนเอง<br>
+              • <strong>Co-op Room:</strong> กดปุ่ม "จับคู่เลขห้อง" เพื่อสร้างห้องแล้วส่งรหัสห้องให้เพื่อนเข้าร่วมเล่นด้วยกันได้ทันที ข้ามได้ทุกอุปกรณ์ทั้งมือถือ, iPad และคอมพิวเตอร์!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px; text-align: center;">
+        <button class="modal-btn btn-next" id="close-rules-btn-bottom" style="width: 100%; max-width: 280px; margin: 0 auto; display: block;">
+          <span>เข้าใจแล้ว เริ่มสืบสวน ➔</span>
         </button>
       </div>
     </div>

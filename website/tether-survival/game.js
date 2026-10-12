@@ -75,7 +75,131 @@ const STANDARD_QUESTIONS = [
   }
 ];
 
-
+// ==========================================
+// 1.2 "Who Am I?" Progressive Clues Question Bank
+// ==========================================
+const WHO_AM_I_ROUNDS = [
+  {
+    topic: 'Who Am I? #1',
+    question: '🔍 ปริศนาอัตลักษณ์ #1: "ฉันคือโครงสร้างใดในเซลล์?"',
+    clues: [
+      'ฉันมีเยื่อหุ้ม 2 ชั้น และมี Circular DNA + ไรโบโซม 70S ของตัวเอง',
+      'ฉันทำหน้าที่เป็นโรงไฟฟ้าหลักของเซลล์ ผลิต ATP ผ่าน Krebs Cycle & ETC',
+      'หากฉันทำงานผิดปกติ เซลล์จะขาดพลังงาน หรือปล่อย Cytochrome c กระตุ้น Apoptosis'
+    ],
+    choices: [
+      { id: 'A', text: 'Mitochondria (ไมโทคอนเดรีย)', correct: true },
+      { id: 'B', text: 'Chloroplast (คลอโรพลาสต์)', correct: false },
+      { id: 'C', text: 'Golgi Apparatus (กอลจิ)', correct: false },
+      { id: 'D', text: 'Lysosome (ไลโซโซม)', correct: false }
+    ]
+  },
+  {
+    topic: 'Who Am I? #2',
+    question: '🔍 ปริศนาอัตลักษณ์ #2: "ฉันคือโมเลกุลชีววิทยาใด?"',
+    clues: [
+      'ฉันประกอบด้วย 2 หน่วยย่อย (Large & Small) มีทั้ง rRNA และโปรตีน',
+      'ฉันทำหน้าที่เป็นแท่นอ่านรหัสโคดอนและเชื่อมกรดอะมิโนเป็นสายพอลิเพปไทด์',
+      'ยาปฏิชีวนะหลายชนิด เช่น Streptomycin ออกฤทธิ์ยับยั้งการทำงานของฉัน'
+    ],
+    choices: [
+      { id: 'A', text: 'Ribosome (ไรโบโซม)', correct: true },
+      { id: 'B', text: 'RNA Polymerase', correct: false },
+      { id: 'C', text: 'Spliceosome', correct: false },
+      { id: 'D', text: 'tRNA Synthetase', correct: false }
+    ]
+  },
+  {
+    topic: 'Who Am I? #3',
+    question: '🔍 ปริศนาอัตลักษณ์ #3: "ฉันคือออร์แกเนลล์ใด?"',
+    clues: [
+      'ฉันเป็นถุงเยื่อหุ้มชั้นเดียว บรรจุเอนไซม์ย่อยสลาย Hydrolytic Enzymes',
+      'ฉันทำงานได้ดีที่สุดในสภาวะที่เป็นกรดอ่อน (pH ~ 4.5 - 5.0)',
+      'ฉันมีหน้าที่ย่อยออร์แกเนลล์ที่เสื่อมสภาพ (Autophagy) และสิ่งแปลกปลอม'
+    ],
+    choices: [
+      { id: 'A', text: 'Lysosome (ไลโซโซม)', correct: true },
+      { id: 'B', text: 'Peroxisome (เพอรอกซิโซม)', correct: false },
+      { id: 'C', text: 'Vacuole (แวคิวโอล)', correct: false },
+      { id: 'D', text: 'Endosome (เอนโดโซม)', correct: false }
+    ]
+  },
+  {
+    topic: 'Who Am I? #4',
+    question: '🔍 ปริศนาอัตลักษณ์ #4: "ฉันคือโปรตีนใด?"',
+    clues: [
+      'ฉันได้รับฉายาว่า "ผู้พิทักษ์แห่งจีโนม" (Guardian of the Genome)',
+      'เมื่อตรวจพบ DNA เสียหาย ฉันจะกระตุ้น p21 สั่งหยุดวงจรเซลล์ที่ G1 Checkpoint',
+      'มากกว่า 50% ของมะเร็งในมนุษย์พบการกลายพันธุ์ของยีนที่สร้างตัวฉัน'
+    ],
+    choices: [
+      { id: 'A', text: 'p53 Tumor Suppressor', correct: true },
+      { id: 'B', text: 'Ras Oncogene Protein', correct: false },
+      { id: 'C', text: 'Rb Protein', correct: false },
+      { id: 'D', text: 'Cyclin D Kinase', correct: false }
+    ]
+  },
+  {
+    topic: 'Who Am I? #5',
+    question: '🔍 ปริศนาอัตลักษณ์ #5: "ฉันคือโครงสร้างใด?"',
+    clues: [
+      'ฉันคือร่างแหเอนโดพลาซึมที่มีไรโบโซมเกาะอยู่เต็มผิวภายนอก',
+      'ฉันมีหน้าที่หลักในการสังเคราะห์และดัดแปลงโปรตีนส่งออกนอกเซลล์',
+      'โปรตีนที่ผ่านตัวฉันจะถูกส่งต่อไปยัง Golgi Apparatus ด้วย Transport Vesicles'
+    ],
+    choices: [
+      { id: 'A', text: 'Rough ER (RER)', correct: true },
+      { id: 'B', text: 'Smooth ER (SER)', correct: false },
+      { id: 'C', text: 'Nuclear Membrane', correct: false },
+      { id: 'D', text: 'Centrosome', correct: false }
+    ]
+  },
+  {
+    topic: 'Who Am I? #6',
+    question: '🔍 ปริศนาอัตลักษณ์ #6: "ฉันคือเอนไซม์ตัวใด?"',
+    clues: [
+      'ฉันทำหน้าที่คลายเกลียวคู่ของ DNA โดยสลายพันธะไฮโดรเจนที่ Replication Fork',
+      'ฉันใช้พลังงานจากการสลาย ATP ขับเคลื่อนไปข้างหน้าบนสายดีเอ็นเอ',
+      'หากไม่มีฉัน DNA Polymerase จะไม่สามารถเข้าไปจำลองสาย DNA ได้'
+    ],
+    choices: [
+      { id: 'A', text: 'DNA Helicase (เฮลิเคส)', correct: true },
+      { id: 'B', text: 'DNA Topoisomerase', correct: false },
+      { id: 'C', text: 'DNA Ligase (ไลเกส)', correct: false },
+      { id: 'D', text: 'RNA Primase (ไพรเมส)', correct: false }
+    ]
+  },
+  {
+    topic: 'Who Am I? #7',
+    question: '🔍 ปริศนาอัตลักษณ์ #7: "ฉันคือโครงร่างค้ำจุนเซลล์ชนิดใด?"',
+    clues: [
+      'ฉันมีขนาดเส้นผ่านศูนย์กลางใหญ่ที่สุดในบรรดา Cytoskeleton (~25 นาโนเมตร)',
+      'ฉันสร้างจากพอลิเมอร์ของ Tubulin heterodimers และประกอบเป็น Spindle Fiber',
+      'ฉันยังเป็นแกนโครงสร้างหลักใน Cilia และ Flagella ในรูปแบบการเรียง 9+2'
+    ],
+    choices: [
+      { id: 'A', text: 'Microtubule (ไมโครทูบูล)', correct: true },
+      { id: 'B', text: 'Microfilament (แอกติน)', correct: false },
+      { id: 'C', text: 'Intermediate Filament', correct: false },
+      { id: 'D', text: 'Centriole (เซนทริโอล)', correct: false }
+    ]
+  },
+  {
+    topic: 'Who Am I? #8',
+    question: '🔍 ปริศนาอัตลักษณ์ #8: "ฉันคือกระบวนการทางชีววิทยาใด?"',
+    clues: [
+      'ฉันคือกระบวนการทำลายตนเองอย่างเป็นระบบของเซลล์ (Programmed Cell Death)',
+      'ทำให้เซลล์หดตัว โครมาตินควบแน่น และแตกเป็น Apoptotic Bodies โดยไม่อักเสบ',
+      'ฉันถูกควบคุมโดยเอนไซม์ Caspases ทั้งทาง Mitochondria และ Death Receptor'
+    ],
+    choices: [
+      { id: 'A', text: 'Apoptosis (อะพ็อพโทซิส)', correct: true },
+      { id: 'B', text: 'Necrosis (เนโครซิส)', correct: false },
+      { id: 'C', text: 'Autophagy (ออโตฟาจี)', correct: false },
+      { id: 'D', text: 'Senescence (เซลล์ชรา)', correct: false }
+    ]
+  }
+];
 
 // ==========================================
 // 1.5 Atmospheric & Cultural Arena Themes
@@ -3275,8 +3399,28 @@ window.switchGameType = function(type) {
     if (tabSurv) tabSurv.className = type === 'survival' ? 'mode-tab-btn active' : 'mode-tab-btn';
     const tabWho = document.getElementById('tabWhoAmI');
     if (tabWho) tabWho.className = type === 'whoami' ? 'mode-tab-btn active' : 'mode-tab-btn';
+
+    // Also sync in lobby if open
+    document.querySelectorAll('.game-type-card').forEach(c => c.classList.remove('selected'));
+    const lobbyCard = document.querySelector(`.game-type-card[data-gametype="${type}"]`);
+    if (lobbyCard) lobbyCard.classList.add('selected');
+
     window.bioCyber.loadQuestion(0);
+    if (window.bioCyber.showFloatingToast) {
+      window.bioCyber.showFloatingToast(type === 'whoami' ? '🃏 สลับสู่โหมด Who Am I? (ทายฉันสิ)' : '⚡ สลับสู่โหมด 3D Survival Arena', '#00f0ff');
+    }
   }
+};
+
+// Rules Modal Handlers
+window.openRulesModal = function() {
+  const modal = document.getElementById('rulesModal');
+  if (modal) modal.classList.remove('hidden');
+};
+
+window.closeRulesModal = function() {
+  const modal = document.getElementById('rulesModal');
+  if (modal) modal.classList.add('hidden');
 };
 
 // Global Theme Switcher

@@ -222,6 +222,7 @@ function init() {
 
   btnHelp?.addEventListener('click', toggleTutorialModal);
   btnCloseTutorial?.addEventListener('click', closeTutorialModal);
+  document.getElementById('btn-landing-rules')?.addEventListener('click', openTutorialModal);
   tutorialModal?.addEventListener('click', (e) => {
     if (e.target === tutorialModal) closeTutorialModal();
   });
