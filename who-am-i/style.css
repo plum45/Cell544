@@ -1009,3 +1009,95 @@ body {
 @media (max-width: 1200px) {
   .hud-layer { grid-template-columns: 320px 1fr 280px; }
 }
+
+/* Card Inspector HUD (Crisp Magnified Preview Drawer) */
+.card-inspect-hud {
+  position: absolute;
+  bottom: 120px;
+  right: 28px;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #09090b;
+  border: 2px solid #0284c7;
+  border-radius: 18px;
+  padding: 16px 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35), 0 0 30px rgba(2, 132, 199, 0.25);
+  z-index: 80;
+  backdrop-filter: blur(16px);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-inspect-hud.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.inspect-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.inspect-media {
+  width: 90px;
+  height: 90px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #e2e8f0;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.inspect-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.inspect-fallback {
+  font-size: 44px;
+}
+
+.inspect-info {
+  flex: 1;
+}
+
+.inspect-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.inspect-title-th {
+  font-size: 22px;
+  font-weight: 800;
+  color: #09090b;
+  line-height: 1.2;
+}
+
+.inspect-title-en {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #0284c7;
+  margin-bottom: 6px;
+}
+
+.inspect-clue {
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.45;
+}
+

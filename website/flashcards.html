@@ -1,0 +1,2264 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+  <title>แฟลชการ์ดชีววิทยาของเซลล์ (Cell Biology 3D Flashcards) | ระบบควบคุมชีวิตของเซลล์</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================================================
+       Apple Pure White Design Tokens
+       ========================================================================== */
+    :root {
+      --font-sans: 'Prompt', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-display: 'Outfit', 'Prompt', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --bg-canvas: #ffffff;
+      --bg-subtle: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-card-back: #f8fafc;
+      
+      --text-main: #09090b;
+      --text-muted: #52525b;
+      --text-dim: #71717a;
+      
+      --border-subtle: rgba(0, 0, 0, 0.08);
+      --border-hover: rgba(0, 0, 0, 0.2);
+      --border-focus: #09090b;
+      
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.1);
+      --shadow-card: 0 16px 40px -10px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.06);
+      
+      --r-pill: 9999px;
+      --r-card: 24px;
+      --r-inner: 16px;
+      
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+      
+      /* Topic Colors */
+      --color-all: #09090b;
+      --color-gene-expr: #059669;
+      --color-gene-reg: #d97706;
+      --color-signaling: #0284c7;
+      --color-response: #7c3aed;
+      --color-cycle: #ea580c;
+      --color-apoptosis: #e11d48;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Ambient Subtle Glow */
+    .ambient-glow-wrap {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .ambient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.45;
+      transition: all 1.2s ease;
+    }
+
+    .ambient-orb-1 {
+      width: 450px;
+      height: 450px;
+      top: -100px;
+      left: 10%;
+      background: rgba(5, 150, 105, 0.12);
+    }
+
+    .ambient-orb-2 {
+      width: 500px;
+      height: 500px;
+      bottom: -150px;
+      right: 5%;
+      background: rgba(2, 132, 199, 0.1);
+    }
+
+    /* ==========================================================================
+       Apple Global Navigation Bar (Sticky Pure White)
+       ========================================================================== */
+    .apple-global-nav {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-inner {
+      width: 100%;
+      max-width: 1240px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .apple-logo-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-main);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+    }
+
+    .apple-logo-link svg {
+      color: var(--text-main);
+    }
+
+    .nav-links-desktop {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      list-style: none;
+    }
+
+    .nav-links-desktop a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+
+    .nav-links-desktop a:hover {
+      color: var(--text-main);
+    }
+
+    .nav-links-desktop a.active {
+      color: var(--text-main);
+      font-weight: 700;
+      position: relative;
+    }
+
+    .nav-links-desktop a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--text-main);
+      border-radius: var(--r-pill);
+    }
+
+    .nav-badge-pill {
+      background: #09090b;
+      color: #ffffff !important;
+      padding: 4px 12px;
+      border-radius: var(--r-pill);
+      font-weight: 600 !important;
+      font-size: 12px !important;
+    }
+
+    /* ==========================================================================
+       Flashcard App Layout
+       ========================================================================== */
+    .app-main {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Header */
+    .app-header {
+      text-align: center;
+      margin-bottom: 24px;
+      max-width: 680px;
+    }
+
+    .kicker-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: var(--r-pill);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .kicker-tag .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #059669;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-main);
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .page-subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Topic Filter Bar (Horizontally scrollable on mobile) */
+    .topic-filter-wrapper {
+      width: 100%;
+      margin-bottom: 24px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: none;
+    }
+    .topic-filter-wrapper::-webkit-scrollbar {
+      display: none;
+    }
+
+    .topic-filter-bar {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      min-width: max-content;
+      padding: 2px 4px;
+    }
+
+    .topic-btn {
+      appearance: none;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-subtle);
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: var(--r-pill);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s var(--ease);
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .topic-btn:hover {
+      background: #ffffff;
+      color: var(--text-main);
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .topic-btn.active {
+      background: var(--text-main);
+      color: #ffffff;
+      border-color: var(--text-main);
+      font-weight: 600;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .topic-btn .count-badge {
+      font-size: 11px;
+      padding: 1px 7px;
+      border-radius: var(--r-pill);
+      background: rgba(0, 0, 0, 0.08);
+      color: inherit;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .topic-btn.active .count-badge {
+      background: rgba(255, 255, 255, 0.22);
+      color: #ffffff;
+    }
+
+    /* Controls & Utilities Bar */
+    .utility-bar {
+      width: 100%;
+      max-width: 640px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .search-input-wrap {
+      flex: 1;
+      min-width: 220px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 40px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-pill);
+      padding: 0 36px 0 38px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.2s var(--ease);
+    }
+
+    .search-input:focus {
+      background: #ffffff;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .search-icon-left {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+
+    .search-clear-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      display: none;
+      font-size: 14px;
+    }
+
+    .search-clear-btn.visible {
+      display: block;
+    }
+
+    .utility-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tool-btn {
+      height: 40px;
+      padding: 0 14px;
+      border-radius: var(--r-pill);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s var(--ease);
+    }
+
+    .tool-btn:hover {
+      background: #ffffff;
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tool-btn.active {
+      background: #09090b;
+      color: #ffffff;
+      border-color: #09090b;
+    }
+
+    /* Study Progress Metric Bar */
+    .progress-bar-wrap {
+      width: 100%;
+      max-width: 640px;
+      margin-bottom: 24px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .progress-counts {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .count-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .count-chip.mastered { color: #059669; }
+    .count-chip.review { color: #e11d48; }
+    .count-chip.remaining { color: var(--text-dim); }
+
+    .streak-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #b45309;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: var(--r-pill);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(0, 0, 0, 0.06);
+      border-radius: var(--r-pill);
+      overflow: hidden;
+      display: flex;
+    }
+
+    .progress-fill-mastered {
+      height: 100%;
+      background: #059669;
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+
+    .progress-fill-review {
+      height: 100%;
+      background: #f43f5e;
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+
+    /* ==========================================================================
+       3D Flashcard Stage (Interactive Flip)
+       ========================================================================== */
+    .card-stage-container {
+      width: 100%;
+      max-width: 640px;
+      perspective: 1200px;
+      margin-bottom: 24px;
+      user-select: none;
+      touch-action: pan-y;
+    }
+
+    .flashcard-3d-box {
+      width: 100%;
+      min-height: 420px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.65s var(--ease-bounce), box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .flashcard-3d-box.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: var(--r-card);
+      padding: 32px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+      background: var(--bg-card);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .flashcard-3d-box:hover .card-face {
+      border-color: var(--border-hover);
+    }
+
+    /* Card Front */
+    .card-face.card-front {
+      background: #ffffff;
+    }
+
+    /* Card Back */
+    .card-face.card-back {
+      transform: rotateY(180deg);
+      background: #fbfbfd;
+      border-color: rgba(0, 0, 0, 0.12);
+    }
+
+    /* Card Header */
+    .card-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card-topic-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: var(--r-pill);
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .card-index-indicator {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+    }
+
+    .card-audio-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .card-audio-btn:hover {
+      background: rgba(0, 0, 0, 0.06);
+      color: var(--text-main);
+    }
+
+    /* Card Core Content */
+    .card-body-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    .card-term-english {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .card-question-text {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.35;
+      color: var(--text-main);
+      margin-bottom: 14px;
+    }
+
+    .card-hint-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* Back Content Specifics */
+    .card-answer-title {
+      font-family: var(--font-display);
+      font-size: 21px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .card-explanation-box {
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: var(--r-inner);
+      padding: 16px 20px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.65;
+      color: #27272a;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .card-takeaway-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #fffbeb;
+      border: 1px solid #fef3c7;
+      border-radius: 12px;
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 12.5px;
+      color: #92400e;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .card-takeaway-row .icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      line-height: 1;
+      margin-top: 2px;
+    }
+
+    .card-trick-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f0fdf4;
+      border: 1px solid #dcfce7;
+      border-radius: 12px;
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 12.5px;
+      color: #166534;
+      line-height: 1.5;
+    }
+
+    .card-trick-row .icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      line-height: 1;
+      margin-top: 2px;
+    }
+
+    /* Card Footer Prompt */
+    .card-footer-prompt {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dim);
+      padding-top: 12px;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .kbd-shortcut {
+      background: rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       Review Action Buttons Dock
+       ========================================================================== */
+    .review-action-dock {
+      width: 100%;
+      max-width: 640px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .action-btn-huge {
+      flex: 1;
+      height: 54px;
+      border-radius: var(--r-pill);
+      border: 1.5px solid transparent;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s var(--ease);
+      user-select: none;
+    }
+
+    .action-btn-huge.need-review {
+      background: #fff1f2;
+      border-color: #fecdd3;
+      color: #e11d48;
+    }
+
+    .action-btn-huge.need-review:hover {
+      background: #ffe4e6;
+      border-color: #fda4af;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(225, 29, 72, 0.15);
+    }
+
+    .action-btn-huge.need-review:active {
+      transform: scale(0.97);
+    }
+
+    .action-btn-huge.mastered {
+      background: #f0fdf4;
+      border-color: #bbf7d0;
+      color: #059669;
+    }
+
+    .action-btn-huge.mastered:hover {
+      background: #dcfce7;
+      border-color: #86efac;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(5, 150, 105, 0.15);
+    }
+
+    .action-btn-huge.mastered:active {
+      transform: scale(0.97);
+    }
+
+    /* Navigation Arrow Controls */
+    .deck-nav-row {
+      width: 100%;
+      max-width: 640px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .nav-arrow-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.15s ease;
+    }
+
+    .nav-arrow-btn:hover {
+      background: #ffffff;
+      border-color: var(--border-hover);
+      transform: scale(1.05);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-arrow-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .deck-position-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    /* ==========================================================================
+       Grid Gallery View Mode (Alternative to Focus Flip)
+       ========================================================================== */
+    .grid-gallery-container {
+      width: 100%;
+      max-width: 1040px;
+      display: none;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    .grid-gallery-container.active {
+      display: grid;
+    }
+
+    .gallery-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.25s var(--ease);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .gallery-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .gallery-card.is-mastered {
+      border-color: rgba(5, 150, 105, 0.4);
+      background: #fbfdfc;
+    }
+
+    .gallery-card-top {
+      margin-bottom: 14px;
+    }
+
+    .gallery-card-q {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .gallery-card-ans {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .gallery-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    /* Bottom Quick Action Banner */
+    .bottom-study-cta {
+      width: 100%;
+      max-width: 640px;
+      margin-top: 48px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .bottom-cta-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .bottom-cta-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .bottom-cta-links {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-pill-btn {
+      padding: 8px 18px;
+      border-radius: var(--r-pill);
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cta-pill-btn.primary {
+      background: #09090b;
+      color: #ffffff;
+    }
+
+    .cta-pill-btn.primary:hover {
+      background: #27272a;
+      transform: translateY(-2px);
+    }
+
+    .cta-pill-btn.secondary {
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .cta-pill-btn.secondary:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .page-title {
+        font-size: 28px;
+      }
+      .nav-links-desktop {
+        display: none;
+      }
+      .card-face {
+        padding: 24px 20px;
+      }
+      .flashcard-3d-box {
+        min-height: 440px;
+      }
+      .card-question-text {
+        font-size: 20px;
+      }
+      .card-answer-title {
+        font-size: 18px;
+      }
+      .action-btn-huge {
+        font-size: 13px;
+        height: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Light -->
+  <div class="ambient-glow-wrap">
+    <div class="ambient-orb ambient-orb-1" id="ambientOrb1"></div>
+    <div class="ambient-orb ambient-orb-2" id="ambientOrb2"></div>
+  </div>
+
+  <!-- Apple Global Nav -->
+  <header class="apple-global-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="apple-logo-link">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="m4.93 4.93 4.24 4.24"></path>
+          <path d="m14.83 9.17 4.24-4.24"></path>
+          <path d="m14.83 14.83 4.24 4.24"></path>
+          <path d="m9.17 14.83-4.24 4.24"></path>
+          <circle cx="12" cy="12" r="4"></circle>
+        </svg>
+        <span>CYTOLIFE PRO</span>
+      </a>
+
+      <ul class="nav-links-desktop">
+        <li><a href="index.html">หน้าแรก (Home)</a></li>
+        <li><a href="curriculum.html">ศูนย์รวมเนื้อหา</a></li>
+        <li><a href="flashcards.html" class="active">แฟลชการ์ด (Flashcards)</a></li>
+        <li><a href="who-am-i/index.html">ใครคือฉัน? (Who Am I)</a></li>
+        <li><a href="tether-survival/index.html">เอาชีวิตรอด 3D</a></li>
+        <li><a href="topics/quiz-hub.html" class="nav-badge-pill">คลังข้อสอบ ➔</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main App -->
+  <main class="app-main">
+    
+    <!-- Header -->
+    <header class="app-header">
+      <div class="kicker-tag">
+        <span class="pulse-dot"></span>
+        <span>Interactive Spaced Repetition</span>
+      </div>
+      <h1 class="page-title">แฟลชการ์ดชีววิทยาของเซลล์</h1>
+      <p class="page-subtitle">
+        ทบทวน 42 คอนเซปต์สำคัญระดับโมเลกุลตามหลักสูตร Campbell Biology พลิกดูคำอธิบายและเทคนิคจำแม่นยำ พร้อมบันทึกความก้าวหน้า
+      </p>
+    </header>
+
+    <!-- Topic Selector Pill Bar -->
+    <div class="topic-filter-wrapper">
+      <div class="topic-filter-bar" id="topicFilterBar">
+        <button class="topic-btn active" data-topic="all" onclick="selectTopic('all')">
+          <span>🌟 ทุกหัวข้อ (Master Deck)</span>
+          <span class="count-badge" id="badge-all">42</span>
+        </button>
+        <button class="topic-btn" data-topic="gene-expr" onclick="selectTopic('gene-expr')">
+          <span>🧬 1. การแสดงออกของยีน</span>
+          <span class="count-badge" id="badge-gene-expr">7</span>
+        </button>
+        <button class="topic-btn" data-topic="gene-reg" onclick="selectTopic('gene-reg')">
+          <span>🎛️ 2. การควบคุมยีน</span>
+          <span class="count-badge" id="badge-gene-reg">7</span>
+        </button>
+        <button class="topic-btn" data-topic="signaling" onclick="selectTopic('signaling')">
+          <span>📡 3. การสื่อสารของเซลล์</span>
+          <span class="count-badge" id="badge-signaling">7</span>
+        </button>
+        <button class="topic-btn" data-topic="response" onclick="selectTopic('response')">
+          <span>⚡ 4. การตอบสนอง</span>
+          <span class="count-badge" id="badge-response">7</span>
+        </button>
+        <button class="topic-btn" data-topic="cycle" onclick="selectTopic('cycle')">
+          <span>🔄 5. วัฏจักรเซลล์</span>
+          <span class="count-badge" id="badge-cycle">7</span>
+        </button>
+        <button class="topic-btn" data-topic="apoptosis" onclick="selectTopic('apoptosis')">
+          <span>💀 6. Apoptosis</span>
+          <span class="count-badge" id="badge-apoptosis">7</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Utility & Search Bar -->
+    <div class="utility-bar">
+      <div class="search-input-wrap">
+        <svg class="search-icon-left" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="ค้นหาคำศัพท์ คำถาม หรือคีย์เวิร์ด..." oninput="handleSearchInput(this.value)">
+        <button class="search-clear-btn" id="searchClearBtn" onclick="clearSearch()" title="ล้างการค้นหา">✕</button>
+      </div>
+
+      <div class="utility-tools">
+        <button class="tool-btn" id="shuffleBtn" onclick="shuffleCurrentDeck()" title="สลับสุ่มลำดับการ์ด">
+          <span>🔀 สุ่มการ์ด</span>
+        </button>
+        <button class="tool-btn" id="viewModeBtn" onclick="toggleViewMode()" title="สลับโหมดการ์ดเดี่ยว / แกลเลอรี">
+          <span id="viewModeIcon">📑</span>
+          <span id="viewModeLabel">แกลเลอรี</span>
+        </button>
+        <button class="tool-btn" onclick="resetProgressConfirm()" title="ล้างสถิติเริ่มใหม่">
+          <span>↺ รีเซ็ต</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Progress Track Bar -->
+    <div class="progress-bar-wrap">
+      <div class="progress-meta">
+        <div class="progress-counts">
+          <span class="count-chip mastered">
+            <span>✅ จำได้แล้ว:</span>
+            <strong id="statMasteredCount">0</strong>
+          </span>
+          <span class="count-chip review">
+            <span>❌ ต้องทบทวน:</span>
+            <strong id="statReviewCount">0</strong>
+          </span>
+          <span class="count-chip remaining">
+            <span>เหลือ:</span>
+            <strong id="statRemainingCount">42</strong>
+          </span>
+        </div>
+        <div class="streak-badge">
+          <span>🔥 คอมโบจำต่อเนื่อง:</span>
+          <strong id="statStreak">0</strong>
+        </div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill-mastered" id="progressFillMastered"></div>
+        <div class="progress-fill-review" id="progressFillReview"></div>
+      </div>
+    </div>
+
+    <!-- 3D Card Stage (Focus Mode) -->
+    <div class="card-stage-container" id="cardStageContainer">
+      <div class="flashcard-3d-box" id="flashcardBox" onclick="flipCard()">
+        
+        <!-- FRONT -->
+        <div class="card-face card-front">
+          <div class="card-header-row">
+            <span class="card-topic-tag" id="cardTopicTagFront">🧬 GENE EXPRESSION</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="card-index-indicator" id="cardIndexFront">1 / 42</span>
+              <button class="card-audio-btn" onclick="speakTerm(event)" title="ฟังการออกเสียงคีย์เวิร์ด">🔊</button>
+            </div>
+          </div>
+
+          <div class="card-body-content">
+            <div class="card-term-english" id="cardTermFront">Central Dogma</div>
+            <div class="card-question-text" id="cardQuestionFront">
+              ลำดับการถ่ายทอดข้อมูลทางพันธุกรรมตามหลัก Central Dogma คืออะไร และมีข้อยกเว้นอย่างไร?
+            </div>
+            <div class="card-hint-text" id="cardHintFront">
+              แตะตัวการ์ดเพื่อพลิกดูคำเฉลย กลไก Campbell Biology และข้อควรระวังในห้องสอบ
+            </div>
+          </div>
+
+          <div class="card-footer-prompt">
+            <span>🔄 แตะเพื่อพลิกการ์ด หรือกด</span>
+            <kbd class="kbd-shortcut">SPACE</kbd>
+          </div>
+        </div>
+
+        <!-- BACK -->
+        <div class="card-face card-back">
+          <div class="card-header-row">
+            <span class="card-topic-tag" id="cardTopicTagBack" style="background: rgba(5, 150, 105, 0.1); color: #059669;">
+              เฉลย & กลไกสำคัญ
+            </span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="card-index-indicator" id="cardIndexBack">1 / 42</span>
+              <button class="card-audio-btn" onclick="speakTerm(event)" title="ฟังการออกเสียง">🔊</button>
+            </div>
+          </div>
+
+          <div class="card-body-content" style="justify-content: flex-start;">
+            <div class="card-answer-title" id="cardAnswerTitleBack">DNA → mRNA → Protein</div>
+            
+            <div class="card-explanation-box" id="cardExplanationBack">
+              ข้อมูลทางพันธุกรรมถูกถอดรหัส (Transcription) จาก DNA สู่ mRNA แล้วถูกแปลรหัส (Translation) เป็นโปรตีน โดยมีข้อยกเว้นคือ Reverse Transcription ใน Retroviruses (RNA → cDNA)
+            </div>
+
+            <div class="card-takeaway-row" id="cardTakeawayBack">
+              <span class="icon">📖</span>
+              <span id="cardTakeawayText">Campbell Takeaway: แม่แบบสังเคราะห์ทิศ 3'→5' เพื่อสร้างสายใหม่ 5'→3' เสมอ</span>
+            </div>
+
+            <div class="card-trick-row" id="cardTrickBack">
+              <span class="icon">💡</span>
+              <span id="cardTrickText">Exam Trick: อย่าสับสนกับ Reverse transcription ซึ่งต้องใช้เอนไซม์ Reverse transcriptase</span>
+            </div>
+          </div>
+
+          <div class="card-footer-prompt">
+            <span>แตะอีกครั้งเพื่อพลิกกลับด้านหน้า</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Review Action Buttons -->
+    <div class="review-action-dock" id="reviewActionDock">
+      <button class="action-btn-huge need-review" onclick="markCard(false)" title="ยังจำไม่ได้ (กดเลข 1)">
+        <span>❌ ยังจำไม่ได้ (กด 1)</span>
+      </button>
+      <button class="action-btn-huge mastered" onclick="markCard(true)" title="จำได้แม่นแล้ว (กดเลข 2)">
+        <span>✅ จำได้แม่นแล้ว (กด 2)</span>
+      </button>
+    </div>
+
+    <!-- Deck Nav Controls (Arrows & Key hints) -->
+    <div class="deck-nav-row" id="deckNavRow">
+      <button class="nav-arrow-btn" id="prevCardBtn" onclick="navigateCard(-1)" title="การ์ดก่อนหน้า (←)">
+        ←
+      </button>
+      <div class="deck-position-text" id="deckPositionText">
+        การ์ดที่ 1 จาก 42
+      </div>
+      <button class="nav-arrow-btn" id="nextCardBtn" onclick="navigateCard(1)" title="การ์ดถัดไป (→)">
+        →
+      </button>
+    </div>
+
+    <!-- Grid Gallery Container (Hidden by default, shown when toggle clicked) -->
+    <div class="grid-gallery-container" id="gridGalleryContainer">
+      <!-- Injected via JavaScript -->
+    </div>
+
+    <!-- Bottom Study CTA -->
+    <div class="bottom-study-cta">
+      <div class="bottom-cta-title">พร้อมทดสอบความรู้จริงในคลังข้อสอบและเกม 3 มิติแล้วหรือยัง?</div>
+      <p class="bottom-cta-desc">นำความรู้จากแฟลชการ์ดไปประลองในสนามสอบจับเวลา หรือตะลุยในโหมดเอาชีวิตรอด 3D</p>
+      <div class="bottom-cta-links">
+        <a href="topics/quiz-hub.html" class="cta-pill-btn primary">📝 ไปทำแบบทดสอบ 15 ข้อ</a>
+        <a href="who-am-i/index.html" class="cta-pill-btn secondary">🃏 เล่นเกมใครคือฉัน? (Who Am I)</a>
+        <a href="tether-survival/index.html" class="cta-pill-btn secondary">🚀 เอาชีวิตรอด 3D Arena</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==========================================================================
+       Sound Effects & Audio Synth (Web Audio API)
+       ========================================================================== -->
+  <script>
+    class FlashcardAudio {
+      constructor() {
+        this.ctx = null;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      playFlip() {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.exponentialRampToValueAtTime(160, now + 0.12);
+        gain.gain.setValueAtTime(0.06, now);
+        gain.gain.linearRampToValueAtTime(0.001, now + 0.12);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      }
+      playMastered() {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.08, now + idx * 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.05 + 0.28);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.05);
+          osc.stop(now + idx * 0.05 + 0.28);
+        });
+      }
+      playReview() {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.linearRampToValueAtTime(140, now + 0.18);
+        gain.gain.setValueAtTime(0.05, now);
+        gain.gain.linearRampToValueAtTime(0.001, now + 0.18);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.18);
+      }
+    }
+    const audio = new FlashcardAudio();
+
+    // Text to Speech
+    function speakTerm(e) {
+      if (e) e.stopPropagation();
+      const currentCard = activeCards[currentIdx];
+      if (!currentCard || !window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(currentCard.term);
+      utter.lang = 'en-US';
+      utter.rate = 0.9;
+      window.speechSynthesis.speak(utter);
+    }
+  </script>
+
+  <!-- ==========================================================================
+       Master Flashcard Bank (42 Cards, 6 Topics)
+       ========================================================================== */
+  -->
+  <script>
+    const MASTER_FLASHCARDS = [
+      // ----------------------------------------------------------------------
+      // Topic 1: Gene Expression (การแสดงออกของยีน)
+      // ----------------------------------------------------------------------
+      {
+        id: 'ge-1',
+        topic: 'gene-expr',
+        topicName: '🧬 1. การแสดงออกของยีน',
+        topicColor: '#059669',
+        term: 'Central Dogma',
+        q: 'ลำดับการถ่ายทอดข้อมูลทางพันธุกรรมตามหลัก Central Dogma คืออะไร และมีข้อยกเว้นอย่างไร?',
+        ansTitle: 'DNA → (Transcription) → mRNA → (Translation) → Protein',
+        exp: 'ข้อมูลทางพันธุกรรมจะถูกถ่ายทอดจาก DNA ไปยัง mRNA และแปลรหัสเป็นโปรตีน ข้อยกเว้นสำคัญคือ Reverse Transcription ในไวรัสกลุ่ม Retrovirus (เช่น HIV) ที่สังเคราะห์ DNA ย้อนกลับจาก RNA โดยเอนไซม์ Reverse Transcriptase',
+        takeaway: 'Campbell: สายแม่แบบ (Template strand) มีทิศ 3\'→5\' เพื่อให้ RNA Polymerase สังเคราะห์สายใหม่ในทิศทาง 5\'→3\' เสมอ',
+        trick: 'ข้อสอบชอบหลอก: อย่าลืมว่า RNA viruses สามารถเพิ่มจำนวน RNA Replication โดยตรงได้เช่นกัน'
+      },
+      {
+        id: 'ge-2',
+        topic: 'gene-expr',
+        topicName: '🧬 1. การแสดงออกของยีน',
+        topicColor: '#059669',
+        term: 'TATA Box & Promoter',
+        q: 'TATA Box คืออะไร อยู่ที่ตำแหน่งใด และมีหน้าที่สำคัญอย่างไรในยูแคริโอต?',
+        ansTitle: 'ลำดับเบส TATAAA บริเวณ Promoter (~ -25 ถึง -30)',
+        exp: 'เป็นลำดับเบสเฉพาะบน DNA สาย Coding อยู่ก่อนจุดเริ่ม Transcription ทำหน้าที่เป็นจุดเกาะของ TATA-binding protein (TBP) ซึ่งเป็นส่วนหนึ่งของ TFIID ช่วยจัดวาง RNA Polymerase II ให้อยู่ในตำแหน่งที่แม่นยำ',
+        takeaway: 'Campbell: การกลายพันธุ์ที่ TATA box ส่งผลให้ระดับการแสดงออกของยีนลดลงอย่างมีนัยสำคัญ',
+        trick: 'ข้อสอบชอบหลอก: ในแบคทีเรียเรียกว่า Pribnow box (อยู่ที่ -10) อย่าจำสลับกับ TATA box ของยูแคริโอต'
+      },
+      {
+        id: 'ge-3',
+        topic: 'gene-expr',
+        topicName: '🧬 1. การแสดงออกของยีน',
+        topicColor: '#059669',
+        term: 'RNA Polymerase II',
+        q: 'RNA Polymerase I, II และ III ในยูแคริโอต มีหน้าที่สังเคราะห์ RNA ชนิดใดบ้าง?',
+        ansTitle: 'Pol I = rRNA ขนาดใหญ่ | Pol II = mRNA | Pol III = tRNA & 5S rRNA',
+        exp: 'Pol I สังเคราะห์ rRNA ส่วนใหญ่ในนิวคลีโอลัส, Pol II สังเคราะห์ pre-mRNA และ miRNA ทั้งหมด, ส่วน Pol III สังเคราะห์ tRNA และ 5S rRNA ขนาดเล็ก เอนไซม์ Pol II ไวต่อสารพิษ α-amanitin จากเห็ดพิษมากที่สุด',
+        takeaway: 'Campbell: ท่องจำสูตรย่อ "1-r, 2-m, 3-t" เรียงลำดับตามขนาดและความสำคัญของโมเลกุล',
+        trick: 'ข้อสอบชอบถาม: ถ้าเซลล์โดนสารยับยั้ง RNA Pol II โปรตีนจะหยุดสร้างทันทีเพราะขาด mRNA นำรหัส'
+      },
+      {
+        id: 'ge-4',
+        topic: 'gene-expr',
+        topicName: '🧬 1. การแสดงออกของยีน',
+        topicColor: '#059669',
+        term: 'Pre-mRNA Processing',
+        q: 'การดัดแปลง Pre-mRNA ในยูแคริโอตประกอบด้วย 3 ขั้นตอนหลักอะไรบ้าง และเกิดที่ใด?',
+        ansTitle: '5\' Cap + 3\' Poly-A Tail + RNA Splicing (ใน Nucleus)',
+        exp: '1. เติม 5\' Cap (7-methylguanosine) ช่วยป้องกันการย่อยและนำส่งไรโบโซม\n2. เติม 3\' Poly-A tail ช่วยรักษาเสถียรภาพ\n3. Splicing ตัด Introns (ทิ้ง) เชื่อม Exons (เก็บไว้) เกิดขึ้นทั้งหมดภายในนิวเคลียสก่อนส่งออกไซโทพลาสซึม',
+        takeaway: 'Campbell: แบคทีเรียไม่มีการดัดแปลง pre-mRNA จึงเกิด Transcription และ Translation พร้อมกันได้ทันที',
+        trick: 'วิธีจำง่าย: INtron = IN the bin (ทิ้ง), EXon = EXpressed (เก็บไว้แสดงออก)'
+      },
+      {
+        id: 'ge-5',
+        topic: 'gene-expr',
+        topicName: '🧬 1. การแสดงออกของยีน',
+        topicColor: '#059669',
+        term: 'Alternative Splicing',
+        q: 'เหตุใดมนุษย์มียีนเพียง ~20,000 ยีน แต่สามารถสร้างโปรตีนได้มากกว่า 100,000 ชนิด?',
+        ansTitle: 'Alternative RNA Splicing รวม Exons ได้หลายรูปแบบ',
+        exp: 'ใน pre-mRNA เดียวกัน Spliceosome สามารถเลือกตัดต่อ Exons ต่างรูปแบบกันได้ ทำให้ยีน 1 ยีนสามารถให้กำเนิด mRNA และโปรตีนที่มีฟังก์ชันแตกต่างกันในแต่ละเนื้อเยื่อ (Isoforms)',
+        takeaway: 'Campbell: ความซับซ้อนของสิ่งมีชีวิตชั้นสูงเกิดจาก Alternative splicing ไม่ใช่จากจำนวนยีนบนดีเอ็นเอ',
+        trick: 'คำจำกัดความ: 1 ยีน → หลากหลาย mRNA → หลากหลายโปรตีน'
+      },
+      {
+        id: 'ge-6',
+        topic: 'gene-expr',
+        topicName: '🧬 1. การแสดงออกของยีน',
+        topicColor: '#059669',
+        term: 'Wobble Hypothesis',
+        q: 'Wobble Hypothesis (การส่ายของเบส) อธิบายสิ่งใดในขั้นตอนการแปลรหัสพันธุกรรม?',
+        ansTitle: 'ความยืดหยุ่นในการจับคู่เบสตัวที่ 3 ของ Codon บน mRNA',
+        exp: 'เบสตัวที่ 3 (ปลาย 3\') ของ Codon สามารถจับคู่แบบไม่เคร่งครัดกับเบสตัวแรก (ปลาย 5\') ของ Anticodon เช่น เบส Inosine (I) จับกับ U, C หรือ A ได้ ทำให้เซลล์ใช้ tRNA เพียง ~45 ชนิดก็อ่านได้ครบ 61 Sense codons',
+        takeaway: 'Campbell: อธิบายเหตุผลที่รหัสพันธุกรรมแบบ Degenerate มักจะต่างกันเฉพาะนิวคลีโอไทด์ตัวสุดท้าย',
+        trick: 'ประโยชน์: ช่วยลดผลกระทบจากการกลายพันธุ์แบบ Silent mutation ที่ตำแหน่งเบสตัวที่ 3'
+      },
+      {
+        id: 'ge-7',
+        topic: 'gene-expr',
+        topicName: '🧬 1. การแสดงออกของยีน',
+        topicColor: '#059669',
+        term: 'Ribosome A, P, E Sites',
+        q: 'ช่อง A, P และ E บนหน่วยย่อยใหญ่ของไรโบโซมมีบทบาทอย่างไรในระยะ Elongation?',
+        ansTitle: 'A = รับ tRNA ใหม่ | P = สายโปรตีนยาว | E = tRNA เปล่าหลุดออก',
+        exp: '• A site (Aminoacyl): รับ Aminoacyl-tRNA ตัวใหม่เข้ามาตามรหัส mRNA\n• P site (Peptidyl): ตำแหน่งที่สาย Polypeptide เกาะอยู่และสร้างพันธะเพปไทด์\n• E site (Exit): ช่องทางที่ tRNA ว่างเปล่าหลุดออกจากไรโบโซม',
+        takeaway: 'Campbell: เอนไซม์ Peptidyl transferase ที่ต่อกรดอะมิโนแท้จริงแล้วคือ Ribozyme (28S rRNA) ไม่ใช่โปรตีน!',
+        trick: 'ทิศทางการเคลื่อนที่ของ tRNA: เข้าทางช่อง A → ขยับมา P → หลุดออกทาง E'
+      },
+
+      // ----------------------------------------------------------------------
+      // Topic 2: Gene Regulation (การควบคุมการแสดงออกของยีน)
+      // ----------------------------------------------------------------------
+      {
+        id: 'gr-1',
+        topic: 'gene-reg',
+        topicName: '🎛️ 2. การควบคุมยีน',
+        topicColor: '#d97706',
+        term: 'Operon Concept',
+        q: 'ส่วนประกอบพื้นฐาน 3 ส่วนของ Operon ในแบคทีเรียมีอะไรบ้าง?',
+        ansTitle: 'Promoter + Operator + Structural Genes',
+        exp: '1. Promoter: บริเวณที่ RNA Polymerase เข้าจับ\n2. Operator: ลำดับเบสสวิตช์เปิด-ปิดที่ Repressor โปรตีนเข้าจับเพื่อขัดขวางการทำงาน\n3. Structural Genes: กลุ่มยีนที่ถอดรหัสพร้อมกันเป็น Polycistronic mRNA เส้นเดียว',
+        takeaway: 'Campbell: Operon พบได้เด่นชัดใน Prokaryotes ทำให้ตอบสนองต่อการเปลี่ยนแปลงของสิ่งแวดล้อมได้ฉับไว',
+        trick: 'อย่าสับสน: Regulatory gene (สร้าง repressor) มักอยู่นอก Operon และถอดรหัสตลอดเวลา'
+      },
+      {
+        id: 'gr-2',
+        topic: 'gene-reg',
+        topicName: '🎛️ 2. การควบคุมยีน',
+        topicColor: '#d97706',
+        term: 'Lac Operon Dual Control',
+        q: 'Lac Operon ใน E. coli จะทำงานและถอดรหัสสูงสุดในสภาวะใด?',
+        ansTitle: 'เมื่อมี "Lactose สูง" และ "Glucose ต่ำ"',
+        exp: 'Lactose สูง → Allolactose จับกับ Lac Repressor ทำให้หลุดออกจาก Operator (ถอดเบรก)\nGlucose ต่ำ → cAMP พุ่งสูง → cAMP จับกับ CAP (CRP) เข้ากระตุ้น Promoter ให้เกาะแน่นขึ้น (เหยียบคันเร่ง)',
+        takeaway: 'Campbell: เรียกว่า Catabolite Repression แบคทีเรียจะเลือกบริโภคกลูโคสก่อนเสมอ',
+        trick: 'โจทย์ลวงยอดฮิต: ถ้ามีทั้ง Glucose และ Lactose ยีนจะไม่ถูกถอดรหัสระดับสูง เพราะ cAMP ต่ำ'
+      },
+      {
+        id: 'gr-3',
+        topic: 'gene-reg',
+        topicName: '🎛️ 2. การควบคุมยีน',
+        topicColor: '#d97706',
+        term: 'Trp Operon',
+        q: 'Trp Operon ต่างจาก Lac Operon อย่างไร และ Tryptophan ทำหน้าที่เป็นสารอะไร?',
+        ansTitle: 'เป็น Repressible Operon | Tryptophan ทำหน้าที่เป็น Corepressor',
+        exp: 'Trp Operon ปกติจะเปิดทำงานอยู่เสมอ (สร้างทริปโตเฟน) แต่เมื่อทริปโตเฟนมีปริมาณมากเกินพอ มันจะไปทำหน้าที่เป็น Corepressor จับกับ Inactive Repressor ให้เปลี่ยนรูปเข้าเกาะ Operator เพื่อสั่ง "ปิด" โอเปอรอน',
+        takeaway: 'Campbell: Lac = Inducible (เปิดเมื่อมีสารให้ย่อย), Trp = Repressible (ปิดเมื่อสร้างพอแล้ว)',
+        trick: 'กลไกนี้คือตัวอย่างของ Negative Feedback Inhibition ในระดับการถอดรหัสยีน'
+      },
+      {
+        id: 'gr-4',
+        topic: 'gene-reg',
+        topicName: '🎛️ 2. การควบคุมยีน',
+        topicColor: '#d97706',
+        term: 'DNA Methylation vs Histone Acetylation',
+        q: 'เปรียบเทียบผลของ DNA Methylation และ Histone Acetylation ต่อการแสดงออกของยีน?',
+        ansTitle: 'Methylation = ยับยั้งยีน (ปิด) | Acetylation = กระตุ้นยีน (เปิด)',
+        exp: '• DNA Methylation (เติม -CH₃ บนไซโตซีน): ดึงดูดโปรตีนบีบอัดโครมาตินเป็น Heterochromatin ยับยั้งการถอดรหัส\n• Histone Acetylation (โดย HAT): ลดประจุบวกของฮิสโตน ทำให้ดีเอ็นเอคลายตัวเป็น Euchromatin เปิดให้อ่านยีนได้ง่าย',
+        takeaway: 'Campbell: เอนไซม์ HDAC (Histone Deacetylase) จะตัดหมู่อะซิทิลออก ทำให้โครมาทินพันแน่น ปิดยีนอีกครั้ง',
+        trick: 'ท่องจำง่าย: M = Mute (ปิดเงียบ), A = Active (เปิดอ่านยีน)'
+      },
+      {
+        id: 'gr-5',
+        topic: 'gene-reg',
+        topicName: '🎛️ 2. การควบคุมยีน',
+        topicColor: '#d97706',
+        term: 'Epigenetics',
+        q: 'Epigenetics (พันธุศาสตร์ด้านเหนือพันธุกรรม) คืออะไร และมีการแก้ลำดับเบส DNA หรือไม่?',
+        ansTitle: 'การเปลี่ยนแปลงการแสดงออกของยีน "โดยไม่เปลี่ยนลำดับเบสของ DNA"',
+        exp: 'เป็นกลไกปรับเปลี่ยนโครงสร้างโครมาตินผ่าน DNA Methylation และ Histone modification ซึ่งสามารถถ่ายทอดข้ามรุ่นเซลล์ได้ ตัวอย่างเช่น การปิดโครโมโซม X แท่งหนึ่งในเพศหญิงกลายเป็น Barr Body',
+        takeaway: 'Campbell: สิ่งแวดล้อม อาหาร และความเครียด สามารถส่งผลต่อเครื่องหมายเอพิเจเนติกส์ได้ตลอดช่วงชีวิต',
+        trick: 'ประเด็นสำคัญ: ลำดับ A, T, C, G เหมือนเดิม 100% แต่สวิตช์เปิดปิดยีนเปลี่ยนไป'
+      },
+      {
+        id: 'gr-6',
+        topic: 'gene-reg',
+        topicName: '🎛️ 2. การควบคุมยีน',
+        topicColor: '#d97706',
+        term: 'Enhancers & Activators',
+        q: 'Enhancer ซึ่งอยู่ห่างจาก Promoter นับหมื่นคู่เบส สามารถเร่งการถอดรหัสยีนได้อย่างไร?',
+        ansTitle: 'โปรตีน Activator จับ Enhancer แล้ว DNA ดัดโค้งเข้ามาหา Promoter',
+        exp: 'เมื่อโปรตีน Activator จับกับ Enhancer เอนไซม์ DNA-bending protein จะดัดสาย DNA ให้โค้งงอ เพื่อนำ Activator มาสัมผัสกับ Mediator Complex และ General Transcription Factors ที่ Promoter เพื่อเริ่ม Transcription',
+        takeaway: 'Campbell: การมีชุดของ Activator ที่จำเพาะในเซลล์แต่ละชนิด ทำให้เซลล์ต่างชนิดแสดงออกของยีนต่างกัน',
+        trick: 'กลไกสะพานลอยดัดโค้ง (DNA Looping): ระยะทางบนสายดีเอ็นเอไม่ได้เป็นอุปสรรคต่อการควบคุม'
+      },
+      {
+        id: 'gr-7',
+        topic: 'gene-reg',
+        topicName: '🎛️ 2. การควบคุมยีน',
+        topicColor: '#d97706',
+        term: 'microRNA (miRNA) & RNAi',
+        q: 'กลไกของ microRNA (miRNA) ในการควบคุมระดับ Post-transcriptional ทำงานอย่างไร?',
+        ansTitle: 'miRNA รวมกับโปรตีน RISC เพื่อย่อยสลายหรือบล็อกการแปลรหัส mRNA',
+        exp: 'miRNA สายเดี่ยวสั้น (~21-22 นิวคลีโอไทด์) จะจับคู่เบสกับ mRNA เป้าหมาย หากคู่เบสสมบูรณ์จะสั่งย่อยสลาย mRNA ทิ้ง หากจับคู่ได้บางส่วนจะขัดขวางไม่ให้ไรโบโซมแปลรหัสได้',
+        takeaway: 'Campbell: ยีนมนุษย์มากกว่า 50% คาดว่าถูกควบคุมระดับการแปลรหัสโดย miRNA',
+        trick: 'เรียกว่ากระบวนการ RNA Interference (RNAi) นำมาใช้ในเทคโนโลยีการแพทย์เพื่อปิดการทำงานของยีนก่อมะเร็ง'
+      },
+
+      // ----------------------------------------------------------------------
+      // Topic 3: Cell Signaling (การส่งสัญญาณของเซลล์)
+      // ----------------------------------------------------------------------
+      {
+        id: 'cs-1',
+        topic: 'signaling',
+        topicName: '📡 3. การสื่อสารของเซลล์',
+        topicColor: '#0284c7',
+        term: '3 Stages of Signaling',
+        q: 'Earl W. Sutherland ค้นพบว่าการสื่อสารระหว่างเซลล์ประกอบด้วย 3 ขั้นตอนหลักอะไรบ้าง?',
+        ansTitle: 'Reception (รับ) → Transduction (แปลง) → Response (ตอบสนอง)',
+        exp: '1. Reception: Ligand จับกับตัวรับจำเพาะบนผิวเซลล์หรือในเซลล์\n2. Transduction: ถ่ายทอดและขยายสัญญาณเป็นลูกโซ่โมเลกุลต่อเนื่อง\n3. Response: เกิดการเปลี่ยนแปลงกิจกรรมภายในเซลล์ เช่น เอนไซม์ทำงาน หรือเปิดการถอดรหัสยีน',
+        takeaway: 'Campbell: Sutherland ได้รับรางวัลโนเบลจากการศึกษากลไกที่ฮอร์โมน Epinephrine สลาย Glycogen ผ่าน cAMP',
+        trick: 'ลำดับเหตุการณ์สำคัญ: ต้องมีตัวรับจำเพาะ หากเซลล์ไม่มี Receptor สำหรับลิแกนด์นั้น เซลล์จะไม่ตอบสนองเด็ดขาด'
+      },
+      {
+        id: 'cs-2',
+        topic: 'signaling',
+        topicName: '📡 3. การสื่อสารของเซลล์',
+        topicColor: '#0284c7',
+        term: 'Types of Signaling',
+        q: 'จงจำแนกการส่งสัญญาณ 4 ชนิดตามระยะทาง: Autocrine, Paracrine, Endocrine, Juxtacrine?',
+        ansTitle: 'Auto (ตัวเอง) | Para (ข้างเคียง) | Endo (ไกลผ่านเลือด) | Juxta (สัมผัสติดกัน)',
+        exp: '• Autocrine: หลั่งสัญญาณมากระตุ้นตัวเอง\n• Paracrine: ส่งสัญญาณระยะใกล้แพร่สู่เซลล์ข้างเคียง (เช่น Synapse, Growth factors)\n• Endocrine: ส่งฮอร์โมนผ่านระบบหมุนเวียนเลือดไปยังอวัยวะเป้าหมายระยะไกล\n• Juxtacrine: สื่อสารผ่านการสัมผัสโมเลกุลผิวเซลล์โดยตรง หรือผ่าน Gap junctions',
+        takeaway: 'Campbell: การส่งสัญญาณแบบ Synaptic signaling จัดเป็น Paracrine แบบพิเศษที่มีความแม่นยำและรวดเร็วสูงมาก',
+        trick: 'ทริคจำคำนำหน้า: Auto = ตนเอง, Para = ข้างๆ, Endo = ภายในร่างกายระยะไกล, Juxta = ชิดติดกัน'
+      },
+      {
+        id: 'cs-3',
+        topic: 'signaling',
+        topicName: '📡 3. การสื่อสารของเซลล์',
+        topicColor: '#0284c7',
+        term: 'GPCR & G-Protein',
+        q: 'G-Protein Coupled Receptor (GPCR) มีโครงสร้างอย่างไร และกระตุ้น G-Protein อย่างไร?',
+        ansTitle: 'มี 7-Transmembrane helices | เหนี่ยวนำให้ G-Protein แลก GDP เป็น GTP',
+        exp: 'เมื่อ Ligand จับกับ GPCR โครงสร้างจะเปลี่ยนรูปเหนี่ยวนำให้ Heterotrimeric G-Protein (α, β, γ) ปลดปล่อย GDP แล้วแลกเปลี่ยนเป็น GTP บน α-subunit จากนั้น α-GTP จะแยกตัวไปกระตุ้นเอนไซม์เป้าหมายต่อไป',
+        takeaway: 'Campbell: G-Protein ปิดตัวเองได้ด้วย intrinsic GTPase activity โดยย่อย GTP กลับเป็น GDP ภายในเวลาอันสั้น',
+        trick: 'ข้อสอบถามบ่อย: GPCR คือกลุ่มตัวรับที่มีจำนวนมากที่สุดในร่างกายมนุษย์ (>800 ชนิด) และเป็นเป้าหมายของยากว่า 40%'
+      },
+      {
+        id: 'cs-4',
+        topic: 'signaling',
+        topicName: '📡 3. การสื่อสารของเซลล์',
+        topicColor: '#0284c7',
+        term: 'Receptor Tyrosine Kinase (RTK)',
+        q: 'กระบวนการกระตุ้นตัวรับประเภท Receptor Tyrosine Kinase (RTK) มีขั้นตอนเอกลักษณ์อย่างไร?',
+        ansTitle: 'Dimerization (ประกบคู่) และ Cross-Autophosphorylation',
+        exp: '1. Ligand (เช่น อินซูลิน, EGF) มาจับกับมอนอเมอร์ 2 ตัว\n2. ตัวรับเคลื่อนมาประกบคู่กัน (Dimerization)\n3. แต่ละข้างจะเติมหมู่ฟอสเฟตจาก ATP ให้กับกรดอะมิโน Tyrosine ของอีกข้าง (Cross-phosphorylation) เกิดเป็นจุดเกาะของ Relay proteins หลายชนิด',
+        takeaway: 'Campbell: ข้อแตกต่างจาก GPCR คือ RTK 1 คู่สามารถกระตุ้นทางเดินสัญญาณได้หลากหลายสายพร้อมกัน',
+        trick: 'ความเกี่ยวข้องทางการแพทย์: ยีน RTK กลายพันธุ์ที่ทำงานไม่หยุดเป็นสาเหตุสำคัญของการเกิดเนื้องอกและมะเร็ง'
+      },
+      {
+        id: 'cs-5',
+        topic: 'signaling',
+        topicName: '📡 3. การสื่อสารของเซลล์',
+        topicColor: '#0284c7',
+        term: 'Ion Channel Receptors',
+        q: 'Ligand-Gated Ion Channel Receptors ทำงานอย่างไร และพบได้เด่นชัดที่ใด?',
+        ansTitle: 'ช่องไอออนเปิด/ปิดเมื่อลิแกนด์มาจับ | พบที่ไซแนปส์ของระบบประสาท',
+        exp: 'เมื่อโมเลกุลสารสื่อประสาทมาจับกับตัวรับ ช่องจะเปิดออกให้ไอออนจำเพาะ เช่น Na⁺, K⁺, Ca²⁺ หรือ Cl⁻ ไหลผ่านอย่างรวดเร็ว ส่งผลให้ความต่างศักย์ไฟฟ้าเยื่อหุ้มเซลล์เปลี่ยนแปลงไป เกิดกระแสประสาท',
+        takeaway: 'Campbell: เป็นการตอบสนองของเซลล์ที่เร็วที่สุดในบรรดาตัวรับทั้งหมด (เกิดขึ้นในระดับมิลลิวินาที)',
+        trick: 'ตัวอย่างคลาสสิก: Nicotinic Acetylcholine Receptor ที่รอยต่อประสาทและกล้ามเนื้อ'
+      },
+      {
+        id: 'cs-6',
+        topic: 'signaling',
+        topicName: '📡 3. การสื่อสารของเซลล์',
+        topicColor: '#0284c7',
+        term: 'Intracellular Receptors',
+        q: 'ลิแกนด์ประเภทใดที่จับกับตัวรับภายในเซลล์ (Intracellular Receptors) และมีกลไกอย่างไร?',
+        ansTitle: 'สารประเภทไม่ชอบน้ำ (Lipophilic) เช่น ฮอร์โมนสเตียรอยด์ และก๊าซ NO',
+        exp: 'ฮอร์โมนสเตียรอยด์ (Estrogen, Testosterone, Cortisol) สามารถแพร่ผ่าน Phospholipid bilayer ได้โดยตรง ตัวรับมักอยู่ในไซโทพลาสซึมหรือนิวเคลียส เมื่อจับกันแล้ว Hormone-Receptor Complex จะทำหน้าที่เป็น Transcription Factor ควบคุมการเปิดปิดยีนโดยตรง',
+        takeaway: 'Campbell: ไม่ต้องพึ่งพา Second Messenger เพราะตัว Complex วิ่งเข้าไปกระตุ้นยีนในนิวเคลียสเองเลย',
+        trick: 'ข้อสังเกต: การตอบสนองผ่านตัวรับภายในเซลล์มักใช้เวลานานกว่า (ชั่วโมงถึงวัน) เพราะต้องสร้างโปรตีนใหม่'
+      },
+      {
+        id: 'cs-7',
+        topic: 'signaling',
+        topicName: '📡 3. การสื่อสารของเซลล์',
+        topicColor: '#0284c7',
+        term: 'Signal Termination',
+        q: 'เซลล์มีกลไกหยุดการส่งสัญญาณ (Signal Termination) เพื่อป้องกันความผิดปกติอย่างไรบ้าง?',
+        ansTitle: 'ย่อยสลายลิแกนด์ + GTPase ปิด G-protein + เอนไซม์ Phosphatase ปลดฟอสเฟต',
+        exp: '1. ลิแกนด์แยกตัวหรือถูกทำลาย\n2. G-protein สลาย GTP กลายเป็น GDP\n3. Phosphodiesterase (PDE) สลาย cAMP กลับเป็น AMP\n4. Protein Phosphatases ดึงฟอสเฟตออกจากโปรตีนไคเนส\n5. Receptor Endocytosis นำตัวรับเข้าย่อยสลาย',
+        takeaway: 'Campbell: สารคาเฟอีนในกาแฟออกฤทธิ์ยับยั้งเอนไซม์ PDE ทำให้ cAMP คงอยู่นาน เซลล์จึงตื่นตัวไม่หยุด',
+        trick: 'ความสำคัญ: การหยุดสัญญาณมีความสำคัญเท่ากับการเริ่มส่งสัญญาณ เซลล์ที่ปิดสัญญาณไม่ได้จะกลายเป็นมะเร็ง'
+      },
+
+      // ----------------------------------------------------------------------
+      // Topic 4: Cell Response (การตอบสนองของเซลล์)
+      // ----------------------------------------------------------------------
+      {
+        id: 'cr-1',
+        topic: 'response',
+        topicName: '⚡ 4. การตอบสนอง',
+        topicColor: '#7c3aed',
+        term: 'Phosphorylation Cascade',
+        q: 'Phosphorylation Cascade ทำงานอย่างไร และ Protein Kinase ต่างจาก Phosphatase อย่างไร?',
+        ansTitle: 'Kinase เติมฟอสเฟต (เปิดสวิตช์) | Phosphatase ดึงฟอสเฟตออก (ปิดสวิตช์)',
+        exp: 'เป็นลูกโซ่ถ่ายทอดสัญญาณ โดย Protein Kinase แต่ละตัวจะนำหมู่ฟอสเฟตจาก ATP ไปติดให้ไคเนสตัวถัดไปเพื่อกระตุ้นให้ทำงานต่อกันเป็นทอดๆ ส่วน Protein Phosphatase จะดึงฟอสเฟตออกเพื่อรีเซ็ตระบบให้พร้อมรับสัญญาณใหม่',
+        takeaway: 'Campbell: กรดอะมิโนที่รับฟอสเฟตได้มี 3 ชนิดเท่านั้น: Serine, Threonine และ Tyrosine (มีหมู่ -OH)',
+        trick: 'การติดฟอสเฟตเปรียบเหมือนการเปิดสวิตช์ไฟฟ้าของเซลล์ เปลี่ยนแปลงรูปร่างและประจุของโปรตีน'
+      },
+      {
+        id: 'cr-2',
+        topic: 'response',
+        topicName: '⚡ 4. การตอบสนอง',
+        topicColor: '#7c3aed',
+        term: 'Cyclic AMP (cAMP)',
+        q: 'cAMP ถูกสร้างโดยเอนไซม์ใด ถูกทำลายโดยสารใด และไปกระตุ้นโมเลกุลเป้าหมายใดเป็นหลัก?',
+        ansTitle: 'สร้างโดย Adenylyl Cyclase | สลายโดย PDE | กระตุ้น Protein Kinase A (PKA)',
+        exp: 'Adenylyl Cyclase เปลี่ยน ATP เป็น cAMP ทำหน้าที่เป็น Second Messenger แพร่กระจายอย่างรวดเร็วไปจับกับเอนไซม์ Protein Kinase A (PKA) ทำให้หน่วยเร่งปฏิกิริยาของ PKA แยกตัวออกไปเติมฟอสเฟตให้โปรตีนเป้าหมาย',
+        takeaway: 'Campbell: สารพิษอหิวาตกโรค (Cholera Toxin) ตรึง Gα ให้อยู่ในสภาวะ active ตลอดเวลา ทำให้ cAMP พุ่งสูง หลั่งน้ำและเกลือแร่ออกมาท้องร่วงรุนแรง',
+        trick: 'cAMP = ตัวส่งสารสำรอง วิ่งไว ละลายน้ำได้ดี แพร่ไปทั่วทั้งไซโทพลาสซึมในเสี้ยววินาที'
+      },
+      {
+        id: 'cr-3',
+        topic: 'response',
+        topicName: '⚡ 4. การตอบสนอง',
+        topicColor: '#7c3aed',
+        term: 'IP3 & DAG Pathway',
+        q: 'เมื่อเอนไซม์ Phospholipase C (PLC) ถูกกระตุ้น จะตัดโมเลกุล PIP₂ ออกเป็น 2 สารสำคัญอะไรบ้าง?',
+        ansTitle: 'IP3 (Inositol trisphosphate) และ DAG (Diacylglycerol)',
+        exp: '• IP3: ละลายน้ำ แพร่ไปจับกับช่องแคลเซียมบน Smooth ER ปล่อย Ca²⁺ สู่ไซโตซอล\n• DAG: ละลายในลิพิด ฝังอยู่บนเยื่อหุ้มเซลล์ ร่วมกับ Ca²⁺ กระตุ้นเอนไซม์ Protein Kinase C (PKC)',
+        takeaway: 'Campbell: เป็นวิถีส่งสัญญาณที่สำคัญมากในการหลั่งฮอร์โมน การหดตัวของกล้ามเนื้อ และการแบ่งเซลล์',
+        trick: 'วิธีจำ: IP3 วิ่งไปปล่อยแคลเซียมออกจากโกดัง (ER), DAG ยืนรอที่เยื่อหุ้มเซลล์ดักจับ PKC'
+      },
+      {
+        id: 'cr-4',
+        topic: 'response',
+        topicName: '⚡ 4. การตอบสนอง',
+        topicColor: '#7c3aed',
+        term: 'Calcium Ions (Ca²⁺)',
+        q: 'ทำไมเซลล์จึงต้องรักษาระดับ Ca²⁺ ในไซโทพลาสซึมให้ต่ำกว่าภายนอกเซลล์และใน ER มากกว่า 10,000 เท่า?',
+        ansTitle: 'เพื่อให้เมื่อช่องแคลเซียมเปิด จะเกิดสัญญาณเคมีที่ชัดเจนและรวดเร็วฉับพลัน',
+        exp: 'เซลล์ใช้ Ca²⁺-ATPase ปั๊มแคลเซียมออกจากไซโตซอลไปเก็บใน ER และนอกเซลล์ตลอดเวลา เมื่อมีสัญญาณเปิดช่อง ความเข้มข้นของ Ca²⁺ ในไซโตซอลจะพุ่งสูงขึ้นทันที เข้าจับกับโปรตีน Calmodulin เพื่อกระตุ้นเอนไซม์มากมาย',
+        takeaway: 'Campbell: Ca²⁺ เป็น Second messenger สากลที่พบทั้งในสัตว์ พืช และเชื้อรา',
+        trick: 'ความเงียบสงบสร้างเสียงดัง: ไซโตซอลต้องปราศจาก Ca²⁺ เพื่อให้การรั่วเข้ามาเพียงนิดเดียวกลายเป็นสัญญาณตะโกนก้อง'
+      },
+      {
+        id: 'cr-5',
+        topic: 'response',
+        topicName: '⚡ 4. การตอบสนอง',
+        topicColor: '#7c3aed',
+        term: 'Signal Amplification',
+        q: 'Signal Amplification (การทวีคูณสัญญาณ) ช่วยให้เซลล์สร้างการตอบสนองมหาศาลได้อย่างไร?',
+        ansTitle: 'ในแต่ละขั้นของ Cascade เอนไซม์ 1 ตัวสามารถเร่งปฏิกิริยาให้โมเลกุลถัดไปได้นับร้อยนับพันตัว',
+        exp: 'Epinephrine เพียง 1 โมเลกุลจับ GPCR → สร้าง cAMP นับหมื่น → กระตุ้น PKA นับพัน → สลาย Glycogen ปล่อย Glucose นับร้อยล้านโมเลกุลสู่กระแสเลือดในเวลาไม่กี่วินาที',
+        takeaway: 'Campbell: การขยายสัญญาณแบบทวีคูณทำให้ร่างกายตอบสนองต่อภัยคุกคามในสภาวะฉุกเฉิน (Fight-or-Flight) ได้ทันท่วงที',
+        trick: 'เปรียบเสมือนพีระมิดลูกโซ่: 1 กลายเป็น 100, 100 กลายเป็น 10,000, 10,000 กลายเป็นล้าน'
+      },
+      {
+        id: 'cr-6',
+        topic: 'response',
+        topicName: '⚡ 4. การตอบสนอง',
+        topicColor: '#7c3aed',
+        term: 'Nuclear vs Cytoplasmic Response',
+        q: 'เปรียบเทียบการตอบสนองของเซลล์ในไซโทพลาสซึมกับในนิวเคลียส ต่างกันอย่างไรในเรื่องความเร็ว?',
+        ansTitle: 'Cytoplasmic เกิดเร็วทันที (วินาที) | Nuclear เกิดช้ากว่า (ชั่วโมง)',
+        exp: '• Cytoplasmic: ปรับเปลี่ยนการทำงานของเอนไซม์หรือ Cytoskeleton ที่มีอยู่แล้ว เกิดขึ้นฉับไว (เช่น กล้ามเนื้อหดตัว, สลายแป้ง)\n• Nuclear: ต้องเปิดยีน ถอดรหัส แปลรหัสเพื่อสร้างโปรตีนใหม่ขึ้นมา จึงใช้เวลานานกว่า แต่ให้ผลที่ยั่งยืน',
+        takeaway: 'Campbell: การตอบสนองต่อ Growth Factor มักเป็นแบบ Nuclear response เพื่อสร้างโปรตีนที่ใช้แบ่งเซลล์',
+        trick: 'จำแนกง่าย: ในไซโทพลาสซึม = ปรับปรุงของเก่า, ในนิวเคลียส = ผลิตของใหม่'
+      },
+      {
+        id: 'cr-7',
+        topic: 'response',
+        topicName: '⚡ 4. การตอบสนอง',
+        topicColor: '#7c3aed',
+        term: 'Signaling Specificity',
+        q: 'เหตุใดฮอร์โมนตัวเดียวกัน (เช่น Epinephrine) จึงทำให้เซลล์ตับสลายไกลโคเจน แต่ทำให้หัวใจเต้นเร็วขึ้น?',
+        ansTitle: 'เพราะเซลล์ต่างชนิดมีชุดโปรตีนตัวรับและ Relay Proteins ภายในเซลล์ที่แตกต่างกัน',
+        exp: 'แม้จะเป็นลิแกนด์เดียวกัน แต่เซลล์ตับมี β-receptors ที่เชื่อมต่อกับเอนไซม์สลาย Glycogen ส่วนเซลล์กล้ามเนื้อหัวใจมีโปรตีนเป้าหมายที่เพิ่มการบีบตัว นอกจากนี้เซลล์หลอดเลือดบางแห่งยังมี α-receptors ที่ทำให้หลอดเลือดหดตัวแทน',
+        takeaway: 'Campbell: ความหลากหลายของการตอบสนองขึ้นอยู่กับ "เครื่องรับและระบบภายในของผู้ฟัง" ไม่ใช่แค่ตัวผู้ส่งสาร',
+        trick: 'ข้อสอบออกบ่อย: สารเคมีชนิดเดียวให้ผลลัพธ์ตรงข้ามกันได้ในอวัยวะต่างกัน'
+      },
+
+      // ----------------------------------------------------------------------
+      // Topic 5: Cell Cycle (วัฏจักรของเซลล์)
+      // ----------------------------------------------------------------------
+      {
+        id: 'cc-1',
+        topic: 'cycle',
+        topicName: '🔄 5. วัฏจักรเซลล์',
+        topicColor: '#ea580c',
+        term: 'Interphase & S Phase',
+        q: 'วัฏจักรของเซลล์ประกอบด้วยช่วงใดบ้าง และการจำลอง DNA เกิดขึ้นในระยะใดอย่างจำเพาะ?',
+        ansTitle: 'Interphase (G1 → S → G2) และ M Phase | DNA จำลองใน "S Phase" เท่านั้น',
+        exp: 'Interphase กินเวลามากกว่า 90% ของวัฏจักรเซลล์:\n• G1: เซลล์เจริญเติบโต สร้างออร์แกเนลล์\n• S (Synthesis): จำลอง DNA และ Centrosome\n• G2: ตรวจความพร้อมและเตรียมโปรตีนสำหรับแบ่งเซลล์',
+        takeaway: 'Campbell: หากเซลล์ไม่พร้อมจะหลุดออกจาก G1 เข้าสู่ระยะพักตัว G0 เช่น เซลล์ประสาทและเซลล์กล้ามเนื้อหัวใจ',
+        trick: 'อย่าเข้าใจผิด: Interphase ไม่ใช่ระยะพักผ่อน (Resting) เซลล์มีการสังเคราะห์สารเมแทบอลิซึมสูงมาก'
+      },
+      {
+        id: 'cc-2',
+        topic: 'cycle',
+        topicName: '🔄 5. วัฏจักรเซลล์',
+        topicColor: '#ea580c',
+        term: '3 Checkpoints',
+        q: 'จุดตรวจสอบ (Checkpoints) ทั้ง 3 จุดของวัฏจักรเซลล์มีอะไรบ้าง และตรวจสิ่งใด?',
+        ansTitle: 'G1/S (สำคัญสุด) | G2/M (ตรวจ DNA สมบูรณ์) | M Checkpoint (ตรวจ Spindle)',
+        exp: '1. G1/S (Restriction Point): ตรวจขนาดเซลล์ สารอาหาร และ DNA เสียหายหรือไม่ (จุดตัดสินใจว่าจะแบ่งเซลล์หรือไม่)\n2. G2/M: ตรวจสอบว่า DNA จำลองครบถ้วนและซ่อมแซมสมบูรณ์\n3. M (Spindle Assembly): ตรวจว่า Kinetochore ทุกโครโมโซมจับกับ Spindle fiber ครบก่อนเริ่ม Anaphase',
+        takeaway: 'Campbell: ถ้าเซลล์ผ่าน G1 Checkpoint ได้ มักจะเดินหน้าแบ่งเซลล์จนเสร็จสมบูรณ์',
+        trick: 'จุด M Checkpoint ป้องกันการเกิด Aneuploidy (ภาวะจำนวนโครโมโซมขาดหรือเกิน)'
+      },
+      {
+        id: 'cc-3',
+        topic: 'cycle',
+        topicName: '🔄 5. วัฏจักรเซลล์',
+        topicColor: '#ea580c',
+        term: 'Cyclins & CDKs',
+        q: 'Cyclin และ Cyclin-Dependent Kinase (CDK) ควบคุมการดำเนินไปของวัฏจักรเซลล์อย่างไร?',
+        ansTitle: 'CDK มีปริมาณคงที่ แต่จะทำงานได้เมื่อ Cyclin ที่ขึ้นๆ ลงๆ มาจับ',
+        exp: 'เอนไซม์ CDK ต้องการโปรตีน Cyclin มาจับจึงจะทำงานได้ เมื่อระดับ Cyclin เพิ่มขึ้นถึงขีดจำกัด จะไปกระตุ้น CDK ให้เติมฟอสเฟตแก่โปรตีนเป้าหมาย เช่น MPF (Cyclin B + CDK1) กระตุ้นการเข้าสู่ Mitosis จากนั้น Cyclin จะถูกย่อยสลายทิ้ง',
+        takeaway: 'Campbell: ความเข้มข้นของ Cyclin จะเพิ่มขึ้นและลดลงเป็นวัฏจักรตามชื่อ (Cyclic fluctuation)',
+        trick: 'CDK คือรถยนต์ที่จอดอยู่เฉยๆ Cyclin คือกุญแจสตาร์ทเครื่องยนต์ เมื่อขับเสร็จกุญแจจะละลายหายไป'
+      },
+      {
+        id: 'cc-4',
+        topic: 'cycle',
+        topicName: '🔄 5. วัฏจักรเซลล์',
+        topicColor: '#ea580c',
+        term: 'p53 & p21',
+        q: 'เหตุใดโปรตีน p53 จึงได้ฉายาว่า "ผู้พิทักษ์จีโนม" และมีบทบาทอย่างไรเมื่อ DNA เสียหาย?',
+        ansTitle: 'สั่งหยุดวัฏจักรเซลล์ที่ G1 ผ่าน p21 และสั่ง Apoptosis หากซ่อมไม่ได้',
+        exp: 'เมื่อ DNA เสียหาย p53 จะถูกกระตุ้นให้ไปเปิดยีนสร้าง p21 (CDK Inhibitor) เพื่อหยุดเซลล์ที่ G1 Checkpoint เปิดโอกาสให้ระบบซ่อมแซม DNA หากเสียหายเกินเยียวยา p53 จะเปิดยีนสั่งเซลล์ฆ่าตัวตาย (Apoptosis) ทันที',
+        takeaway: 'Campbell: ยีน TP53 กลายพันธุ์พบในผู้ป่วยโรคมะเร็งมากกว่า 50% ของมนุษย์',
+        trick: 'ผู้ตรวจการแผ่นดิน: ซ่อมได้ให้ซ่อม ซ่อมไม่ได้สั่งประหาร ป้องกันการเกิดเซลล์มะเร็ง'
+      },
+      {
+        id: 'cc-5',
+        topic: 'cycle',
+        topicName: '🔄 5. วัฏจักรเซลล์',
+        topicColor: '#ea580c',
+        term: 'Mitosis Stages (PMAT)',
+        q: 'จงสรุปเหตุการณ์สำคัญในแต่ละระยะของ Mitosis: Prophase, Metaphase, Anaphase, Telophase?',
+        ansTitle: 'Pro (โครโมโซมหด) → Meta (เรียงกึ่งกลาง) → Ana (แยกขั้ว) → Telo (สร้างนิวเคลียสใหม่)',
+        exp: '• Prophase: โครมาทินขดแน่นเป็นแท่ง, เยื่อหุ้มนิวเคลียสเริ่มสลาย\n• Metaphase: โครโมโซมเรียงตัวตรงแนวกลาง Metaphase Plate (เห็นชัดสุด)\n• Anaphase: Sister chromatids แยกออกจากกันเดินหน้าสู่ขั้วตรงข้าม (ระยะสั้นที่สุด)\n• Telophase: สร้างเยื่อหุ้มนิวเคลียสขึ้นใหม่, โครโมโซมคลายตัว',
+        takeaway: 'Campbell: การแยกตัวใน Anaphase เกิดขึ้นเมื่อเอนไซม์ Separase ไปย่อยโปรตีน Cohesin ที่ยึด chromatids ไว้',
+        trick: 'ท่องจำสูตรสากล: P-M-A-T (Pro = ก่อน, Meta = กลาง, Ana = แยกออก, Telo = ปลายทาง)'
+      },
+      {
+        id: 'cc-6',
+        topic: 'cycle',
+        topicName: '🔄 5. วัฏจักรเซลล์',
+        topicColor: '#ea580c',
+        term: 'Cytokinesis: Plant vs Animal',
+        q: 'เปรียบเทียบการแบ่งไซโทพลาสซึม (Cytokinesis) ของเซลล์สัตว์กับเซลล์พืช?',
+        ansTitle: 'สัตว์คอดจากนอกเข้าใน (Cleavage furrow) | พืชสร้างแผ่นจากในออกนอก (Cell plate)',
+        exp: '• เซลล์สัตว์: ใช้ Cleavage furrow เกิดจากวงแหวน Microfilaments (Actin + Myosin) บีบรัดจากขอบนอกเข้าหากึ่งกลาง\n• เซลล์พืช: มีผนังเซลล์แข็งคอดไม่ได้ จึงใช้ Vesicle จาก Golgi apparatus มารวมตัวกันตรงกลางเกิดเป็น Cell Plate แผ่ขยายออกสู่ผนังเดิม',
+        takeaway: 'Campbell: เซลล์พืชไม่มี Centrioles แต่มี MTOC ทำหน้าที่สร้าง Spindle fibers ได้อย่างสมบูรณ์',
+        trick: 'สัตว์คอดเว้าจากนอกเข้าใน, พืชสร้างกำแพงกั้นจากในออกนอก'
+      },
+      {
+        id: 'cc-7',
+        topic: 'cycle',
+        topicName: '🔄 5. วัฏจักรเซลล์',
+        topicColor: '#ea580c',
+        term: 'Cancer & Oncogenes',
+        q: 'เซลล์มะเร็งเกิดจากความผิดปกติของยีน 2 กลุ่มหลักใด และสูญเสียคุณสมบัติใด?',
+        ansTitle: 'Proto-oncogenes กลายพันธุ์เป็น Oncogenes + Tumor Suppressor Genes เสียหาย',
+        exp: '1. Oncogenes (เช่น Ras): ยีนกระตุ้นการแบ่งเซลล์ทำงานเกินขนาด (คันเร่งค้าง)\n2. Tumor Suppressor (เช่น p53, Rb): ยีนเบรกการแบ่งเซลล์พังทลาย (เบรกแตก)\nเซลล์มะเร็งจะสูญเสีย Density-dependent inhibition และ Anchorage dependence แบ่งตัวไร้ขีดจำกัด',
+        takeaway: 'Campbell: เซลล์มะเร็งสามารถกระตุ้นการสร้างเส้นเลือดใหม่ (Angiogenesis) และแพร่กระจายไปอวัยวะอื่น (Metastasis)',
+        trick: 'อุปมาอุปไมยมะเร็ง: รถยนต์ที่คันเร่งค้างแถมเบรกแตก วิ่งชนทะลุกฎเกณฑ์ทุกด่านตรวจ'
+      },
+
+      // ----------------------------------------------------------------------
+      // Topic 6: Apoptosis (การตายแบบมีแบบแผน)
+      // ----------------------------------------------------------------------
+      {
+        id: 'ap-1',
+        topic: 'apoptosis',
+        topicName: '💀 6. Apoptosis',
+        topicColor: '#e11d48',
+        term: 'Apoptosis vs Necrosis',
+        q: 'เปรียบเทียบการตายแบบ Apoptosis กับ Necrosis แตกต่างกันอย่างไรต่อระบบภูมิคุ้มกัน?',
+        ansTitle: 'Apoptosis ตายอย่างเป็นระเบียบ ไม่เกิดการอักเสบ | Necrosis เซลล์แตก เกิดการอักเสบ',
+        exp: '• Apoptosis: เซลล์หดตัว โครมาตินขดแน่น แตกเป็นถุง Apoptotic bodies ให้มาโครฟาจกลืนกินอย่างเงียบเชียบ ไม่มีการรั่วไหล\n• Necrosis: ตายจากอุบัติเหตุหรือขาดเลือด เซลล์บวมเต่งและแตกสลาย (Lysis) สารภายในรั่วไหลกระตุ้นการอักเสบรุนแรง (Inflammation)',
+        takeaway: 'Campbell: Apoptosis เป็นกลไกปกติที่จำเป็นในการเจริญ เช่น การสลายพังผืดระหว่างนิ้วมือของทารกในครรภ์',
+        trick: 'Apoptosis = เก็บกวาดห้องเรียบร้อยก่อนย้ายออก, Necrosis = บ้านระเบิดพังทลายเสียหายรอบข้าง'
+      },
+      {
+        id: 'ap-2',
+        topic: 'apoptosis',
+        topicName: '💀 6. Apoptosis',
+        topicColor: '#e11d48',
+        term: 'Caspases Enzyme Family',
+        q: 'Caspases คือเอนไซม์ประเภทใด และแบ่งออกเป็น 2 กลุ่มตามลำดับการทำงานอย่างไร?',
+        ansTitle: 'Cysteine-aspartic proteases | แบ่งเป็น Initiator และ Executioner Caspases',
+        exp: '1. Initiator Caspases (เช่น Caspase-8, 9): รับสัญญาณสั่งตายแล้วไปตัดกระตุ้นเอนไซม์ตัวถัดไป\n2. Executioner Caspases (เช่น Caspase-3, 6, 7): ลงมือย่อยสลายโปรตีนโครงสร้างเซลล์, นิวเคลียส และดีเอ็นเอจนเซลล์แตกดับ',
+        takeaway: 'Campbell: ในเซลล์ปกติจะอยู่ในรูป Procaspases ที่ไม่ทำงาน เพื่อป้องกันการทำลายเซลล์โดยไม่ได้ตั้งใจ',
+        trick: 'Initiator = ผู้สั่งการประหาร, Executioner = เพชฌฆาตผู้ลงมือฟันดาบ'
+      },
+      {
+        id: 'ap-3',
+        topic: 'apoptosis',
+        topicName: '💀 6. Apoptosis',
+        topicColor: '#e11d48',
+        term: 'Cytochrome c & Apoptosome',
+        q: 'ในวิถี Intrinsic Pathway โมเลกุลใดหลุดรอดจากไมโทคอนเดรีย และรวมตัวเป็นวงล้ออะไร?',
+        ansTitle: 'Cytochrome c รั่วไหลสู่ไซโตซอล รวมตัวกับ Apaf-1 เกิดเป็น "Apoptosome"',
+        exp: 'เมื่อเซลล์เครียดหรือ DNA เสียหาย เยื่อหุ้มไมโทคอนเดรียจะรั่ว ปล่อย Cytochrome c ออกมาจับกับโปรตีน Apaf-1 และ Procaspase-9 รวมตัวกันเป็นคอมเพล็กซ์วงล้อ 7 แฉกเรียกว่า Apoptosome เพื่อกระตุ้น Caspase-9',
+        takeaway: 'Campbell: Cytochrome c ในยามปกติทำหน้าที่ถ่ายทอดอิเล็กตรอนในหายใจระดับเซลล์ แต่เมื่อรั่วออกมาจะกลายเป็นสัญญาณแห่งความตาย',
+        trick: 'โมเลกุลสองหน้า: อยู่ในไมโทคอนเดรียช่วยสร้างพลังงานชีวิต รั่วออกมาข้างนอกสั่งประหารเซลล์'
+      },
+      {
+        id: 'ap-4',
+        topic: 'apoptosis',
+        topicName: '💀 6. Apoptosis',
+        topicColor: '#e11d48',
+        term: 'Bcl-2 Family Proteins',
+        q: 'กลุ่มโปรตีนตระกูล Bcl-2 ควบคุมการซึมผ่านของเยื่อหุ้มไมโทคอนเดรียอย่างไร?',
+        ansTitle: 'Pro-apoptotic (Bax, Bak) เจาะรูสั่งตาย vs Anti-apoptotic (Bcl-2) อุดรูช่วยชีวิต',
+        exp: '• Pro-apoptotic (Bax, Bak): รวมตัวกันเจาะรูบนเยื่อหุ้มไมโทคอนเดรียชั้นนอกให้ Cytochrome c ไหลออก\n• Anti-apoptotic (Bcl-2, Bcl-xL): ยับยั้ง Bax/Bak ไม่ให้เจาะรู เซลล์จึงรอดชีวิต\nความสมดุลระหว่างสองกลุ่มเป็นตัวตัดสินชะตากรรมของเซลล์',
+        takeaway: 'Campbell: เซลล์มะเร็งหลายชนิดสร้างโปรตีน Bcl-2 สูงผิดปกติเพื่อหลบหนีการตายแบบ Apoptosis',
+        trick: 'Bcl-2 = บอดี้การ์ดกันตาย (Pro-survival), Bax/Bak = ระเบิดเปิดทางมรณะ (Pro-death)'
+      },
+      {
+        id: 'ap-5',
+        topic: 'apoptosis',
+        topicName: '💀 6. Apoptosis',
+        topicColor: '#e11d48',
+        term: 'Extrinsic Death Receptors',
+        q: 'วิถี Extrinsic Apoptosis ถูกกระตุ้นจากสัญญาณภายนอกเซลล์ผ่านตัวรับและลิแกนด์ใด?',
+        ansTitle: 'Fas Receptor (CD95) หรือ TNF Receptor จับกับ FasL หรือ TNF-α',
+        exp: 'เมื่อลิแกนด์ FasL (จากเซลล์เม็ดเลือดขาว Cytotoxic T Cell) มาจับกับ Fas Receptor บนผิวเซลล์เป้าหมาย จะดึงดูดโปรตีน Adaptor FADD ก่อตัวเป็น DISC Complex แล้วกระตุ้น Procaspase-8 โดยตรงเข้าสู่ขั้นตอนการประหาร',
+        takeaway: 'Campbell: เป็นกลไกหลักที่ระบบภูมิคุ้มกันใช้กำจัดเซลล์ที่ติดเชื้อไวรัสและเซลล์มะเร็ง',
+        trick: 'Extrinsic = คำสั่งประหารชีวิตที่ส่งมาจากภายนอกโดยตรง ไม่ต้องผ่านความยินยอมของไมโทคอนเดรีย'
+      },
+      {
+        id: 'ap-6',
+        topic: 'apoptosis',
+        topicName: '💀 6. Apoptosis',
+        topicColor: '#e11d48',
+        term: 'DNA Laddering & CAD',
+        q: 'ในกระบวนการ Apoptosis ทำไมดีเอ็นเอจึงถูกตัดเป็นชิ้นส่วนขนาดทวีคูณของ ~180-200 คู่เบส (DNA Ladder)?',
+        ansTitle: 'เอนไซม์ CAD ตัด DNA เฉพาะบริเวณ Linker ระหว่าง Nucleosomes',
+        exp: 'Caspase-3 เข้าไปทำลายโปรตีนยับยั้ง ICAD ทำให้เอนไซม์ CAD (Caspase-Activated DNase) เป็นอิสระและเข้าไปตัดสาย DNA บริเวณที่ไม่มีฮิสโตนหุ้ม (Linker DNA ~180-200 bp) เมื่อนำไปวิ่งเจลจึงเห็นเป็นขั้นบันได (DNA Ladder)',
+        takeaway: 'Campbell: การตัดเป็นท่อนขนาดสม่ำเสมอเป็นหลักฐานชี้ขาด (Hallmark) ยืนยันการเกิด Apoptosis ในแล็บ',
+        trick: 'ข้อสอบเปรียบเทียบ: Apoptosis เห็นแถบขั้นบันไดสวยงาม (Laddering) ส่วน Necrosis เห็นปื้นเละเทะ (DNA Smear)'
+      },
+      {
+        id: 'ap-7',
+        topic: 'apoptosis',
+        topicName: '💀 6. Apoptosis',
+        topicColor: '#e11d48',
+        term: 'Eat-Me Signal & Blebbing',
+        q: 'สัญญาณเคมี "Eat-Me" ที่เซลล์ส่งให้ Macrophage มาช่วยเก็บกวาดคืออะไร และเกิดปรากฏการณ์ใดที่ผิวเซลล์?',
+        ansTitle: 'การพลิกตัวของ "Phosphatidylserine" ออกสู่ผิวนอก + Membrane Blebbing',
+        exp: '1. Membrane Blebbing: ไซโทสเกเลตันถูกย่อย ทำให้เยื่อหุ้มเซลล์โป่งพองเป็นตุ่ม\n2. Phosphatidylserine (PS): ปกติอยู่ด้านในของเยื่อหุ้มเซลล์ จะถูกพลิกออกมาอยู่ผิวด้านนอก ทำหน้าที่เป็นสัญญาณ "Eat-me" สั่งให้ Macrophage เข้ามากลืนกินอย่างรวดเร็ว',
+        takeaway: 'Campbell: ป้องกันไม่ให้สารภายในเซลล์รั่วไหลออกมาทำลายเนื้อเยื่อรอบข้าง จึงไม่เกิดการอักเสบ',
+        trick: 'Phosphatidylserine สลับหน้า = ป้ายประกาศติดอกเสื้อ "ช่วยกินฉันที ฉันตายอย่างเป็นระเบียบแล้ว"'
+      }
+    ];
+
+    // ========================================================================
+    // State Management & LocalStorage Persistence
+    // ========================================================================
+    const STORAGE_KEY = 'cell_life_flashcards_progress_v1';
+    let currentTopic = 'all';
+    let activeCards = [...MASTER_FLASHCARDS];
+    let currentIdx = 0;
+    let isFlipped = false;
+    let isGalleryMode = false;
+    let searchQuery = '';
+
+    let userProgress = {
+      masteredIds: [],
+      reviewIds: [],
+      streak: 0
+    };
+
+    function loadProgress() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          userProgress.masteredIds = parsed.masteredIds || [];
+          userProgress.reviewIds = parsed.reviewIds || [];
+          userProgress.streak = parsed.streak || 0;
+        }
+      } catch (e) {
+        console.warn('Could not load progress', e);
+      }
+    }
+
+    function saveProgress() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(userProgress));
+      } catch (e) {
+        console.warn('Could not save progress', e);
+      }
+    }
+
+    // ========================================================================
+    // Card Rendering & Navigation
+    // ========================================================================
+    function updateActiveDeck() {
+      let filtered = MASTER_FLASHCARDS;
+
+      if (currentTopic !== 'all') {
+        filtered = filtered.filter(c => c.topic === currentTopic);
+      }
+
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        filtered = filtered.filter(c => 
+          c.term.toLowerCase().includes(q) ||
+          c.q.toLowerCase().includes(q) ||
+          c.ansTitle.toLowerCase().includes(q) ||
+          c.exp.toLowerCase().includes(q) ||
+          c.takeaway.toLowerCase().includes(q)
+        );
+      }
+
+      activeCards = filtered;
+      if (currentIdx >= activeCards.length) {
+        currentIdx = Math.max(0, activeCards.length - 1);
+      }
+      isFlipped = false;
+      renderCurrentCard();
+      updateMetrics();
+      renderGalleryGrid();
+    }
+
+    function renderCurrentCard() {
+      const box = document.getElementById('flashcardBox');
+      const stage = document.getElementById('cardStageContainer');
+      const dock = document.getElementById('reviewActionDock');
+      const navRow = document.getElementById('deckNavRow');
+
+      if (!activeCards || activeCards.length === 0) {
+        // Empty state
+        box.classList.remove('is-flipped');
+        document.getElementById('cardTopicTagFront').innerText = '🔍 ไม่พบข้อมูล';
+        document.getElementById('cardIndexFront').innerText = '0 / 0';
+        document.getElementById('cardTermFront').innerText = 'ไม่พบการ์ดที่ค้นหา';
+        document.getElementById('cardQuestionFront').innerText = 'ลองเปลี่ยนคำค้นหา หรือเลือกหัวข้ออื่น';
+        document.getElementById('cardHintFront').innerText = '';
+        dock.style.display = 'none';
+        navRow.style.display = 'none';
+        return;
+      }
+
+      dock.style.display = 'flex';
+      navRow.style.display = 'flex';
+
+      const card = activeCards[currentIdx];
+      const isCardMastered = userProgress.masteredIds.includes(card.id);
+
+      box.classList.toggle('is-flipped', isFlipped);
+
+      // Front
+      const tagFront = document.getElementById('cardTopicTagFront');
+      tagFront.innerText = card.topicName;
+      tagFront.style.color = card.topicColor;
+      tagFront.style.background = card.topicColor + '15';
+
+      document.getElementById('cardIndexFront').innerText = `${currentIdx + 1} / ${activeCards.length}`;
+      document.getElementById('cardTermFront').innerText = card.term;
+      document.getElementById('cardQuestionFront').innerText = card.q;
+      
+      const hintEl = document.getElementById('cardHintFront');
+      if (isCardMastered) {
+        hintEl.innerHTML = '<span style="color:#059669; font-weight:700;">✅ คุณจดจำการ์ดใบนี้ได้แม่นยำแล้ว</span> (แตะเพื่อทบทวนคำอธิบาย)';
+      } else {
+        hintEl.innerText = 'แตะตัวการ์ดเพื่อพลิกดูคำเฉลย กลไก Campbell Biology และข้อควรระวังในห้องสอบ';
+      }
+
+      // Back
+      const tagBack = document.getElementById('cardTopicTagBack');
+      tagBack.innerText = `เฉลย: ${card.topicName}`;
+      tagBack.style.color = card.topicColor;
+      tagBack.style.background = card.topicColor + '15';
+
+      document.getElementById('cardIndexBack').innerText = `${currentIdx + 1} / ${activeCards.length}`;
+      document.getElementById('cardAnswerTitleBack').innerText = card.ansTitle;
+      document.getElementById('cardExplanationBack').innerText = card.exp;
+      document.getElementById('cardTakeawayText').innerText = card.takeaway;
+      document.getElementById('cardTrickText').innerText = card.trick;
+
+      // Nav indicators
+      document.getElementById('deckPositionText').innerText = `การ์ดที่ ${currentIdx + 1} จาก ${activeCards.length}`;
+      document.getElementById('prevCardBtn').disabled = currentIdx === 0;
+      document.getElementById('nextCardBtn').disabled = currentIdx === activeCards.length - 1;
+
+      // Dynamic ambient glow color
+      const orb1 = document.getElementById('ambientOrb1');
+      if (orb1) orb1.style.background = card.topicColor + '20';
+    }
+
+    function flipCard() {
+      if (!activeCards || activeCards.length === 0) return;
+      isFlipped = !isFlipped;
+      audio.playFlip();
+      const box = document.getElementById('flashcardBox');
+      box.classList.toggle('is-flipped', isFlipped);
+    }
+
+    function navigateCard(delta) {
+      if (!activeCards || activeCards.length === 0) return;
+      const newIdx = currentIdx + delta;
+      if (newIdx >= 0 && newIdx < activeCards.length) {
+        currentIdx = newIdx;
+        isFlipped = false;
+        audio.playFlip();
+        renderCurrentCard();
+      }
+    }
+
+    function markCard(mastered) {
+      if (!activeCards || activeCards.length === 0) return;
+      const card = activeCards[currentIdx];
+
+      if (mastered) {
+        audio.playMastered();
+        if (!userProgress.masteredIds.includes(card.id)) {
+          userProgress.masteredIds.push(card.id);
+        }
+        userProgress.reviewIds = userProgress.reviewIds.filter(id => id !== card.id);
+        userProgress.streak += 1;
+      } else {
+        audio.playReview();
+        if (!userProgress.reviewIds.includes(card.id)) {
+          userProgress.reviewIds.push(card.id);
+        }
+        userProgress.masteredIds = userProgress.masteredIds.filter(id => id !== card.id);
+        userProgress.streak = 0;
+      }
+
+      saveProgress();
+      updateMetrics();
+      renderGalleryGrid();
+
+      // Automatically advance to next card smoothly
+      if (currentIdx < activeCards.length - 1) {
+        setTimeout(() => {
+          navigateCard(1);
+        }, 220);
+      } else {
+        renderCurrentCard();
+      }
+    }
+
+    function updateMetrics() {
+      const totalInDeck = activeCards.length;
+      const masteredInDeck = activeCards.filter(c => userProgress.masteredIds.includes(c.id)).length;
+      const reviewInDeck = activeCards.filter(c => userProgress.reviewIds.includes(c.id)).length;
+      const remainingInDeck = Math.max(0, totalInDeck - masteredInDeck - reviewInDeck);
+
+      document.getElementById('statMasteredCount').innerText = masteredInDeck;
+      document.getElementById('statReviewCount').innerText = reviewInDeck;
+      document.getElementById('statRemainingCount').innerText = remainingInDeck;
+      document.getElementById('statStreak').innerText = userProgress.streak;
+
+      const fillMastered = document.getElementById('progressFillMastered');
+      const fillReview = document.getElementById('progressFillReview');
+
+      if (totalInDeck > 0) {
+        fillMastered.style.width = `${(masteredInDeck / totalInDeck) * 100}%`;
+        fillReview.style.width = `${(reviewInDeck / totalInDeck) * 100}%`;
+      } else {
+        fillMastered.style.width = '0%';
+        fillReview.style.width = '0%';
+      }
+    }
+
+    // ========================================================================
+    // Topic & Search Controls
+    // ========================================================================
+    function selectTopic(topicKey) {
+      currentTopic = topicKey;
+      currentIdx = 0;
+      document.querySelectorAll('.topic-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-topic') === topicKey);
+      });
+      updateActiveDeck();
+    }
+
+    function handleSearchInput(val) {
+      searchQuery = val;
+      const clearBtn = document.getElementById('searchClearBtn');
+      if (clearBtn) clearBtn.classList.toggle('visible', val.length > 0);
+      currentIdx = 0;
+      updateActiveDeck();
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('searchInput');
+      if (input) input.value = '';
+      handleSearchInput('');
+    }
+
+    function shuffleCurrentDeck() {
+      audio.playFlip();
+      for (let i = activeCards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [activeCards[i], activeCards[j]] = [activeCards[j], activeCards[i]];
+      }
+      currentIdx = 0;
+      isFlipped = false;
+      renderCurrentCard();
+      renderGalleryGrid();
+    }
+
+    function resetProgressConfirm() {
+      if (confirm('ต้องการรีเซ็ตสถิติความจำทั้งหมดในสำรับนี้ใช่หรือไม่?')) {
+        userProgress = {
+          masteredIds: [],
+          reviewIds: [],
+          streak: 0
+        };
+        saveProgress();
+        updateMetrics();
+        renderCurrentCard();
+        renderGalleryGrid();
+      }
+    }
+
+    function toggleViewMode() {
+      isGalleryMode = !isGalleryMode;
+      const stage = document.getElementById('cardStageContainer');
+      const dock = document.getElementById('reviewActionDock');
+      const navRow = document.getElementById('deckNavRow');
+      const gallery = document.getElementById('gridGalleryContainer');
+      const label = document.getElementById('viewModeLabel');
+      const icon = document.getElementById('viewModeIcon');
+
+      if (isGalleryMode) {
+        stage.style.display = 'none';
+        dock.style.display = 'none';
+        navRow.style.display = 'none';
+        gallery.classList.add('active');
+        label.innerText = 'การ์ดเดี่ยว';
+        icon.innerText = '📇';
+        renderGalleryGrid();
+      } else {
+        stage.style.display = 'block';
+        dock.style.display = 'flex';
+        navRow.style.display = 'flex';
+        gallery.classList.remove('active');
+        label.innerText = 'แกลเลอรี';
+        icon.innerText = '📑';
+        renderCurrentCard();
+      }
+    }
+
+    function renderGalleryGrid() {
+      const container = document.getElementById('gridGalleryContainer');
+      if (!container || !isGalleryMode) return;
+
+      container.innerHTML = activeCards.map((card, idx) => {
+        const isMastered = userProgress.masteredIds.includes(card.id);
+        const isReview = userProgress.reviewIds.includes(card.id);
+
+        let statusBadge = '<span style="color:#71717a;">ยังไม่ได้ทบทวน</span>';
+        if (isMastered) statusBadge = '<span style="color:#059669; font-weight:700;">✅ แม่นยำแล้ว</span>';
+        if (isReview) statusBadge = '<span style="color:#e11d48; font-weight:700;">❌ ต้องทบทวน</span>';
+
+        return `
+          <div class="gallery-card ${isMastered ? 'is-mastered' : ''}" onclick="selectCardFromGallery(${idx})">
+            <div class="gallery-card-top">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span class="card-topic-tag" style="background:${card.topicColor}15; color:${card.topicColor}; font-size:11px;">
+                  ${card.topicName}
+                </span>
+                <span style="font-family:var(--font-mono); font-size:11px; color:#71717a;">#${idx + 1}</span>
+              </div>
+              <div class="card-term-english" style="font-size:12px; margin-bottom:4px;">${card.term}</div>
+              <div class="gallery-card-q">${card.q}</div>
+              <div class="gallery-card-ans">${card.exp}</div>
+            </div>
+            <div class="gallery-card-footer">
+              <div>${statusBadge}</div>
+              <div style="font-weight:600; color:#09090b;">เปิดการ์ด ➔</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectCardFromGallery(idx) {
+      currentIdx = idx;
+      isGalleryMode = false;
+      toggleViewMode();
+    }
+
+    // ========================================================================
+    // Keyboard Shortcuts & Touch Gestures
+    // ========================================================================
+    window.addEventListener('keydown', (e) => {
+      // Don't intercept when user is typing in search input
+      if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
+
+      if (e.code === 'Space') {
+        e.preventDefault();
+        flipCard();
+      } else if (e.code === 'ArrowLeft') {
+        e.preventDefault();
+        navigateCard(-1);
+      } else if (e.code === 'ArrowRight') {
+        e.preventDefault();
+        navigateCard(1);
+      } else if (e.code === 'Digit1' || e.code === 'Numpad1') {
+        markCard(false);
+      } else if (e.code === 'Digit2' || e.code === 'Numpad2') {
+        markCard(true);
+      }
+    });
+
+    // Touch Swipe Gestures for Mobile
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const stageEl = document.getElementById('cardStageContainer');
+
+    if (stageEl) {
+      stageEl.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+
+      stageEl.addEventListener('touchend', (e) => {
+        const diffX = e.changedTouches[0].screenX - touchStartX;
+        const diffY = e.changedTouches[0].screenY - touchStartY;
+        // Check if horizontal swipe was dominant
+        if (Math.abs(diffX) > 60 && Math.abs(diffX) > Math.abs(diffY)) {
+          if (diffX > 0) {
+            // Swiped Right -> Mastered
+            markCard(true);
+          } else {
+            // Swiped Left -> Need Review
+            markCard(false);
+          }
+        }
+      }, { passive: true });
+    }
+
+    // Start App
+    document.addEventListener('DOMContentLoaded', () => {
+      loadProgress();
+      updateActiveDeck();
+    });
+  </script>
+</body>
+</html>

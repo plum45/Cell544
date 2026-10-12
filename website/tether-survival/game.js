@@ -658,7 +658,11 @@ class BioCyberArena3D {
     this.blockSize = 4.2; // Expanded from 3.8 to 4.2
     this.blocks = [];
 
-    // 4 Answer Pads & 3D Holographic Billboards
+    // Rolling Bio-Hazard Spheres (อุปสรรคลูกบอลกลิ้งหลบหลีกวิ่งไปตอบคำถาม!)
+    this.hazardSpheres = [];
+    this.sphereSpawnTimer = 0.8;
+
+    // 4 Answer Pads & 3D Holographic Billboards (ตั้งอยู่ขอบนอกสุดของพื้นที่เดิน!)
     this.answerPads = [];
     this.floorDirectionGroup = null;
 
@@ -1033,6 +1037,18 @@ class BioCyberArena3D {
       };
       mobileJumpBtn.addEventListener('touchstart', handleJump, { passive: false });
       mobileJumpBtn.addEventListener('click', handleJump);
+    }
+
+    // Mobile Dash Button
+    const mobileDashBtn = document.getElementById('mobileDashBtn');
+    if (mobileDashBtn) {
+      const handleDash = (e) => {
+        e.preventDefault();
+        this.sfx.init();
+        this.useSkill('speed');
+      };
+      mobileDashBtn.addEventListener('touchstart', handleDash, { passive: false });
+      mobileDashBtn.addEventListener('click', handleDash);
     }
 
     // Mobile Yank Button
@@ -1561,7 +1577,7 @@ class BioCyberArena3D {
     this.answerPads = [];
 
     const theme = ARENA_THEMES[this.currentTheme] || ARENA_THEMES.sakura;
-    const offset = this.blockSize * 5.2; // 21.8m from center
+    const offset = this.blockSize * 9.2; // 38.6m from center (ตั้งอยู่ที่ขอบนอกสุดของพื้นที่เดินตามที่ผู้ใช้ต้องการ!)
     const padPositions = [
       { id: 'A', x: 0, z: -offset, label: 'A', direction: 'NORTH (เหนือ)', color: 0x38bdf8 },
       { id: 'B', x: offset, z: 0, label: 'B', direction: 'EAST (ออก)', color: 0xfb923c },
@@ -1574,14 +1590,14 @@ class BioCyberArena3D {
       group.position.set(pos.x, 0.8, pos.z);
 
       // Raised 3D Cyber Podium
-      const podiumGeo = new THREE.CylinderGeometry(2.8, 3.2, 0.8, 24);
+      const podiumGeo = new THREE.CylinderGeometry(3.6, 4.2, 0.8, 28);
       const podiumMat = new THREE.MeshStandardMaterial({ color: theme.padPodium, roughness: 0.2, metalness: 0.9 });
       const podium = new THREE.Mesh(podiumGeo, podiumMat);
       podium.receiveShadow = true;
       group.add(podium);
 
       // Glowing Outer Hologram Ring with Cardinal Color
-      const torusGeo = new THREE.TorusGeometry(3.0, 0.12, 8, 32);
+      const torusGeo = new THREE.TorusGeometry(3.9, 0.16, 8, 32);
       const torusMat = new THREE.MeshBasicMaterial({ color: pos.color });
       const torus = new THREE.Mesh(torusGeo, torusMat);
       torus.rotation.x = Math.PI / 2;
@@ -1589,22 +1605,22 @@ class BioCyberArena3D {
       group.add(torus);
 
       // Radiant Sky Beacon Light Pillar (พุ่งขึ้นฟ้า 50 เมตร มองเห็นชัดเจนจากทุกทิศทาง!)
-      const skyBeamGeo = new THREE.CylinderGeometry(0.22, 0.45, 52, 16);
-      const skyBeamMat = new THREE.MeshBasicMaterial({ color: pos.color, transparent: true, opacity: 0.5 });
+      const skyBeamGeo = new THREE.CylinderGeometry(0.3, 0.6, 56, 16);
+      const skyBeamMat = new THREE.MeshBasicMaterial({ color: pos.color, transparent: true, opacity: 0.55 });
       const skyBeam = new THREE.Mesh(skyBeamGeo, skyBeamMat);
-      skyBeam.position.y = 26.0;
+      skyBeam.position.y = 28.0;
       group.add(skyBeam);
 
-      // 3D In-World Floating Hologram Billboard (1024x512 High-Res Canvas Texture)
+      // 3D In-World Floating Hologram Billboard (1024x512 High-Res Canvas Texture, ขนาดใหญ่ชัดเจน!)
       const canvas = document.createElement('canvas');
       canvas.width = 1024;
       canvas.height = 512;
       const texture = new THREE.CanvasTexture(canvas);
 
-      const billboardGeo = new THREE.PlaneGeometry(7.2, 3.6);
+      const billboardGeo = new THREE.PlaneGeometry(9.6, 4.8);
       const billboardMat = new THREE.MeshBasicMaterial({ map: texture, transparent: true, side: THREE.DoubleSide });
       const billboard = new THREE.Mesh(billboardGeo, billboardMat);
-      billboard.position.set(0, 4.6, 0);
+      billboard.position.set(0, 5.8, 0);
       group.add(billboard);
 
       this.scene.add(group);
@@ -1615,7 +1631,7 @@ class BioCyberArena3D {
         z: pos.z,
         direction: pos.direction,
         color: pos.color,
-        radius: 3.2,
+        radius: 4.2,
         group,
         podium,
         torus,
@@ -1815,6 +1831,22 @@ class BioCyberArena3D {
   }
 
   loadQuestion(idx) {
+    // 1. Restore & solidify all arena blocks completely (ไม่ตกแมพแน่นอน!)
+    this.resetArenaBlocks();
+    this.initHazardSpheres();
+
+    const human = this.players.find(p => p.isHuman);
+    if (human && human.group) {
+      if (human.status !== 'SAFE' || human.group.position.y < -2) {
+        human.group.position.set(0, 0.8, 0);
+        human.status = 'SAFE';
+        human.vx = 0;
+        human.vz = 0;
+        human.vy = 0;
+        human.isGrounded = true;
+      }
+    }
+
     const questionList = (this.gameType === 'whoami' && typeof WHO_AM_I_ROUNDS !== 'undefined') ? WHO_AM_I_ROUNDS : STANDARD_QUESTIONS;
     this.currentQuestionIdx = idx % questionList.length;
     const q = questionList[this.currentQuestionIdx];
@@ -1916,12 +1948,8 @@ class BioCyberArena3D {
         }
       }
 
-      // Random single block falling mechanic throughout the round (สุ่มบล็อคร่วงทีละ 1 บล็อก)
-      this.triggerRandomBlockFall(dt);
-
-      if (this.questionTimer <= 4) {
-        this.crumbleWideBlocks(dt);
-      }
+      // Hazard Bio-Spheres Rolling Obstacle (อุปสรรคหลัก: วิ่งหลบลูกบอลเพื่อไปตอบคำถาม!)
+      this.updateHazardSpheres(dt);
 
       if (this.questionTimer <= 0) {
         this.evaluateAnswer();
@@ -2050,10 +2078,10 @@ class BioCyberArena3D {
       const stripGroup = new THREE.Group();
       stripGroup.rotation.y = d.angle;
 
-      // 4 Glowing Chevron Arrows along the floor toward each pad
-      for (let i = 1; i <= 4; i++) {
-        const dist = 4.4 * i;
-        const arrowGeo = new THREE.ConeGeometry(0.7, 1.4, 3);
+      // 8 Glowing Chevron Arrows along the floor toward each outer edge pad
+      for (let i = 1; i <= 8; i++) {
+        const dist = 4.6 * i;
+        const arrowGeo = new THREE.ConeGeometry(0.85, 1.6, 3);
         const arrowMat = new THREE.MeshBasicMaterial({ color: d.color, transparent: true, opacity: 0.9 });
         const arrow = new THREE.Mesh(arrowGeo, arrowMat);
         arrow.rotation.x = -Math.PI / 2;
@@ -2061,12 +2089,12 @@ class BioCyberArena3D {
         stripGroup.add(arrow);
       }
 
-      // Connecting Floor Light Strip
-      const lineGeo = new THREE.PlaneGeometry(0.28, 19);
-      const lineMat = new THREE.MeshBasicMaterial({ color: d.color, transparent: true, opacity: 0.55, side: THREE.DoubleSide });
+      // Connecting Floor Light Strip reaching the edge pad
+      const lineGeo = new THREE.PlaneGeometry(0.35, 38);
+      const lineMat = new THREE.MeshBasicMaterial({ color: d.color, transparent: true, opacity: 0.65, side: THREE.DoubleSide });
       const line = new THREE.Mesh(lineGeo, lineMat);
       line.rotation.x = -Math.PI / 2;
-      line.position.set(0, 0.73, -11.5);
+      line.position.set(0, 0.73, -19.0);
       stripGroup.add(line);
 
       this.floorDirectionGroup.add(stripGroup);
@@ -2280,30 +2308,192 @@ class BioCyberArena3D {
     }, 2200);
   }
 
-  // Random Single Block Falling Mechanic (สุ่มบล็อคร่วงทีละ 1 บล็อก)
-  triggerRandomBlockFall(dt) {
-    this.randomFallTimer -= dt;
-    if (this.randomFallTimer > 0) return;
+  // ==========================================
+  // Solid Platform Recovery (ฟื้นฟูบล็อกทุกแผ่นให้แน่นหนา ไม่ตกแมพตอนรีสตาร์ท!)
+  // ==========================================
+  resetArenaBlocks() {
+    const theme = ARENA_THEMES[this.currentTheme] || ARENA_THEMES.sakura;
+    this.blocks.forEach(b => {
+      b.alive = true;
+      b.isFalling = false;
+      b.shakeTimer = 0;
+      b.fallVelocity = 0;
+      if (b.mesh) {
+        b.mesh.position.y = 0;
+        b.mesh.rotation.set(0, 0, 0);
+        b.mesh.visible = true;
+        b.mesh.material.color.setHex(theme.blockTop);
+        const wire = b.mesh.children.find(c => c.isLineSegments);
+        if (wire) {
+          wire.material.color.setHex(theme.blockEdge);
+          wire.material.opacity = theme.blockEdgeOpacity;
+        }
+      }
+    });
+  }
 
-    this.randomFallTimer = this.randomFallInterval;
+  // ==========================================
+  // Rolling Bio-Hazard Spheres (อุปสรรคใหม่: วิ่งหลบลูกบอลกลิ้งเพื่อไปตอบคำถาม!)
+  // ==========================================
+  initHazardSpheres() {
+    if (this.hazardSpheres) {
+      this.hazardSpheres.forEach(h => {
+        this.scene.remove(h.mesh);
+        if (h.telegraph) this.scene.remove(h.telegraph);
+      });
+    }
+    this.hazardSpheres = [];
+    this.sphereSpawnTimer = 0.8;
+  }
 
-    const eligible = this.blocks.filter(b => b.alive && !b.isFalling && b.shakeTimer === 0 && b.dist > 1.8);
-    if (eligible.length === 0) return;
+  spawnHazardSphere() {
+    if (this.state !== 'PLAYING') return;
+    if (this.hazardSpheres.length >= 6) return;
 
-    const block = eligible[Math.floor(Math.random() * eligible.length)];
-    block.shakeTimer = 0.01;
-    this.sfx.playCrumble();
+    const edgeDist = this.blockSize * 9.2;
+    const angles = [0, Math.PI / 2, Math.PI, -Math.PI / 2, Math.PI / 4, -Math.PI / 4, 3 * Math.PI / 4, -3 * Math.PI / 4];
+    const angle = angles[Math.floor(Math.random() * angles.length)];
 
-    if (block.mesh) {
-      const wire = block.mesh.children.find(c => c.isLineSegments);
-      if (wire) {
-        wire.material.color.setHex(0xff0055);
-        wire.material.opacity = 1.0;
+    const startX = Math.cos(angle) * edgeDist;
+    const startZ = Math.sin(angle) * edgeDist;
+
+    // Rolling direction targeting the inner quadrant across
+    const targetX = -startX + (Math.random() - 0.5) * 16;
+    const targetZ = -startZ + (Math.random() - 0.5) * 16;
+
+    const dx = targetX - startX;
+    const dz = targetZ - startZ;
+    const len = Math.hypot(dx, dz) || 1;
+    const speed = 14 + Math.random() * 8; // Exciting rolling pace!
+
+    const vx = (dx / len) * speed;
+    const vz = (dz / len) * speed;
+
+    // Glowing Bio-Hazard Sphere
+    const sphereRadius = 1.35;
+    const geo = new THREE.SphereGeometry(sphereRadius, 18, 18);
+    const colors = [0xff0055, 0x00f0ff, 0xffbe0b, 0xa855f7, 0x10b981];
+    const col = colors[Math.floor(Math.random() * colors.length)];
+    const mat = new THREE.MeshStandardMaterial({
+      color: col,
+      emissive: col,
+      emissiveIntensity: 0.6,
+      roughness: 0.2,
+      metalness: 0.85
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(startX, sphereRadius + 0.7, startZ);
+
+    // Glowing Wireframe Aura
+    const ringGeo = new THREE.RingGeometry(sphereRadius * 1.05, sphereRadius * 1.25, 24);
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, transparent: true, opacity: 0.85 });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = -Math.PI / 2;
+    mesh.add(ring);
+
+    // Red Telegraph Warning Strip on floor for 1.2s
+    const teleGeo = new THREE.PlaneGeometry(0.85, len);
+    const teleMat = new THREE.MeshBasicMaterial({ color: 0xff0055, transparent: true, opacity: 0.5, side: THREE.DoubleSide });
+    const telegraph = new THREE.Mesh(teleGeo, teleMat);
+    telegraph.rotation.x = -Math.PI / 2;
+    telegraph.rotation.z = Math.atan2(dx, dz);
+    telegraph.position.set((startX + targetX) / 2, 0.73, (startZ + targetZ) / 2);
+    this.scene.add(telegraph);
+
+    this.scene.add(mesh);
+
+    this.hazardSpheres.push({
+      mesh,
+      telegraph,
+      radius: sphereRadius,
+      vx,
+      vz,
+      life: 7.5,
+      active: true
+    });
+  }
+
+  updateHazardSpheres(dt) {
+    this.sphereSpawnTimer -= dt;
+    if (this.sphereSpawnTimer <= 0) {
+      this.spawnHazardSphere();
+      this.sphereSpawnTimer = 1.6 + Math.random() * 1.0;
+    }
+
+    const human = this.players.find(p => p.isHuman);
+
+    for (let i = this.hazardSpheres.length - 1; i >= 0; i--) {
+      const h = this.hazardSpheres[i];
+      h.life -= dt;
+
+      // Move sphere
+      h.mesh.position.x += h.vx * dt;
+      h.mesh.position.z += h.vz * dt;
+
+      // Roll rotation
+      const rollSpeed = Math.hypot(h.vx, h.vz) / h.radius;
+      h.mesh.rotation.x += rollSpeed * dt;
+      h.mesh.rotation.z += rollSpeed * dt * 0.7;
+
+      // Fade telegraph strip
+      if (h.telegraph) {
+        h.telegraph.material.opacity = Math.max(0, h.telegraph.material.opacity - dt * 0.6);
+        if (h.telegraph.material.opacity <= 0.05) {
+          this.scene.remove(h.telegraph);
+          h.telegraph = null;
+        }
+      }
+
+      // Check collision with human player
+      if (human && human.group && human.status === 'SAFE') {
+        const px = human.group.position.x;
+        const py = human.group.position.y;
+        const pz = human.group.position.z;
+
+        const dist2D = Math.hypot(px - h.mesh.position.x, pz - h.mesh.position.z);
+        const isJumpingOver = py > (h.radius + 1.2); // Player cleanly vaulted over!
+
+        if (dist2D < (h.radius + human.radius)) {
+          if (isJumpingOver) {
+            // Jumped over the ball successfully!
+          } else if (this.shieldActive) {
+            // Shield deflection!
+            this.sfx.playShield();
+            this.showFloatingToast('🛡️ SHIELD DEFLECT! ปัดลูกบอลกระเด็น (+50 PTS)', '#00ff88');
+            this.score += 50;
+            h.vx = -h.vx * 1.3;
+            h.vz = -h.vz * 1.3;
+          } else {
+            // Hit by ball: Knockback & shake!
+            this.sfx.playBounce();
+            this.addCameraShake(0.5);
+            const knockDirX = (px - h.mesh.position.x) || (Math.random() - 0.5);
+            const knockDirZ = (pz - h.mesh.position.z) || (Math.random() - 0.5);
+            const knockLen = Math.hypot(knockDirX, knockDirZ) || 1;
+            human.vx += (knockDirX / knockLen) * 22;
+            human.vz += (knockDirZ / knockLen) * 22;
+            human.vy = 6.5;
+            human.isGrounded = false;
+            this.showFloatingToast('💥 โดนลูกบอลชน! กระเด็นถอยหลัง (-20 PTS)', '#ff0055');
+            this.score = Math.max(0, this.score - 20);
+            h.vx = -h.vx * 0.4;
+            h.vz = -h.vz * 0.4;
+          }
+        }
+      }
+
+      // Despawn when expired or rolled far out
+      const distFromCenter = Math.hypot(h.mesh.position.x, h.mesh.position.z);
+      if (h.life <= 0 || distFromCenter > (this.blockSize * 11.5)) {
+        this.scene.remove(h.mesh);
+        if (h.telegraph) this.scene.remove(h.telegraph);
+        this.hazardSpheres.splice(i, 1);
       }
     }
   }
 
   performTetherYank(playerIdx) {
+    if (this.teamMode === 'solo') return;
     if (this.yankCooldown > 0) return;
     this.yankCooldown = 1.2;
     this.sfx.playYank();
@@ -2468,6 +2658,7 @@ class BioCyberArena3D {
   }
 
   apply3DTetherSpringForces() {
+    if (this.teamMode === 'solo') return;
     const active = this.players.filter(p => p.status !== 'LOST');
     if (active.length < 2) return;
 

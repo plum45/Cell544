@@ -1266,7 +1266,14 @@ body {
 
 .mobile-action-btn .btn-label {
   font-size: 10px;
-/* =========================================================================
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.mobile-action-btn.dash-btn:active {
+  background: rgba(255, 170, 0, 0.4);
+  border-color: #ffaa00;
+}
    Power-Up Skills Dock (Active Abilities)
    ========================================================================= */
 .powerup-dock {

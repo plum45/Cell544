@@ -713,171 +713,169 @@ class WhoAmIGame {
     this.scene.add(this.particles);
   }
 
-  // --- Dynamic Canvas Textures with Real Image & Cyber Black Background ---
+  // --- Dynamic Canvas Textures with Real Image & Crisp Pure White High-Contrast Background ---
   createCardTexture(cardData, isBack = false) {
     const canvas = document.createElement('canvas');
-    canvas.width = 512;
-    canvas.height = 768;
+    canvas.width = 1024;
+    canvas.height = 1536;
     const ctx = canvas.getContext('2d');
 
     if (isBack) {
-      // 3D Card Back: Cyber Obsidian Holographic Bio-Seal
-      const grad = ctx.createLinearGradient(0, 0, 512, 768);
-      grad.addColorStop(0, '#0c101c');
-      grad.addColorStop(0.5, '#161c2d');
-      grad.addColorStop(1, '#07090e');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 512, 768);
+      // 3D Card Back: Crisp Pure White & Cyan Shield Hologram
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, 1024, 1536);
 
       // Cyber Neon Frame
-      ctx.strokeStyle = '#00f0ff';
-      ctx.lineWidth = 14;
-      ctx.strokeRect(16, 16, 480, 736);
+      ctx.strokeStyle = '#0284c7';
+      ctx.lineWidth = 24;
+      ctx.strokeRect(28, 28, 968, 1480);
 
-      ctx.strokeStyle = 'rgba(168, 85, 247, 0.5)';
-      ctx.lineWidth = 3;
-      ctx.strokeRect(32, 32, 448, 704);
+      ctx.strokeStyle = 'rgba(14, 165, 233, 0.4)';
+      ctx.lineWidth = 6;
+      ctx.strokeRect(52, 52, 920, 1432);
 
       // Central Bio-Hazard Holographic Seal
       ctx.save();
-      ctx.translate(256, 330);
+      ctx.translate(512, 660);
       ctx.beginPath();
       for (let i = 0; i < 6; i++) {
         const angle = (i * Math.PI) / 3;
-        const x = 115 * Math.cos(angle);
-        const y = 115 * Math.sin(angle);
+        const x = 230 * Math.cos(angle);
+        const y = 230 * Math.sin(angle);
         if (i === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       }
       ctx.closePath();
-      ctx.strokeStyle = '#00f0ff';
-      ctx.lineWidth = 6;
+      ctx.strokeStyle = '#0284c7';
+      ctx.lineWidth = 12;
       ctx.stroke();
 
-      ctx.fillStyle = 'rgba(0, 240, 255, 0.1)';
+      ctx.fillStyle = 'rgba(2, 132, 199, 0.08)';
       ctx.fill();
       ctx.restore();
 
-      ctx.fillStyle = '#00f0ff';
-      ctx.font = 'bold 90px "Prompt", sans-serif';
+      ctx.fillStyle = '#0284c7';
+      ctx.font = 'bold 180px "Prompt", sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('?', 256, 365);
+      ctx.fillText('?', 512, 730);
 
       // Labels
-      ctx.fillStyle = '#f8fafc';
-      ctx.font = 'bold 24px "JetBrains Mono", monospace';
-      ctx.fillText('CYTO-ARCHIVE // SPECIMEN', 256, 510);
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 44px "JetBrains Mono", monospace';
+      ctx.fillText('CYTO-ARCHIVE // SPECIMEN', 512, 1020);
 
       ctx.fillStyle = '#f59e0b';
-      ctx.font = 'bold 18px "JetBrains Mono", monospace';
-      ctx.fillText('24+ UNIFIED MASTER DECK', 256, 545);
+      ctx.font = 'bold 36px "JetBrains Mono", monospace';
+      ctx.fillText('24+ UNIFIED MASTER DECK', 512, 1090);
 
-      ctx.fillStyle = '#94a3b8';
-      ctx.font = '16px "Prompt", sans-serif';
-      ctx.fillText('TOP SECRET BIOLOGICAL DOSSIER', 256, 675);
+      ctx.fillStyle = '#64748b';
+      ctx.font = '32px "Prompt", sans-serif';
+      ctx.fillText('TOP SECRET BIOLOGICAL DOSSIER', 512, 1350);
 
     } else {
-      // 3D Card Front: SLEEK CYBER OBSIDIAN BLACK BACKGROUND WITH REAL PHOTOGRAPHY
-      const grad = ctx.createLinearGradient(0, 0, 512, 768);
-      grad.addColorStop(0, '#111827');
-      grad.addColorStop(0.4, '#0b0f19');
-      grad.addColorStop(1, '#050811');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 512, 768);
+      // 3D Card Front: CRISP PURE WHITE LUXURY BACKGROUND WITH REAL HIGH-CONTRAST PHOTOGRAPHY
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, 1024, 1536);
 
-      // Glowing Neon Accent Border
-      ctx.strokeStyle = cardData.color || '#00f0ff';
-      ctx.lineWidth = 14;
-      ctx.strokeRect(16, 16, 480, 736);
+      // Outer Thick Accent Border
+      const cardColor = cardData.color || '#0284c7';
+      ctx.strokeStyle = cardColor;
+      ctx.lineWidth = 26;
+      ctx.strokeRect(26, 26, 972, 1484);
 
-      // Inner subtle border
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(28, 28, 456, 712);
+      // Inner Clean Border
+      ctx.strokeStyle = 'rgba(15, 23, 42, 0.12)';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(50, 50, 924, 1436);
 
       // Category Tag Header Bar
-      ctx.fillStyle = cardData.color || '#00f0ff';
-      ctx.fillRect(36, 36, 440, 46);
-      ctx.fillStyle = '#000000';
-      ctx.font = 'bold 22px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(cardData.tag || 'BIOMOLECULE', 256, 68);
+      ctx.fillStyle = cardColor;
+      ctx.beginPath();
+      ctx.roundRect ? ctx.roundRect(64, 68, 896, 90, 16) : ctx.rect(64, 68, 896, 90);
+      ctx.fill();
 
-      // Real Photography Image Window
-      const imgBoxX = 40;
-      const imgBoxY = 96;
-      const imgBoxW = 432;
-      const imgBoxH = 350;
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 40px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(cardData.tag || 'BIOMOLECULE', 512, 130);
+
+      // Real Photography Image Window (Huge & High-Contrast)
+      const imgBoxX = 72;
+      const imgBoxY = 184;
+      const imgBoxW = 880;
+      const imgBoxH = 720;
 
       // Draw real specimen image if loaded in cache
       const cachedImg = IMAGE_CACHE[cardData.id];
       if (cachedImg && cachedImg.complete && cachedImg.naturalWidth > 0) {
         ctx.save();
-        // Clip to rounded rectangle
         ctx.beginPath();
-        ctx.roundRect ? ctx.roundRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH, 12) : ctx.rect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
+        ctx.roundRect ? ctx.roundRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH, 20) : ctx.rect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
         ctx.clip();
         ctx.drawImage(cachedImg, imgBoxX, imgBoxY, imgBoxW, imgBoxH);
         ctx.restore();
 
-        // Image Frame Overlay with glowing neon tint
-        ctx.strokeStyle = cardData.color || '#00f0ff';
-        ctx.lineWidth = 3;
-        ctx.strokeRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
-
-        // Small floating biology icon badge
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+        // Image Frame Overlay
+        ctx.strokeStyle = cardColor;
+        ctx.lineWidth = 6;
         ctx.beginPath();
-        ctx.arc(imgBoxX + 40, imgBoxY + 40, 26, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = cardData.color || '#00f0ff';
-        ctx.lineWidth = 2;
+        ctx.roundRect ? ctx.roundRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH, 20) : ctx.rect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
         ctx.stroke();
 
-        ctx.font = '28px sans-serif';
+        // Small floating biology icon badge
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+        ctx.beginPath();
+        ctx.arc(imgBoxX + 64, imgBoxY + 64, 46, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = cardColor;
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        ctx.font = '48px sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(cardData.icon || '🧬', imgBoxX + 40, imgBoxY + 50);
+        ctx.fillText(cardData.icon || '🧬', imgBoxX + 64, imgBoxY + 80);
 
       } else {
-        // Fallback placeholder container
-        ctx.fillStyle = '#0f172a';
+        // Fallback placeholder container with soft light background
+        ctx.fillStyle = '#f8fafc';
         ctx.fillRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
-        ctx.strokeStyle = cardData.color || '#00f0ff';
-        ctx.lineWidth = 3;
+        ctx.strokeStyle = cardColor;
+        ctx.lineWidth = 6;
         ctx.strokeRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
 
-        ctx.font = '130px sans-serif';
+        ctx.font = '240px sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(cardData.icon || '🧬', 256, 310);
+        ctx.fillText(cardData.icon || '🧬', 512, 600);
       }
 
-      // Specimen Thai Name (Bright White on Black)
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 36px "Prompt", sans-serif';
+      // Specimen Thai Name (CRYSTAL CLEAR PITCH BLACK ON PURE WHITE - HUGE HIGH CONTRAST)
+      ctx.fillStyle = '#09090b';
+      ctx.font = 'bold 74px "Prompt", sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText(cardData.nameTh, 256, 500);
+      ctx.fillText(cardData.nameTh, 512, 1005);
 
-      // Specimen English Name (Glowing Neon Color)
-      ctx.fillStyle = cardData.color || '#00f0ff';
-      ctx.font = 'bold 24px "JetBrains Mono", monospace';
-      ctx.fillText(cardData.nameEn, 256, 545);
+      // Specimen English Name (Vibrant Accent Color)
+      ctx.fillStyle = cardColor;
+      ctx.font = 'bold 44px "JetBrains Mono", monospace';
+      ctx.fillText(cardData.nameEn, 512, 1090);
 
-      // Subtle Cyber Divider
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
-      ctx.fillRect(60, 580, 392, 2);
+      // Subtle Divider
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+      ctx.fillRect(120, 1150, 784, 4);
 
       // Scientific Verification Stamp
-      ctx.fillStyle = '#94a3b8';
-      ctx.font = 'bold 18px "Prompt", sans-serif';
-      ctx.fillText(`SPECIMEN #${String(cardData.id).padStart(2, '0')} · CAMPBELL BIOLOGY 12TH`, 256, 625);
+      ctx.fillStyle = '#475569';
+      ctx.font = 'bold 34px "Prompt", sans-serif';
+      ctx.fillText(`SPECIMEN #${String(cardData.id).padStart(2, '0')} · CAMPBELL BIOLOGY 12TH`, 512, 1240);
 
-      ctx.fillStyle = '#10b981';
-      ctx.font = 'bold 18px "Prompt", sans-serif';
-      ctx.fillText('✔ ยืนยันพิกัดโครงสร้างชีววิทยา', 256, 665);
+      ctx.fillStyle = '#16a34a';
+      ctx.font = 'bold 36px "Prompt", sans-serif';
+      ctx.fillText('✔ ยืนยันพิกัดโครงสร้างชีววิทยา', 512, 1320);
     }
 
     const texture = new THREE.CanvasTexture(canvas);
-    texture.anisotropy = 8;
+    texture.anisotropy = 16;
+    texture.minFilter = THREE.LinearMipmapLinearFilter;
     return texture;
   }
 
@@ -890,14 +888,14 @@ class WhoAmIGame {
     this.cardMeshes = [];
     this.eliminatedCardIds.clear();
 
-    const cardWidth = 0.74;
-    const cardHeight = 1.18;
+    const cardWidth = 0.88;
+    const cardHeight = 1.38;
     const cardDepth = 0.015;
 
     // Arrange 24 cards in a 4 rows x 6 columns laboratory grid on the desk
     const cols = 6;
-    const spacingX = 0.94;
-    const spacingZ = 1.38;
+    const spacingX = 1.05;
+    const spacingZ = 1.52;
     const startX = this.tableCenterX - ((cols - 1) * spacingX) / 2;
     const startZ = -1.6;
 
@@ -908,7 +906,7 @@ class WhoAmIGame {
       const cardGeo = new THREE.BoxGeometry(cardWidth, cardHeight, cardDepth);
       const frontTex = this.createCardTexture(cardData, false);
       const backTex = this.createCardTexture(cardData, true);
-      const sideMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.8, roughness: 0.25 });
+      const sideMat = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.1, roughness: 0.2 });
 
       const materials = [
         sideMat, sideMat, sideMat, sideMat,
@@ -1371,6 +1369,10 @@ class WhoAmIGame {
       .to({ y: card.userData.origY + 0.3, z: card.userData.origZ + 0.35 }, 180)
       .easing(TWEEN.Easing.Cubic.Out)
       .start();
+
+    if (card.userData.cardData) {
+      this.showCardInspector(card.userData.cardData);
+    }
   }
 
   resetCardHover(card) {
@@ -1380,6 +1382,33 @@ class WhoAmIGame {
       .to({ y: card.userData.origY, z: card.userData.origZ }, 200)
       .easing(TWEEN.Easing.Cubic.Out)
       .start();
+  }
+
+  showCardInspector(cardData) {
+    let hud = document.getElementById('card-inspect-hud');
+    if (!hud) {
+      hud = document.createElement('div');
+      hud.id = 'card-inspect-hud';
+      hud.className = 'card-inspect-hud';
+      document.body.appendChild(hud);
+    }
+    const cachedImg = IMAGE_CACHE[cardData.id];
+    const imgSrc = (cachedImg && cachedImg.complete && cachedImg.naturalWidth > 0) ? cachedImg.src : null;
+
+    hud.innerHTML = `
+      <div class="inspect-inner">
+        <div class="inspect-media">
+          ${imgSrc ? `<img src="${imgSrc}" class="inspect-img" alt="${cardData.nameTh}">` : `<div class="inspect-fallback">${cardData.icon || '🧬'}</div>`}
+        </div>
+        <div class="inspect-info">
+          <div class="inspect-badge" style="background:${cardData.color || '#0284c7'}">${cardData.tag || 'SPECIMEN'}</div>
+          <div class="inspect-title-th">${cardData.nameTh}</div>
+          <div class="inspect-title-en">${cardData.nameEn}</div>
+          <div class="inspect-clue"><strong>ลักษณะชีววิทยา:</strong> ${cardData.clues && cardData.clues[0] ? cardData.clues[0] : 'โครงสร้างชีววิทยาเซลล์ Campbell'}</div>
+        </div>
+      </div>
+    `;
+    hud.classList.add('visible');
   }
 
   onMouseClick(event) {
