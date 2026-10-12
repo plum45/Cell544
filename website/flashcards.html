@@ -1053,9 +1053,9 @@
         <span class="pulse-dot"></span>
         <span>Interactive Spaced Repetition</span>
       </div>
-      <h1 class="page-title">แฟลชการ์ดชีววิทยาของเซลล์</h1>
+      <h1 class="page-title">แฟลชการ์ด & คลังคำศัพท์ชีววิทยาของเซลล์</h1>
       <p class="page-subtitle">
-        ทบทวน 42 คอนเซปต์สำคัญระดับโมเลกุลตามหลักสูตร Campbell Biology พลิกดูคำอธิบายและเทคนิคจำแม่นยำ พร้อมบันทึกความก้าวหน้า
+        ทบทวน 62 คอนเซปต์ & คลังคำศัพท์สำคัญระดับโมเลกุลตามหลักสูตร Campbell Biology พร้อมรากศัพท์ คำแปล และเทคนิคจำแม่นยำ
       </p>
     </header>
 
@@ -1064,7 +1064,11 @@
       <div class="topic-filter-bar" id="topicFilterBar">
         <button class="topic-btn active" data-topic="all" onclick="selectTopic('all')">
           <span>🌟 ทุกหัวข้อ (Master Deck)</span>
-          <span class="count-badge" id="badge-all">42</span>
+          <span class="count-badge" id="badge-all">62</span>
+        </button>
+        <button class="topic-btn" data-topic="vocab" onclick="selectTopic('vocab')" style="border-color: rgba(37, 99, 235, 0.4); color: #2563eb; font-weight: 700;">
+          <span>📖 7. คำศัพท์สำคัญ (Vocabulary)</span>
+          <span class="count-badge" id="badge-vocab" style="background: rgba(37, 99, 235, 0.15); color: #2563eb;">20</span>
         </button>
         <button class="topic-btn" data-topic="gene-expr" onclick="selectTopic('gene-expr')">
           <span>🧬 1. การแสดงออกของยีน</span>
@@ -1869,6 +1873,250 @@
         exp: '1. Membrane Blebbing: ไซโทสเกเลตันถูกย่อย ทำให้เยื่อหุ้มเซลล์โป่งพองเป็นตุ่ม\n2. Phosphatidylserine (PS): ปกติอยู่ด้านในของเยื่อหุ้มเซลล์ จะถูกพลิกออกมาอยู่ผิวด้านนอก ทำหน้าที่เป็นสัญญาณ "Eat-me" สั่งให้ Macrophage เข้ามากลืนกินอย่างรวดเร็ว',
         takeaway: 'Campbell: ป้องกันไม่ให้สารภายในเซลล์รั่วไหลออกมาทำลายเนื้อเยื่อรอบข้าง จึงไม่เกิดการอักเสบ',
         trick: 'Phosphatidylserine สลับหน้า = ป้ายประกาศติดอกเสื้อ "ช่วยกินฉันที ฉันตายอย่างเป็นระเบียบแล้ว"'
+      },
+
+      // ----------------------------------------------------------------------
+      // Topic 7: Bio Vocabulary & Terminology (คลังคำศัพท์ชีววิทยาสำคัญ 20 คำ)
+      // ----------------------------------------------------------------------
+      {
+        id: 'vocab-1',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Apoptosis (/ˌæp.əpˈtoʊ.sɪs/)',
+        q: 'คำศัพท์: Apoptosis มีรากศัพท์มาจากภาษาใด แปลว่าอะไร และมีบทบาทสำคัญอย่างไร?',
+        ansTitle: 'รากศัพท์กรีก Apo- (แยก/หลุด) + ptosis (ร่วงหล่น) = การตายของเซลล์แบบมีแบบแผน',
+        exp: 'หมายถึง Programmed Cell Death กระบวนการที่เซลล์ทำลายตัวเองอย่างเป็นระเบียบเมื่อหมดอายุการใช้งานหรือ DNA เสียหาย เซลล์จะหดตัว ไม่เกิดการอักเสบในเนื้อเยื่อรอบข้าง',
+        takeaway: 'Campbell: เปรียบเสมือน "ใบไม้ร่วงตามฤดูกาล" เช่น การสลายพังผืดระหว่างนิ้วมือในทารกระหว่างพัฒนาการ',
+        trick: 'ท่องจำรากศัพท์: ptosis = ตก/ร่วง (เหมือนคำว่า Ptosis หนังตาตก)'
+      },
+      {
+        id: 'vocab-2',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Epigenetics (/ˌep.ɪ.dʒəˈnet̬.ɪks/)',
+        q: 'คำศัพท์: Epigenetics มีความหมายตามรากศัพท์อย่างไร และต่างจากพันธุศาสตร์คลาสสิกอย่างไร?',
+        ansTitle: 'รากศัพท์ Epi- (เหนือ/นอกเหนือ) + Genetics = การแสดงออกที่เหนือลำดับดีเอ็นเอ',
+        exp: 'หมายถึงการเปลี่ยนแปลงของการแสดงออกของยีนที่สามารถถ่ายทอดได้ "โดยไม่มีการเปลี่ยนแปลงลำดับเบส A, T, C, G ของ DNA" เกิดจากการเติมหมู่เคมี เช่น DNA Methylation หรือ Histone Modification',
+        takeaway: 'Campbell: เปรียบเหมือน "โน้ตเพลงเดิม" แต่คนเล่นเลือกว่าจะเล่นท่อนไหนหรือข้ามท่อนไหน',
+        trick: 'ตัวอย่างข้อสอบ: การที่ฝาแฝดแท้มีโรคประจำตัวหรือนิสัยต่างกันเมื่อโตขึ้นจากสิ่งแวดล้อม'
+      },
+      {
+        id: 'vocab-3',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Transcription (/trænˈskrɪp.ʃən/)',
+        q: 'คำศัพท์: Transcription แปลว่าอะไรตามรากศัพท์ และเกี่ยวข้องกับเอนไซม์ตัวใด?',
+        ansTitle: 'ละติน Trans- (ข้าม) + scribere (เขียน) = การถอดรหัสพันธุกรรม',
+        exp: 'กระบวนการคัดลอกข้อมูลทางพันธุกรรมจาก DNA สายแม่แบบ (Template 3\'→5\') ไปสังเคราะห์เป็นสาย mRNA (5\'→3\') โดยเอนไซม์ RNA Polymerase',
+        takeaway: 'Campbell: ในยูแคริโอตเกิดขึ้นใน Nucleus ส่วนโพรแคริโอตเกิดขึ้นใน Cytoplasm',
+        trick: 'อย่าสับสนกับ Translation: Scribe แปลว่าเสมียนคัดลอกข้อความ (ยังเป็นภาษาของกรดนิวคลีอิกเหมือนเดิม)'
+      },
+      {
+        id: 'vocab-4',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Translation (/trænzˈleɪ.ʃən/)',
+        q: 'คำศัพท์: Translation หมายถึงอะไรในชีววิทยาโมเลกุล และเกิดขึ้นที่โครงสร้างใด?',
+        ansTitle: 'ละติน Trans- (ข้าม) + latio (นำพา) = การแปลรหัสพันธุกรรมสังเคราะห์โปรตีน',
+        exp: 'กระบวนการแปลรหัสบน mRNA โดย Ribosome และ tRNA เพื่อเชื่อมต่อกรดอะมิโนเป็นสาย Polypeptide จากภาษาของนิวคลีโอไทด์ไปเป็นภาษาของกรดอะมิโน',
+        takeaway: 'Campbell: เกิดขึ้นที่ Ribosome ใน Cytoplasm หรือบนผิวของ Rough Endoplasmic Reticulum (RER)',
+        trick: 'ข้อสอบชอบเน้น: เปลี่ยนจาก "ภาษานิวคลีโอไทด์" สู่ "ภาษาโปรตีน" จึงเรียกว่า Translation (แปลภาษา)'
+      },
+      {
+        id: 'vocab-5',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Spliceosome (/ˈsplaɪ.si.ə.soʊm/)',
+        q: 'คำศัพท์: Spliceosome ประกอบด้วยโมเลกุลชนิดใด และทำหน้าที่อะไรในนิวเคลียส?',
+        ansTitle: 'Splice (ตัดต่อ) + soma (อนุภาค) = อนุภาคตัดต่อ Pre-mRNA',
+        exp: 'คอมเพล็กซ์ชีวโมเลกุลขนาดใหญ่ ประกอบด้วย snRNA และโปรตีน รวมกันเป็น snRNPs (snurps) ทำหน้าที่ตัด Introns (ส่วนที่ไม่แปลรหัส) ทิ้ง และเชื่อม Exons เข้าด้วยกัน',
+        takeaway: 'Campbell: Alternative Splicing ทำให้ 1 ยีนสร้างโปรตีนได้มากกว่า 1 ชนิด ขยายความหลากหลายของโปรตีโอม',
+        trick: 'ท่องจำ: Intron = In between (ตัดทิ้ง), Exon = Expressed (นำไปแสดงออก)'
+      },
+      {
+        id: 'vocab-6',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Ligand (/ˈlaɪ.ɡənd/)',
+        q: 'คำศัพท์: Ligand มีที่มาจากภาษาใด และมีบทบาทอย่างไรในการสื่อสารระหว่างเซลล์?',
+        ansTitle: 'ละติน Ligare (ผูกมัด/ยึดเหนี่ยว) = โมเลกุลสารส่งสัญญาณจำเพาะ',
+        exp: 'โมเลกุลสารเคมี เช่น ฮอร์โมน สารสื่อประสาท หรือ Growth Factor ที่เข้าจับอย่างจำเพาะเจาะจงกับตัวรับ (Receptor) บนผิวเซลล์หรือในเซลล์เพื่อสั่งการทำงาน',
+        takeaway: 'Campbell: ลิแกนด์ที่ละลายน้ำ (Hydrophilic) จะจับตัวรับบนเยื่อหุ้มเซลล์ ส่วนลิแกนด์ไม่ชอบน้ำ (Lipophilic) แพร่ผ่านเข้าเซลล์ได้โดยตรง',
+        trick: 'เปรียบเสมือน "ลูกกุญแจ" ที่ไขได้เฉพาะ "แม่กุญแจ (Receptor)" ที่ตรงกันเท่านั้น'
+      },
+      {
+        id: 'vocab-7',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Heterotrimeric G-Protein (/ˌhet̬.ɚ.oʊ.traɪˈmer.ɪk/)',
+        q: 'คำศัพท์: Heterotrimeric G-Protein แปลว่าอะไร และมีโครงสร้างกี่หน่วยย่อย?',
+        ansTitle: 'Hetero- (ต่างกัน) + tri- (สาม) + meros (ส่วน) = โปรตีน G 3 หน่วยย่อย (α, β, γ)',
+        exp: 'โปรตีนสวิตช์ชีวภาพ ประกอบด้วยหน่วยย่อย α, β และ γ โดยหน่วยย่อย α สามารถจับกับ GDP (สภาวะปิด) หรือ GTP (สภาวะเปิดทำงาน) เชื่อมต่อระหว่าง GPCR และเอนไซม์สร้างสารส่งสัญญาณ',
+        takeaway: 'Campbell: มีคุณสมบัติ GTPase intrinsic activity สามารถย่อย GTP กลับเป็น GDP เพื่อปิดสวิตช์ตัวเองได้',
+        trick: 'ออกข้อสอบบ่อย: สารพิษอหิวาตกโรคทำให้ α-subunit ไม่สามารถย่อย GTP ได้ จึงเปิดค้างตลอดเวลา'
+      },
+      {
+        id: 'vocab-8',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Autophosphorylation (/ˌɑː.toʊˌfɑːs.fɔːr.əˈleɪ.ʃən/)',
+        q: 'คำศัพท์: Autophosphorylation เป็นกลไกเอกลักษณ์ของตัวรับกลุ่มใด และทำงานอย่างไร?',
+        ansTitle: 'Auto- (ตัวเอง) + Phosphorylation = การเติมฟอสเฟตให้แก่ตัวเองข้ามฝั่ง',
+        exp: 'เมื่อลิแกนด์จับกับ Receptor Tyrosine Kinase (RTK) ตัวรับจะประกบคู่กัน (Dimerize) และไคเนสของแต่ละข้างจะใช้ ATP เติมฟอสเฟตให้กรดอะมิโน Tyrosine ของอีกข้าง สร้างจุดเกาะให้ Relay proteins',
+        takeaway: 'Campbell: เป็นจุดเริ่มต้นของการกระตุ้นทางเดินสัญญาณส่งเสริมการแบ่งเซลล์ เช่น Ras-MAPK pathway',
+        trick: 'ต่างจาก GPCR ตรงที่ RTK 1 คู่กระตุ้นได้หลายวิถีสัญญาณพร้อมกัน (Multi-target activation)'
+      },
+      {
+        id: 'vocab-9',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Phosphodiesterase (PDE) (/ˌfɑːs.foʊ.daɪˈes.tɚ.eɪs/)',
+        q: 'คำศัพท์: Phosphodiesterase (PDE) ทำหน้าที่อะไร และยาหรือสารใดในชีวิตประจำวันยับยั้งเอนไซม์นี้?',
+        ansTitle: 'เอนไซม์ย่อยสลายพันธะฟอสโฟไดเอสเทอร์ของ cAMP / cGMP',
+        exp: 'ทำหน้าที่ตัดทำลายวงแหวนของ cAMP กลายเป็น AMP ธรรมดา เพื่อหยุดสัญญาณตอบสนองของเซลล์ สารคาเฟอีนในกาแฟออกฤทธิ์ยับยั้ง PDE ทำให้ cAMP คงอยู่นาน เซลล์จึงตื่นตัว',
+        takeaway: 'Campbell: ยา Sildenafil (Viagra) ยับยั้ง PDE5 ทำให้ cGMP คงตัว กล้ามเนื้อหลอดเลือดคลายตัว',
+        trick: 'จำหน้าที่: เป็น "ตัวดับเพลิง" คอยปิดสวิตช์สัญญาณ Second Messenger ให้อยู่ในระดับสมดุล'
+      },
+      {
+        id: 'vocab-10',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Calmodulin (/kælˈmɑːdʒ.ə.lɪn/)',
+        q: 'คำศัพท์: Calmodulin มาจากคำย่ออะไร และทำหน้าที่อะไรในไซโทพลาสซึม?',
+        ansTitle: 'Calcium-Modulated Protein = โปรตีนปรับการทำงานโดยจับกับแคลเซียม',
+        exp: 'โปรตีนขนาดเล็กในไซโตซอล มีตำแหน่งจับ Ca²⁺ 4 ตำแหน่ง เมื่อแคลเซียมไหลเข้ามาในไซโตซอลและจับกับ Calmodulin จะทำให้เปลี่ยนรูปร่างไปกระตุ้นโปรตีนไคเนส CaM-kinase และเอนไซม์อื่นๆ',
+        takeaway: 'Campbell: ทำหน้าที่เป็นตัวรับสัญญาณแคลเซียมสากล (Universal intracellular calcium sensor)',
+        trick: 'วิธีจำ: Cal (Calcium) + Modulin (Modulator ตัวปรับแต่งระบบ)'
+      },
+      {
+        id: 'vocab-11',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Cyclin-Dependent Kinase (CDK) (/ˈsaɪ.klɪn dɪˈpen.dənt ˈkaɪ.neɪs/)',
+        q: 'คำศัพท์: Cyclin-Dependent Kinase (CDK) มีคุณสมบัติอย่างไรในการควบคุมการแบ่งเซลล์?',
+        ansTitle: 'เอนไซม์ไคเนสที่ต้องทำงานร่วมกับโปรตีน Cyclin เพื่อขับเคลื่อนวัฏจักรเซลล์',
+        exp: 'ปริมาณของเอนไซม์ CDK ในเซลล์จะคงที่ตลอดวัฏจักร แต่จะทำงานได้ก็ต่อเมื่อมี Cyclin ที่เพิ่มขึ้นตามรอบเวลามาจับ เพื่อนำเซลล์ผ่านจุดตรวจสอบ (Checkpoints) ต่างๆ',
+        takeaway: 'Campbell: MPF (Maturation-Promoting Factor) คือ Cyclin B จับกับ CDK1 นำเซลล์เข้าสู่ Mitosis',
+        trick: 'CDK คือรถยนต์, Cyclin คือกุญแจสตาร์ทเครื่องยนต์ เมื่อถึงจุดหมายกุญแจจะถูกทำลายทิ้ง'
+      },
+      {
+        id: 'vocab-12',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Proto-oncogene vs Oncogene (/ˌproʊ.toʊˈɑːŋ.koʊ.dʒiːn/)',
+        q: 'คำศัพท์: Proto-oncogene และ Oncogene แตกต่างกันอย่างไรในทางพันธุศาสตร์มะเร็ง?',
+        ansTitle: 'Proto- (ดั้งเดิม) = ยีนปกติเร่งการเติบโต | Oncogene = ยีนกลายพันธุ์ก่อมะเร็ง',
+        exp: 'Proto-oncogene เป็นยีนปกติที่ควบคุมการแบ่งตัวของเซลล์อย่างเหมาะสม เมื่อเกิด Mutation แบบ Gain-of-function จะกลายเป็น Oncogene ส่งสัญญาณแบ่งเซลล์อย่างบ้าคลั่ง',
+        takeaway: 'Campbell: ตัวอย่างสำคัญคือยีน Ras เมื่อกลายพันธุ์จะส่งสัญญาณแบ่งตัวตลอดเวลาแม้ไม่มี Growth factor',
+        trick: 'เปรียบเสมือน "คันเร่งรถยนต์" ที่ปกติเหยียบและถอนได้ แต่เมื่อกลายพันธุ์คันเร่งจะค้างวิ่งไม่หยุด'
+      },
+      {
+        id: 'vocab-13',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Tumor Suppressor Gene (/ˈtuː.mɚ səˈpres.ɚ dʒiːn/)',
+        q: 'คำศัพท์: Tumor Suppressor Gene แปลว่าอะไร และยีนใดมีชื่อเสียงที่สุดในกลุ่มนี้?',
+        ansTitle: 'ยีนระงับการเกิดเนื้องอก | ยีนที่มีชื่อเสียงที่สุดคือ TP53 (สร้างโปรตีน p53)',
+        exp: 'ยีนที่ทำหน้าที่สร้างโปรตีนคอยยับยั้งการแบ่งเซลล์ ซ่อมแซม DNA เสียหาย หรือสั่งทำลายเซลล์ที่ผิดปกติ หากยีนนี้กลายพันธุ์จนเสียการทำงานทั้ง 2 แอลลีล จะทำให้เกิดมะเร็ง',
+        takeaway: 'Campbell: ได้รับฉายาว่า "ผู้พิทักษ์จีโนม (Guardian of the Genome)"',
+        trick: 'เปรียบเสมือน "ระบบเบรก" ของรถยนต์ ถ้าระบบเบรกพัง เซลล์จะแบ่งตัวไร้การควบคุม'
+      },
+      {
+        id: 'vocab-14',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Kinetochore (/kɪˈnet̬.ə.kɔːr/)',
+        q: 'คำศัพท์: Kinetochore คือโครงสร้างส่วนใดบนโครโมโซม และมีความสำคัญอย่างไรใน Mitosis?',
+        ansTitle: 'กรีก Kineto- (เคลื่อนไหว) + choros (ตำแหน่ง) = แผ่นโปรตีนจับ Spindle Fiber',
+        exp: 'โครงสร้างโปรตีนหลายชั้นที่ประกอบขึ้นบริเวณ Centromere ของโครโมโซม เพื่อเป็นจุดยึดเกาะของเส้นใย Kinetochore Microtubules ในการดึง Sister chromatids แยกจากกันในระยะ Anaphase',
+        takeaway: 'Campbell: M Checkpoint จะตรวจว่า Kinetochore ทุกตัวถูกเส้นใยสปินเดิลจับครบหรือไม่ก่อนจะอนุญาตให้แยกตัว',
+        trick: 'ต่างจาก Centromere: Centromere คือบริเวณคอดบนสาย DNA ส่วน Kinetochore คือแผ่นโปรตีนที่มาเกาะ'
+      },
+      {
+        id: 'vocab-15',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Apoptosome (/ˌæp.əpˈtoʊ.soʊm/)',
+        q: 'คำศัพท์: Apoptosome คืออะไร ประกอบด้วยอะไรบ้าง และมีฉายาว่าอะไร?',
+        ansTitle: 'วงล้อ 7 แฉกแห่งความตาย (Wheel of Death Complex) ประกอบด้วย Cytochrome c + Apaf-1',
+        exp: 'คอมเพล็กซ์โปรตีนในไซโตซอล เกิดจาก Cytochrome c ที่รั่วจากไมโทคอนเดรียไปจับกับ Apaf-1 และ dATP รวมตัวกันเป็นวงล้อ 7 แฉก ทำหน้าที่กระตุ้น Initiator Caspase-9 ในวิถี Intrinsic Apoptosis',
+        takeaway: 'Campbell: เป็นจุดตัดสินใจประหารชีวิตเซลล์จากสัญญาณภายในตัวเซลล์เอง',
+        trick: 'พบเฉพาะในกระบวนการ Apoptosis วิถี Mitochondrial (Intrinsic pathway) เท่านั้น'
+      },
+      {
+        id: 'vocab-16',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Blebbing (/ˈbleb.ɪŋ/)',
+        q: 'คำศัพท์: Membrane Blebbing คือลักษณะสัณฐานวิทยาแบบใด และพบในกระบวนการใด?',
+        ansTitle: 'การโป่งพองเป็นตุ่มลูกโป่งของเยื่อหุ้มเซลล์ในกระบวนการ Apoptosis',
+        exp: 'เมื่อ Caspases ย่อยสลายโครงสร้างเส้นใย Actin Cytoskeleton ใต้เยื่อหุ้มเซลล์ ทำให้เยื่อหุ้มเซลล์โป่งพองออกเป็นตุ่มกลมๆ (Blebs) ก่อนจะหลุดออกเป็น Apoptotic bodies ให้เม็ดเลือดขาวกลืนกิน',
+        takeaway: 'Campbell: ป้องกันไม่ให้สารภายในเซลล์รั่วไหลออกมาสู่ภายนอก จึงไม่กระตุ้นการอักเสบ',
+        trick: 'ต่างจาก Necrosis: Necrosis จะบวมเต่งและแตกออก (Cell Lysis) ทันที ไม่มี Blebbing เป็นระเบียบ'
+      },
+      {
+        id: 'vocab-17',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Phosphatidylserine (PS) (/ˌfɑːs.fəˌtaɪ.dəlˈser.iːn/)',
+        q: 'คำศัพท์: Phosphatidylserine (PS) ทำหน้าที่เป็นสัญญาณอะไรในระหว่างการเกิด Apoptosis?',
+        ansTitle: 'สัญญาณ "Eat-Me" (ช่วยกินฉันที) แก่เซลล์กลืนกิน Macrophage',
+        exp: 'ปกติ PS จะอยู่ด้านในของ Phospholipid bilayer โดยเอนไซม์ Flippase แต่เมื่อเกิด Apoptosis เอนไซม์ Scramblase จะพลิก PS ออกมาที่ผิวนอก เป็นเครื่องหมายให้ Macrophage เข้ามาจับและกลืนกินอย่างรวดเร็ว',
+        takeaway: 'Campbell: สาร Annexin V ในห้องปฏิบัติการใช้ย้อมจับ PS เพื่อตรวจวัดการตายแบบ Apoptosis',
+        trick: 'PS พลิกนอก = ป้ายบอก Macrophage ว่าเซลล์นี้พร้อมให้เก็บกวาดแล้ว'
+      },
+      {
+        id: 'vocab-18',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Ribozyme (/ˈraɪ.bə.zaɪm/)',
+        q: 'คำศัพท์: Ribozyme คืออะไร และหักล้างความเชื่อดั้งเดิมทางชีววิทยาอย่างไร?',
+        ansTitle: 'โมเลกุล RNA ที่ทำหน้าที่เป็นเอนไซม์เร่งปฏิกิริยาเคมีชีวภาพ',
+        exp: 'หักล้างความเชื่อเดิมที่ว่า "เอนไซม์ทุกชนิดต้องเป็นโปรตีน" ตัวอย่างสำคัญคือ 28S rRNA ในไรโบโซมที่ทำหน้าที่ต่อพันธะเพปไทด์ (Peptidyl transferase) และ snRNA ใน Spliceosome',
+        takeaway: 'Campbell: นำไปสู่ทฤษฎี RNA World Hypothesis ว่า RNA อาจเป็นสารพันธุกรรมและตัวเร่งปฏิกิริยาแรกสุดของสิ่งมีชีวิต',
+        trick: 'คำจำกัดความ: Ribo- (RNA) + -zyme (Enzyme) = อาร์เอ็นเอที่เป็นเอนไซม์'
+      },
+      {
+        id: 'vocab-19',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Allolactose (/ˌæl.oʊˈlæk.toʊs/)',
+        q: 'คำศัพท์: Allolactose มีบทบาทเป็นสารใดในระบบ Lac Operon ของแบคทีเรีย?',
+        ansTitle: 'Inducer (สารชักนำ) ตัวจริงที่จับกับ Lac Repressor เพื่อเปิดโอเปอรอน',
+        exp: 'เป็นไอโซเมอร์ของแล็กโทส เมื่อแล็กโทสเข้าสู่เซลล์ เอนไซม์ β-galactosidase จะเปลี่ยนแล็กโทสส่วนน้อยเป็น Allolactose ซึ่งจะเข้าไปจับกับ Lac Repressor ทำให้เปลี่ยนรูปและหลุดออกจาก Operator',
+        takeaway: 'Campbell: เป็นตัวอย่างของ Allosteric regulation ที่สารเมแทบอไลต์เปิดการแสดงออกของยีนที่ใช้ย่อยตัวเอง',
+        trick: 'ข้อสอบถามบ่อย: Allolactose คือ Inducer ที่แท้จริง ไม่ใช่โมเลกุลแล็กโทสดั้งเดิม'
+      },
+      {
+        id: 'vocab-20',
+        topic: 'vocab',
+        topicName: '📖 7. คำศัพท์ชีววิทยา',
+        topicColor: '#2563eb',
+        term: 'Second Messenger (/ˈsek.ənd ˈmes.ɪn.dʒɚ/)',
+        q: 'คำศัพท์: Second Messenger หมายถึงอะไร และยกตัวอย่างโมเลกุลสำคัญ 4 ชนิด?',
+        ansTitle: 'สารส่งสัญญาณตัวที่สองในไซโตซอล | เช่น cAMP, IP3, DAG, Ca²⁺',
+        exp: 'โมเลกุลขนาดเล็กที่ไม่ใช่โปรตีน สามารถแพร่กระจายได้อย่างรวดเร็วในไซโทพลาสซึมเพื่อส่งต่อสัญญาณจาก First Messenger (เช่น ฮอร์โมนบนเยื่อหุ้มเซลล์) ไปกระตุ้นเอนไซม์ภายในเซลล์',
+        takeaway: 'Campbell: ช่วยในการขยายสัญญาณ (Signal Amplification) ให้การตอบสนองเกิดขึ้นอย่างรวดเร็วและทรงพลัง',
+        trick: 'First Messenger อยู่ข้างนอก (Ligand), Second Messenger กระจายอยู่ข้างใน (cAMP/Ca²⁺)'
       }
     ];
 
