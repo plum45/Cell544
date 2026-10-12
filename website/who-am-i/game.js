@@ -88,7 +88,7 @@ const MASTER_CARD_POOL = [
     tag: "POWERHOUSE",
     color: "#ea580c",
     icon: "⚡",
-    img: "/img/08_mitochondria.jpg",
+    img: "../img/08_mitochondria.jpg",
     category: "ORGANELLE // ENERGY FACTORY",
     desc: "ออร์แกเนลล์เยื่อหุ้ม 2 ชั้น แหล่งสร้าง ATP หลักของเซลล์ผ่าน Krebs Cycle และ Oxidative Phosphorylation มี Circular DNA และ 70S Ribosome เป็นของตัวเอง",
     clues: [

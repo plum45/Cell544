@@ -795,25 +795,41 @@ class BioCyberArena3D {
   selectChoiceAndRun(choiceId) {
     this.sfx.init();
     this.sfx.playButtonClick();
+    const btn = document.getElementById(`choiceBtn-${choiceId}`);
+    if (btn && btn.classList.contains('active-target')) {
+      // Toggle OFF if user clicks again!
+      this.clearAutoRun();
+      this.showFloatingToast('🛑 ยกเลิกการวิ่งอัตโนมัติแล้ว', '#ffd166');
+      return;
+    }
+
     const pad = this.answerPads.find(p => p.id === choiceId);
     if (!pad) return;
 
-    // Highlight active card in bottom HUD
+    // Highlight active card in bottom HUD and waypoint bar
     document.querySelectorAll('.choice-hud-card').forEach(c => c.classList.remove('active-target'));
-    const btn = document.getElementById(`choiceBtn-${choiceId}`);
+    document.querySelectorAll('.waypoint-pill').forEach(c => c.classList.remove('active-target'));
     if (btn) btn.classList.add('active-target');
+    const wp = document.getElementById(`wpPill-${choiceId}`);
+    if (wp) wp.classList.add('active-target');
 
     // Command player to sprint to the pad
     const human = this.players.find(p => p.isHuman);
     if (human && human.status === 'SAFE') {
       human.autoTarget = { x: pad.x, z: pad.z };
+      human.autoTargetStartTime = performance.now();
+      this.showFloatingToast(`🏃 กำลังวิ่งไปแท่นคำตอบ ${choiceId}... (กดปุ่มเดินเพื่อหยุด)`, '#00f0ff');
     }
   }
 
   clearAutoRun() {
     const human = this.players.find(p => p.isHuman);
-    if (human) human.autoTarget = null;
+    if (human) {
+      human.autoTarget = null;
+      human.autoTargetStartTime = null;
+    }
     document.querySelectorAll('.choice-hud-card').forEach(c => c.classList.remove('active-target'));
+    document.querySelectorAll('.waypoint-pill').forEach(c => c.classList.remove('active-target'));
   }
 
   applyTheme(themeKey) {
@@ -889,46 +905,69 @@ class BioCyberArena3D {
   }
 
   initInputs() {
-    // Keyboard WASD, Jump, Skills & Space
+    // Keyboard WASD, Jump, Skills & Space (supports English & Thai keyboard layouts!)
+    const isUp = (code, key) => code === 'KeyW' || code === 'ArrowUp' || ['w', 'ไ', 'arrowup'].includes(key);
+    const isDown = (code, key) => code === 'KeyS' || code === 'ArrowDown' || ['s', 'ห', 'ฆ', 'arrowdown'].includes(key);
+    const isLeft = (code, key) => code === 'KeyA' || code === 'ArrowLeft' || ['a', 'ฟ', 'ฤ', 'arrowleft'].includes(key);
+    const isRight = (code, key) => code === 'KeyD' || code === 'ArrowRight' || ['d', 'ก', 'ฏ', 'arrowright'].includes(key);
+    const isJump = (code, key) => code === 'Space' || key === ' ' || key === 'space' || key === 'spacebar';
+    const isSkill = (code, key) => code === 'KeyE' || key === 'e' || key === 'ำ' || key === 'ฎ';
+
     window.addEventListener('keydown', (e) => {
       this.sfx.init();
-      if (e.code === 'KeyW' || e.code === 'ArrowUp') { this.keys.up = true; this.clearAutoRun(); }
-      if (e.code === 'KeyS' || e.code === 'ArrowDown') { this.keys.down = true; this.clearAutoRun(); }
-      if (e.code === 'KeyA' || e.code === 'ArrowLeft') { this.keys.left = true; this.clearAutoRun(); }
-      if (e.code === 'KeyD' || e.code === 'ArrowRight') { this.keys.right = true; this.clearAutoRun(); }
-      if (e.code === 'Space') {
+      const code = e.code || '';
+      const key = (e.key || '').toLowerCase();
+
+      if (isUp(code, key)) { this.keys.up = true; this.clearAutoRun(); }
+      if (isDown(code, key)) { this.keys.down = true; this.clearAutoRun(); }
+      if (isLeft(code, key)) { this.keys.left = true; this.clearAutoRun(); }
+      if (isRight(code, key)) { this.keys.right = true; this.clearAutoRun(); }
+      if (isJump(code, key)) {
         this.keys.space = true;
+        this.clearAutoRun();
         if (this.state === 'RESCUE') {
           this.performRescuePull();
         } else if (this.state === 'PLAYING') {
           this.performJump();
         }
       }
-      if (e.code === 'KeyE') {
+      if (isSkill(code, key)) {
+        this.clearAutoRun();
         if (this.state === 'PLAYING') {
           this.performTetherYank(0);
         }
       }
-      if (e.code === 'Digit1') {
+      if (code === 'Digit1' || key === '1') {
         this.useSkill('hack');
       }
-      if (e.code === 'Digit2') {
+      if (code === 'Digit2' || key === '2') {
         this.useSkill('speed');
       }
-      if (e.code === 'Digit3') {
+      if (code === 'Digit3' || key === '3') {
         this.useSkill('shield');
       }
-      if (e.code === 'KeyF' || e.code === 'KeyV') {
+      if (code === 'KeyF' || code === 'KeyV' || key === 'f' || key === 'v') {
         this.toggleCameraMode();
       }
     });
 
     window.addEventListener('keyup', (e) => {
-      if (e.code === 'KeyW' || e.code === 'ArrowUp') this.keys.up = false;
-      if (e.code === 'KeyS' || e.code === 'ArrowDown') this.keys.down = false;
-      if (e.code === 'KeyA' || e.code === 'ArrowLeft') this.keys.left = false;
-      if (e.code === 'KeyD' || e.code === 'ArrowRight') this.keys.right = false;
-      if (e.code === 'Space') this.keys.space = false;
+      const code = e.code || '';
+      const key = (e.key || '').toLowerCase();
+      if (isUp(code, key)) this.keys.up = false;
+      if (isDown(code, key)) this.keys.down = false;
+      if (isLeft(code, key)) this.keys.left = false;
+      if (isRight(code, key)) this.keys.right = false;
+      if (isJump(code, key)) this.keys.space = false;
+    });
+
+    window.addEventListener('blur', () => {
+      this.keys.up = false;
+      this.keys.down = false;
+      this.keys.left = false;
+      this.keys.right = false;
+      this.keys.space = false;
+      this.clearAutoRun();
     });
 
     // Mouse Drag to Look Around (Minecraft style)
@@ -2302,6 +2341,10 @@ class BioCyberArena3D {
   }
 
   showFloatingToast(text, color = '#00f0ff') {
+    const existing = document.querySelectorAll('.floating-game-toast');
+    if (existing.length >= 2) {
+      existing[0].remove();
+    }
     const toast = document.createElement('div');
     toast.className = 'floating-game-toast';
     toast.style.borderColor = color;
@@ -2310,7 +2353,7 @@ class BioCyberArena3D {
     document.body.appendChild(toast);
     setTimeout(() => {
       if (toast.parentNode) toast.parentNode.removeChild(toast);
-    }, 2200);
+    }, 1800);
   }
 
   // ==========================================
@@ -2466,23 +2509,35 @@ class BioCyberArena3D {
             this.sfx.playShield();
             this.showFloatingToast('🛡️ SHIELD DEFLECT! ปัดลูกบอลกระเด็น (+50 PTS)', '#00ff88');
             this.score += 50;
-            h.vx = -h.vx * 1.3;
-            h.vz = -h.vz * 1.3;
-          } else {
-            // Hit by ball: Knockback & shake!
+            h.vx = -h.vx * 1.5;
+            h.vz = -h.vz * 1.5;
+          } else if (!human.hitCooldown || human.hitCooldown <= 0) {
+            // Hit by ball: Knockback & shake with 1.2s invulnerability cooldown!
+            human.hitCooldown = 1.2;
+            this.clearAutoRun(); // Immediately cancel any auto-run!
             this.sfx.playBounce();
-            this.addCameraShake(0.5);
+            this.addCameraShake(0.35);
+
             const knockDirX = (px - h.mesh.position.x) || (Math.random() - 0.5);
             const knockDirZ = (pz - h.mesh.position.z) || (Math.random() - 0.5);
             const knockLen = Math.hypot(knockDirX, knockDirZ) || 1;
-            human.vx += (knockDirX / knockLen) * 22;
-            human.vz += (knockDirZ / knockLen) * 22;
-            human.vy = 6.5;
+            const normX = knockDirX / knockLen;
+            const normZ = knockDirZ / knockLen;
+
+            // Push player back
+            human.vx = normX * 18;
+            human.vz = normZ * 18;
+            human.vy = 5.5;
             human.isGrounded = false;
+            human.group.position.x += normX * 0.8;
+            human.group.position.z += normZ * 0.8;
+
+            // Rebound ball AWAY so it never gets stuck on the player!
+            h.vx = -normX * 14;
+            h.vz = -normZ * 14;
+
             this.showFloatingToast('💥 โดนลูกบอลชน! กระเด็นถอยหลัง (-20 PTS)', '#ff0055');
             this.score = Math.max(0, this.score - 20);
-            h.vx = -h.vx * 0.4;
-            h.vz = -h.vz * 0.4;
           }
         }
       }
@@ -2532,6 +2587,15 @@ class BioCyberArena3D {
       const speed = (p.isHuman && this.speedBoostTimer > 0) ? baseSpeed * 2.2 : baseSpeed;
 
       if (p.isHuman) {
+        if (p.hitCooldown > 0) {
+          p.hitCooldown -= dt;
+          if (p.group) {
+            p.group.visible = Math.floor(Date.now() / 80) % 2 === 0;
+          }
+        } else if (p.group) {
+          p.group.visible = true;
+        }
+
         let inputX = 0;
         let inputZ = 0;
 
@@ -2541,6 +2605,7 @@ class BioCyberArena3D {
         if (this.keys.right) inputX += 1;
 
         if (inputX !== 0 || inputZ !== 0) {
+          this.clearAutoRun();
           if (inputX !== 0 && inputZ !== 0) {
             inputX *= 0.7071;
             inputZ *= 0.7071;
@@ -2562,10 +2627,13 @@ class BioCyberArena3D {
             p.vz += inputZ * speed * dt * 5;
           }
         } else if (p.autoTarget) {
+          if (!p.autoTargetStartTime) p.autoTargetStartTime = performance.now();
+          const autoElapsed = performance.now() - p.autoTargetStartTime;
+
           const dx = p.autoTarget.x - p.group.position.x;
           const dz = p.autoTarget.z - p.group.position.z;
           const dist = Math.hypot(dx, dz);
-          if (dist > 0.6) {
+          if (dist > 1.2 && autoElapsed < 4500) {
             p.vx += (dx / dist) * speed * dt * 4;
             p.vz += (dz / dist) * speed * dt * 4;
             if (this.cameraMode === 'fp') {
@@ -2577,6 +2645,8 @@ class BioCyberArena3D {
             }
           } else {
             p.autoTarget = null;
+            p.autoTargetStartTime = null;
+            this.clearAutoRun();
           }
         }
       } else {

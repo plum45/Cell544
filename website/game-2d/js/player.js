@@ -192,8 +192,21 @@ export class Player {
       const nextX = this.x + vx * currentSpeed;
       const nextY = this.y + vy * currentSpeed;
 
+      const prevX = this.x;
+      const prevY = this.y;
       if (!isSolid(nextX, this.y, 7)) this.x = nextX;
       if (!isSolid(this.x, nextY, 7)) this.y = nextY;
+
+      // If blocked while clicking to move, clear targetPos so player doesn't run forever
+      if (this.targetPos && Math.hypot(this.x - prevX, this.y - prevY) < 0.1) {
+        this.stuckTimer = (this.stuckTimer || 0) + delta;
+        if (this.stuckTimer > 0.35) {
+          this.targetPos = null;
+          this.stuckTimer = 0;
+        }
+      } else {
+        this.stuckTimer = 0;
+      }
 
       // Emergency un-stuck recovery
       if (isSolid(this.x, this.y, 4)) {
