@@ -29,7 +29,8 @@
       </a>
       <nav>
         <ul class="nav-links-desktop">
-          <li><a href="#games-zone" style="color: #0284c7; font-weight: 700;">🎮 หมวดเกม (4 เกม)</a></li>
+          <li><a href="#ebook-showcase" style="color: #a855f7; font-weight: 700;">📖 E-Book 39 หน้า</a></li>
+          <li><a href="#games-zone" style="color: #0284c7; font-weight: 700;">🎮 หมวดเกม (5 เกม)</a></li>
           <li><a href="#lessons-zone" style="color: #059669; font-weight: 700;">📚 หมวดเนื้อหา</a></li>
           <li><a href="flashcards.html">📇 แฟลชการ์ด</a></li>
           <li><a href="topics/quiz-hub.html">📝 คลังข้อสอบ</a></li>
@@ -37,7 +38,7 @@
           <li><a href="#ai-assistant">🤖 AI Mentor</a></li>
         </ul>
       </nav>
-      <a href="flashcards.html" class="nav-cta-btn">เริ่มทบทวนแฟลชการ์ด ➔</a>
+      <a href="https://heyzine.com/flip-book/dfd864ca98.html" target="_blank" class="nav-cta-btn" style="background: linear-gradient(135deg, #a855f7, #6366f1); border-color: #a855f7;">📖 อ่าน E-Book 39 หน้า ➔</a>
     </div>
   </header>
 
@@ -48,7 +49,8 @@
         CYTOLIFE Pro <span>สื่อการเรียนรู้อินเทอร์แอคทีฟชีววิทยาของเซลล์และโมเลกุล</span>
       </div>
       <div class="local-actions">
-        <a href="#games-zone" class="local-link" style="color: #0284c7; font-weight: 700;">🎮 หมวดเกม (4 เกม)</a>
+        <a href="https://heyzine.com/flip-book/dfd864ca98.html" target="_blank" class="local-link" style="color: #a855f7; font-weight: 700;">📖 เปิดอ่าน E-Book 39 หน้า</a>
+        <a href="#games-zone" class="local-link" style="color: #0284c7; font-weight: 700;">🎮 หมวดเกม (5 เกม)</a>
         <a href="#lessons-zone" class="local-link" style="color: #059669; font-weight: 700;">📚 หมวดเนื้อหา</a>
         <a href="flashcards.html" class="local-btn-primary" style="background: #059669; border-color: #059669;">📇 แฟลชการ์ด 42 บท</a>
         <button type="button" class="local-link btn-open-rules" data-rule-tab="all" style="background:none; border:none; cursor:pointer; font-weight:600;">📖 กติกา</button>
@@ -134,7 +136,66 @@
     </div>
   </section>
 
-  <!-- 6. ZONE 01: หมวดเกมชีววิทยา (Biology Games - 4 เกม 3D & จำลองสถานการณ์) -->
+  <!-- 5.5. 3D Biology Interactive E-Book Cinema Showcase Section -->
+  <section class="apple-showcase-section ebook-video-section" id="ebook-showcase">
+    <div class="apple-container">
+      <div class="section-header-apple">
+        <div class="section-eyebrow-badge" style="background: rgba(168, 85, 247, 0.08); border-color: rgba(168, 85, 247, 0.25); color: #a855f7;">
+          <span class="badge-icon">📖</span>
+          <span>CYTOLIFE 3D BIOLOGY E-BOOK</span>
+        </div>
+        <h2 class="title-apple">เปิดมิติใหม่แห่งการอ่าน: <span>E-Book ชีววิทยา 3 มิติ</span></h2>
+        <p class="desc-apple">
+          สัมผัสประสบการณ์เรียนรู้ชีววิทยาเซลล์เสมือนจริง ผสมผสานแอนิเมชัน 3D โครงสร้างโมเลกุลชีววิทยา และบทสรุปเนื้อหา Campbell Biology ไว้อย่างสมบูรณ์แบบ
+        </p>
+      </div>
+
+      <!-- Cinema Video Player Container with Dynamic CTA Overlay -->
+      <div class="ebook-video-cinema-card" id="ebook-cinema-card">
+        <div class="cinema-video-wrapper">
+          <video id="ebook-preview-video" playsinline autoplay muted preload="auto">
+            <source src="assets/3D_biology_e-book_animation.mp4" type="video/mp4">
+            <source src="https://www.dropbox.com/scl/fi/4c93hjg1eeva61og6ip7z/3D_biology_e-book_animation_1080p_20261013191746.mp4?rlkey=icodmpruw3opcynfwdvfo5yi3&raw=1" type="video/mp4">
+            เบราว์เซอร์ของคุณไม่รองรับการเล่นวิดีโอ HTML5
+          </video>
+
+          <!-- Top Controls: Sound Toggle & Playback Progress -->
+          <div class="cinema-controls-bar">
+            <button type="button" class="cinema-ctrl-btn" id="cinema-sound-btn" title="เปิด/ปิดเสียงวิดีโอ">
+              <span id="cinema-sound-icon">🔇</span>
+            </button>
+            <div class="cinema-progress-track">
+              <div class="cinema-progress-fill" id="cinema-progress-fill"></div>
+            </div>
+          </div>
+
+          <!-- Dynamic Near-End Animated Overlay Card -->
+          <div class="ebook-cta-overlay" id="ebook-cta-overlay">
+            <div class="cta-overlay-content">
+              <div class="cta-badge">✨ หนังสือชีววิทยาเซลล์แห่งอนาคต</div>
+              <h3 class="cta-heading">CYTOLIFE: Interactive 3D Biology E-Book</h3>
+              <p class="cta-desc">
+                เจาะลึก 13 บทเรียนชีววิทยาเซลล์ Campbell Biology ครบถ้วนทั้งการสื่อสารของเซลล์ (Cell Signaling), การตอบสนองของเซลล์ (Cellular Response), วัฏจักรเซลล์ (Cell Cycle & Checkpoints), การตายของเซลล์ (Apoptosis) และแบบจำลองชีวโมเลกุล 3 มิติ
+              </p>
+              <div class="cta-buttons-row">
+                <a href="https://heyzine.com/flip-book/dfd864ca98.html" target="_blank" rel="noopener noreferrer" id="ebook-read-btn" class="apple-btn-large primary ebook-main-btn" title="เปิดอ่าน E-Book ชีววิทยาฉบับเต็ม 39 หน้า">
+                  <span>📖 เข้าสู่หน้า E-Book ชีววิทยา (39 หน้า) ➔</span>
+                </a>
+                <button type="button" class="apple-btn-large secondary" id="ebook-replay-video-btn">
+                  <span>↺ ดูแอนิเมชันซ้ำ</span>
+                </button>
+              </div>
+              <div class="cta-subnote">
+                💡 E-Book รวมเนื้อหา 39 หน้า ครบถ้วนตามมาตรฐาน สสวท. & Campbell Biology อ่านได้ทุกอุปกรณ์
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. ZONE 01: หมวดเกมชีววิทยา (Biology Games - 5 เกม 3D & จำลองสถานการณ์) -->
   <section class="apple-lineup-section games-zone-section" id="games-zone">
     <div class="apple-container">
       <div class="section-header-apple">
@@ -144,11 +205,36 @@
         </div>
         <h2 class="title-apple">หมวดเกมชีววิทยา (Biology Games)</h2>
         <p class="desc-apple">
-          สวมบทบาทและประลองความรู้ผ่านเกมชีววิทยา 4 รูปแบบ ทั้งสมรภูมิเชือกฟิสิกส์ Co-op, คดีสืบสวนแฟ้มลับ 3D, ผจญภัยเกาะเซลล์ 3 มิติ และห้องทดลองชีวเคมี 2D
+          สวมบทบาทและประลองความรู้ผ่านเกมชีววิทยา 5 รูปแบบ ทั้งชู้ตบอล 4 ห่วง, สมรภูมิเชือกฟิสิกส์ Co-op, คดีสืบสวนแฟ้มลับ 3D, ผจญภัยเกาะเซลล์ 3 มิติ และห้องทดลองชีวเคมี 2D
         </p>
       </div>
 
       <div class="apple-cards-grid">
+        <!-- Game New: CYTO-HOOPS 3D (Basketball Shootout 4 Hoops) (12-col Featured) -->
+        <div class="apple-bento-card bento-span-12 bento-horizontal" style="background: linear-gradient(135deg, rgba(14, 165, 233, 0.04) 0%, rgba(168, 85, 247, 0.04) 100%); border-color: rgba(14, 165, 233, 0.3);">
+          <a href="bio-hoops/index.html" class="bento-media-header" style="flex: 1.1;" title="เล่นเกมชู้ตบอลชีวะ 4 ห่วง">
+            <img src="img/05_signal_transduction.jpg" alt="CYTO-HOOPS 3D Preview">
+            <div class="preview-badge" style="background: linear-gradient(135deg, #0ea5e9, #a855f7); color: #fff;">🏀 ใหม่ล่าสุด · 3D Arcade Shootout</div>
+          </a>
+          <div class="bento-card-body" style="flex: 1.3;">
+            <span class="bento-tag" style="color: #0ea5e9;">NEW 3D GAME · 4-HOOP BIOLOGY QUIZ</span>
+            <h3 class="bento-title">CYTO-HOOPS 3D: ชู้ตบอลชีวะ 4 ห่วงประลองปัญญา</h3>
+            <p class="bento-desc">
+              เกมอาเขต 3 มิติสุดมันส์! ตอบคำถามชีววิทยาเซลล์ Campbell Biology ด้วยการเล็งชู้ตลูกบอลลงใน 1 ใน 4 ห่วง (A, B, C, D) สะสมคอมโบ SWISH x1, x2, x3 และเฉลยเนื้อหาเจาะลึก
+            </p>
+            <div class="bento-features-list">
+              <span>3D Basketball Physics</span>
+              <span>4 Interactive Hoops (A, B, C, D)</span>
+              <span>Combo Multiplier & Swish Effects</span>
+              <span>15+ Deep Biology Questions</span>
+            </div>
+            <div class="bento-btn-group">
+              <a href="bio-hoops/index.html" class="apple-btn primary" style="background: linear-gradient(135deg, #0ea5e9, #a855f7); color: #fff;">ชู้ตบอลชีวะ 4 ห่วง ➔</a>
+              <a href="bio-hoops/index.html" class="apple-btn secondary">📖 กติกา & วิธีชู้ต</a>
+            </div>
+          </div>
+        </div>
+
         <!-- Game 1: 3D Cyber Tether Arena (6-col) -->
         <div class="apple-bento-card bento-span-6 bento-vertical">
           <a href="tether-survival/index.html" class="bento-media-header" title="เล่นเกม Tether Survival Arena">
@@ -963,6 +1049,60 @@
         window.addEventListener('load', play);
         window.addEventListener('click', play, { once: true });
         window.addEventListener('touchstart', play, { once: true });
+      }
+    })();
+
+    // E-Book Showcase Video & Near-End CTA Reveal Logic
+    (function initEbookVideo() {
+      const video = document.getElementById('ebook-preview-video');
+      const overlay = document.getElementById('ebook-cta-overlay');
+      const fill = document.getElementById('cinema-progress-fill');
+      const soundBtn = document.getElementById('cinema-sound-btn');
+      const soundIcon = document.getElementById('cinema-sound-icon');
+      const replayBtn = document.getElementById('ebook-replay-video-btn');
+
+      if (!video || !overlay) return;
+
+      // Ensure autoplay for showcase video
+      video.muted = true;
+      video.defaultMuted = true;
+      const playVideo = function() { video.play().catch(function(){}); };
+      playVideo();
+      window.addEventListener('load', playVideo);
+
+      // Track playback progress & reveal near end
+      video.addEventListener('timeupdate', () => {
+        if (video.duration) {
+          const progress = video.currentTime / video.duration;
+          if (fill) fill.style.width = (progress * 100) + '%';
+
+          // When near end (progress >= 65% or remaining time <= 4.5 seconds)
+          if (progress >= 0.65 || (video.duration - video.currentTime <= 4.5)) {
+            overlay.classList.add('visible');
+          }
+        }
+      });
+
+      // When video ends
+      video.addEventListener('ended', () => {
+        overlay.classList.add('visible');
+      });
+
+      // Sound toggle
+      if (soundBtn) {
+        soundBtn.addEventListener('click', () => {
+          video.muted = !video.muted;
+          if (soundIcon) soundIcon.innerText = video.muted ? '🔇' : '🔊';
+        });
+      }
+
+      // Replay button
+      if (replayBtn) {
+        replayBtn.addEventListener('click', () => {
+          overlay.classList.remove('visible');
+          video.currentTime = 0;
+          video.play();
+        });
       }
     })();
   </script>

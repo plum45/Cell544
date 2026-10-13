@@ -1911,3 +1911,179 @@ body.lit .apple-modal-card {
   background: #ffffff !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
+
+/* 3D Biology E-Book Cinema Showcase Section */
+.ebook-video-section {
+  padding: 50px 0 70px;
+  background: #f8fafc;
+  position: relative;
+  z-index: 10;
+}
+
+.ebook-video-cinema-card {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  background: #090d16;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12), 0 0 35px rgba(168, 85, 247, 0.12);
+  margin-top: 24px;
+}
+
+.cinema-video-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 640px;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cinema-video-wrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Cinema Controls Bar */
+.cinema-controls-bar {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 15;
+  pointer-events: none;
+}
+
+.cinema-ctrl-btn {
+  pointer-events: auto;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.2s ease;
+}
+
+.cinema-ctrl-btn:hover {
+  background: rgba(15, 23, 42, 0.95);
+  border-color: #00f0ff;
+  transform: scale(1.08);
+}
+
+.cinema-progress-track {
+  flex-grow: 1;
+  max-width: 220px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-left: auto;
+  backdrop-filter: blur(8px);
+}
+
+.cinema-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00f0ff, #a855f7);
+  transition: width 0.2s linear;
+}
+
+/* Near-End Animated Overlay Card */
+.ebook-cta-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 34px 28px;
+  background: linear-gradient(0deg, rgba(8, 12, 22, 0.97) 0%, rgba(8, 12, 22, 0.88) 65%, transparent 100%);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  opacity: 0;
+  transform: translateY(24px);
+  pointer-events: none;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 20;
+}
+
+.ebook-cta-overlay.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.cta-overlay-content {
+  max-width: 740px;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+}
+
+.cta-badge {
+  display: inline-block;
+  background: rgba(168, 85, 247, 0.2);
+  border: 1px solid rgba(168, 85, 247, 0.5);
+  color: #d8b4fe;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+.cta-heading {
+  font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.cta-desc {
+  font-size: 0.92rem;
+  color: #cbd5e1;
+  line-height: 1.55;
+  margin-bottom: 20px;
+}
+
+.cta-buttons-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.ebook-main-btn {
+  background: linear-gradient(135deg, #a855f7, #6366f1) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 25px rgba(168, 85, 247, 0.45) !important;
+}
+
+.ebook-main-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 35px rgba(168, 85, 247, 0.65) !important;
+}
+
+.cta-subnote {
+  margin-top: 12px;
+  font-size: 0.78rem;
+  color: #94a3b8;
+}
+

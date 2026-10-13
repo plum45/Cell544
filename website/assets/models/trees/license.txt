@@ -1,0 +1,11 @@
+Model Information:
+* title:	[FREE] Cartoon Voxel Trees 3D Models
+* source:	https://sketchfab.com/3d-models/free-cartoon-voxel-trees-3d-models-6ceb1da9d8ec4e65b6372a41be95b2f8
+* author:	SimplePolygon (https://sketchfab.com/SimplePolygon)
+
+Model License:
+* license type:	CC-BY-ND-4.0 (http://creativecommons.org/licenses/by-nd/4.0/)
+* requirements:	Author must be credited. Modified versions can not be distributed. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "[FREE] Cartoon Voxel Trees 3D Models" (https://sketchfab.com/3d-models/free-cartoon-voxel-trees-3d-models-6ceb1da9d8ec4e65b6372a41be95b2f8) by SimplePolygon (https://sketchfab.com/SimplePolygon) licensed under CC-BY-ND-4.0 (http://creativecommons.org/licenses/by-nd/4.0/)

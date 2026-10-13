@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CYTO-HOOPS 3D — ชู้ตบอลชีวะ 4 ห่วงประลองปัญญา | CYTOLIFE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261013v1">
+  <!-- Three.js, TWEEN & Confetti -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+  <!-- 3D Three.js Viewport Container -->
+  <div id="canvas-container"></div>
+
+  <!-- Top Navigation & Scoreboard Bar -->
+  <header class="top-nav">
+    <div class="nav-brand">
+      <span class="brand-badge">BIO-ARCADE 3D</span>
+      <h1 class="brand-title">CYTO-HOOPS: <span>ชู้ตบอล 4 ห่วง</span></h1>
+    </div>
+
+    <div class="nav-stats">
+      <div class="stat-pill q-pill">
+        <span class="stat-lbl">ข้อที่</span>
+        <span class="stat-num text-cyan" id="q-progress-txt">1 / 15</span>
+      </div>
+
+      <div class="stat-pill score-pill">
+        <span class="stat-lbl">คะแนน</span>
+        <span class="stat-num text-green" id="score-txt">0</span>
+      </div>
+
+      <div class="stat-pill streak-pill" id="streak-pill">
+        <span class="streak-flame">🔥</span>
+        <span class="stat-lbl">คอมโบ</span>
+        <span class="stat-num text-amber" id="streak-txt">x1</span>
+      </div>
+
+      <div class="stat-pill accuracy-pill">
+        <span class="stat-lbl">ความแม่นยำ</span>
+        <span class="stat-num text-purple" id="accuracy-txt">100%</span>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <button class="nav-btn" id="sound-toggle-btn" title="เปิด/ปิดเสียง">
+        <span class="btn-icon" id="sound-icon">🔊</span>
+        <span class="btn-txt">เสียง</span>
+      </button>
+      <button class="nav-btn" id="open-rules-btn" title="กติกาและวิธีการเล่น">
+        <span class="btn-icon">📖</span>
+        <span class="btn-txt">วิธีเล่น</span>
+      </button>
+      <a href="../who-am-i/index.html" class="nav-btn" title="ไปเกม Who Am I">
+        <span class="btn-icon">🕵️</span>
+        <span class="btn-txt">Who Am I</span>
+      </a>
+      <a href="../index.html" class="nav-btn btn-home" title="กลับหน้าแรก">
+        <span class="btn-icon">🏠</span>
+        <span class="btn-txt">หน้าหลัก</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Question & Quiz HUD Layer -->
+  <main class="quiz-hud-layer">
+    <!-- Question Card (Prominent Top Banner) -->
+    <div class="question-banner-wrap">
+      <div class="question-card" id="question-card">
+        <div class="q-header-row">
+          <span class="q-tag" id="q-category-tag">CELL SIGNALING · การสื่อสารของเซลล์</span>
+          <span class="q-points-badge">+100 แต้ม</span>
+        </div>
+        <h2 class="q-text" id="q-text">
+          ตัวส่งสัญญาณลำดับที่สอง (Second Messenger) ที่สร้างขึ้นจาก ATP โดยเอนไซม์ Adenylyl Cyclase คือสารใด?
+        </h2>
+        <div class="q-hint-sub" id="q-hint-sub">
+          🏀 เล็งเป้าหมายแล้วชู้ตลูกบอลลงใน 1 ใน 4 ห่วง (A, B, C, D) ด้านล่าง!
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Shot Feedback Popup (SWISH! or CLANG!) -->
+    <div class="shot-feedback" id="shot-feedback">
+      <div class="feedback-badge" id="feedback-badge">SWISH! +100</div>
+      <div class="feedback-desc" id="feedback-desc">ถูกต้อง! ยอดเยี่ยมมาก</div>
+    </div>
+
+    <!-- Animated Swipe-to-Throw Visual Guide Cue -->
+    <div class="swipe-cue-indicator" id="swipe-cue-indicator">
+      <div class="swipe-cue-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+      </div>
+      <div class="swipe-cue-text">👆 เลื่อน/ตวัดหน้าจอขึ้นเพื่อโยนบอล</div>
+    </div>
+
+    <!-- Interactive Aiming HUD Badge (Shows when dragging/swiping) -->
+    <div class="aim-target-hud" id="aim-target-hud">
+      <span class="aim-icon">🏀</span>
+      <span id="aim-target-label">ตวัดหน้าจอขึ้นเพื่อชู้ตบอลลงห่วง!</span>
+    </div>
+
+    <!-- Bottom Controls & 4 Choice Quick-Shoot Buttons -->
+    <footer class="bottom-shoot-dock">
+      <div class="dock-inner">
+        <div class="dock-instruction">
+          <span class="shoot-icon">🎯</span>
+          <span><strong>วิธีชู้ต:</strong> เลื่อน/ตวัดหน้าจอขึ้นไปยังห่วงเป้าหมาย หรือกดปุ่มช้อยส์ [A, B, C, D] ด้านล่างเพื่อชู้ตทันที!</span>
+        </div>
+
+        <div class="choice-buttons-grid">
+          <!-- Button Choice A -->
+          <button class="choice-btn choice-a" id="choice-btn-0" data-index="0">
+            <span class="choice-letter">A</span>
+            <span class="choice-content" id="choice-txt-0">cAMP (Cyclic AMP)</span>
+          </button>
+
+          <!-- Button Choice B -->
+          <button class="choice-btn choice-b" id="choice-btn-1" data-index="1">
+            <span class="choice-letter">B</span>
+            <span class="choice-content" id="choice-txt-1">Ca²⁺ (Calcium Ion)</span>
+          </button>
+
+          <!-- Button Choice C -->
+          <button class="choice-btn choice-c" id="choice-btn-2" data-index="2">
+            <span class="choice-letter">C</span>
+            <span class="choice-content" id="choice-txt-2">IP3 (Inositol Trisphosphate)</span>
+          </button>
+
+          <!-- Button Choice D -->
+          <button class="choice-btn choice-d" id="choice-btn-3" data-index="3">
+            <span class="choice-letter">D</span>
+            <span class="choice-content" id="choice-txt-3">DAG (Diacylglycerol)</span>
+          </button>
+        </div>
+
+        <div class="dock-tips">
+          <span>💡 เคล็ดลับ: สามารถคลิกลากลูกบอลเพื่อเล็งชู้ตเอง หรือคลิกที่ตัวห่วง 3D เพื่อส่งบอลโค้งลงห่วงได้แม่นยำ 100%</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Explanation Modal (Popped up after answering) -->
+  <div class="modal-backdrop" id="explain-modal">
+    <div class="modal-card explain-card">
+      <div class="explain-icon-badge" id="explain-icon">🎉</div>
+      <h3 class="explain-title" id="explain-title">ถูกต้อง! (SWISH!)</h3>
+      <div class="explain-summary" id="explain-summary">
+        คำตอบที่ถูกต้องคือ: <strong id="explain-correct-choice" class="text-cyan">A: cAMP (Cyclic AMP)</strong>
+      </div>
+
+      <div class="bio-lesson-box">
+        <div class="bl-tag">📖 คำอธิบายเฉลยทางชีววิทยา (Campbell Biology)</div>
+        <p class="bl-text" id="explain-text">
+          cAMP ถูกสร้างจาก ATP โดยเอนไซม์ Adenylyl Cyclase ที่เยื่อหุ้มเซลล์ หลังจากได้รับสัญญาณจาก G-Protein (Gs) จากนั้น cAMP จะไปกระตุ้น Protein Kinase A (PKA) เพื่อส่งสัญญาณต่อไปยังนิวเคลียส
+        </p>
+      </div>
+
+      <div class="explain-stats-row">
+        <div class="es-item">
+          <span class="es-lbl">คะแนนที่ได้</span>
+          <span class="es-val text-green" id="round-points-val">+100</span>
+        </div>
+        <div class="es-item">
+          <span class="es-lbl">คอมโบสะสม</span>
+          <span class="es-val text-amber" id="round-streak-val">x2 COMBO</span>
+        </div>
+      </div>
+
+      <button class="next-q-btn" id="next-q-btn">
+        <span>ข้อถัดไป (Next Question) ➔</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Victory / Game Summary Modal -->
+  <div class="modal-backdrop" id="gameover-modal">
+    <div class="modal-card gameover-card">
+      <div class="mvp-trophy">🏆</div>
+      <h2 class="gameover-title">จบการแข่งขันชู้ตบอลชีวะ!</h2>
+      <div class="mvp-rank" id="mvp-rank">MVP ระดับ: ปรมาจารย์ชีววิทยาโมเลกุล</div>
+
+      <div class="summary-stats-grid">
+        <div class="sum-stat">
+          <span class="ss-lbl">คะแนนรวม</span>
+          <span class="ss-val text-cyan" id="final-score-val">1,850</span>
+        </div>
+        <div class="sum-stat">
+          <span class="ss-lbl">ชู้ตลงห่วง</span>
+          <span class="ss-val text-green" id="final-correct-val">14 / 15 ข้อ</span>
+        </div>
+        <div class="sum-stat">
+          <span class="ss-lbl">ความแม่นยำ</span>
+          <span class="ss-val text-purple" id="final-accuracy-val">93.3%</span>
+        </div>
+        <div class="sum-stat">
+          <span class="ss-lbl">คอมโบสูงสุด</span>
+          <span class="ss-val text-amber" id="final-streak-val">🔥 8x</span>
+        </div>
+      </div>
+
+      <div class="gameover-actions">
+        <button class="btn-replay" id="replay-game-btn">
+          <span>🏀 เล่นใหม่อีกครั้ง</span>
+        </button>
+        <a href="../who-am-i/index.html" class="btn-other-game">
+          <span>🕵️ ไปเกม Who Am I</span>
+        </a>
+        <a href="../index.html" class="btn-back-home">
+          <span>🏠 กลับหน้าหลัก</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rules Modal -->
+  <div class="modal-backdrop" id="rules-modal">
+    <div class="modal-card rules-card">
+      <div class="modal-close-btn" id="close-rules-btn">✕</div>
+      <div class="rules-header">
+        <span class="brand-badge">RULES & HOW TO PLAY</span>
+        <h2>📖 วิธีการเล่น CYTO-HOOPS 3D (ชู้ตบอลชีวะ 4 ห่วง)</h2>
+        <p>เกมประลองความรู้ชีววิทยาผ่านการชู้ตลูกบอลลงห่วงคำตอบที่ถูกต้อง A, B, C หรือ D</p>
+      </div>
+
+      <div class="rules-list">
+        <div class="rule-item">
+          <div class="ri-icon">🏀</div>
+          <div>
+            <h4>1. อ่านโจทย์ชีววิทยาและสังเกต 4 ห่วง</h4>
+            <p>อ่านคำถามชีววิทยาเซลล์ด้านบน แล้วดู 4 ห่วงบนสนาม แต่ละห่วงแทนช้อยส์ [A], [B], [C], [D]</p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <div class="ri-icon">🎯</div>
+          <div>
+            <h4>2. วิธีชู้ตลูกบอลลงห่วง</h4>
+            <p>
+              • <strong>วิธีที่ 1 (คลิกชู้ตออโต้):</strong> คลิกที่ตัวห่วง 3D หรือกดปุ่มช้อยส์ [A, B, C, D] ด้านล่าง บอลจะลอยโค้งลงห่วงนั้นอย่างสวยงาม<br>
+              • <strong>วิธีที่ 2 (เล็งยิงฟิสิกส์):</strong> คลิกค้างที่ลูกบอลแล้วลากถอยหลังเพื่อกำหนดแรงและทิศทาง แล้วปล่อยเพื่อชู้ต!
+            </p>
+          </div>
+        </div>
+        <div class="rule-item">
+          <div class="ri-icon">🔥</div>
+          <div>
+            <h4>3. ระบบคอมโบและคะแนน</h4>
+            <p>ชู้ตลงห่วงที่ถูกต้องติดๆ กัน จะสะสมคอมโบ x1, x2, x3, x4 ช่วยคูณคะแนนมหาศาล พร้อมเปิดคำอธิบายเฉลยชีววิทยาแบบเจาะลึก</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="next-q-btn" id="start-rules-btn" style="margin-top: 16px;">
+        <span>เข้าใจแล้ว เริ่มชู้ตบอลเลย! ➔</span>
+      </button>
+    </div>
+  </div>
+
+  <script src="game.js?v=20261013v1"></script>
+</body>
+</html>

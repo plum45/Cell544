@@ -52,6 +52,10 @@
     </div>
 
     <div class="nav-actions">
+      <button class="nav-btn btn-mode-select" id="open-mode-select-btn" title="เลือกโหมดการเล่น">
+        <span class="btn-icon">🎮</span>
+        <span class="btn-txt">โหมดการเล่น</span>
+      </button>
       <button class="nav-btn btn-rules" id="open-rules-btn" title="กติกาและวิธีการเล่น Who Am I?">
         <span class="btn-icon">📖</span>
         <span class="btn-txt">กติกา & วิธีเล่น</span>
@@ -65,6 +69,10 @@
         <span class="btn-txt">แชทโต้ตอบ</span>
         <span class="chat-unread-badge" id="chat-unread" style="display: none;">1</span>
       </button>
+      <a href="../bio-hoops/index.html" class="nav-btn btn-hoops" title="เกมโยนลูกบอลชีวะ 4 ห่วง">
+        <span class="btn-icon">🏀</span>
+        <span class="btn-txt">ชู้ตบอลชีวะ 4 ห่วง</span>
+      </a>
       <a href="../tether-survival/index.html" class="nav-btn btn-arena">
         <span class="btn-icon">⚡</span>
         <span class="btn-txt">3D Tether Arena</span>
@@ -82,7 +90,13 @@
     <!-- Left: 3D Clue Dossier View -->
     <aside class="dossier-panel" id="dossier-panel">
       <div class="dossier-header">
-        <div class="dossier-stamp" id="dossier-stamp">CONFIDENTIAL // 24+ CARDS POOL</div>
+        <div class="dossier-header-top">
+          <div class="dossier-stamp" id="dossier-stamp">CONFIDENTIAL // 28 CARDS</div>
+          <button class="dossier-toggle-btn" id="toggle-dossier-btn" title="ย่อ/ขยายแฟ้มคำใบ้">
+            <span id="dossier-toggle-icon">◀</span>
+            <span id="dossier-toggle-txt">ย่อ</span>
+          </button>
+        </div>
         <div class="dossier-title-wrap">
           <span class="case-id" id="dossier-case-id">CASE #01</span>
           <h2 class="dossier-heading">แฟ้มสืบสวนอัตลักษณ์ชีวโมเลกุล</h2>
@@ -127,8 +141,8 @@
       </div>
     </aside>
 
-    <!-- Right: Real-time Live Chat & Audience Intercom Panel -->
-    <aside class="live-chat-panel" id="live-chat-panel">
+    <!-- Right: Real-time Live Chat & Audience Intercom Panel (Hidden by default, opens on toggle) -->
+    <aside class="live-chat-panel" id="live-chat-panel" style="display: none;">
       <div class="chat-header">
         <div class="chat-title">
           <span class="live-badge">LIVE INTERCOM</span>
@@ -139,7 +153,7 @@
 
       <div class="chat-messages" id="chat-messages">
         <div class="chat-msg system-msg">
-          <span class="msg-sender">📢 ระบบ:</span> ยินดีต้อนรับสู่ห้องสืบสวนชีววิทยา! ผู้ชมและผู้เล่นสามารถพิมพ์ถามตอบเพื่อตัดช้อยส์การ์ด 24 ใบได้ที่นี่
+          <span class="msg-sender">📢 ระบบ:</span> ยินดีต้อนรับสู่ห้องสืบสวนชีววิทยา! ผู้ชมและผู้เล่นสามารถพิมพ์ถามตอบเพื่อตัดช้อยส์การ์ด 28 ใบได้ที่นี่
         </div>
       </div>
 
@@ -165,11 +179,14 @@
       <div class="guidance-card">
         <div class="guide-indicator">
           <span class="pulse-dot"></span>
-          <span id="guide-text">สำรับรวม 24 ใบ (การ์ดสีดำพร้อมภาพจริง): คลิกขวาเพื่อคว่ำการ์ดตัดช้อยส์ / คลิกซ้ายเพื่อทายคำตอบสุดท้าย!</span>
+          <span id="guide-text">สำรับ 28 ใบชีววิทยา: คลิกขวาเพื่อคว่ำการ์ดตัดช้อยส์ / คลิกซ้ายเพื่อทายคำตอบตัดสินคดี!</span>
         </div>
         <div class="deck-actions">
-          <button class="deck-action-btn" id="shuffle-deck-btn" title="จัดเรียงสำรับ 24 ใบใหม่">
-            <span>🎴 จัดเรียง 24 ใบ</span>
+          <button class="deck-action-btn" id="open-mode-select-btn-dock" title="เลือกโหมดเล่น">
+            <span>🎮 เลือกโหมดเล่น</span>
+          </button>
+          <button class="deck-action-btn" id="shuffle-deck-btn" title="จัดเรียงสำรับ 28 ใบใหม่">
+            <span>🎴 จัดเรียง 28 ใบ</span>
           </button>
           <button class="deck-action-btn" id="view-mode-btn" title="สลับมุมมอง">
             <span>📐 ปรับมุมกล้อง 3D</span>
@@ -181,8 +198,8 @@
         </div>
         <div class="control-hints">
           <span class="hint-item"><kbd>คลิกซ้าย / แตะ</kbd> ทายคำตอบ</span>
-          <span class="hint-item"><kbd>คลิกขวา / โหมดคว่ำ</kbd> คว่ำการ์ดทิ้ง</span>
-          <span class="hint-item"><kbd>มือถือ/iPad</kbd> แตะปุ่ม "โหมดทาย/คว่ำ" ด้านบน</span>
+          <span class="hint-item"><kbd>คลิกขวา</kbd> คว่ำการ์ดทิ้ง</span>
+          <span class="hint-item"><kbd>มือถือ/iPad</kbd> แตะปุ่มโหมดทาย/คว่ำ</span>
         </div>
       </div>
     </div>
@@ -193,6 +210,65 @@
     </div>
 
   </main>
+
+  <!-- Game Mode Selector & Welcome Modal (Opens automatically or via button) -->
+  <div class="modal-backdrop visible" id="mode-select-modal">
+    <div class="modal-card mode-select-card">
+      <div class="modal-close-btn" id="close-mode-modal">✕</div>
+      <div class="lobby-header">
+        <div class="brand-badge">CYTO-DETECTIVE 3D</div>
+        <h2 style="color: #00f0ff; margin: 8px 0;">🔬 ยินดีต้อนรับสู่นักสืบชีววิทยา: WHO AM I?</h2>
+        <p style="color: #94a3b8; font-size: 14px; max-width: 580px; margin: 0 auto;">เลือกรูปแบบที่คุณต้องการเล่น เพื่อเริ่มสืบสวนหาคำตอบลับจากสำรับชีวโมเลกุล 28 ชนิด Campbell Biology</p>
+      </div>
+
+      <div class="mode-select-grid">
+        <!-- Solo Detective Mode -->
+        <div class="mode-select-card-box solo-card-box" id="mode-solo-card">
+          <div class="mode-badge-top">แนะนำสำหรับเล่นคนเดียว</div>
+          <div class="mode-icon-big">🕵️‍♂️</div>
+          <h3>โหมดเล่นเดี่ยว (Solo Detective)</h3>
+          <p class="mode-desc">
+            ระบบจะสุ่มชีวโมเลกุลลับ 1 ใบ คุณได้รับคำใบ้ 4 ระดับ แล้วคลิกขวาคว่ำการ์ดตัดช้อยส์ จนเหลือคำตอบที่ถูกต้องแล้วคลิกซ้ายทาย!
+          </p>
+          <div class="mode-perks">
+            <span>✔ สุ่มคดีทันที ไม่ต้องรอใคร</span>
+            <span>✔ ปลดล็อกคำใบ้ 4 ระดับ</span>
+            <span>✔ เหมาะสำหรับทบทวนบทเรียน</span>
+          </div>
+          <button class="mode-start-btn btn-solo-launch" id="btn-solo-launch">
+            <span>▶ เริ่มเล่นเดี่ยวทันที (Start Solo)</span>
+          </button>
+        </div>
+
+        <!-- Duo Multiplayer Co-op Mode -->
+        <div class="mode-select-card-box duo-card-box" id="mode-duo-card">
+          <div class="mode-badge-top purple-badge">ออนไลน์ 2 คน / ห้องเรียน</div>
+          <div class="mode-icon-big">👥</div>
+          <h3>โหมดเล่น 2 คน (Duo Online / Co-op)</h3>
+          <p class="mode-desc">
+            ฝ่ายหนึ่งเป็นผู้ถือคำตอบลับ (Host) อีกฝ่ายเป็นนักสืบทายการ์ด ถาม-ตอบคำถามสดๆ และคว่ำการ์ดบนโต๊ะ 3 มิติพร้อมกันข้ามอุปกรณ์
+          </p>
+          <div class="mode-perks">
+            <span>✔ เชื่อมต่อด้วยรหัสห้อง 4-6 หลัก</span>
+            <span>✔ เล่นข้ามมือถือ, iPad, PC ได้ฟรี</span>
+            <span>✔ ระบบแชท & ปุ่มถามด่วนเรียลไทม์</span>
+          </div>
+          <button class="mode-start-btn btn-duo-launch" id="btn-duo-launch">
+            <span>🌐 เข้าสู่ห้องจับคู่ (Matchmaking)</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="mode-footer-row">
+        <button type="button" class="mode-sub-btn" id="open-rules-from-mode">
+          📖 วิธีเล่น & กติกาอย่างละเอียด
+        </button>
+        <button type="button" class="mode-sub-btn skip-btn" id="close-mode-modal-direct">
+          ดูโต๊ะการ์ด 3 มิติ ➔
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Multiplayer Room Lobby Modal -->
   <div class="modal-backdrop" id="lobby-modal">

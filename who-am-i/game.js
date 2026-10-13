@@ -609,7 +609,7 @@ class WhoAmIGame {
 
     // View Angle State
     this.viewMode = 'perspective';
-    this.tableCenterX = 0.6;
+    this.tableCenterX = 0.0;
 
     // Networking (BroadcastChannel + PeerJS)
     this.broadcastChannel = null;
@@ -700,9 +700,9 @@ class WhoAmIGame {
 
     const width = window.innerWidth;
     const height = window.innerHeight;
-    this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    this.camera.position.set(this.tableCenterX, 4.8, 7.6);
-    this.camera.lookAt(this.tableCenterX, 0.3, 0.2);
+    this.camera = new THREE.PerspectiveCamera(46, width / height, 0.1, 100);
+    this.camera.position.set(this.tableCenterX, 7.8, 6.2);
+    this.camera.lookAt(this.tableCenterX, 0.2, -0.2);
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setSize(width, height);
@@ -1003,16 +1003,16 @@ class WhoAmIGame {
     this.cardMeshes = [];
     this.eliminatedCardIds.clear();
 
-    const cardWidth = 0.88;
-    const cardHeight = 1.38;
+    const cardWidth = 0.82;
+    const cardHeight = 1.25;
     const cardDepth = 0.015;
 
-    // Arrange 24 cards in a 4 rows x 6 columns laboratory grid on the desk
-    const cols = 6;
-    const spacingX = 1.05;
-    const spacingZ = 1.52;
+    // Arrange 28 cards cleanly in 4 rows x 7 columns on the desk
+    const cols = 7;
+    const spacingX = 0.98;
+    const spacingZ = 1.25;
     const startX = this.tableCenterX - ((cols - 1) * spacingX) / 2;
-    const startZ = -1.6;
+    const startZ = -2.1;
 
     MASTER_CARD_POOL.forEach((cardData, idx) => {
       const row = Math.floor(idx / cols);
@@ -1034,10 +1034,10 @@ class WhoAmIGame {
       cardMesh.receiveShadow = true;
 
       const posX = startX + col * spacingX;
-      const posY = 0.85 + (3 - row) * 0.1;
+      const posY = 0.85 + (3 - row) * 0.06;
       const posZ = startZ + row * spacingZ;
-      const rotX = -0.32; // tilted towards camera
-      const rotY = (col - 2.5) * 0.04;
+      const rotX = -0.42; // tilted towards elevated camera
+      const rotY = (col - 3) * 0.025;
       const rotZ = 0;
 
       // Drop animation from sky
@@ -1348,17 +1348,82 @@ class WhoAmIGame {
       if (this.viewMode === 'perspective') {
         this.viewMode = 'topdown';
         new TWEEN.Tween(this.camera.position)
-          .to({ x: this.tableCenterX, y: 7.2, z: 3.5 }, 600)
+          .to({ x: this.tableCenterX, y: 9.6, z: 0.8 }, 600)
           .easing(TWEEN.Easing.Cubic.InOut)
+          .start();
+        new TWEEN.Tween(this.camera.rotation)
+          .to({ x: -Math.PI / 2.2, y: 0, z: 0 }, 600)
           .start();
       } else {
         this.viewMode = 'perspective';
         new TWEEN.Tween(this.camera.position)
-          .to({ x: this.tableCenterX, y: 4.8, z: 7.6 }, 600)
+          .to({ x: this.tableCenterX, y: 7.8, z: 6.2 }, 600)
           .easing(TWEEN.Easing.Cubic.InOut)
+          .start();
+        new TWEEN.Tween(this.camera.rotation)
+          .to({ x: -0.75, y: 0, z: 0 }, 600)
           .start();
       }
     });
+
+    // Dossier Panel Collapse / Expand Toggle
+    const toggleDossierBtn = document.getElementById('toggle-dossier-btn');
+    if (toggleDossierBtn) {
+      toggleDossierBtn.addEventListener('click', () => {
+        const dossier = document.getElementById('dossier-panel');
+        dossier.classList.toggle('collapsed');
+        const isCollapsed = dossier.classList.contains('collapsed');
+        const iconEl = document.getElementById('dossier-toggle-icon');
+        const txtEl = document.getElementById('dossier-toggle-txt');
+        if (iconEl) iconEl.innerText = isCollapsed ? '▶' : '◀';
+        if (txtEl) txtEl.innerText = isCollapsed ? 'ขยาย แฟ้มคำใบ้' : 'ย่อ';
+      });
+    }
+
+    // Play Mode Selector Modal Logic
+    const modeModal = document.getElementById('mode-select-modal');
+    const openModeBtn = document.getElementById('open-mode-select-btn');
+    const openModeBtnDock = document.getElementById('open-mode-select-btn-dock');
+    const closeModeBtn = document.getElementById('close-mode-modal');
+    const closeModeBtnDirect = document.getElementById('close-mode-modal-direct');
+    const btnSoloLaunch = document.getElementById('btn-solo-launch');
+    const btnDuoLaunch = document.getElementById('btn-duo-launch');
+    const openRulesFromMode = document.getElementById('open-rules-from-mode');
+
+    const showModeModal = () => { if (modeModal) modeModal.classList.add('visible'); };
+    const hideModeModal = () => { if (modeModal) modeModal.classList.remove('visible'); };
+
+    if (openModeBtn) openModeBtn.addEventListener('click', showModeModal);
+    if (openModeBtnDock) openModeBtnDock.addEventListener('click', showModeModal);
+    if (closeModeBtn) closeModeBtn.addEventListener('click', hideModeModal);
+    if (closeModeBtnDirect) closeModeBtnDirect.addEventListener('click', hideModeModal);
+
+    if (btnSoloLaunch) {
+      btnSoloLaunch.addEventListener('click', () => {
+        hideModeModal();
+        this.myRole = 'guesser';
+        document.getElementById('role-val').innerText = '🕵️ ผู้ทาย (Detective)';
+        document.getElementById('host-reply-bar').style.display = 'none';
+        this.startNewGameRound(Math.floor(Math.random() * MASTER_CARD_POOL.length));
+        this.triggerHoloSignal('🕵️ เริ่มต้นคดีเดี่ยว! อ่านคำใบ้แล้วคลิกขวาเพื่อตัดช้อยส์');
+        this.sound.playSuccess();
+      });
+    }
+
+    if (btnDuoLaunch) {
+      btnDuoLaunch.addEventListener('click', () => {
+        hideModeModal();
+        document.getElementById('gen-room-code').innerText = this.roomCode;
+        document.getElementById('lobby-modal').classList.add('show');
+      });
+    }
+
+    if (openRulesFromMode) {
+      openRulesFromMode.addEventListener('click', () => {
+        hideModeModal();
+        document.getElementById('whoami-rules-modal').classList.add('show');
+      });
+    }
 
     // Touch Mode Toggle (for Mobile & iPad: Guess vs Eliminate)
     const touchModeBtn = document.getElementById('touch-mode-btn');
