@@ -3,3 +3,9 @@ node_modules/
 Thumbs.db
 *.log
 .env
+# Ignore raw 100MB+ oversized video source files (keep web versions)
+assets/cell_ebook_walkthrough.mp4
+assets/cell_master_documentary.mp4
+website/assets/cell_ebook_walkthrough.mp4
+website/assets/cell_master_documentary.mp4
+gdrive_response.html
