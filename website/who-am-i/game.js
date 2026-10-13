@@ -569,9 +569,6 @@ MASTER_CARD_POOL.forEach(card => {
   }
 });
 
-// Custom Detective Card Art Back Cover
-const CUSTOM_CARD_BACK_IMG = new Image();
-CUSTOM_CARD_BACK_IMG.src = 'card_art_custom.jpg';
 
 // --- 4. Main Multi-Card & Room Matchmaking Engine ---
 class WhoAmIGame {
@@ -794,7 +791,7 @@ class WhoAmIGame {
     this.scene.add(this.particles);
   }
 
-  // --- Dynamic Canvas Textures with Real Image & Crisp Pure White High-Contrast Background ---
+  // --- 100% Native Vector Canvas Textures (Zero Tainted Canvas, Crystal-Clear Legibility) ---
   createCardTexture(cardData, isBack = false) {
     const canvas = document.createElement('canvas');
     canvas.width = 1024;
@@ -802,98 +799,122 @@ class WhoAmIGame {
     const ctx = canvas.getContext('2d');
 
     if (isBack) {
-      if (CUSTOM_CARD_BACK_IMG.complete && CUSTOM_CARD_BACK_IMG.naturalWidth > 0) {
-        // Render Custom Detective Card Art Back Cover
-        ctx.fillStyle = '#0a0f1d';
-        ctx.fillRect(0, 0, 1024, 1536);
+      // 1. Back Face: Luxury Cyber-Detective Confidential Dossier Cover
+      ctx.fillStyle = '#080d1a';
+      ctx.fillRect(0, 0, 1024, 1536);
 
-        // Draw Custom Detective Art in center frame
-        ctx.save();
-        ctx.drawImage(CUSTOM_CARD_BACK_IMG, 32, 32, 960, 1472);
-        ctx.restore();
+      // Cyber Gold & Neon Cyan Dual Outer Border
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 16;
+      ctx.strokeRect(26, 26, 972, 1484);
 
-        // Sleek Cyber Gold Outer Border
-        ctx.strokeStyle = '#f59e0b';
-        ctx.lineWidth = 14;
-        ctx.strokeRect(26, 26, 972, 1484);
+      ctx.strokeStyle = '#00f0ff';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(46, 46, 932, 1444);
 
-        ctx.strokeStyle = '#00f0ff';
-        ctx.lineWidth = 4;
-        ctx.strokeRect(44, 44, 936, 1448);
+      // Sci-fi Corner Marks
+      const corners = [[56, 56], [968, 56], [56, 1480], [968, 1480]];
+      corners.forEach(([cx, cy]) => {
+        ctx.fillStyle = '#00f0ff';
+        ctx.fillRect(cx - 10, cy - 10, 20, 20);
+      });
 
-        // Bottom Dossier Badge
-        ctx.fillStyle = 'rgba(10, 15, 29, 0.88)';
+      // Background Subtle Tech Grid
+      ctx.strokeStyle = 'rgba(0, 240, 255, 0.05)';
+      ctx.lineWidth = 2;
+      for (let x = 80; x < 960; x += 60) {
         ctx.beginPath();
-        ctx.roundRect ? ctx.roundRect(160, 1370, 704, 76, 20) : ctx.rect(160, 1370, 704, 76);
-        ctx.fill();
-        ctx.strokeStyle = '#f59e0b';
-        ctx.lineWidth = 3;
+        ctx.moveTo(x, 80);
+        ctx.lineTo(x, 1456);
         ctx.stroke();
-
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 32px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText('CYTO-DETECTIVE // DOSSIER #24', 512, 1420);
-      } else {
-        // Fallback: Crisp Pure White & Cyan Shield Hologram
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, 1024, 1536);
-
-        // Cyber Neon Frame
-        ctx.strokeStyle = '#0284c7';
-        ctx.lineWidth = 24;
-        ctx.strokeRect(28, 28, 968, 1480);
-
-        ctx.strokeStyle = 'rgba(14, 165, 233, 0.4)';
-        ctx.lineWidth = 6;
-        ctx.strokeRect(52, 52, 920, 1432);
-
-        // Central Bio-Hazard Holographic Seal
-        ctx.save();
-        ctx.translate(512, 660);
+      }
+      for (let y = 80; y < 1456; y += 60) {
         ctx.beginPath();
-        for (let i = 0; i < 6; i++) {
-          const angle = (i * Math.PI) / 3;
-          const x = 230 * Math.cos(angle);
-          const y = 230 * Math.sin(angle);
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.closePath();
-        ctx.strokeStyle = '#0284c7';
-        ctx.lineWidth = 12;
+        ctx.moveTo(80, y);
+        ctx.lineTo(944, y);
         ctx.stroke();
-
-        ctx.fillStyle = 'rgba(2, 132, 199, 0.08)';
-        ctx.fill();
-        ctx.restore();
-
-        ctx.fillStyle = '#0284c7';
-        ctx.font = 'bold 180px "Prompt", sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('?', 512, 730);
-
-        // Labels
-        ctx.fillStyle = '#0f172a';
-        ctx.font = 'bold 44px "JetBrains Mono", monospace';
-        ctx.fillText('CYTO-ARCHIVE // SPECIMEN', 512, 1020);
-
-        ctx.fillStyle = '#f59e0b';
-        ctx.font = 'bold 36px "JetBrains Mono", monospace';
-        ctx.fillText('24+ UNIFIED MASTER DECK', 512, 1090);
-
-        ctx.fillStyle = '#64748b';
-        ctx.font = '32px "Prompt", sans-serif';
-        ctx.fillText('TOP SECRET BIOLOGICAL DOSSIER', 512, 1350);
       }
 
+      // Central Holographic Emblem
+      ctx.save();
+      ctx.translate(512, 640);
+
+      // Outer Radial Glow
+      const glowGrad = ctx.createRadialGradient(0, 0, 30, 0, 0, 320);
+      glowGrad.addColorStop(0, 'rgba(0, 240, 255, 0.25)');
+      glowGrad.addColorStop(0.5, 'rgba(168, 85, 247, 0.12)');
+      glowGrad.addColorStop(1, 'rgba(8, 13, 26, 0)');
+      ctx.fillStyle = glowGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, 320, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Hexagonal Cyber Frame
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const angle = (i * Math.PI) / 3;
+        const hx = 240 * Math.cos(angle);
+        const hy = 240 * Math.sin(angle);
+        if (i === 0) ctx.moveTo(hx, hy);
+        else ctx.lineTo(hx, hy);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 10;
+      ctx.stroke();
+
+      // Inner Rotating Reticle
+      ctx.beginPath();
+      ctx.arc(0, 0, 190, 0, Math.PI * 2);
+      ctx.strokeStyle = '#00f0ff';
+      ctx.lineWidth = 4;
+      ctx.setLineDash([16, 12]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Center Glyph
+      ctx.font = '160px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🔬', 0, 0);
+      ctx.restore();
+
+      // Title & Classified Dossier Badges
+      ctx.fillStyle = '#f59e0b';
+      ctx.font = 'bold 54px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('CYTO-DETECTIVE', 512, 1050);
+
+      ctx.fillStyle = '#00f0ff';
+      ctx.font = 'bold 72px "Prompt", sans-serif';
+      ctx.fillText('WHO AM I?', 512, 1130);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = 'bold 32px "JetBrains Mono", monospace';
+      ctx.fillText('TOP SECRET // BIOLOGICAL DOSSIER', 512, 1210);
+
+      // Bottom Security Badge
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+      ctx.beginPath();
+      ctx.roundRect ? ctx.roundRect(160, 1340, 704, 80, 20) : ctx.rect(160, 1340, 704, 80);
+      ctx.fill();
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 30px "JetBrains Mono", monospace';
+      ctx.fillText('28 UNIFIED SPECIMEN MASTER DECK', 512, 1390);
+
     } else {
-      // 3D Card Front: CRISP PURE WHITE LUXURY BACKGROUND WITH REAL HIGH-CONTRAST PHOTOGRAPHY
+      // 2. Front Face: Crisp Pure White Luxury Card with Rich Sci-Fi Specimen Window
+      const cardColor = cardData.color || '#0284c7';
+
+      // Base: Pure White
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, 1024, 1536);
 
       // Outer Thick Accent Border
-      const cardColor = cardData.color || '#0284c7';
       ctx.strokeStyle = cardColor;
       ctx.lineWidth = 26;
       ctx.strokeRect(26, 26, 972, 1484);
@@ -906,91 +927,161 @@ class WhoAmIGame {
       // Category Tag Header Bar
       ctx.fillStyle = cardColor;
       ctx.beginPath();
-      ctx.roundRect ? ctx.roundRect(64, 68, 896, 90, 16) : ctx.rect(64, 68, 896, 90);
+      ctx.roundRect ? ctx.roundRect(64, 66, 896, 96, 18) : ctx.rect(64, 66, 896, 96);
       ctx.fill();
 
+      // Case ID (Left)
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+      ctx.font = 'bold 32px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText(`CASE #${String(cardData.id).padStart(2, '0')}`, 96, 126);
+
+      // Tag Title (Center)
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 40px "JetBrains Mono", monospace';
+      ctx.font = 'bold 42px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
-      ctx.fillText(cardData.tag || 'BIOMOLECULE', 512, 130);
+      ctx.fillText(cardData.tag || 'BIOMOLECULE', 512, 128);
 
-      // Real Photography Image Window (Huge & High-Contrast)
-      const imgBoxX = 72;
+      // Specimen Window (x: 68, y: 184, w: 888, h: 710)
+      const imgBoxX = 68;
       const imgBoxY = 184;
-      const imgBoxW = 880;
-      const imgBoxH = 720;
+      const imgBoxW = 888;
+      const imgBoxH = 710;
 
-      // Draw real specimen image if loaded in cache
-      const cachedImg = IMAGE_CACHE[cardData.id];
-      if (cachedImg && cachedImg.complete && cachedImg.naturalWidth > 0) {
-        ctx.save();
-        ctx.beginPath();
-        ctx.roundRect ? ctx.roundRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH, 20) : ctx.rect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
-        ctx.clip();
-        ctx.drawImage(cachedImg, imgBoxX, imgBoxY, imgBoxW, imgBoxH);
-        ctx.restore();
+      // Dark Sci-Fi Viewport Background with Color Aura
+      ctx.save();
+      ctx.beginPath();
+      ctx.roundRect ? ctx.roundRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH, 22) : ctx.rect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
+      ctx.clip();
 
-        // Image Frame Overlay
-        ctx.strokeStyle = cardColor;
-        ctx.lineWidth = 6;
+      ctx.fillStyle = '#090d16';
+      ctx.fillRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
+
+      // Radial Specimen Glow
+      const auraGrad = ctx.createRadialGradient(512, imgBoxY + 340, 20, 512, imgBoxY + 340, 420);
+      auraGrad.addColorStop(0, cardColor + '55');
+      auraGrad.addColorStop(0.5, cardColor + '18');
+      auraGrad.addColorStop(1, '#090d16');
+      ctx.fillStyle = auraGrad;
+      ctx.fillRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
+
+      // Radar / Grid Overlay Lines
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+      ctx.lineWidth = 2;
+      for (let x = imgBoxX; x <= imgBoxX + imgBoxW; x += 60) {
         ctx.beginPath();
-        ctx.roundRect ? ctx.roundRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH, 20) : ctx.rect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
+        ctx.moveTo(x, imgBoxY);
+        ctx.lineTo(x, imgBoxY + imgBoxH);
         ctx.stroke();
-
-        // Small floating biology icon badge
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+      }
+      for (let y = imgBoxY; y <= imgBoxY + imgBoxH; y += 60) {
         ctx.beginPath();
-        ctx.arc(imgBoxX + 64, imgBoxY + 64, 46, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = cardColor;
-        ctx.lineWidth = 4;
+        ctx.moveTo(imgBoxX, y);
+        ctx.lineTo(imgBoxX + imgBoxW, y);
         ctx.stroke();
-
-        ctx.font = '48px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText(cardData.icon || '🧬', imgBoxX + 64, imgBoxY + 80);
-
-      } else {
-        // Fallback placeholder container with soft light background
-        ctx.fillStyle = '#f8fafc';
-        ctx.fillRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
-        ctx.strokeStyle = cardColor;
-        ctx.lineWidth = 6;
-        ctx.strokeRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
-
-        ctx.font = '240px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText(cardData.icon || '🧬', 512, 600);
       }
 
-      // Specimen Thai Name (CRYSTAL CLEAR PITCH BLACK ON PURE WHITE - HUGE HIGH CONTRAST)
-      ctx.fillStyle = '#09090b';
-      ctx.font = 'bold 74px "Prompt", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(cardData.nameTh, 512, 1005);
+      // Glowing Orbital Rings around Center
+      ctx.strokeStyle = cardColor;
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(512, imgBoxY + 330, 210, 0, Math.PI * 2);
+      ctx.stroke();
 
-      // Specimen English Name (Vibrant Accent Color)
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([12, 10]);
+      ctx.beginPath();
+      ctx.arc(512, imgBoxY + 330, 250, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Center Huge Organelle Icon (Crisp High-Res Glyph)
+      ctx.font = '220px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(cardData.icon || '🧬', 512, imgBoxY + 330);
+
+      // Category Pill at Bottom of Viewport
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+      ctx.beginPath();
+      ctx.roundRect ? ctx.roundRect(imgBoxX + 80, imgBoxY + 620, imgBoxW - 160, 60, 14) : ctx.rect(imgBoxX + 80, imgBoxY + 620, imgBoxW - 160, 60);
+      ctx.fill();
+      ctx.strokeStyle = cardColor;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = '#00f0ff';
+      ctx.font = 'bold 24px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(cardData.category || 'ORGANELLE // SPECIMEN', 512, imgBoxY + 658);
+
+      ctx.restore();
+
+      // Outer Viewport Frame
+      ctx.strokeStyle = cardColor;
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.roundRect ? ctx.roundRect(imgBoxX, imgBoxY, imgBoxW, imgBoxH, 22) : ctx.rect(imgBoxX, imgBoxY, imgBoxW, imgBoxH);
+      ctx.stroke();
+
+      // Specimen Thai & English Name Banner (High-Contrast Slate Container)
+      ctx.fillStyle = '#090d16';
+      ctx.beginPath();
+      ctx.roundRect ? ctx.roundRect(68, 930, 888, 170, 20) : ctx.rect(68, 930, 888, 170);
+      ctx.fill();
+      ctx.strokeStyle = cardColor;
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      // Specimen Thai Name (Huge, Crisp White 84px)
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 84px "Prompt", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillText(cardData.nameTh, 512, 1010);
+
+      // Specimen English Name (Vibrant Accent Monospace 44px)
       ctx.fillStyle = cardColor;
       ctx.font = 'bold 44px "JetBrains Mono", monospace';
-      ctx.fillText(cardData.nameEn, 512, 1090);
+      ctx.fillText(cardData.nameEn, 512, 1072);
 
       // Subtle Divider
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-      ctx.fillRect(120, 1150, 784, 4);
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+      ctx.fillRect(120, 1130, 784, 4);
 
-      // Scientific Verification Stamp
-      ctx.fillStyle = '#475569';
-      ctx.font = 'bold 34px "Prompt", sans-serif';
-      ctx.fillText(`SPECIMEN #${String(cardData.id).padStart(2, '0')} · CAMPBELL BIOLOGY 12TH`, 512, 1240);
+      // Clue Preview Feature Line (Stripped HTML)
+      let featureSnippet = cardData.desc || '';
+      if (cardData.clues && cardData.clues[0]) {
+        featureSnippet = cardData.clues[0].replace(/<[^>]*>/g, '');
+      }
+      if (featureSnippet.length > 52) {
+        featureSnippet = featureSnippet.substring(0, 50) + '...';
+      }
 
+      ctx.fillStyle = '#334155';
+      ctx.font = '500 32px "Prompt", sans-serif';
+      ctx.fillText(featureSnippet, 512, 1180);
+
+      // Campbell Biology Official Stamp
+      ctx.fillStyle = '#64748b';
+      ctx.font = 'bold 28px "JetBrains Mono", monospace';
+      ctx.fillText(`SPECIMEN #${String(cardData.id).padStart(2, '0')} · CAMPBELL BIOLOGY 12TH`, 512, 1260);
+
+      // Green Verification Badge
       ctx.fillStyle = '#16a34a';
-      ctx.font = 'bold 36px "Prompt", sans-serif';
-      ctx.fillText('✔ ยืนยันพิกัดโครงสร้างชีววิทยา', 512, 1320);
+      ctx.font = 'bold 32px "Prompt", sans-serif';
+      ctx.fillText('✔ ยืนยันพิกัดโครงสร้างชีววิทยาเซลล์', 512, 1330);
+
+      // Bottom Barcode Ticks
+      ctx.fillStyle = '#0f172a';
+      ctx.font = '28px monospace';
+      ctx.fillText('||| | ||||| ||| || |||||| | ||||| | ||', 512, 1420);
     }
 
     const texture = new THREE.CanvasTexture(canvas);
     texture.anisotropy = 16;
-    texture.minFilter = THREE.LinearMipmapLinearFilter;
+    texture.needsUpdate = true;
     return texture;
   }
 
@@ -1652,6 +1743,8 @@ class WhoAmIGame {
       .to({ y: card.userData.origY, z: card.userData.origZ }, 200)
       .easing(TWEEN.Easing.Cubic.Out)
       .start();
+    const hud = document.getElementById('card-inspect-hud');
+    if (hud) hud.classList.remove('visible');
   }
 
   showCardInspector(cardData) {
