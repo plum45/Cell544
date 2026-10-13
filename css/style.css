@@ -2002,36 +2002,88 @@ body.lit .apple-modal-card {
   transition: width 0.2s linear;
 }
 
-/* Near-End Animated Overlay Card */
+/* Near-End Animated Overlay Card with Staggered Fade-Up Text */
 .ebook-cta-overlay {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 34px 28px;
-  background: linear-gradient(0deg, rgba(8, 12, 22, 0.97) 0%, rgba(8, 12, 22, 0.88) 65%, transparent 100%);
-  backdrop-filter: blur(12px);
+  padding: 38px 28px;
+  background: linear-gradient(0deg, rgba(8, 12, 22, 0.98) 0%, rgba(8, 12, 22, 0.90) 65%, rgba(8, 12, 22, 0.4) 88%, transparent 100%);
+  backdrop-filter: blur(14px);
   display: flex;
   justify-content: center;
   align-items: flex-end;
   opacity: 0;
-  transform: translateY(24px);
   pointer-events: none;
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 20;
 }
 
 .ebook-cta-overlay.visible {
   opacity: 1;
-  transform: translateY(0);
   pointer-events: auto;
 }
 
 .cta-overlay-content {
-  max-width: 740px;
+  max-width: 760px;
   width: 100%;
   text-align: center;
   color: #fff;
+}
+
+/* Staggered Fade-Up Text Animation System */
+.cta-overlay-content .cta-badge,
+.cta-overlay-content .cta-heading,
+.cta-overlay-content .cta-desc,
+.cta-overlay-content .cta-buttons-row,
+.cta-overlay-content .cta-subnote {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* Sequential Staggered Delays when Visible */
+.ebook-cta-overlay.visible .cta-badge {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.12s;
+}
+
+.ebook-cta-overlay.visible .cta-heading {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.28s;
+}
+
+.ebook-cta-overlay.visible .cta-desc {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.44s;
+}
+
+.ebook-cta-overlay.visible .cta-buttons-row {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.60s;
+}
+
+.ebook-cta-overlay.visible .cta-subnote {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.76s;
+}
+
+/* Instant reset on dismiss/replay */
+.ebook-cta-overlay:not(.visible) .cta-badge,
+.ebook-cta-overlay:not(.visible) .cta-heading,
+.ebook-cta-overlay:not(.visible) .cta-desc,
+.ebook-cta-overlay:not(.visible) .cta-buttons-row,
+.ebook-cta-overlay:not(.visible) .cta-subnote {
+  transition-delay: 0s;
+  transition-duration: 0.2s;
 }
 
 .cta-badge {
@@ -2048,18 +2100,25 @@ body.lit .apple-modal-card {
 }
 
 .cta-heading {
-  font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+  font-size: clamp(1.45rem, 2.7vw, 2.15rem);
   font-weight: 800;
   color: #fff;
-  margin-bottom: 8px;
-  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+  letter-spacing: -0.015em;
+  background: linear-gradient(135deg, #ffffff 40%, #d8b4fe 80%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 4px 30px rgba(168, 85, 247, 0.35);
 }
 
 .cta-desc {
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   color: #cbd5e1;
-  line-height: 1.55;
-  margin-bottom: 20px;
+  line-height: 1.6;
+  margin-bottom: 22px;
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .cta-buttons-row {
@@ -2074,16 +2133,26 @@ body.lit .apple-modal-card {
   background: linear-gradient(135deg, #a855f7, #6366f1) !important;
   color: #fff !important;
   box-shadow: 0 6px 25px rgba(168, 85, 247, 0.45) !important;
+  animation: ctaGlowPulse 2.8s infinite ease-in-out;
+}
+
+@keyframes ctaGlowPulse {
+  0%, 100% {
+    box-shadow: 0 6px 25px rgba(168, 85, 247, 0.45);
+  }
+  50% {
+    box-shadow: 0 10px 35px rgba(168, 85, 247, 0.8), 0 0 20px rgba(99, 102, 241, 0.45);
+  }
 }
 
 .ebook-main-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 35px rgba(168, 85, 247, 0.65) !important;
+  box-shadow: 0 10px 35px rgba(168, 85, 247, 0.75) !important;
 }
 
 .cta-subnote {
-  margin-top: 12px;
-  font-size: 0.78rem;
+  margin-top: 14px;
+  font-size: 0.8rem;
   color: #94a3b8;
 }
 
