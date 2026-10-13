@@ -72,6 +72,66 @@ const STANDARD_QUESTIONS = [
       { id: 'C', text: 'ปริมาณ Na⁺/K⁺ ปั๊ม', correct: false },
       { id: 'D', text: 'ความดันออสโมติก', correct: false }
     ]
+  },
+  {
+    topic: 'Cell Signaling (Canva เล่ม 2)',
+    question: 'ขั้นตอนใดเกิดขึ้นทันทีเมื่อ Ligand จับกับ Receptor ของเซลล์เป้าหมาย?',
+    choices: [
+      { id: 'A', text: 'การรับสัญญาณ (Reception)', correct: true },
+      { id: 'B', text: 'การแสดงออกของยีน', correct: false },
+      { id: 'C', text: 'การยุติสัญญาณ', correct: false },
+      { id: 'D', text: 'การแบ่งเซลล์', correct: false }
+    ]
+  },
+  {
+    topic: 'Cell Signaling (Canva เล่ม 2)',
+    question: 'โมเลกุลใดต่อไปนี้ทำหน้าที่เป็น Second Messenger ในวิถีส่งสัญญาณของเซลล์?',
+    choices: [
+      { id: 'A', text: 'DNA', correct: false },
+      { id: 'B', text: 'cAMP (Cyclic AMP)', correct: true },
+      { id: 'C', text: 'ไรโบโซม (Ribosome)', correct: false },
+      { id: 'D', text: 'คอลลาเจน (Collagen)', correct: false }
+    ]
+  },
+  {
+    topic: 'Cell Signaling (Canva เล่ม 2)',
+    question: 'เส้นทาง MAPK/ERK (Ras ➔ Raf ➔ MEK ➔ ERK) มีบทบาทสำคัญที่สุดในกระบวนการใด?',
+    choices: [
+      { id: 'A', text: 'การสร้างผนังเซลล์พืชเท่านั้น', correct: false },
+      { id: 'B', text: 'การย่อยอาหารภายนอกเซลล์', correct: false },
+      { id: 'C', text: 'การควบคุมการแสดงออกของยีนและการเจริญเติบโต', correct: true },
+      { id: 'D', text: 'การสลายกลูโคสแบบไม่ใช้ออกซิเจน', correct: false }
+    ]
+  },
+  {
+    topic: 'Cell Signaling (Canva เล่ม 2)',
+    question: 'เหตุใดเซลล์จึงต้องมีกลไกยุติสัญญาณ (Signal Termination) หลังเกิดการตอบสนอง?',
+    choices: [
+      { id: 'A', text: 'เพื่อให้สัญญาณทำงานตลอดเวลา', correct: false },
+      { id: 'B', text: 'เพื่อให้ receptor หายไปทั้งหมด', correct: false },
+      { id: 'C', text: 'เพื่อหยุดการสร้างสารทุกชนิดในเซลล์', correct: false },
+      { id: 'D', text: 'เพื่อป้องกันการตอบสนองที่ต่อเนื่องหรือมากเกินไป', correct: true }
+    ]
+  },
+  {
+    topic: 'Cell Cycle Checkpoints (Canva เล่ม 3)',
+    question: 'จุดตรวจ Spindle (M Checkpoint) ในไมโทซิสทำหน้าที่ตรวจสอบสิ่งใด?',
+    choices: [
+      { id: 'A', text: 'การยึดเกาะของเส้นใยสปินเดิลกับโครโมโซม', correct: true },
+      { id: 'B', text: 'การสังเคราะห์น้ำตาลกลูโคส', correct: false },
+      { id: 'C', text: 'ขนาดของไมโทคอนเดรีย', correct: false },
+      { id: 'D', text: 'ปริมาณคลอโรฟิลล์ในเซลล์', correct: false }
+    ]
+  },
+  {
+    topic: 'Apoptosis vs Necrosis (Canva เล่ม 3)',
+    question: 'ข้อใดเปรียบเทียบความแตกต่างระหว่าง Apoptosis และ Necrosis ได้อย่างถูกต้อง?',
+    choices: [
+      { id: 'A', text: 'Apoptosis เซลล์หดตัวไม่เกิดการอักเสบ | Necrosis เซลล์บวมแตกเกิดการอักเสบ', correct: true },
+      { id: 'B', text: 'Apoptosis เกิดจากการบาดเจ็บรุนแรง | Necrosis เป็นกระบวนการตามปกติ', correct: false },
+      { id: 'C', text: 'Apoptosis เยื่อหุ้มแตกทันที | Necrosis คงสภาพอยู่ได้ตลอด', correct: false },
+      { id: 'D', text: 'ทั้งสองแบบกระตุ้นการอักเสบรุนแรงเหมือนกันทุกประการ', correct: false }
+    ]
   }
 ];
 
